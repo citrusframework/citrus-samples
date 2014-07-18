@@ -43,11 +43,11 @@ The Citrus samples section contains following projects:
 
 The projects cover following message transports and technologies:
 
-Transport          | JMS | Http | SOAP | Channel | JDBC | SYNC | ASYNC |
-------------------------------------------------------------------------
-FlightBooking      |  X  |  X   |      |         |  X   |      |   X   |
-Greeting           |  X  |      |      |    X    |      |  X   |   X   |
-BookStore          |  X  |      |  X   |         |      |  X   |       |
+| Transport          | JMS | Http | SOAP | Channel | JDBC | SYNC | ASYNC |
+|--------------------|:---:|:----:|:----:|:-------:|:----:|:----:|:-----:|
+| FlightBooking      |  X  |  X   |      |         |  X   |      |   X   |
+| Greeting           |  X  |      |      |    X    |      |  X   |   X   |
+| BookStore          |  X  |      |  X   |         |      |  X   |       |
 
 Pick your sample application for try out and got to the respective folder.
 
