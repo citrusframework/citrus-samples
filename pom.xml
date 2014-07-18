@@ -23,6 +23,7 @@
   <properties>
     <server.port>8070</server.port>
     <server.stop.port>9099</server.stop.port>
+    <citrus.version>2.0</citrus.version>
   </properties>
   
   <build>
@@ -31,7 +32,7 @@
         <plugin>
             <groupId>com.consol.citrus.mvn</groupId>
             <artifactId>citrus-maven-plugin</artifactId>
-            <version>${project.version}</version>
+            <version>${citrus.version}</version>
             <configuration>
                 <author>Christoph Deppisch</author>
                 <targetPackage>com.consol.citrus.samples</targetPackage>
@@ -103,32 +104,32 @@
         <dependency>
             <groupId>com.consol.citrus</groupId>
             <artifactId>citrus-core</artifactId>
-            <version>${project.version}</version>
+            <version>${citrus.version}</version>
         </dependency>
         <dependency>
             <groupId>com.consol.citrus</groupId>
             <artifactId>citrus-java-dsl</artifactId>
-            <version>${project.version}</version>
+            <version>${citrus.version}</version>
         </dependency>
         <dependency>
             <groupId>com.consol.citrus</groupId>
             <artifactId>citrus-ws</artifactId>
-            <version>${project.version}</version>
+            <version>${citrus.version}</version>
         </dependency>
         <dependency>
             <groupId>com.consol.citrus</groupId>
             <artifactId>citrus-http</artifactId>
-            <version>${project.version}</version>
+            <version>${citrus.version}</version>
         </dependency>
         <dependency>
             <groupId>com.consol.citrus.ant</groupId>
             <artifactId>citrus-ant-tasks</artifactId>
-            <version>${project.version}</version>
+            <version>${citrus.version}</version>
         </dependency>
         <dependency>
             <groupId>com.consol.citrus.samples</groupId>
             <artifactId>citrus-samples-common</artifactId>
-            <version>${project.version}</version>
+            <version>${citrus.version}</version>
         </dependency>
         
         <!-- Spring framework -->
