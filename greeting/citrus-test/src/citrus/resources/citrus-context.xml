@@ -39,20 +39,20 @@
 
     <!-- Greeting Sample -->
     <!-- Message channel adapter -->
-    <citrus:message-channel-sender id="greetingChannelRequestSender" 
+    <citrus:channel-endpoint id="greetingChannelRequestSender"
                                    channel="greetings"/>
     
-    <citrus:message-channel-receiver id="greetingChannelResponseReceiver" 
+    <citrus:channel-endpoint id="greetingChannelResponseReceiver"
                                      channel="greetings"
-                                     receive-timeout="5000"/>
+                                     timeout="5000"/>
     
     <!-- Jms adapter -->
-    <citrus:jms-message-sender id="greetingJmsRequestSender" 
+    <citrus:jms-endpoint id="greetingJmsRequestSender"
                                destination-name="${greeting.request.queue}"/>
     
-    <citrus:jms-message-receiver id="greetingJmsResponseReceiver" 
+    <citrus:jms-endpoint id="greetingJmsResponseReceiver"
                                  destination-name="${greeting.response.queue}"
-                                 receive-timeout="5000"/>
+                                 timeout="5000"/>
                                                                   
     <!-- Utility beans -->
     <bean id="purgeJmsQueues" class="com.consol.citrus.actions.PurgeJmsQueuesAction">

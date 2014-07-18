@@ -27,7 +27,7 @@
         </variables>
         
         <actions>
-            <send with="bookStoreRequestMessageSender">
+            <send with="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[
@@ -47,7 +47,7 @@
                 </header>
             </send>
             
-            <receive with="bookStoreResponseMessageHandler">
+            <receive with="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[
@@ -59,7 +59,7 @@
                 </message>
             </receive>
             
-            <send with="bookStoreRequestMessageSender">
+            <send with="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[
@@ -74,7 +74,7 @@
                 </header>
             </send>
             
-            <ws:receive with="bookStoreResponseMessageHandler">
+            <ws:receive with="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[

@@ -18,10 +18,9 @@ package com.consol.citrus.samples.bookstore;
 
 import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
 import com.consol.citrus.dsl.annotations.CitrusTest;
-import com.consol.citrus.message.MessageReceiver;
-import com.consol.citrus.message.MessageSender;
 import com.consol.citrus.samples.bookstore.model.*;
 import com.consol.citrus.validation.MarshallingValidationCallback;
+import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.integration.MessageHeaders;
@@ -38,12 +37,8 @@ import java.util.Calendar;
 public class AddBook_Ok_2_Test extends TestNGCitrusTestBuilder {
 
     @Autowired
-    @Qualifier("bookStoreRequestMessageSender")
-    private MessageSender bookRequestMessageSender;
-    
-    @Autowired
-    @Qualifier("bookStoreResponseMessageHandler")
-    private MessageReceiver bookResponseMessageHandler;
+    @Qualifier("bookStoreClient")
+    private WebServiceClient bookStoreClient;
     
     @Autowired
     private Marshaller marshaller;
@@ -52,11 +47,11 @@ public class AddBook_Ok_2_Test extends TestNGCitrusTestBuilder {
     public void AddBook_Ok_2_Test() {
         String isbn = "978-citrus:randomNumber(10)";
         
-        send(bookRequestMessageSender)
+        send(bookStoreClient)
             .payload(createAddBookRequestMessage(isbn), marshaller)
             .header("citrus_soap_action", "addBook");
         
-        receive(bookResponseMessageHandler)
+        receive(bookStoreClient)
             .validationCallback(new MarshallingValidationCallback<AddBookResponseMessage>() {
                 @Override
                 public void validate(AddBookResponseMessage response, MessageHeaders headers) {

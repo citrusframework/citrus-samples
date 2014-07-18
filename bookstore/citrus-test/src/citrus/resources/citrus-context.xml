@@ -54,13 +54,10 @@
     <bean class="com.consol.citrus.report.MessageTracingTestListener"/>
   
     <!-- Message Sender/Receiver -->
-    <citrus-ws:message-sender id="bookStoreRequestMessageSender" 
+    <citrus-ws:client id="bookStoreClient"
                               request-url="http://localhost:8070/bookstore"
-                              reply-handler="bookStoreResponseMessageHandler"
                               interceptors="clientInterceptors"/>
                               
-    <citrus-ws:reply-message-handler id="bookStoreResponseMessageHandler"/>
-
     <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
     <bean id="soapAttachmentValidator" class="com.consol.citrus.ws.validation.SimpleSoapAttachmentValidator"/>
     <bean id="soapFaultValidator" class="com.consol.citrus.ws.validation.SimpleSoapFaultValidator"/>
