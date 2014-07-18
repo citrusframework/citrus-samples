@@ -1,0 +1,17 @@
+target
+.project
+.classpath
+.settings
+.idea
+test.history
+test-output
+.DS_Store
+*.iml
+*.ipr
+*.iws
+.metadata
+bin
+.codepro
+.pmd
+logs
+
