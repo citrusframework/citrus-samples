@@ -77,20 +77,23 @@
         <groupId>com.consol.citrus</groupId>
         <artifactId>citrus-http</artifactId>
     </dependency>
-    
+
+    <!-- Test scoped dependencies -->
     <dependency>
         <groupId>org.apache.activemq</groupId>
         <artifactId>activemq-core</artifactId>
+        <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>org.apache.xbean</groupId>
         <artifactId>xbean-spring</artifactId>
+        <scope>test</scope>
     </dependency>
     
     <dependency>
         <groupId>commons-dbcp</groupId>
         <artifactId>commons-dbcp</artifactId>
-        <scope>runtime</scope>
+        <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

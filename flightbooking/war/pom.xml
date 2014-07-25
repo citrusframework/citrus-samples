@@ -64,13 +64,14 @@
     <dependency>
         <groupId>org.apache.activemq</groupId>
         <artifactId>activemq-core</artifactId>
+        <scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>org.apache.xbean</groupId>
         <artifactId>xbean-spring</artifactId>
+        <scope>compile</scope>
     </dependency>
     
-    <!-- Sample related dependencies -->    
     <dependency>
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-entitymanager</artifactId>
@@ -83,12 +84,12 @@
     <dependency>
         <groupId>hsqldb</groupId>
         <artifactId>hsqldb</artifactId>
-        <scope>runtime</scope>
+        <scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>commons-dbcp</groupId>
         <artifactId>commons-dbcp</artifactId>
-        <scope>runtime</scope>
+        <scope>compile</scope>
     </dependency>
   </dependencies>
 </project>
