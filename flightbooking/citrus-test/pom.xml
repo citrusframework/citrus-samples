@@ -75,6 +75,11 @@
     <!-- Citrus -->
     <dependency>
         <groupId>com.consol.citrus</groupId>
+        <artifactId>citrus-jms</artifactId>
+    </dependency>
+
+    <dependency>
+        <groupId>com.consol.citrus</groupId>
         <artifactId>citrus-http</artifactId>
     </dependency>
 

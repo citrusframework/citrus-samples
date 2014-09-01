@@ -67,6 +67,12 @@
   </build>
   
   <dependencies>
+    <!-- Citrus -->
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-jms</artifactId>
+    </dependency>
+
     <dependency>
         <groupId>com.consol.citrus.samples</groupId>
         <artifactId>citrus-greeting-service</artifactId>

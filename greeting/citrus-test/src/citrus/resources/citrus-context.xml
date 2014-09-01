@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-jms="http://www.citrusframework.org/schema/jms/config"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd">
-	 
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/jms/config http://www.citrusframework.org/schema/jms/config/citrus-jms-config.xsd">
+
     <import resource="com/consol/citrus/samples/greeting/channel/greeting-channel.xml"/>
 	
     <!-- Common settings -->
@@ -47,15 +48,15 @@
                                      timeout="5000"/>
     
     <!-- Jms adapter -->
-    <citrus:jms-endpoint id="greetingJmsRequestSender"
+    <citrus-jms:jms-endpoint id="greetingJmsRequestSender"
                                destination-name="${greeting.request.queue}"/>
     
-    <citrus:jms-endpoint id="greetingJmsResponseReceiver"
+    <citrus-jms:jms-endpoint id="greetingJmsResponseReceiver"
                                  destination-name="${greeting.response.queue}"
                                  timeout="5000"/>
                                                                   
     <!-- Utility beans -->
-    <bean id="purgeJmsQueues" class="com.consol.citrus.actions.PurgeJmsQueuesAction">
+    <bean id="purgeJmsQueues" class="com.consol.citrus.jms.actions.PurgeJmsQueuesAction">
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="queueNames">
             <list>
