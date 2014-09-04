@@ -20,7 +20,7 @@ import com.consol.citrus.samples.bookstore.exceptions.DuplicateIsbnException;
 import com.consol.citrus.samples.bookstore.exceptions.UnknownBookException;
 import com.consol.citrus.samples.bookstore.model.*;
 import com.consol.citrus.samples.bookstore.model.ListBooksResponseMessage.Books;
-import org.springframework.integration.Message;
+import org.springframework.messaging.Message;
 import org.springframework.integration.support.MessageBuilder;
 
 import java.util.*;

@@ -20,10 +20,10 @@ import com.consol.citrus.samples.common.exceptions.XmlSchemaValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
-import org.springframework.integration.*;
-import org.springframework.integration.channel.interceptor.ChannelInterceptorAdapter;
+import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.integration.xml.DefaultXmlPayloadConverter;
 import org.springframework.integration.xml.XmlPayloadConverter;
+import org.springframework.messaging.*;
 import org.springframework.xml.validation.*;
 import org.xml.sax.SAXParseException;
 
@@ -74,7 +74,7 @@ public class XmlSchemaValidatingChannelInterceptor extends ChannelInterceptorAda
     }
 
     /**
-     * @see org.springframework.integration.channel.interceptor.ChannelInterceptorAdapter#preSend(org.springframework.integration.Message  *      org.springframework.integration.MessageChannel  */
+     * @see org.springframework.integration.channel.interceptor.ChannelInterceptorAdapter#preSend(org.springframework.messaging.Message  *      org.springframework.messaging.MessageChannel  */
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         validateSchema(message, channel);

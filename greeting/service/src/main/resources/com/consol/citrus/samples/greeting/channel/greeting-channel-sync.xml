@@ -27,7 +27,7 @@
     <bean id="greetingService" class="com.consol.citrus.samples.greeting.GreetingService"/>
     
     <!-- XML marshalling/unmarshalling -->
-    <oxm:jaxb2-marshaller id="xmlMarshaller" contextPath="com.consol.citrus.samples.greeting.model"/>
+    <oxm:jaxb2-marshaller id="xmlMarshaller" context-path="com.consol.citrus.samples.greeting.model"/>
         
     <bean id="marshallingTransformer" class="org.springframework.integration.xml.transformer.MarshallingTransformer">
         <constructor-arg>

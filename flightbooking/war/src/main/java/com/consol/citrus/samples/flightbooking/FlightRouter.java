@@ -17,8 +17,8 @@
 package com.consol.citrus.samples.flightbooking;
 
 import com.consol.citrus.samples.flightbooking.model.FlightBookingRequestMessage;
-import org.springframework.integration.Message;
-import org.springframework.integration.MessageChannel;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.integration.annotation.Router;
 
 import java.util.*;

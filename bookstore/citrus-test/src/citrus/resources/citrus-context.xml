@@ -62,6 +62,6 @@
     <bean id="soapAttachmentValidator" class="com.consol.citrus.ws.validation.SimpleSoapAttachmentValidator"/>
     <bean id="soapFaultValidator" class="com.consol.citrus.ws.validation.SimpleSoapFaultValidator"/>
     
-    <oxm:jaxb2-marshaller id="marshaller" contextPath="com.consol.citrus.samples.bookstore.model"/>
+    <oxm:jaxb2-marshaller id="marshaller" context-path="com.consol.citrus.samples.bookstore.model"/>
         
 </beans>

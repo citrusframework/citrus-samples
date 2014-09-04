@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:int="http://www.springframework.org/schema/integration"
-    xmlns:jms="http://www.springframework.org/schema/integration/jms"
-    xmlns:http="http://www.springframework.org/schema/integration/http"
-    xmlns:oxm="http://www.springframework.org/schema/oxm"
-    xmlns:amq="http://activemq.apache.org/schema/core"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:http="http://www.springframework.org/schema/integration/http"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/context 
             http://www.springframework.org/schema/context/spring-context.xsd
@@ -17,11 +18,14 @@
             http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd
             http://www.springframework.org/schema/integration/http
             http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
             http://www.springframework.org/schema/oxm 
             http://www.springframework.org/schema/oxm/spring-oxm.xsd
             http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
     
     <context:annotation-config />
+    <tx:annotation-driven transaction-manager="transactionManager" />
     
     <!-- Embedded ActiveMQ JMS broker -->
     <amq:broker useJmx="false" persistent="false">
@@ -46,7 +50,7 @@
         </constructor-arg>
     </bean>    
     
-    <oxm:jaxb2-marshaller id="bookingMarshaller" contextPath="com.consol.citrus.samples.flightbooking.model"/>
+    <oxm:jaxb2-marshaller id="bookingMarshaller" context-path="com.consol.citrus.samples.flightbooking.model"/>
     
     <int:channel id="bookings"/>
     <int:splitter input-channel="bookings" ref="bookingSplitter" output-channel="flights"/>

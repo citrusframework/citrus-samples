@@ -16,7 +16,7 @@
 
 package com.consol.citrus.samples.greeting;
 
-import org.springframework.integration.Message;
+import org.springframework.messaging.Message;
 import org.springframework.integration.support.MessageBuilder;
 
 import com.consol.citrus.samples.common.AbstractMarshallingMessageService;

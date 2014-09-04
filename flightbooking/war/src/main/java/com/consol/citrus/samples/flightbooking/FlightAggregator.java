@@ -18,7 +18,7 @@ package com.consol.citrus.samples.flightbooking;
 
 import com.consol.citrus.samples.flightbooking.model.*;
 import com.consol.citrus.samples.flightbooking.model.TravelBookingResponseMessage.Flights;
-import org.springframework.integration.Message;
+import org.springframework.messaging.Message;
 import org.springframework.integration.support.MessageBuilder;
 
 import java.util.ArrayList;

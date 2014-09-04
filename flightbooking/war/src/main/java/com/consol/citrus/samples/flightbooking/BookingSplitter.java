@@ -19,9 +19,10 @@ package com.consol.citrus.samples.flightbooking;
 import com.consol.citrus.samples.flightbooking.model.*;
 import com.consol.citrus.samples.flightbooking.persistence.CustomerDao;
 import com.consol.citrus.samples.flightbooking.persistence.FlightDao;
-import org.springframework.integration.Message;
+import org.springframework.messaging.Message;
 import org.springframework.integration.annotation.Splitter;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class BookingSplitter {
     private static AtomicInteger bookingIndex = new AtomicInteger(10000);
     
     @Splitter
+    @Transactional
     public Object splitMessage(Message<?> message) {
         List<Message<FlightBookingRequestMessage>> flightRequests = new ArrayList<Message<FlightBookingRequestMessage>>();
         

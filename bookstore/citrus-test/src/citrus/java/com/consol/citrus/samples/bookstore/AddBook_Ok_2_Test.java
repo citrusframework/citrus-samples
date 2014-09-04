@@ -23,7 +23,7 @@ import com.consol.citrus.validation.MarshallingValidationCallback;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.integration.MessageHeaders;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.oxm.Marshaller;
 import org.springframework.util.Assert;
 import org.testng.annotations.Test;

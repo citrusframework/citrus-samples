@@ -17,7 +17,8 @@
 package com.consol.citrus.samples.flightbooking.header;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.integration.MessageHeaders;
+import org.springframework.integration.IntegrationMessageHeaderAccessor;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.integration.http.support.DefaultHttpHeaderMapper;
 
 /**
@@ -30,8 +31,18 @@ public class HttpHeaderMapper extends DefaultHttpHeaderMapper {
         super.fromHeaders(headers, target);
 
         //Fix issue with default header mapper not mapping non-string header values
-        target.add("X-sequenceNumber", headers.getSequenceNumber().toString());
-        target.add("X-sequenceSize", headers.getSequenceSize().toString());
+        target.add("X-sequenceNumber", getSequenceNumber(headers).toString());
+        target.add("X-sequenceSize", getSequenceSize(headers).toString());
+    }
+
+    public Integer getSequenceNumber(MessageHeaders headers) {
+        Integer sequenceNumber = headers.get(IntegrationMessageHeaderAccessor.SEQUENCE_NUMBER, Integer.class);
+        return (sequenceNumber != null ? sequenceNumber : 0);
+    }
+
+    public Integer getSequenceSize(MessageHeaders headers) {
+        Integer sequenceNumber = headers.get(IntegrationMessageHeaderAccessor.SEQUENCE_SIZE, Integer.class);
+        return (sequenceNumber != null ? sequenceNumber : 0);
     }
     
 }
