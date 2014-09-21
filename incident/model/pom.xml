@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>citrus-incident</artifactId>
+    <groupId>com.consol.citrus.samples</groupId>
+    <version>2.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.consol.citrus.samples</groupId>
+  <artifactId>citrus-incident-model</artifactId>
+  <name>citrus-incident-model</name>
+
+  <build>
+    <plugins>
+      <!--plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jaxb2-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>xjc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <wsdl>true</wsdl>
+          <xmlschema>false</xmlschema>
+          <schemaDirectory>src/main/resources/com/consol/citrus/samples/incident/schema</schemaDirectory>
+          <bindingDirectory>src/main/resources/com/consol/citrus/samples/incident/schema</bindingDirectory>
+          <schemaFiles>**/*.wsdl</schemaFiles>
+        </configuration>
+      </plugin-->
+
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-codegen-plugin</artifactId>
+        <version>${apache.cxf.version}</version>
+        <executions>
+          <execution>
+            <id>apache-cxf-generate</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>wsdl2java</goal>
+            </goals>
+            <configuration>
+              <sourceRoot>${project.build.directory}/generated-sources/cxf</sourceRoot>
+              <wsdlOptions>
+                <wsdlOption>
+                  <wsdl>src/main/resources/com/consol/citrus/samples/incident/schema/IncidentManager.wsdl</wsdl>
+                  <bindingFiles>
+                    <bindingFile>src/main/resources/com/consol/citrus/samples/incident/schema/binding.xjb</bindingFile>
+                  </bindingFiles>
+                </wsdlOption>
+              </wsdlOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+            http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <import resource="activemq-context.xml"/>
+
+    <camel:camelContext id="incidentManager">
+      <camel:route id="jmsInboundRoute">
+        <camel:from uri="cxf:jmsCxfEndpoint"/>
+        <camel:log message="${body}"/>
+      </camel:route>
+    </camel:camelContext>
+
+    <jaxws:endpoint id="jmsCxfEndpoint" implementor="com.consol.citrus.samples.incident.endpoint.IncidentManagerService"
+            address="jms://">
+      <jaxws:properties>
+        <entry key="schema-validation-enabled" value="true"/>
+      </jaxws:properties>
+      <jaxws:features>
+        <bean class="org.apache.cxf.transport.jms.JMSConfigFeature">
+          <property name="jmsConfig">
+            <bean class="org.apache.cxf.transport.jms.JMSConfiguration">
+              <property name="connectionFactory" ref="activemqConnectionFactory"/>
+              <property name="targetDestination" value="JMS.Citrus.v1.IncidentManager"/>
+              <property name="sessionTransacted" value="true"/>
+            </bean>
+          </property>
+        </bean>
+      </jaxws:features>
+      <jaxws:inInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+      </jaxws:inInterceptors>
+      <jaxws:outInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+      </jaxws:outInterceptors>
+    </jaxws:endpoint>
+</beans>
