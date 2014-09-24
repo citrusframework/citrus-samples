@@ -21,6 +21,7 @@
   <!-- Common settings -->
   <citrus:schema-repository id="schemaRepository">
     <citrus:schemas>
+      <citrus:schema id="soapEnv" location="classpath:schemas/soap-envelope-1-1.xsd"/>
       <citrus:schema id="incidentManagerWsdl" location="classpath:com/consol/citrus/samples/incident/schema/IncidentManager.wsdl"/>
     </citrus:schemas>
   </citrus:schema-repository>
@@ -50,7 +51,7 @@
   <bean class="com.consol.citrus.report.MessageTracingTestListener"/>
 
   <!-- Http SOAP client -->
-  <citrus-ws:client id="incidentManagerEndpointHTTP"
+  <citrus-ws:client id="incidentHttpClient"
                     request-url="http://localhost:8070/incident/IncidentManager/v1"
                     interceptors="clientInterceptors"/>
 
@@ -58,10 +59,12 @@
   <bean id="soapAttachmentValidator" class="com.consol.citrus.ws.validation.SimpleSoapAttachmentValidator"/>
   <bean id="soapFaultValidator" class="com.consol.citrus.ws.validation.SimpleSoapFaultValidator"/>
 
-
   <!-- JMS endpoints -->
-  <citrus-jms:jms-endpoint id="incidentManagerEndpointJMS"
-                           destination-name="JMS.Citrus.v1.IncidentManager"/>
+  <citrus-jms:jms-sync-endpoint id="incidentJmsEndpoint"
+                                message-converter="soapMessageConverter"
+                                destination-name="JMS.Citrus.v1.IncidentManager"/>
+
+  <bean id="soapMessageConverter" class="com.consol.citrus.jms.message.SoapJmsMessageConverter"/>
 
   <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
     <property name="brokerURL" value="tcp://localhost:61616" />

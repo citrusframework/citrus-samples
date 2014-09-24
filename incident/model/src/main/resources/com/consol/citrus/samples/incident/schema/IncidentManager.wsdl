@@ -18,7 +18,7 @@
 
       <xs:complexType name="CustomerType">
         <xs:sequence>
-          <xs:element name="id" type="xs:ID"/>
+          <xs:element name="id" type="xs:int"/>
           <xs:element name="firstname" type="xs:string"/>
           <xs:element name="lastname" type="xs:string"/>
           <xs:element name="address" type="xs:string"/>

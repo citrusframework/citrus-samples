@@ -81,7 +81,12 @@
     <!-- Test scoped dependencies -->
     <dependency>
         <groupId>org.apache.activemq</groupId>
-        <artifactId>activemq-all</artifactId>
+        <artifactId>activemq-broker</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>activemq-spring</artifactId>
         <scope>test</scope>
     </dependency>
     <dependency>

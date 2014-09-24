@@ -85,7 +85,12 @@
     <!-- ActiveMQ broker-->
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-all</artifactId>
+      <artifactId>activemq-broker</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-spring</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
