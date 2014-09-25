@@ -13,6 +13,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * @author Christoph Deppisch
@@ -30,10 +31,9 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
 
     @CitrusTest(name = "OpenIncident_JMS_Ok_Test")
     public void testOpenIncident_JMS_Ok() {
-
-        OpenIncident incident = new OpenIncident();
+        final OpenIncident incident = new OpenIncident();
         incident.setIncident(new IncidentType());
-        incident.getIncident().setTicketId("1234");
+        incident.getIncident().setTicketId(UUID.randomUUID().toString());
         incident.getIncident().setCaptured(Calendar.getInstance());
         incident.getIncident().setComponent(ComponentType.NETWORK);
         incident.getIncident().setState(StateType.NEW);
@@ -52,7 +52,7 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
             .validationCallback(new MarshallingValidationCallback<OpenIncidentResponse>() {
                 @Override
                 public void validate(OpenIncidentResponse message, MessageHeaders headers) {
-                    Assert.assertEquals(message.getTicketId(), "1234");
+                    Assert.assertEquals(message.getTicketId(), incident.getIncident().getTicketId());
                 }
             });
     }
