@@ -4,6 +4,7 @@
        xmlns:citrus="http://www.citrusframework.org/schema/config"
        xmlns:citrus-jms="http://www.citrusframework.org/schema/jms/config"
        xmlns:citrus-ws="http://www.citrusframework.org/schema/ws/config"
+       xmlns:citrus-http="http://www.citrusframework.org/schema/http/config"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:oxm="http://www.springframework.org/schema/oxm"
@@ -14,6 +15,7 @@
        http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
        http://www.citrusframework.org/schema/jms/config http://www.citrusframework.org/schema/jms/config/citrus-jms-config.xsd
        http://www.citrusframework.org/schema/ws/config http://www.citrusframework.org/schema/ws/config/citrus-ws-config.xsd
+       http://www.citrusframework.org/schema/http/config http://www.citrusframework.org/schema/http/config/citrus-http-config.xsd
        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd">
 
   <context:property-placeholder location="classpath:citrus.properties"/>
@@ -23,6 +25,7 @@
     <citrus:schemas>
       <citrus:schema id="soapEnv" location="classpath:schemas/soap-envelope-1-1.xsd"/>
       <citrus:schema id="incidentManagerWsdl" location="classpath:com/consol/citrus/samples/incident/schema/IncidentManager.wsdl"/>
+      <citrus:schema id="networkServiceXsd" location="classpath:com/consol/citrus/samples/incident/schema/NetworkService.xsd"/>
     </citrus:schemas>
   </citrus:schema-repository>
 
@@ -40,6 +43,7 @@
     <property name="namespaceMappings">
       <props>
         <prop key="im">http://www.citrusframework.org/schema/samples/IncidentManager/v1</prop>
+        <prop key="net">http://www.citrusframework.org/schema/samples/NetworkService/v1</prop>
       </props>
     </property>
   </bean>
@@ -61,17 +65,28 @@
   <bean id="soapFaultValidator" class="com.consol.citrus.ws.validation.SimpleSoapFaultValidator"/>
   <bean id="soapMessageConverter" class="com.consol.citrus.jms.message.SoapJmsMessageConverter"/>
 
-  <!-- Http SOAP client -->
+  <!-- Http SOAP incident client -->
   <citrus-ws:client id="incidentHttpClient"
                     request-url="http://localhost:18001/incident/IncidentManager/v1"
                     interceptors="clientInterceptors"/>
 
-  <!-- JMS endpoints -->
+  <!-- JMS incident endpoint -->
   <citrus-jms:jms-sync-endpoint id="incidentJmsEndpoint"
                                 message-converter="soapMessageConverter"
                                 destination-name="JMS.Citrus.v1.IncidentManager"/>
 
+  <!-- Http server simulating network backend system -->
+  <citrus-http:server id="networkBackendHttpServer"
+          auto-start="true"
+          port="18002"
+          timeout="10000"/>
 
-  <oxm:jaxb2-marshaller id="marshaller" context-path="org.citrusframework.schema.samples.incidentmanager.v1"/>
+  <!-- Jaxb2 Marshaller -->
+  <oxm:jaxb2-marshaller id="jaxb2Marshaller">
+    <oxm:class-to-be-bound name="org.citrusframework.schema.samples.incidentmanager.v1.OpenIncident"/>
+    <oxm:class-to-be-bound name="org.citrusframework.schema.samples.incidentmanager.v1.OpenIncidentResponse"/>
+    <oxm:class-to-be-bound name="org.citrusframework.schema.samples.networkservice.v1.AnalyseIncident"/>
+    <oxm:class-to-be-bound name="org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResponse"/>
+  </oxm:jaxb2-marshaller>
 
 </beans>

@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.incident.endpoint;
+package com.consol.citrus.samples.incident.service;
 
 import org.citrusframework.schema.samples.incidentmanager.v1.*;
+import org.citrusframework.schema.samples.networkservice.v1.*;
+import org.citrusframework.schema.samples.networkservice.v1.IncidentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebParam;
 import java.util.Calendar;
+import java.util.UUID;
 
 /**
  * @author Christoph Deppisch
@@ -32,9 +36,27 @@ public class IncidentManagerService implements IncidentManager {
     /** Logger */
     private static Logger log = LoggerFactory.getLogger(IncidentManagerService.class);
 
+    @Autowired
+    private NetworkService networkService;
+
     @Override
     public OpenIncidentResponse openIncident(@WebParam(partName = "parameters", name = "OpenIncident", targetNamespace = "http://www.citrusframework.org/schema/samples/IncidentManager/v1") OpenIncident in) throws IncidentFault_Exception {
         log.info(String.format("Received new incident request '%s'", in.getIncident().getTicketId()));
+
+        AnalyseIncident analyseRequest = new AnalyseIncident();
+        analyseRequest.setIncident(new IncidentType());
+        analyseRequest.getIncident().setTicketId(in.getIncident().getTicketId());
+        analyseRequest.getIncident().setDescription(in.getIncident().getDescription());
+        analyseRequest.setNetwork(new NetworkType());
+        analyseRequest.getNetwork().setLineId(UUID.randomUUID().toString());
+        analyseRequest.getNetwork().setConnection(UUID.randomUUID().toString());
+        analyseRequest.getNetwork().setType(NetworkComponentType.fromValue(in.getIncident().getComponent().name()));
+
+        AnalyseIncidentResponse analyseIncidentResponse = networkService.analyse(analyseRequest);
+
+        if (analyseIncidentResponse.getResult().isFieldForceRequired()) {
+            // TODO FieldForce request
+        }
 
         OpenIncidentResponse incidentResponse = new OpenIncidentResponse();
         incidentResponse.setTicketId(in.getIncident().getTicketId());

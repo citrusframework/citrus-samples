@@ -1,25 +1,9 @@
-/*
- * Copyright 2006-2014 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.consol.citrus.samples.incident;
 
 import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
 import com.consol.citrus.dsl.annotations.CitrusTest;
 import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
+import com.consol.citrus.ws.client.WebServiceClient;
 import org.citrusframework.schema.samples.incidentmanager.v1.*;
 import org.citrusframework.schema.samples.incidentmanager.v1.IncidentType;
 import org.citrusframework.schema.samples.incidentmanager.v1.StateType;
@@ -36,18 +20,18 @@ import java.util.UUID;
  * @since 2.0
  */
 @Test
-public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
+public class OpenIncident_Http_Test extends TestNGCitrusTestBuilder {
 
     @Autowired
-    @Qualifier("incidentJmsEndpoint")
-    private JmsSyncEndpoint incidentJmsEndpoint;
+    @Qualifier("incidentHttpClient")
+    private WebServiceClient incidentHttpClient;
 
     @Autowired
     @Qualifier("networkBackendHttpServer")
     private HttpServer networkHttpServer;
 
-    @CitrusTest(name = "OpenIncident_JMS_Ok_Test")
-    public void testOpenIncident_JMS_Ok() {
+    @CitrusTest(name = "OpenIncident_HTTP_Ok_Test")
+    public void testOpenIncident_Http_Ok() {
         OpenIncident incident = new OpenIncident();
         incident.setIncident(new IncidentType());
         incident.getIncident().setTicketId(UUID.randomUUID().toString());
@@ -61,10 +45,10 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
         incident.getCustomer().setAddress("Franziskanerstr. 38, 80995 München");
         incident.getIncident().setDescription("Something went wrong!");
 
-        send(incidentJmsEndpoint)
-            .fork(true)
-            .payloadModel(incident)
-            .header("SOAPAction", "/IncidentManager/openIncident");
+        send(incidentHttpClient)
+                .fork(true)
+                .payloadModel(incident)
+                .header("citrus_soap_action", "/IncidentManager/openIncident");
 
 
         AnalyseIncident analyseIncident = new AnalyseIncident();
@@ -77,9 +61,9 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
         analyseIncident.getNetwork().setConnection("@ignore@");
 
         receive(networkHttpServer)
-            .payloadModel(analyseIncident)
-            .extractFromPayload("net:AnalyseIncident/net:network/net:lineId", "lineId")
-            .extractFromPayload("net:AnalyseIncident/net:network/net:connection", "connection");
+                .payloadModel(analyseIncident)
+                .extractFromPayload("net:AnalyseIncident/net:network/net:lineId", "lineId")
+                .extractFromPayload("net:AnalyseIncident/net:network/net:connection", "connection");
 
         AnalyseIncidentResponse analyseIncidentResponse = new AnalyseIncidentResponse();
         analyseIncidentResponse.setTicketId(incident.getIncident().getTicketId());
@@ -93,19 +77,19 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
         analyseIncidentResponse.getResult().setSolved(true);
 
         send(networkHttpServer)
-            .payloadModel(analyseIncidentResponse)
-            .header("Content-Type", "application/xml");
+                .payloadModel(analyseIncidentResponse)
+                .header("Content-Type", "application/xml");
 
         OpenIncidentResponse response = new OpenIncidentResponse();
         response.setScheduled(TestHelper.getDefaultScheduleTime());
         response.setTicketId(incident.getIncident().getTicketId());
 
-        receive(incidentJmsEndpoint)
-            .payloadModel(response);
+        receive(incidentHttpClient)
+                .payloadModel(response);
     }
 
-    @CitrusTest(name = "OpenIncident_JMS_SchemaInvalid_Test")
-    public void testOpenIncident_JMS_SchemaInvalid() {
+    @CitrusTest(name = "OpenIncident_Http_SchemaInvalid_Test")
+    public void testOpenIncident_Http_SchemaInvalid() {
         OpenIncident incident = new OpenIncident();
         incident.setIncident(new IncidentType());
         incident.getIncident().setCaptured(Calendar.getInstance());
@@ -113,16 +97,10 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
         incident.getIncident().setState(StateType.NEW);
         incident.getIncident().setDescription("Something missing!");
 
-        send(incidentJmsEndpoint)
-                .payloadModel(incident)
-                .header("SOAPAction", "/IncidentManager/openIncident");
-
-        receive(incidentJmsEndpoint)
-                .payload("<SOAP-ENV:Fault xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
-                            "<faultcode>@contains('Client')@</faultcode>" +
-                            "<faultstring>@startsWith('Unmarshalling Error')@</faultstring>" +
-                        "</SOAP-ENV:Fault>")
-                .header("SOAPJMS_isFault", "true");
+        assertSoapFault(
+            send(incidentHttpClient)
+                    .payloadModel(incident)
+                    .header("citrus_soap_action", "/IncidentManager/openIncident")
+        ).faultCode("{http://schemas.xmlsoap.org/soap/envelope/}Client").faultString("@startsWith('Unmarshalling Error')@");
     }
-
 }

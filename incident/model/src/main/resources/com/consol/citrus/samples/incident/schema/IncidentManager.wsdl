@@ -111,7 +111,7 @@
 
     <wsdl:port name="IncidentManagerHTTP"
                binding="tns:IncidentManagerHTTPBinding">
-      <soap:address location="http://localhost:18003/incident/IncidentManager/v1"/>
+      <soap:address location="http://localhost:18001/incident/IncidentManager/v1"/>
     </wsdl:port>
   </wsdl:service>
 
