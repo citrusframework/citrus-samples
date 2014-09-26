@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	 xmlns="http://www.consol.com/schemas/flightbooking"
-	 targetNamespace="http://www.consol.com/schemas/flightbooking"
-	 elementFormDefault="qualified"
-	 attributeFormDefault="unqualified">
+       xmlns="http://www.consol.com/schemas/flightbooking"
+       targetNamespace="http://www.consol.com/schemas/flightbooking"
+       version="1.0"
+       elementFormDefault="qualified"
+       attributeFormDefault="unqualified">
 	
 	<xs:complexType name="Flight">
 		<xs:sequence>

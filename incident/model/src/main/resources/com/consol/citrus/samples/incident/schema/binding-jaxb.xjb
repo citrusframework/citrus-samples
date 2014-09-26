@@ -4,7 +4,7 @@
           version="2.1"
           extensionBindingPrefixes="xjc">
 
-  <bindings schemaLocation="FlightBookingSchema.xsd">
+  <bindings schemaLocation="NetworkService.xsd">
     <globalBindings>
       <xjc:javaType
               name="java.util.Calendar"
@@ -16,7 +16,6 @@
               adapter="org.w3._2001.xmlschema.Adapter2" />
       <xjc:simple />
     </globalBindings>
-    <schemaBindings><package name="com.consol.citrus.samples.flightbooking.model"/></schemaBindings>
   </bindings>
 
 </bindings>

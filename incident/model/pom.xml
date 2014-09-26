@@ -15,25 +15,39 @@
 
   <build>
     <plugins>
-      <!--plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
-        <version>1.5</version>
         <executions>
           <execution>
+            <phase>generate-resources</phase>
             <goals>
               <goal>xjc</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <wsdl>true</wsdl>
-          <xmlschema>false</xmlschema>
+          <extension>true</extension>
+          <wsdl>false</wsdl>
+          <xmlschema>true</xmlschema>
           <schemaDirectory>src/main/resources/com/consol/citrus/samples/incident/schema</schemaDirectory>
           <bindingDirectory>src/main/resources/com/consol/citrus/samples/incident/schema</bindingDirectory>
-          <schemaFiles>**/*.wsdl</schemaFiles>
+          <bindingFiles>binding-jaxb.xjb</bindingFiles>
+          <schemaFiles>**/*.xsd</schemaFiles>
         </configuration>
-      </plugin-->
+        <dependencies>
+          <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.11.0</version>
+          </dependency>
+          <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
+          </dependency>
+        </dependencies>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.cxf</groupId>
@@ -52,7 +66,7 @@
                 <wsdlOption>
                   <wsdl>src/main/resources/com/consol/citrus/samples/incident/schema/IncidentManager.wsdl</wsdl>
                   <bindingFiles>
-                    <bindingFile>src/main/resources/com/consol/citrus/samples/incident/schema/binding.xjb</bindingFile>
+                    <bindingFile>src/main/resources/com/consol/citrus/samples/incident/schema/binding-jaxws.xjb</bindingFile>
                   </bindingFiles>
                 </wsdlOption>
               </wsdlOptions>

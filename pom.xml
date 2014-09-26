@@ -46,6 +46,16 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
+            <systemProperties>
+              <property>
+                <name>javax.xml.parsers.SAXParserFactory</name>
+                <value>org.apache.xerces.jaxp.SAXParserFactoryImpl</value>
+              </property>
+              <property>
+                <name>user.language</name>
+                <value>en</value>
+              </property>
+            </systemProperties>
             <skip>true</skip>
             <failIfNoTests>false</failIfNoTests>
           </configuration>
@@ -192,17 +202,6 @@
           <groupId>org.codehaus.jackson</groupId>
           <artifactId>jackson-xc</artifactId>
           <version>1.9.13</version>
-        </dependency>
-        
-        <dependency>
-          <groupId>javax.xml.bind</groupId>
-          <artifactId>jaxb-api</artifactId>
-          <version>2.2.7</version>
-        </dependency>
-        <dependency>
-          <groupId>com.sun.xml.bind</groupId>
-          <artifactId>jaxb-impl</artifactId>
-          <version>2.2.7</version>
         </dependency>
         
         <dependency>
