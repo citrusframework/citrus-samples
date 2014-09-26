@@ -55,7 +55,7 @@
   
     <!-- Message Sender/Receiver -->
     <citrus-ws:client id="bookStoreClient"
-                              request-url="http://localhost:8070/bookstore"
+                              request-url="http://localhost:18001/bookstore"
                               interceptors="clientInterceptors"/>
                               
     <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>

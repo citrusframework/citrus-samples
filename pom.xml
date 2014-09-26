@@ -22,8 +22,8 @@
   </modules>
   
   <properties>
-    <server.port>8070</server.port>
-    <server.stop.port>9099</server.stop.port>
+    <server.port>18001</server.port>
+    <server.stop.port>18100</server.stop.port>
     <apache.cxf.version>3.0.0</apache.cxf.version>
     <citrus.version>2.0</citrus.version>
   </properties>

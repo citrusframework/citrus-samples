@@ -20,9 +20,6 @@
               adapter="org.w3._2001.xmlschema.Adapter2" />
       <xjc:simple />
     </jaxb:globalBindings>
-    <jaxb:schemaBindings>
-      <jaxb:package name="com.consol.citrus.samples.incident.model"/>
-    </jaxb:schemaBindings>
   </jaxws:bindings>
 
 </jaxws:bindings>
