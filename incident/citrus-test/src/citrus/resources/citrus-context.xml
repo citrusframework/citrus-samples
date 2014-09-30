@@ -59,7 +59,6 @@
   <!-- Listeners -->
   <bean class="com.consol.citrus.report.MessageTracingTestListener"/>
 
-
   <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
   <bean id="soapAttachmentValidator" class="com.consol.citrus.ws.validation.SimpleSoapAttachmentValidator"/>
   <bean id="soapFaultValidator" class="com.consol.citrus.ws.validation.SimpleSoapFaultValidator"/>
