@@ -16,15 +16,11 @@
        http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd">
 	
     <!-- Common settings -->
-    <bean id="schemaRepository" class="com.consol.citrus.xml.XsdSchemaRepository">
-        <property name="schemas">
-            <list>
-                <bean class="org.springframework.xml.xsd.SimpleXsdSchema">
-                    <property name="xsd" value="classpath:com/consol/citrus/samples/bookstore/schema/BookStoreSchema.xsd"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
+    <citrus:schema-repository id="schemaRepository">
+      <citrus:schemas>
+        <citrus:schema id="bookStoreSchema" location="classpath:com/consol/citrus/samples/bookstore/schema/BookStoreSchema.xsd"/>
+      </citrus:schemas>
+    </citrus:schema-repository>
     
     <context:property-placeholder location="classpath:citrus.properties"/>
 	
@@ -33,18 +29,10 @@
     </citrus:global-variables>
     
     <!-- Default namespace mappings used in XPath expression evaluations -->
-    <bean id="namespaceContextBuilder" class="com.consol.citrus.xml.namespace.NamespaceContextBuilder">
-        <property name="namespaceMappings">
-            <props>
-                <prop key="bkr">http://www.consol.com/schemas/bookstore</prop>            
-            </props>
-        </property>
-    </bean>
-    
-    <!-- Message Validators -->
-    <bean id="xmlMessageValidator" class="com.consol.citrus.validation.xml.DomXmlMessageValidator"/>
-    <bean id="groovyXmlMessageValidator" class="com.consol.citrus.validation.script.GroovyXmlMessageValidator"/>
-    
+    <citrus:namespace-context>
+        <citrus:namespace prefix="bkr" uri="http://www.consol.com/schemas/bookstore"/>
+    </citrus:namespace-context>
+
     <!-- SOAP client interceptor basically for logging whole SOAP envelope to logger -->
     <util:list id="clientInterceptors">
         <bean class="com.consol.citrus.ws.interceptor.LoggingClientInterceptor"/>

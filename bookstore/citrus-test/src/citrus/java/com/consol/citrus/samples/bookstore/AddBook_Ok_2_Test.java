@@ -23,12 +23,12 @@ import com.consol.citrus.validation.MarshallingValidationCallback;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.oxm.Marshaller;
 import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Calendar;
+import java.util.Map;
 
 /**
  * @author Christoph Deppisch
@@ -54,7 +54,7 @@ public class AddBook_Ok_2_Test extends TestNGCitrusTestBuilder {
         receive(bookStoreClient)
             .validationCallback(new MarshallingValidationCallback<AddBookResponseMessage>() {
                 @Override
-                public void validate(AddBookResponseMessage response, MessageHeaders headers) {
+                public void validate(AddBookResponseMessage response, Map<String, Object> headers) {
                     Assert.isTrue(response.isSuccess());
                 }
             });

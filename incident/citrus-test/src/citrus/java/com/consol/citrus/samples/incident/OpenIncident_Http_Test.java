@@ -5,7 +5,7 @@ import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
 import com.consol.citrus.dsl.annotations.CitrusTest;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.ws.message.CitrusSoapMessageHeaders;
+import com.consol.citrus.ws.message.SoapMessageHeaders;
 import org.citrusframework.schema.samples.incidentmanager.v1.*;
 import org.citrusframework.schema.samples.incidentmanager.v1.IncidentType;
 import org.citrusframework.schema.samples.incidentmanager.v1.StateType;
@@ -50,7 +50,7 @@ public class OpenIncident_Http_Test extends TestNGCitrusTestBuilder {
         send(incidentHttpClient)
                 .fork(true)
                 .payloadModel(incident)
-                .header(CitrusSoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident");
+                .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident");
 
 
         AnalyseIncident analyseIncident = new AnalyseIncident();
@@ -102,7 +102,7 @@ public class OpenIncident_Http_Test extends TestNGCitrusTestBuilder {
         assertSoapFault(
             send(incidentHttpClient)
                     .payloadModel(incident)
-                    .header(CitrusSoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident")
+                    .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident")
         ).faultCode("{http://schemas.xmlsoap.org/soap/envelope/}Client").faultString("@startsWith('Unmarshalling Error')@");
     }
 

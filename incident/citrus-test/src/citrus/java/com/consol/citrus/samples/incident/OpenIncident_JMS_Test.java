@@ -21,7 +21,7 @@ import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
 import com.consol.citrus.dsl.annotations.CitrusTest;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
-import com.consol.citrus.ws.message.CitrusSoapMessageHeaders;
+import com.consol.citrus.ws.message.SoapMessageHeaders;
 import org.citrusframework.schema.samples.incidentmanager.v1.*;
 import org.citrusframework.schema.samples.incidentmanager.v1.IncidentType;
 import org.citrusframework.schema.samples.incidentmanager.v1.StateType;
@@ -66,7 +66,7 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
         send(incidentJmsEndpoint)
             .fork(true)
             .payloadModel(incident)
-            .header(CitrusSoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident");
+            .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident");
 
 
         AnalyseIncident analyseIncident = new AnalyseIncident();
@@ -117,7 +117,7 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
 
         send(incidentJmsEndpoint)
                 .payloadModel(incident)
-                .header(CitrusSoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident");
+                .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident");
 
         receive(incidentJmsEndpoint)
                 .payload("<SOAP-ENV:Fault xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" +

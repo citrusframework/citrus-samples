@@ -39,17 +39,10 @@
   </bean>
 
   <!-- Default namespace mappings used in XPath expression evaluations -->
-  <bean id="namespaceContextBuilder" class="com.consol.citrus.xml.namespace.NamespaceContextBuilder">
-    <property name="namespaceMappings">
-      <props>
-        <prop key="im">http://www.citrusframework.org/schema/samples/IncidentManager/v1</prop>
-        <prop key="net">http://www.citrusframework.org/schema/samples/NetworkService/v1</prop>
-      </props>
-    </property>
-  </bean>
-
-  <!-- Message Validators -->
-  <bean id="xmlMessageValidator" class="com.consol.citrus.validation.xml.DomXmlMessageValidator"/>
+  <citrus:namespace-context>
+    <citrus:namespace prefix="im" uri="http://www.citrusframework.org/schema/samples/IncidentManager/v1"/>
+    <citrus:namespace prefix="net" uri="http://www.citrusframework.org/schema/samples/NetworkService/v1"/>
+  </citrus:namespace-context>
 
   <!-- SOAP client interceptor basically for logging whole SOAP envelope to logger -->
   <util:list id="clientInterceptors">
