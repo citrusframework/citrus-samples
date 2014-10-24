@@ -29,8 +29,6 @@
         <citrus:variable name="project.name" value="Citrus Greeting sample"/>
     </citrus:global-variables>
     
-    <bean id="replyMessageCorrelator" class="com.consol.citrus.message.DefaultReplyMessageCorrelator"/>
-
     <!-- Greeting Sample -->
     <!-- Message channel adapter -->
     <citrus:channel-endpoint id="greetingChannelRequestSender"
