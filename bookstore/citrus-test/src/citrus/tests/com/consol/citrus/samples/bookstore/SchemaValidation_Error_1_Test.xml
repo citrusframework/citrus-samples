@@ -27,7 +27,7 @@
         
         <actions>
             <ws:assert fault-code="${faultCode}" fault-string="Client sent invalid request!">
-                <send with="bookStoreClient">
+                <send endpoint="bookStoreClient">
                     <message>
                         <data>
                             <![CDATA[

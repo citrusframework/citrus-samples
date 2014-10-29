@@ -26,7 +26,7 @@
         </variables>
         
         <actions>
-            <send with="bookStoreClient">
+            <send endpoint="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[
@@ -46,7 +46,7 @@
                 </header>
             </send>
             
-            <receive with="bookStoreClient">
+            <receive endpoint="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[
@@ -58,7 +58,7 @@
                 </message>
             </receive>
             
-            <send with="bookStoreClient">
+            <send endpoint="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[
@@ -73,7 +73,7 @@
                 </header>
             </send>
             
-            <receive with="bookStoreClient">
+            <receive endpoint="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[

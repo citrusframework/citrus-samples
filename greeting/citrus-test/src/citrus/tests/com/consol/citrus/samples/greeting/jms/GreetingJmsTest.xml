@@ -15,7 +15,7 @@
         </variables>
         
         <actions>
-            <send with="greetingJmsRequestSender">
+            <send endpoint="greetingJmsRequestSender">
             	<description>
             		Send asynchronous greeting request: Citrus -> GreetingService
             	</description>
@@ -37,7 +37,7 @@
                 </header>
             </send>
             
-            <receive with="greetingJmsResponseReceiver">
+            <receive endpoint="greetingJmsResponseReceiver">
             	<description>
             		Receive asynchronous greeting response: GreetingService -> Citrus
             	</description>

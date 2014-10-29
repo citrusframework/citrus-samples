@@ -27,7 +27,7 @@
         
         <actions>
             <ws:assert fault-code="${faultCode}" fault-string="Book(isbn:'${isbn}') not available in registry">
-                <send with="bookStoreClient">
+                <send endpoint="bookStoreClient">
                     <message>
                         <data>
                             <![CDATA[

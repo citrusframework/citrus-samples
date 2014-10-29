@@ -26,7 +26,7 @@
         </variables>
         
         <actions>
-            <send with="bookStoreClient">
+            <send endpoint="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[
@@ -46,7 +46,7 @@
                 </header>
             </send>
             
-            <receive with="bookStoreClient">
+            <receive endpoint="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[
@@ -58,7 +58,7 @@
                 </message>
             </receive>
             
-            <send with="bookStoreClient">
+            <send endpoint="bookStoreClient">
                 <message>
                     <data>
                         <![CDATA[
@@ -71,7 +71,7 @@
                 </header>
             </send>
             
-            <receive with="bookStoreClient">
+            <receive endpoint="bookStoreClient">
                 <message>
                     <validate path="count(/bkr:ListBooksResponseMessage/bkr:books/bkr:book) > 0" value="true" result-type="boolean"/>
                     <validate path="/bkr:ListBooksResponseMessage/bkr:books/bkr:book/bkr:isbn[.='${isbn}']" value="true" result-type="boolean"/>
