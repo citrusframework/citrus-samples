@@ -38,7 +38,7 @@ import java.util.UUID;
  * @since 2.0
  */
 @Test
-public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
+public class IncidentManager_Jms_Test extends TestNGCitrusTestBuilder {
 
     @Autowired
     @Qualifier("incidentJmsEndpoint")
@@ -48,8 +48,12 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
     @Qualifier("networkBackendHttpServer")
     private HttpServer networkHttpServer;
 
-    @CitrusTest(name = "OpenIncident_JMS_Ok_Test")
-    public void testOpenIncident_JMS_Ok() {
+    @CitrusXmlTest(name = "IncidentManager_Jms_Ok_1_Test")
+    public void testIncidentManager_Jms_Ok_1() {
+    }
+
+    @CitrusTest(name = "IncidentManager_Jms_Ok_2_Test")
+    public void testIncidentManager_Jms_Ok_2() {
         OpenIncident incident = new OpenIncident();
         incident.setIncident(new IncidentType());
         incident.getIncident().setTicketId(UUID.randomUUID().toString());
@@ -106,8 +110,8 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
             .payloadModel(response);
     }
 
-    @CitrusTest(name = "OpenIncident_JMS_SchemaInvalid_Test")
-    public void testOpenIncident_JMS_SchemaInvalid() {
+    @CitrusTest(name = "IncidentManager_Jms_SchemaInvalid_Test")
+    public void testIncidentManager_Jms_SchemaInvalid() {
         OpenIncident incident = new OpenIncident();
         incident.setIncident(new IncidentType());
         incident.getIncident().setCaptured(Calendar.getInstance());
@@ -125,10 +129,6 @@ public class OpenIncident_JMS_Test extends TestNGCitrusTestBuilder {
                             "<faultstring>@startsWith('Unmarshalling Error')@</faultstring>" +
                         "</SOAP-ENV:Fault>")
                 .header("SOAPJMS_isFault", "true");
-    }
-
-    @CitrusXmlTest(name = "OpenIncident_JMS_Ok_1_Test")
-    public void testOpenIncident_JMS_Ok_1() {
     }
 
 }

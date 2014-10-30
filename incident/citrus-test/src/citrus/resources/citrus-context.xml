@@ -27,6 +27,7 @@
       <citrus:schema id="incidentManagerWsdl" location="classpath:com/consol/citrus/samples/incident/schema/IncidentManager.wsdl"/>
       <citrus:schema id="networkServiceXsd" location="classpath:com/consol/citrus/samples/incident/schema/NetworkService.xsd"/>
       <citrus:schema id="fieldForceServiceXsd" location="classpath:com/consol/citrus/samples/incident/schema/FieldForceService.xsd"/>
+      <citrus:schema id="smsGatewayWsdl" location="classpath:com/consol/citrus/samples/incident/schema/SmsGateway.wsdl"/>
     </citrus:schemas>
   </citrus:schema-repository>
 
@@ -44,6 +45,7 @@
     <citrus:namespace prefix="im" uri="http://www.citrusframework.org/schema/samples/IncidentManager/v1"/>
     <citrus:namespace prefix="net" uri="http://www.citrusframework.org/schema/samples/NetworkService/v1"/>
     <citrus:namespace prefix="ffs" uri="http://www.citrusframework.org/schema/samples/FieldForce/v1"/>
+    <citrus:namespace prefix="sms" uri="http://www.citrusframework.org/schema/samples/SmsGateway/v1"/>
   </citrus:namespace-context>
 
   <!-- SOAP client interceptor basically for logging whole SOAP envelope to logger -->
@@ -82,12 +84,22 @@
   <citrus-jms:jms-endpoint id="fieldForceNotificationEndpoint"
                            destination-name="JMS.Citrus.v1.FieldForceNotification"/>
 
+  <!-- Sms Gateway SOAP Server -->
+  <citrus-ws:server id="smsGatewayServer"
+                    auto-start="true"
+                    port="18005"
+                    timeout="10000"/>
+
   <!-- Jaxb2 Marshaller -->
   <oxm:jaxb2-marshaller id="jaxb2Marshaller">
     <oxm:class-to-be-bound name="org.citrusframework.schema.samples.incidentmanager.v1.OpenIncident"/>
     <oxm:class-to-be-bound name="org.citrusframework.schema.samples.incidentmanager.v1.OpenIncidentResponse"/>
     <oxm:class-to-be-bound name="org.citrusframework.schema.samples.networkservice.v1.AnalyseIncident"/>
     <oxm:class-to-be-bound name="org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResponse"/>
+    <oxm:class-to-be-bound name="org.citrusframework.schema.samples.fieldforceservice.v1.OrderRequest"/>
+    <oxm:class-to-be-bound name="org.citrusframework.schema.samples.fieldforceservice.v1.OrderNotification"/>
+    <oxm:class-to-be-bound name="org.citrusframework.schema.samples.smsgateway.v1.SendSmsRequest"/>
+    <oxm:class-to-be-bound name="org.citrusframework.schema.samples.smsgateway.v1.SendSmsResponse"/>
   </oxm:jaxb2-marshaller>
 
 </beans>

@@ -61,6 +61,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element name="ticketId" type="xs:string"/>
+        <xs:element name="customerId" type="xs:int"/>
         <xs:element name="state" type="xs:string"/>
         <xs:element name="reason" minOccurs="0" type="tns:ReasonType"/>
       </xs:sequence>

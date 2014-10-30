@@ -9,7 +9,7 @@
                   http://www.citrusframework.org/schema/ws/testcase http://www.citrusframework.org/schema/ws/testcase/citrus-ws-testcase.xsd
                   http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
 
-  <testcase name="OpenIncident_HTTP_Ok_2_Test">
+  <testcase name="IncidentManager_Jms_Ok_1_Test">
     <meta-info>
       <author>Christoph Deppisch</author>
       <creationdate>2014-09-28</creationdate>
@@ -18,11 +18,12 @@
       <last-updated-on>2014-09-28T00:00:00</last-updated-on>
     </meta-info>
 
-    <description>Calls IncidentManager application via Http message transport using SOAP request message. Opens a new incident and verifies
-    proper interface calls on NetworkService as well as final incident response. This time field force interaction is necessary.</description>
+    <description>Calls IncidentManager application via JMS message transport using SOAP request message. Opens a new incident and verifies
+    proper interface calls on NetworkService as well as final incident response.</description>
 
     <variables>
       <variable name="ticketId" value="citrus:randomUUID()"/>
+      <variable name="customerId" value="citrus:randomNumber(6)"/>
     </variables>
 
     <actions>
@@ -30,7 +31,7 @@
         <message>Step 1: Send OpenIncident request message to IncidentManager via Http SOAP interface</message>
       </echo>
 
-      <send endpoint="incidentHttpClient" fork="true">
+      <send endpoint="incidentJmsEndpoint" fork="true">
         <message>
           <payload>
             <im:OpenIncident xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1">
@@ -42,7 +43,7 @@
                 <im:description>Something went wrong with the software!</im:description>
               </im:incident>
               <im:customer>
-                <im:id>1000</im:id>
+                <im:id>${customerId}</im:id>
                 <im:firstname>Christoph</im:firstname>
                 <im:lastname>Deppisch</im:lastname>
                 <im:address>Franziskanerstr. 38, 80995 München</im:address>
@@ -92,11 +93,11 @@
               <net:result>
                 <net:lineId>${lineId}</net:lineId>
                 <net:resultCode>CODE_citrus:randomNumber(4)</net:resultCode>
-                <net:solved>false</net:solved>
+                <net:solved>true</net:solved>
                 <net:bandwidth>12000</net:bandwidth>
                 <net:lineCheck>OK</net:lineCheck>
                 <net:connectionCheck>OK</net:connectionCheck>
-                <net:fieldForceRequired>true</net:fieldForceRequired>
+                <net:fieldForceRequired>false</net:fieldForceRequired>
               </net:result>
             </net:AnalyseIncidentResponse>
           </payload>
@@ -107,10 +108,10 @@
       </send>
 
       <echo>
-        <message>Step 4: Receive final OpenIncident response message with analyse outcome from IncidentManager application</message>
+        <message>Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application</message>
       </echo>
 
-      <receive endpoint="incidentHttpClient">
+      <receive endpoint="incidentJmsEndpoint">
         <message>
           <payload>
             <im:OpenIncidentResponse xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1">
@@ -120,86 +121,6 @@
           </payload>
         </message>
       </receive>
-
-      <echo>
-        <message>Step 5: Receive FieldForce Order request</message>
-      </echo>
-
-      <receive endpoint="fieldForceOrderEndpoint">
-        <message>
-          <payload>
-            <ffs:OrderRequest xmlns:ffs="http://www.citrusframework.org/schema/samples/FieldForceService/v1">
-              <ffs:incident>
-                <ffs:ticketId>${ticketId}</ffs:ticketId>
-                <ffs:description>@contains('Something went wrong')@</ffs:description>
-              </ffs:incident>
-              <ffs:customer>
-                <ffs:id>1000</ffs:id>
-                <ffs:firstname>Christoph</ffs:firstname>
-                <ffs:lastname>Deppisch</ffs:lastname>
-                <ffs:address>Franziskanerstr. 38, 80995 München</ffs:address>
-              </ffs:customer>
-              <ffs:network>
-                <ffs:lineId>${lineId}</ffs:lineId>
-              </ffs:network>
-            </ffs:OrderRequest>
-          </payload>
-        </message>
-      </receive>
-
-      <echo>
-        <message>Step 6: Send FieldForce notifications</message>
-      </echo>
-
-      <send endpoint="fieldForceNotificationEndpoint">
-        <message>
-          <payload>
-            <ffs:OrderNotification xmlns:ffs="http://www.citrusframework.org/schema/samples/FieldForceService/v1">
-              <ffs:ticketId>${ticketId}</ffs:ticketId>
-              <ffs:state>NEW</ffs:state>
-            </ffs:OrderNotification>
-          </payload>
-        </message>
-      </send>
-
-      <sleep milliseconds="500"/>
-
-      <send endpoint="fieldForceNotificationEndpoint">
-        <message>
-          <payload>
-            <ffs:OrderNotification xmlns:ffs="http://www.citrusframework.org/schema/samples/FieldForceService/v1">
-              <ffs:ticketId>${ticketId}</ffs:ticketId>
-              <ffs:state>ON_SITE</ffs:state>
-            </ffs:OrderNotification>
-          </payload>
-        </message>
-      </send>
-
-      <sleep milliseconds="1500"/>
-
-      <send endpoint="fieldForceNotificationEndpoint">
-        <message>
-          <payload>
-            <ffs:OrderNotification xmlns:ffs="http://www.citrusframework.org/schema/samples/FieldForceService/v1">
-              <ffs:ticketId>${ticketId}</ffs:ticketId>
-              <ffs:state>FIXED</ffs:state>
-            </ffs:OrderNotification>
-          </payload>
-        </message>
-      </send>
-
-      <sleep milliseconds="1000"/>
-
-      <send endpoint="fieldForceNotificationEndpoint">
-        <message>
-          <payload>
-            <ffs:OrderNotification xmlns:ffs="http://www.citrusframework.org/schema/samples/FieldForceService/v1">
-              <ffs:ticketId>${ticketId}</ffs:ticketId>
-              <ffs:state>CLOSED</ffs:state>
-            </ffs:OrderNotification>
-          </payload>
-        </message>
-      </send>
     </actions>
   </testcase>
 </spring:beans>

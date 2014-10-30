@@ -69,6 +69,9 @@
                     <bindingFile>src/main/resources/com/consol/citrus/samples/incident/schema/binding-jaxws.xjb</bindingFile>
                   </bindingFiles>
                 </wsdlOption>
+                <wsdlOption>
+                  <wsdl>src/main/resources/com/consol/citrus/samples/incident/schema/SmsGateway.wsdl</wsdl>
+                </wsdlOption>
               </wsdlOptions>
             </configuration>
           </execution>
