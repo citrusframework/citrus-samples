@@ -40,6 +40,14 @@ public class IncidentManager_Http_Test extends TestNGCitrusTestBuilder {
     public void testIncidentManager_Http_Ok_2() {
     }
 
+    @CitrusXmlTest(name = "IncidentManager_Http_FieldForceError_1_Test")
+    public void testIncidentManager_Http_FieldForceError_1() {
+    }
+
+    @CitrusXmlTest(name = "IncidentManager_Http_FieldForceError_2_Test")
+    public void testIncidentManager_Http_FieldForceError_2() {
+    }
+
     @CitrusTest(name = "IncidentManager_Http_Ok_3_Test")
     public void testIncidentManager_Http_Ok_3() {
         OpenIncident incident = new OpenIncident();

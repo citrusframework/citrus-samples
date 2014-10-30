@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2006-2014 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:jms="http://www.citrusframework.org/schema/jms/testcase"
+              xmlns:ws="http://www.citrusframework.org/schema/ws/testcase"
+              xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"
+              xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                  http://www.citrusframework.org/schema/jms/testcase http://www.citrusframework.org/schema/jms/testcase/citrus-jms-testcase.xsd
+                  http://www.citrusframework.org/schema/ws/testcase http://www.citrusframework.org/schema/ws/testcase/citrus-ws-testcase.xsd
+                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
+
+  <testcase name="IncidentManager_Http_FieldForceError_2_Test">
+    <meta-info>
+      <author>Christoph Deppisch</author>
+      <creationdate>2014-09-28</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Christoph Deppisch</last-updated-by>
+      <last-updated-on>2014-09-28T00:00:00</last-updated-on>
+    </meta-info>
+
+    <description>Calls IncidentManager application via Http message transport using SOAP request message. Opens a new incident and verifies
+      proper interface calls on NetworkService as well as final incident response. This time field force interaction is necessary and is
+      aborted because of location not found error.</description>
+
+    <variables>
+      <variable name="ticketId" value="citrus:randomUUID()"/>
+      <variable name="customerId" value="citrus:randomNumber(6)"/>
+    </variables>
+
+    <actions>
+      <echo>
+        <message>Step 1: Send OpenIncident request message to IncidentManager via Http SOAP interface</message>
+      </echo>
+
+      <send endpoint="incidentHttpClient" fork="true">
+        <message>
+          <payload>
+            <im:OpenIncident xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1">
+              <im:incident>
+                <im:ticketId>${ticketId}</im:ticketId>
+                <im:captured>citrus:currentDate('yyyy-MM-dd'T'00:00:00')</im:captured>
+                <im:state>NEW</im:state>
+                <im:component>SOFTWARE</im:component>
+                <im:description>Something went wrong with the software!</im:description>
+              </im:incident>
+              <im:customer>
+                <im:id>${customerId}</im:id>
+                <im:firstname>Christoph</im:firstname>
+                <im:lastname>Deppisch</im:lastname>
+                <im:address>Franziskanerstr. 38, 80995 München</im:address>
+              </im:customer>
+            </im:OpenIncident>
+          </payload>
+        </message>
+        <header>
+          <element name="citrus_soap_action" value="/IncidentManager/openIncident"/>
+        </header>
+      </send>
+
+      <echo>
+        <message>Step 2: Receive AnalyseIncident request message as NetworkService application via Http SOAP interface</message>
+      </echo>
+
+      <receive endpoint="networkBackendHttpServer">
+        <message>
+          <payload>
+            <net:AnalyseIncident xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1">
+              <net:incident>
+                <net:ticketId>${ticketId}</net:ticketId>
+                <net:description>Something went wrong with the software!</net:description></net:incident>
+              <net:network>
+                <net:lineId>@ignore@</net:lineId>
+                <net:type>SOFTWARE</net:type>
+                <net:connection>@ignore@</net:connection>
+              </net:network>
+            </net:AnalyseIncident>
+          </payload>
+        </message>
+        <extract>
+          <message path="net:AnalyseIncident/net:network/net:lineId" variable="lineId"/>
+          <message path="net:AnalyseIncident/net:network/net:connection" variable="connectionId"/>
+        </extract>
+      </receive>
+
+      <echo>
+        <message>Step:3 Send AnalyseIncidentResponse message as result of the NetworkService call</message>
+      </echo>
+
+      <send endpoint="networkBackendHttpServer">
+        <message>
+          <payload>
+            <net:AnalyseIncidentResponse xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1">
+              <net:ticketId>${ticketId}</net:ticketId>
+              <net:result>
+                <net:lineId>${lineId}</net:lineId>
+                <net:resultCode>CODE_citrus:randomNumber(4)</net:resultCode>
+                <net:solved>false</net:solved>
+                <net:bandwidth>12000</net:bandwidth>
+                <net:lineCheck>OK</net:lineCheck>
+                <net:connectionCheck>OK</net:connectionCheck>
+                <net:fieldForceRequired>true</net:fieldForceRequired>
+              </net:result>
+            </net:AnalyseIncidentResponse>
+          </payload>
+        </message>
+        <header>
+          <element name="Content-Type" value="application/xml"/>
+        </header>
+      </send>
+
+      <echo>
+        <message>Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application</message>
+      </echo>
+
+      <receive endpoint="incidentHttpClient">
+        <message>
+          <payload>
+            <im:OpenIncidentResponse xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1">
+              <im:ticketId>${ticketId}</im:ticketId>
+              <im:scheduled>@ignore@</im:scheduled>
+            </im:OpenIncidentResponse>
+          </payload>
+        </message>
+      </receive>
+
+      <echo>
+        <message>Step 5: Receive FieldForce Order request</message>
+      </echo>
+
+      <receive endpoint="fieldForceOrderEndpoint">
+        <message>
+          <payload>
+            <ffs:OrderRequest xmlns:ffs="http://www.citrusframework.org/schema/samples/FieldForceService/v1">
+              <ffs:incident>
+                <ffs:ticketId>${ticketId}</ffs:ticketId>
+                <ffs:description>@contains('Something went wrong')@</ffs:description>
+              </ffs:incident>
+              <ffs:customer>
+                <ffs:id>${customerId}</ffs:id>
+                <ffs:firstname>Christoph</ffs:firstname>
+                <ffs:lastname>Deppisch</ffs:lastname>
+                <ffs:address>Franziskanerstr. 38, 80995 München</ffs:address>
+              </ffs:customer>
+              <ffs:network>
+                <ffs:lineId>${lineId}</ffs:lineId>
+              </ffs:network>
+            </ffs:OrderRequest>
+          </payload>
+        </message>
+      </receive>
+
+      <echo>
+        <message>Step 6: Send FieldForce notifications</message>
+      </echo>
+
+      <echo>
+        <message>Step 6.1: Send NEW field force notification</message>
+      </echo>
+
+      <send endpoint="fieldForceNotificationEndpoint">
+        <message>
+          <payload>
+            <ffs:OrderNotification xmlns:ffs="http://www.citrusframework.org/schema/samples/FieldForceService/v1">
+              <ffs:ticketId>${ticketId}</ffs:ticketId>
+              <ffs:customerId>${customerId}</ffs:customerId>
+              <ffs:state>NEW</ffs:state>
+            </ffs:OrderNotification>
+          </payload>
+        </message>
+      </send>
+
+      <sleep milliseconds="500"/>
+
+      <echo>
+        <message>Step 6.2: Handle ON_SITE field force notification</message>
+      </echo>
+
+      <send endpoint="fieldForceNotificationEndpoint">
+        <message>
+          <payload>
+            <ffs:OrderNotification xmlns:ffs="http://www.citrusframework.org/schema/samples/FieldForceService/v1">
+              <ffs:ticketId>${ticketId}</ffs:ticketId>
+              <ffs:customerId>${customerId}</ffs:customerId>
+              <ffs:state>ON_SITE</ffs:state>
+            </ffs:OrderNotification>
+          </payload>
+        </message>
+      </send>
+
+      <receive endpoint="smsGatewayServer">
+        <message>
+          <payload>
+            <sms:SendSmsRequest xmlns:sms="http://www.citrusframework.org/schema/samples/SmsGateway/v1">
+              <sms:communicationId>@variable('smsCommunicationId')@</sms:communicationId>
+              <sms:customerId>${customerId}</sms:customerId>
+              <sms:text>News from ticket '${ticketId}' - we started to fix your problem!</sms:text>
+            </sms:SendSmsRequest>
+          </payload>
+        </message>
+      </receive>
+
+      <send endpoint="smsGatewayServer">
+        <message>
+          <payload>
+            <sms:SendSmsResponse xmlns:sms="http://www.citrusframework.org/schema/samples/SmsGateway/v1">
+              <sms:communicationId>${smsCommunicationId}</sms:communicationId>
+              <sms:success>true</sms:success>
+            </sms:SendSmsResponse>
+          </payload>
+        </message>
+      </send>
+
+      <sleep milliseconds="1500"/>
+
+      <echo>
+        <message>Step 6.3: Handle ABORTED field force notification</message>
+      </echo>
+
+      <send endpoint="fieldForceNotificationEndpoint">
+        <message>
+          <payload>
+            <ffs:OrderNotification xmlns:ffs="http://www.citrusframework.org/schema/samples/FieldForceService/v1">
+              <ffs:ticketId>${ticketId}</ffs:ticketId>
+              <ffs:customerId>${customerId}</ffs:customerId>
+              <ffs:state>ABORTED</ffs:state>
+              <ffs:reason>LOCATION_NOT_FOUND</ffs:reason>
+            </ffs:OrderNotification>
+          </payload>
+        </message>
+      </send>
+
+      <receive endpoint="smsGatewayServer">
+        <message>
+          <payload>
+            <sms:SendSmsRequest xmlns:sms="http://www.citrusframework.org/schema/samples/SmsGateway/v1">
+              <sms:communicationId>@variable('smsCommunicationId')@</sms:communicationId>
+              <sms:customerId>${customerId}</sms:customerId>
+              <sms:text>News from ticket '${ticketId}' - we stopped processing your issue! Reason: LOCATION_NOT_FOUND</sms:text>
+            </sms:SendSmsRequest>
+          </payload>
+        </message>
+      </receive>
+
+      <send endpoint="smsGatewayServer">
+        <message>
+          <payload>
+            <sms:SendSmsResponse xmlns:sms="http://www.citrusframework.org/schema/samples/SmsGateway/v1">
+              <sms:communicationId>${smsCommunicationId}</sms:communicationId>
+              <sms:success>true</sms:success>
+            </sms:SendSmsResponse>
+          </payload>
+        </message>
+      </send>
+
+    </actions>
+  </testcase>
+</spring:beans>
