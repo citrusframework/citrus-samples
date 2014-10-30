@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.incident.service;
-
-import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncident;
-import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResponse;
+package com.consol.citrus.samples.incident.exception;
 
 /**
  * @author Christoph Deppisch
  * @since 2.0
  */
-public interface NetworkService {
+public class ServiceException extends RuntimeException {
 
     /**
-     * Places new analyse order and receives result in response object.
-     * @param incident
-     * @return
+     * Constructor using fields.
+     * @param message
+     * @param cause
      */
-    AnalyseIncidentResponse analyse(AnalyseIncident incident);
+    public ServiceException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

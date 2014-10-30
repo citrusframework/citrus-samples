@@ -109,4 +109,8 @@ public class OpenIncident_Http_Test extends TestNGCitrusTestBuilder {
     @CitrusXmlTest(name = "OpenIncident_HTTP_Ok_1_Test")
     public void testOpenIncident_Http_Ok_1() {
     }
+
+    @CitrusXmlTest(name = "OpenIncident_HTTP_Ok_2_Test")
+    public void testOpenIncident_Http_Ok_2() {
+    }
 }

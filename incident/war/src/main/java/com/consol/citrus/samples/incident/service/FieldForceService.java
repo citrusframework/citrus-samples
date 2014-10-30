@@ -16,20 +16,24 @@
 
 package com.consol.citrus.samples.incident.service;
 
-import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncident;
-import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResponse;
+import org.citrusframework.schema.samples.fieldforceservice.v1.OrderNotification;
+import org.citrusframework.schema.samples.fieldforceservice.v1.OrderRequest;
 
 /**
  * @author Christoph Deppisch
  * @since 2.0
  */
-public interface NetworkService {
+public interface FieldForceService {
 
     /**
-     * Places new analyse order and receives result in response object.
-     * @param incident
-     * @return
+     * Create new field force order.
+     * @param order
      */
-    AnalyseIncidentResponse analyse(AnalyseIncident incident);
+    void placeOrder(OrderRequest order);
 
+    /**
+     * Process incoming order notification from field force team.
+     * @param notification
+     */
+    void process(OrderNotification notification);
 }

@@ -16,9 +16,12 @@
 
 package com.consol.citrus.samples.incident.service;
 
+import org.citrusframework.schema.samples.fieldforceservice.v1.*;
+import org.citrusframework.schema.samples.fieldforceservice.v1.CustomerType;
 import org.citrusframework.schema.samples.incidentmanager.v1.*;
 import org.citrusframework.schema.samples.networkservice.v1.*;
 import org.citrusframework.schema.samples.networkservice.v1.IncidentType;
+import org.citrusframework.schema.samples.networkservice.v1.NetworkType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,9 @@ public class IncidentManagerService implements IncidentManager {
     @Autowired
     private NetworkService networkService;
 
+    @Autowired
+    private FieldForceService fieldForceService;
+
     @Override
     public OpenIncidentResponse openIncident(@WebParam(partName = "parameters", name = "OpenIncident", targetNamespace = "http://www.citrusframework.org/schema/samples/IncidentManager/v1") OpenIncident in) throws IncidentFault_Exception {
         log.info(String.format("Received new incident request '%s'", in.getIncident().getTicketId()));
@@ -55,7 +61,21 @@ public class IncidentManagerService implements IncidentManager {
         AnalyseIncidentResponse analyseIncidentResponse = networkService.analyse(analyseRequest);
 
         if (analyseIncidentResponse.getResult().isFieldForceRequired()) {
-            // TODO FieldForce request
+            OrderRequest ffOrder = new OrderRequest();
+            ffOrder.setIncident(new org.citrusframework.schema.samples.fieldforceservice.v1.IncidentType());
+            ffOrder.getIncident().setTicketId(in.getIncident().getTicketId());
+            ffOrder.getIncident().setDescription(in.getIncident().getDescription());
+
+            ffOrder.setCustomer(new CustomerType());
+            ffOrder.getCustomer().setId(in.getCustomer().getId());
+            ffOrder.getCustomer().setFirstname(in.getCustomer().getFirstname());
+            ffOrder.getCustomer().setLastname(in.getCustomer().getLastname());
+            ffOrder.getCustomer().setAddress(in.getCustomer().getAddress());
+
+            ffOrder.setNetwork(new org.citrusframework.schema.samples.fieldforceservice.v1.NetworkType());
+            ffOrder.getNetwork().setLineId(analyseRequest.getNetwork().getLineId());
+
+            fieldForceService.placeOrder(ffOrder);
         }
 
         OpenIncidentResponse incidentResponse = new OpenIncidentResponse();
@@ -82,4 +102,5 @@ public class IncidentManagerService implements IncidentManager {
 
         return scheduled;
     }
+
 }

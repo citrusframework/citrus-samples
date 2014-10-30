@@ -26,6 +26,7 @@
       <citrus:schema id="soapEnv" location="classpath:schemas/soap-envelope-1-1.xsd"/>
       <citrus:schema id="incidentManagerWsdl" location="classpath:com/consol/citrus/samples/incident/schema/IncidentManager.wsdl"/>
       <citrus:schema id="networkServiceXsd" location="classpath:com/consol/citrus/samples/incident/schema/NetworkService.xsd"/>
+      <citrus:schema id="fieldForceServiceXsd" location="classpath:com/consol/citrus/samples/incident/schema/FieldForceService.xsd"/>
     </citrus:schemas>
   </citrus:schema-repository>
 
@@ -42,6 +43,7 @@
   <citrus:namespace-context>
     <citrus:namespace prefix="im" uri="http://www.citrusframework.org/schema/samples/IncidentManager/v1"/>
     <citrus:namespace prefix="net" uri="http://www.citrusframework.org/schema/samples/NetworkService/v1"/>
+    <citrus:namespace prefix="ffs" uri="http://www.citrusframework.org/schema/samples/FieldForce/v1"/>
   </citrus:namespace-context>
 
   <!-- SOAP client interceptor basically for logging whole SOAP envelope to logger -->
@@ -72,6 +74,13 @@
           auto-start="true"
           port="18002"
           timeout="10000"/>
+
+  <!-- Field force JMS components -->
+  <citrus-jms:jms-endpoint id="fieldForceOrderEndpoint"
+                           destination-name="JMS.Citrus.v1.FieldForceOrder"/>
+
+  <citrus-jms:jms-endpoint id="fieldForceNotificationEndpoint"
+                           destination-name="JMS.Citrus.v1.FieldForceNotification"/>
 
   <!-- Jaxb2 Marshaller -->
   <oxm:jaxb2-marshaller id="jaxb2Marshaller">

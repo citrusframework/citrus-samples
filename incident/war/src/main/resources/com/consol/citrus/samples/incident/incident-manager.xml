@@ -49,7 +49,7 @@
     </jaxws:endpoint>
 
     <!-- Network Http client service -->
-    <bean class="com.consol.citrus.samples.incident.service.NetworkServiceClient">
+    <bean class="com.consol.citrus.samples.incident.service.NetworkServiceImpl">
       <property name="serviceUri" value="http://localhost:18002/network/NetworkService/v1/"/>
       <property name="restTemplate">
         <bean class="org.springframework.web.client.RestTemplate">
@@ -65,10 +65,35 @@
       </property>
     </bean>
 
+    <!-- FieldForce management -->
+    <bean id="fieldForceService" class="com.consol.citrus.samples.incident.service.FieldForceServiceImpl"/>
+
+    <!-- Jms client sending field force messages to destination -->
+    <bean id="fieldForceClient" class="com.consol.citrus.samples.incident.service.FieldForceJmsClient">
+      <constructor-arg>
+        <bean class="org.springframework.jms.core.JmsTemplate">
+          <constructor-arg ref="activemqConnectionFactory"/>
+          <property name="defaultDestinationName" value="JMS.Citrus.v1.FieldForceOrder"/>
+        </bean>
+      </constructor-arg>
+    </bean>
+
+    <!-- Message Driven POJO for incoming notification messages -->
+    <bean id="fieldForceNotificationConsumer" class="com.consol.citrus.samples.incident.service.FieldForceJmsConsumer" />
+
+    <!-- JMS message listener container -->
+    <bean id="fieldForceNotificationListener" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+      <property name="connectionFactory" ref="activemqConnectionFactory"/>
+      <property name="destinationName" value="JMS.Citrus.v1.FieldForceNotification"/>
+      <property name="messageListener" ref="fieldForceNotificationConsumer" />
+    </bean>
+
     <oxm:jaxb2-marshaller id="jaxb2Marshaller">
       <oxm:class-to-be-bound name="org.citrusframework.schema.samples.incidentmanager.v1.OpenIncident"/>
       <oxm:class-to-be-bound name="org.citrusframework.schema.samples.incidentmanager.v1.OpenIncidentResponse"/>
       <oxm:class-to-be-bound name="org.citrusframework.schema.samples.networkservice.v1.AnalyseIncident"/>
       <oxm:class-to-be-bound name="org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResponse"/>
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.fieldforceservice.v1.OrderRequest"/>
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.fieldforceservice.v1.OrderNotification"/>
     </oxm:jaxb2-marshaller>
 </beans>
