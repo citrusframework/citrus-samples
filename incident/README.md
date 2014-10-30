@@ -4,17 +4,17 @@ Citrus samples ![Logo][1]
 Incident Manager sample
 ---------
 
-The IncidentManager sample application offers a SOAP WebService with following supported
-operations:
+The IncidentManager sample application handles incoming incidents via SOAP WebService interface. The Incident Manager application offers both JMS and Http message transport
+binding for opening incident orders:
 
-* addBook
-* getBookDetails
-* listBooks
+* SOAP Http endpoint binding (http://localhost:18001/incident/IncidentManager/v1)
+** SOAP action: /IncidentManager/openIncident
+* SOAP Jms endpoint binding ()
+** SOAP action: /IncidentManager/openIncident
 
-Each operation will result in a synchronous SOAP response to the calling client. Duplicate
-books (isbn) or unknown books will generate SOAP Faults in the response. The different sample
-test cases will call the WebService as client and test the complete functionality for the
-available operations.
+Once the incident is opened a network service backend is consulted with analyse request. The backend service uses a Http/XML interface. The network Http server is simulated with Citrus.
+According to the analyse outcome the field force service team receives a order request to get on site problem analysis. The field force service is also simulated by Citrus and is an asynchronous JMS/XML service.
+Last not least the Incident Manager application sends SMS messages via a SmsGateway application to the customer. The SMS gateway application is a SOAP/Http interface which is also simulated with Citrus.
 
 Server
 ---------
