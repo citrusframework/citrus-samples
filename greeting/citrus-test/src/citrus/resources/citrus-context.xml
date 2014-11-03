@@ -39,10 +39,10 @@
                                      timeout="5000"/>
     
     <!-- Jms adapter -->
-    <citrus-jms:jms-endpoint id="greetingJmsRequestSender"
+    <citrus-jms:endpoint id="greetingJmsRequestSender"
                                destination-name="${greeting.request.queue}"/>
     
-    <citrus-jms:jms-endpoint id="greetingJmsResponseReceiver"
+    <citrus-jms:endpoint id="greetingJmsResponseReceiver"
                                  destination-name="${greeting.response.queue}"
                                  timeout="5000"/>
                                                                   

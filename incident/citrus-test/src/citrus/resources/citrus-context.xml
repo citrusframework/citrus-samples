@@ -67,7 +67,7 @@
                     interceptors="clientInterceptors"/>
 
   <!-- JMS incident endpoint -->
-  <citrus-jms:jms-sync-endpoint id="incidentJmsEndpoint"
+  <citrus-jms:sync-endpoint id="incidentJmsEndpoint"
                                 message-converter="soapMessageConverter"
                                 destination-name="JMS.Citrus.v1.IncidentManager"/>
 
@@ -78,10 +78,10 @@
           timeout="10000"/>
 
   <!-- Field force JMS components -->
-  <citrus-jms:jms-endpoint id="fieldForceOrderEndpoint"
+  <citrus-jms:endpoint id="fieldForceOrderEndpoint"
                            destination-name="JMS.Citrus.v1.FieldForceOrder"/>
 
-  <citrus-jms:jms-endpoint id="fieldForceNotificationEndpoint"
+  <citrus-jms:endpoint id="fieldForceNotificationEndpoint"
                            destination-name="JMS.Citrus.v1.FieldForceNotification"/>
 
   <!-- Sms Gateway SOAP Server -->

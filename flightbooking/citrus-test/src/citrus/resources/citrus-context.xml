@@ -41,17 +41,17 @@
                         auto-start="true"/>
 
     <!-- Trave Agency JMS endpoints -->
-    <citrus-jms:jms-endpoint id="travelAgencyBookingRequestEndpoint"
+    <citrus-jms:endpoint id="travelAgencyBookingRequestEndpoint"
                                  destination-name="${travel.agency.request.queue}"/>
     
-    <citrus-jms:jms-endpoint id="travelAgencyBookingResponseEndpoint"
+    <citrus-jms:endpoint id="travelAgencyBookingResponseEndpoint"
                                  destination-name="${travel.agency.response.queue}"/>
 
     <!-- Smart Airline JMS endpoints -->
-    <citrus-jms:jms-endpoint id="smartAirlineBookingRequestEndpoint"
+    <citrus-jms:endpoint id="smartAirlineBookingRequestEndpoint"
                                  destination-name="${smart.airline.request.queue}"/>
     
-    <citrus-jms:jms-endpoint id="smartAirlineBookingResponseEndpoint"
+    <citrus-jms:endpoint id="smartAirlineBookingResponseEndpoint"
                                  destination-name="${smart.airline.response.queue}"/>
     
     <bean id="testDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
