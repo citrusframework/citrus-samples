@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://citrusframework.org/schemas/samples/news"
+           targetNamespace="http://citrusframework.org/schemas/samples/news"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:element name="News">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Message" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
