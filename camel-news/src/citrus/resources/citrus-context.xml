@@ -41,7 +41,7 @@
 
   <!-- SOAP WebService server-->
   <citrus-ws:server id="newsSoapServer"
-                    port="8080"
+                    port="18009"
                     auto-start="true"
                     timeout="10000"/>
 
@@ -68,7 +68,7 @@
     <route id="newsRoute">
       <from uri="jms:queue:JMS.Queue.News"/>
       <to uri="log:com.consol.citrus.camel?level=INFO"/>
-      <to uri="spring-ws:http://localhost:8080?soapAction=newsFeed"/>
+      <to uri="spring-ws:http://localhost:18009?soapAction=newsFeed"/>
     </route>
   </camelContext>
 </beans>
