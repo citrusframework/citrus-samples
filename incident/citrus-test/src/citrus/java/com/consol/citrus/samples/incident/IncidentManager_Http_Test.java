@@ -3,6 +3,7 @@ package com.consol.citrus.samples.incident;
 import com.consol.citrus.annotations.CitrusXmlTest;
 import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
 import com.consol.citrus.dsl.annotations.CitrusTest;
+import com.consol.citrus.functions.core.*;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
@@ -12,10 +13,11 @@ import org.citrusframework.schema.samples.incidentmanager.v1.StateType;
 import org.citrusframework.schema.samples.networkservice.v1.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.testng.annotations.Test;
 
-import java.util.Calendar;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Christoph Deppisch
@@ -104,6 +106,34 @@ public class IncidentManager_Http_Test extends TestNGCitrusTestBuilder {
 
         receive(incidentHttpClient)
                 .payloadModel(response);
+    }
+
+    private Resource incidentRequest = new ClassPathResource("templates/IncidentRequest.xml");
+    private Resource analyseRequest = new ClassPathResource("templates/AnalyseRequest.xml");
+    private Resource analyseResponse = new ClassPathResource("templates/AnalyseResponse.xml");
+    private Resource incidentResponse = new ClassPathResource("templates/IncidentResponse.xml");
+
+    @CitrusTest(name = "IncidentManager_Http_Ok_4_Test")
+    public void testIncidentManager_Http_Ok_4 () {
+        variable("ticketId", new RandomUUIDFunction().execute(Collections.<String>emptyList(), null));
+        variable("customerId", new RandomNumberFunction().execute(Collections.<String>singletonList("6"), null));
+
+        send(incidentHttpClient)
+                .fork(true)
+                .payload(incidentRequest)
+                .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident");
+
+        receive(networkHttpServer)
+                .payload(analyseRequest)
+                .extractFromPayload("net:AnalyseIncident/net:network/net:lineId", "lineId")
+                .extractFromPayload("net:AnalyseIncident/net:network/net:connection", "connectionId");
+
+        send(networkHttpServer)
+                .payload(analyseResponse)
+                .header("Content-Type", "application/xml");
+
+        receive(incidentHttpClient)
+                .payload(incidentResponse);
     }
 
     @CitrusTest(name = "IncidentManager_Http_SchemaInvalid_Test")
