@@ -23,6 +23,7 @@ import com.consol.citrus.testng.CitrusParameters;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
 import com.consol.citrus.ws.server.WebServiceServer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -40,7 +41,7 @@ public class NewsFeedParameterTest extends TestNGCitrusTestBuilder {
 
     @CitrusTest(name = "NewsFeed_DataProvider_Ok_Test")
     @CitrusParameters({ "message" })
-    @Test(dataProvider = "citrusDataProvider")
+    @Test(dataProvider = "messageDataProvider")
     public void newsFeed_DataProvider_Ok_Test(String message) {
         send(newsJmsEndpoint)
                 .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
@@ -57,8 +58,8 @@ public class NewsFeedParameterTest extends TestNGCitrusTestBuilder {
                 .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200");
     }
 
-    @Override
-    protected Object[][] getParameterValues() {
+    @DataProvider
+    public Object[][] messageDataProvider() {
         return new Object[][] {{ "Citrus rocks!" },
                                { "Citrus really rocks!" },
                                { "Citrus is awesome!" }};
