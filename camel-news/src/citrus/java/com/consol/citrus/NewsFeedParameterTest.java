@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
- * @since 2.0.1
+ * @since 2.1
  */
 @Test
 public class NewsFeedParameterTest extends TestNGCitrusTestBuilder {
