@@ -17,7 +17,7 @@
   <properties>
     <jee.api.version>7.0</jee.api.version>
     <arquillian.core.version>1.1.7.Final</arquillian.core.version>
-    <wildfly.version>8.0.0.Final</wildfly.version>
+    <wildfly.version>8.1.0.Final</wildfly.version>
   </properties>
 
   <dependencyManagement>
@@ -39,6 +39,10 @@
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-jms</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-java-dsl</artifactId>
     </dependency>
     <dependency>
@@ -51,6 +55,12 @@
       <artifactId>javaee-api</artifactId>
       <version>${jee.api.version}</version>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+      <version>2.1.1</version>
     </dependency>
 
     <!-- TestNG -->
@@ -80,7 +90,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <serverProfile>standalone-full.xml</serverProfile>
         <serverRoot>${project.build.directory}/wildfly-${wildfly.version}</serverRoot>
       </properties>
       <dependencies>
@@ -112,9 +121,9 @@
           <groupId>org.wildfly</groupId>
           <artifactId>wildfly-arquillian-container-managed</artifactId>
           <version>${wildfly.version}</version>
-          <scope>test</scope>
         </dependency>
       </dependencies>
+
       <build>
         <plugins>
           <plugin>
@@ -125,8 +134,8 @@
             </configuration>
             <executions>
               <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
+                <id>wildfly-unpack</id>
+                <phase>generate-test-resources</phase>
                 <goals>
                   <goal>unpack</goal>
                 </goals>
@@ -146,12 +155,45 @@
             </executions>
           </plugin>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>2.6</version>
+            <executions>
+              <execution>
+                <id>wildfly-configuration</id>
+                <phase>generate-test-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${serverRoot}/standalone/configuration</outputDirectory>
+                  <overwrite>true</overwrite>
+                  <resources>
+                    <resource>
+                      <directory>${basedir}/src/server/configuration</directory>
+                      <includes>
+                        <include>*.xml</include>
+                      </includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.17</version>
             <configuration>
-              <environmentVariables>
-                <JBOSS_HOME>${project.build.directory}/wildfly-${wildfly.version}</JBOSS_HOME>
-              </environmentVariables>
+              <systemProperties>
+                <property>
+                  <name>java.util.logging.manager</name>
+                  <value>org.jboss.logmanager.LogManager</value>
+                </property>
+              </systemProperties>
+              <systemPropertyVariables>
+                <jboss.home>${serverRoot}</jboss.home>
+                <module.path>${serverRoot}/modules</module.path>
+              </systemPropertyVariables>
+              <redirectTestOutputToFile>false</redirectTestOutputToFile>
             </configuration>
           </plugin>
         </plugins>
