@@ -64,7 +64,6 @@ public class EchoServiceTest {
 
     @Before
     public void setUp() {
-        Assert.assertTrue(connectionFactory != null);
         JmsSyncEndpointConfiguration endpointConfiguration = new JmsSyncEndpointConfiguration();
         endpointConfiguration.setConnectionFactory(connectionFactory);
         endpointConfiguration.setDestination(echoQueue);
