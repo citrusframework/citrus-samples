@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.jms;
+package com.consol.citrus.samples.arquillian.jms;
 
 import com.consol.citrus.Citrus;
 import com.consol.citrus.config.CitrusBaseConfig;

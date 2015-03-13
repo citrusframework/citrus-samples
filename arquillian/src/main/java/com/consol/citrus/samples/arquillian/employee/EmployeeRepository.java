@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.employee;
+package com.consol.citrus.samples.arquillian.employee;
 
-import com.consol.citrus.samples.employee.model.Employee;
-import com.consol.citrus.samples.employee.model.Employees;
+import com.consol.citrus.samples.arquillian.employee.model.Employee;
+import com.consol.citrus.samples.arquillian.employee.model.Employees;
 
 import javax.ejb.Singleton;
 

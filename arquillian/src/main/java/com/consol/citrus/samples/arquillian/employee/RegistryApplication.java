@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.employee;
+package com.consol.citrus.samples.arquillian.employee;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

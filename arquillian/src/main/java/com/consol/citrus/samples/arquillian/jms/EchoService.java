@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.jms;
+package com.consol.citrus.samples.arquillian.jms;
 
 import javax.annotation.Resource;
 import javax.ejb.ActivationConfigProperty;
