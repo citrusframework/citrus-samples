@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.arquillian.employee;
+package com.consol.citrus.samples.javaee.employee;
 
 import com.consol.citrus.Citrus;
 import com.consol.citrus.config.CitrusBaseConfig;
 import com.consol.citrus.dsl.CitrusTestBuilder;
 import com.consol.citrus.http.message.HttpMessage;
 import com.consol.citrus.message.MessageType;
-import com.consol.citrus.samples.arquillian.employee.model.Employee;
-import com.consol.citrus.samples.arquillian.employee.model.Employees;
+import com.consol.citrus.samples.javaee.employee.model.Employee;
+import com.consol.citrus.samples.javaee.employee.model.Employees;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;

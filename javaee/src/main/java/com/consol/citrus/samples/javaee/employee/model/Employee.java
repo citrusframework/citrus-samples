@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.arquillian.employee.model;
+package com.consol.citrus.samples.javaee.employee.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
