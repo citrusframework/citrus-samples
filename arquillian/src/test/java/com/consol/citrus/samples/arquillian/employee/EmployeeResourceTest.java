@@ -72,35 +72,35 @@ public class EmployeeResourceTest {
 
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Penny&age=20")
-                        .setRequestMethod(HttpMethod.POST)
-                        .setHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED));
+                        .method(HttpMethod.POST)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
 
         citrus.receive(serviceUri)
-                .message(new HttpMessage("")
-                        .setStatusCode(HttpStatus.NO_CONTENT));
+                .message(new HttpMessage()
+                        .statusCode(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Leonard&age=21")
-                        .setRequestMethod(HttpMethod.POST)
-                        .setHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED));
+                        .method(HttpMethod.POST)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
 
         citrus.receive(serviceUri)
-                .message(new HttpMessage("")
-                        .setStatusCode(HttpStatus.NO_CONTENT));
+                .message(new HttpMessage()
+                        .statusCode(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Sheldon&age=22")
-                        .setRequestMethod(HttpMethod.POST)
-                        .setHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED));
+                        .method(HttpMethod.POST)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
 
         citrus.receive(serviceUri)
-                .message(new HttpMessage("")
-                        .setStatusCode(HttpStatus.NO_CONTENT));
+                .message(new HttpMessage()
+                        .statusCode(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
-                .message(new HttpMessage("")
-                        .setRequestMethod(HttpMethod.GET)
-                        .setHeader("Accept", MediaType.APPLICATION_XML));
+                .message(new HttpMessage()
+                        .method(HttpMethod.GET)
+                        .accept(MediaType.APPLICATION_XML));
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage("<employees>" +
@@ -117,7 +117,7 @@ public class EmployeeResourceTest {
                                 "<name>Sheldon</name>" +
                             "</employee>" +
                         "</employees>")
-                        .setStatusCode(HttpStatus.OK));
+                        .statusCode(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -127,16 +127,16 @@ public class EmployeeResourceTest {
         citrus.name("EmployeeGetSingleTest");
 
         citrus.send(serviceUri + "/1")
-                .message(new HttpMessage("")
-                        .setRequestMethod(HttpMethod.GET)
-                        .setHeader("Accept", MediaType.APPLICATION_XML));
+                .message(new HttpMessage()
+                        .method(HttpMethod.GET)
+                        .accept(MediaType.APPLICATION_XML));
 
         citrus.receive(serviceUri + "/1")
                 .message(new HttpMessage("<employee>" +
                         "<age>21</age>" +
                         "<name>Leonard</name>" +
                         "</employee>")
-                        .setStatusCode(HttpStatus.OK));
+                        .statusCode(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -147,17 +147,17 @@ public class EmployeeResourceTest {
 
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Howard&age=21")
-                        .setRequestMethod(HttpMethod.PUT)
-                        .setHeader("Content-Type", MediaType.APPLICATION_FORM_URLENCODED));
+                        .method(HttpMethod.PUT)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
 
         citrus.receive(serviceUri)
-                .message(new HttpMessage("")
-                        .setStatusCode(HttpStatus.NO_CONTENT));
+                .message(new HttpMessage()
+                        .statusCode(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
-                .message(new HttpMessage("")
-                        .setRequestMethod(HttpMethod.GET)
-                        .setHeader("Accept", MediaType.APPLICATION_XML));
+                .message(new HttpMessage()
+                        .method(HttpMethod.GET)
+                        .accept(MediaType.APPLICATION_XML));
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage("<employees>" +
@@ -178,7 +178,7 @@ public class EmployeeResourceTest {
                                 "<name>Howard</name>" +
                             "</employee>" +
                         "</employees>")
-                        .setStatusCode(HttpStatus.OK));
+                        .statusCode(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -188,17 +188,17 @@ public class EmployeeResourceTest {
         citrus.name("EmployeeDeleteTest");
 
         citrus.send(serviceUri + "/Leonard")
-                .message(new HttpMessage("")
-                        .setRequestMethod(HttpMethod.DELETE));
+                .message(new HttpMessage()
+                        .method(HttpMethod.DELETE));
 
         citrus.receive(serviceUri + "/Leonard")
-                .message(new HttpMessage("")
-                        .setStatusCode(HttpStatus.NO_CONTENT));
+                .message(new HttpMessage()
+                        .statusCode(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
-                .message(new HttpMessage("")
-                        .setRequestMethod(HttpMethod.GET)
-                        .setHeader("Accept", MediaType.APPLICATION_XML));
+                .message(new HttpMessage()
+                        .method(HttpMethod.GET)
+                        .accept(MediaType.APPLICATION_XML));
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage("<employees>" +
@@ -215,7 +215,7 @@ public class EmployeeResourceTest {
                                 "<name>Howard</name>" +
                             "</employee>" +
                         "</employees>")
-                        .setStatusCode(HttpStatus.OK));
+                        .statusCode(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -225,9 +225,9 @@ public class EmployeeResourceTest {
         citrus.name("EmployeeClientSideNegotiationTest");
 
         citrus.send(serviceUri)
-                .message(new HttpMessage("")
-                        .setRequestMethod(HttpMethod.GET)
-                        .setHeader("Accept", MediaType.APPLICATION_JSON));
+                .message(new HttpMessage()
+                        .method(HttpMethod.GET)
+                        .accept(MediaType.APPLICATION_JSON));
 
         citrus.receive(serviceUri)
                 .messageType(MessageType.JSON)
@@ -236,7 +236,7 @@ public class EmployeeResourceTest {
                             "{\"name\":\"Sheldon\",\"age\":22}," +
                             "{\"name\":\"Howard\",\"age\":21}" +
                         "]}")
-                        .setStatusCode(HttpStatus.OK));
+                        .statusCode(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -246,21 +246,21 @@ public class EmployeeResourceTest {
         citrus.name("EmployeeDeleteAllTest");
 
         citrus.send(serviceUri)
-                .message(new HttpMessage("")
-                        .setRequestMethod(HttpMethod.DELETE));
+                .message(new HttpMessage()
+                        .method(HttpMethod.DELETE));
 
         citrus.receive(serviceUri)
-                .message(new HttpMessage("")
-                        .setStatusCode(HttpStatus.NO_CONTENT));
+                .message(new HttpMessage()
+                        .statusCode(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
-                .message(new HttpMessage("")
-                        .setRequestMethod(HttpMethod.GET)
-                        .setHeader("Accept", MediaType.APPLICATION_XML));
+                .message(new HttpMessage()
+                        .method(HttpMethod.GET)
+                        .accept(MediaType.APPLICATION_XML));
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage("<employees></employees>")
-                        .setStatusCode(HttpStatus.OK));
+                        .statusCode(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
