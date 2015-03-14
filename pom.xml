@@ -15,7 +15,7 @@
   
   <modules>
     <module>common</module>
-    <module>arquillian</module>
+    <module>javaee</module>
     <module>flightbooking</module>
     <module>greeting</module>
     <module>bookstore</module>

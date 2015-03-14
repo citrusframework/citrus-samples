@@ -10,8 +10,8 @@
   </parent>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-arquillian</artifactId>
-  <name>citrus-arquillian</name>
+  <artifactId>citrus-javaee</artifactId>
+  <name>citrus-javaee</name>
   <packaging>war</packaging>
 
   <properties>
