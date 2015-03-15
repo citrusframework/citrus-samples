@@ -16,8 +16,9 @@
 
   <properties>
     <jee.api.version>7.0</jee.api.version>
-    <arquillian.core.version>1.1.7.Final</arquillian.core.version>
+    <arquillian.version>1.1.7.Final</arquillian.version>
     <wildfly.version>8.1.0.Final</wildfly.version>
+    <resteasy.version>3.0.5.Final</resteasy.version>
   </properties>
 
   <dependencyManagement>
@@ -25,7 +26,7 @@
       <dependency>
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
-        <version>${arquillian.core.version}</version>
+        <version>${arquillian.version}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -49,6 +50,10 @@
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-http</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-arquillian</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>javax</groupId>
@@ -63,11 +68,11 @@
       <version>2.1.1</version>
     </dependency>
 
-    <!-- TestNG -->
+    <!-- Arquillian JUnit -->
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
-      <version>${arquillian.core.version}</version>
+      <version>${arquillian.version}</version>
     </dependency>
   </dependencies>
 
@@ -102,19 +107,19 @@
         <dependency>
           <groupId>org.jboss.resteasy</groupId>
           <artifactId>resteasy-client</artifactId>
-          <version>3.0.5.Final</version>
+          <version>${resteasy.version}</version>
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>org.jboss.resteasy</groupId>
           <artifactId>resteasy-jaxb-provider</artifactId>
-          <version>3.0.5.Final</version>
+          <version>${resteasy.version}</version>
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>org.jboss.resteasy</groupId>
           <artifactId>resteasy-json-p-provider</artifactId>
-          <version>3.0.5.Final</version>
+          <version>${resteasy.version}</version>
           <scope>test</scope>
         </dependency>
         <dependency>
@@ -127,8 +132,8 @@
       <build>
         <plugins>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
-            <version>2.8</version>
             <configuration>
               <skip>${maven.test.skip}</skip>
             </configuration>
@@ -157,7 +162,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
-            <version>2.6</version>
             <executions>
               <execution>
                 <id>wildfly-configuration</id>

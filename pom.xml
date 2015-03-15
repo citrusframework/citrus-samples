@@ -99,6 +99,12 @@
               </systemProperties>
           </configuration>
         </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.8</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     
@@ -143,6 +149,11 @@
         <dependency>
           <groupId>com.consol.citrus</groupId>
           <artifactId>citrus-camel</artifactId>
+          <version>${citrus.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.consol.citrus</groupId>
+          <artifactId>citrus-arquillian</artifactId>
           <version>${citrus.version}</version>
         </dependency>
         <dependency>

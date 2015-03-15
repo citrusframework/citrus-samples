@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.javaee.jms;
 
 import com.consol.citrus.Citrus;
+import com.consol.citrus.arquillian.shrinkwrap.CitrusArchiveBuilder;
 import com.consol.citrus.config.CitrusBaseConfig;
 import com.consol.citrus.dsl.CitrusTestBuilder;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
@@ -27,8 +28,8 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.annotation.Resource;
@@ -47,13 +48,11 @@ public class EchoServiceTest {
     public static WebArchive createDeployment() throws MalformedURLException {
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(EchoService.class)
-                .addAsLibraries(Maven.configureResolver()
-                        .workOffline()
-                        .resolve("com.consol.citrus:citrus-core:2.2",
-                                "com.consol.citrus:citrus-jms:2.2",
-                                "com.consol.citrus:citrus-java-dsl:2.2")
-                        .withTransitivity()
-                        .asFile());
+                .addAsLibraries(CitrusArchiveBuilder.latestVersion()
+                            .core()
+                            .jms()
+                            .javaDsl()
+                            .build());
     }
 
     @Resource(mappedName = "jms/queue/test")
