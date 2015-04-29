@@ -17,19 +17,21 @@
 package com.consol.citrus.samples.javaee.employee;
 
 import com.consol.citrus.Citrus;
-import com.consol.citrus.config.CitrusBaseConfig;
+import com.consol.citrus.arquillian.annotation.InjectCitrus;
 import com.consol.citrus.dsl.CitrusTestBuilder;
 import com.consol.citrus.http.message.HttpMessage;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
 import com.consol.citrus.samples.javaee.employee.model.Employees;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -39,23 +41,26 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @RunWith(Arquillian.class)
+@RunAsClient
 public class EmployeeResourceTest {
 
-    private Citrus citrusFramework = Citrus.newInstance(CitrusBaseConfig.class);
+    @InjectCitrus
+    private Citrus citrusFramework;
+
     private CitrusTestBuilder citrus;
 
-    @Deployment(testable = false)
+    @ArquillianResource
+    private URL baseUri;
+
+    private String serviceUri;
+
+    @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(
                         RegistryApplication.class, EmployeeResource.class, Employees.class,
                         Employee.class, EmployeeRepository.class);
     }
-
-    @ArquillianResource
-    private URL baseUri;
-    private String serviceUri;
-
 
     @Before
     public void setUp() throws MalformedURLException {

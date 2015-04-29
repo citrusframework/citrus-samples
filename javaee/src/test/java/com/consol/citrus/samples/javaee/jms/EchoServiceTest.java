@@ -17,7 +17,6 @@
 package com.consol.citrus.samples.javaee.jms;
 
 import com.consol.citrus.Citrus;
-import com.consol.citrus.arquillian.shrinkwrap.CitrusArchiveBuilder;
 import com.consol.citrus.config.CitrusBaseConfig;
 import com.consol.citrus.dsl.CitrusTestBuilder;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
@@ -41,25 +40,21 @@ import java.net.MalformedURLException;
 public class EchoServiceTest {
 
     private Citrus citrusFramework = Citrus.newInstance(CitrusBaseConfig.class);
+
     private CitrusTestBuilder citrus;
     private JmsSyncEndpoint jmsSyncEndpoint;
-
-    @Deployment
-    public static WebArchive createDeployment() throws MalformedURLException {
-        return ShrinkWrap.create(WebArchive.class)
-                .addClasses(EchoService.class)
-                .addAsLibraries(CitrusArchiveBuilder.latestVersion()
-                            .core()
-                            .jms()
-                            .javaDsl()
-                            .build());
-    }
 
     @Resource(mappedName = "jms/queue/test")
     private Queue echoQueue;
 
     @Resource(mappedName = "/ConnectionFactory")
     private ConnectionFactory connectionFactory;
+
+    @Deployment
+    public static WebArchive createDeployment() throws MalformedURLException {
+        return ShrinkWrap.create(WebArchive.class)
+                .addClasses(EchoService.class);
+    }
 
     @Before
     public void setUp() {
