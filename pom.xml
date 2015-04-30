@@ -157,14 +157,9 @@
           <version>${citrus.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.consol.citrus.ant</groupId>
-            <artifactId>citrus-ant-tasks</artifactId>
-            <version>${citrus.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.consol.citrus.samples</groupId>
-            <artifactId>citrus-samples-common</artifactId>
-            <version>${citrus.version}</version>
+          <groupId>com.consol.citrus.samples</groupId>
+          <artifactId>citrus-samples-common</artifactId>
+          <version>${citrus.version}</version>
         </dependency>
         
         <!-- Spring framework -->
@@ -246,11 +241,7 @@
         <groupId>com.consol.citrus</groupId>
         <artifactId>citrus-java-dsl</artifactId>
     </dependency>
-    <dependency>
-        <groupId>com.consol.citrus.ant</groupId>
-        <artifactId>citrus-ant-tasks</artifactId>
-    </dependency>
-    
+
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
       <artifactId>jackson-jaxrs</artifactId>
