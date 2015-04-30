@@ -17,19 +17,21 @@
 package com.consol.citrus.samples.javaee.jms;
 
 import com.consol.citrus.Citrus;
-import com.consol.citrus.config.CitrusBaseConfig;
+import com.consol.citrus.arquillian.annotation.InjectCitrus;
 import com.consol.citrus.dsl.CitrusTestBuilder;
+import com.consol.citrus.dsl.annotations.CitrusTest;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpointConfiguration;
 import com.consol.citrus.jms.message.JmsMessage;
 import com.consol.citrus.message.MessageType;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.OverProtocol;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
+import org.springframework.jms.connection.SingleConnectionFactory;
 
 import javax.annotation.Resource;
 import javax.jms.ConnectionFactory;
@@ -39,10 +41,8 @@ import java.net.MalformedURLException;
 @RunWith(Arquillian.class)
 public class EchoServiceTest {
 
-    private Citrus citrusFramework = Citrus.newInstance(CitrusBaseConfig.class);
-
-    private CitrusTestBuilder citrus;
-    private JmsSyncEndpoint jmsSyncEndpoint;
+    @InjectCitrus
+    private Citrus citrusFramework;
 
     @Resource(mappedName = "jms/queue/test")
     private Queue echoQueue;
@@ -50,7 +50,10 @@ public class EchoServiceTest {
     @Resource(mappedName = "/ConnectionFactory")
     private ConnectionFactory connectionFactory;
 
+    private JmsSyncEndpoint jmsSyncEndpoint;
+
     @Deployment
+    @OverProtocol("Servlet 3.0")
     public static WebArchive createDeployment() throws MalformedURLException {
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(EchoService.class);
@@ -59,16 +62,18 @@ public class EchoServiceTest {
     @Before
     public void setUp() {
         JmsSyncEndpointConfiguration endpointConfiguration = new JmsSyncEndpointConfiguration();
-        endpointConfiguration.setConnectionFactory(connectionFactory);
+        endpointConfiguration.setConnectionFactory(new SingleConnectionFactory(connectionFactory));
         endpointConfiguration.setDestination(echoQueue);
         jmsSyncEndpoint = new JmsSyncEndpoint(endpointConfiguration);
-        citrus = new CitrusTestBuilder(citrusFramework.getApplicationContext());
+    }
+
+    @After
+    public void cleanUp() {
+        closeConnections();
     }
 
     @Test
-    public void shouldBeAbleToSendMessage() throws Exception {
-        citrus.name("EchoServiceTest");
-
+    public void shouldBeAbleToSendMessage(@CitrusTest CitrusTestBuilder citrus) throws Exception {
         String messageBody = "ping";
         citrus.send(jmsSyncEndpoint)
                 .messageType(MessageType.PLAINTEXT)
@@ -79,5 +84,9 @@ public class EchoServiceTest {
                 .message(new JmsMessage(messageBody));
 
         citrusFramework.run(citrus.getTestCase());
+    }
+
+    private void closeConnections() {
+        ((SingleConnectionFactory)jmsSyncEndpoint.getEndpointConfiguration().getConnectionFactory()).destroy();
     }
 }

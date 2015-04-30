@@ -19,6 +19,7 @@ package com.consol.citrus.samples.javaee.employee;
 import com.consol.citrus.Citrus;
 import com.consol.citrus.arquillian.annotation.InjectCitrus;
 import com.consol.citrus.dsl.CitrusTestBuilder;
+import com.consol.citrus.dsl.annotations.CitrusTest;
 import com.consol.citrus.http.message.HttpMessage;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
@@ -30,8 +31,7 @@ import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -46,8 +46,6 @@ public class EmployeeResourceTest {
 
     @InjectCitrus
     private Citrus citrusFramework;
-
-    private CitrusTestBuilder citrus;
 
     @ArquillianResource
     private URL baseUri;
@@ -65,16 +63,13 @@ public class EmployeeResourceTest {
     @Before
     public void setUp() throws MalformedURLException {
         serviceUri = new URL(baseUri, "registry/employee").toExternalForm();
-        citrus = new CitrusTestBuilder(citrusFramework.getApplicationContext());
     }
 
     /**
      * Test adding new employees and getting list of all employees.
      */
     @Test @InSequence(1)
-    public void testPostAndGet() {
-        citrus.name("EmployeePostAndGetTest");
-
+    public void testPostAndGet(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Penny&age=20")
                         .method(HttpMethod.POST)
@@ -128,9 +123,7 @@ public class EmployeeResourceTest {
     }
 
     @Test @InSequence(2)
-    public void testGetSingle() {
-        citrus.name("EmployeeGetSingleTest");
-
+    public void testGetSingle(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri + "/1")
                 .message(new HttpMessage()
                         .method(HttpMethod.GET)
@@ -147,9 +140,7 @@ public class EmployeeResourceTest {
     }
 
     @Test @InSequence(3)
-    public void testPut() {
-        citrus.name("EmployeePutTest");
-
+    public void testPut(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Howard&age=21")
                         .method(HttpMethod.PUT)
@@ -189,9 +180,7 @@ public class EmployeeResourceTest {
     }
 
     @Test @InSequence(4)
-    public void testDelete() {
-        citrus.name("EmployeeDeleteTest");
-
+    public void testDelete(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri + "/Leonard")
                 .message(new HttpMessage()
                         .method(HttpMethod.DELETE));
@@ -226,9 +215,7 @@ public class EmployeeResourceTest {
     }
 
     @Test @InSequence(5)
-    public void testClientSideNegotiation() {
-        citrus.name("EmployeeClientSideNegotiationTest");
-
+    public void testClientSideNegotiation(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage()
                         .method(HttpMethod.GET)
@@ -247,9 +234,7 @@ public class EmployeeResourceTest {
     }
 
     @Test @InSequence(6)
-    public void testDeleteAll() {
-        citrus.name("EmployeeDeleteAllTest");
-
+    public void testDeleteAll(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage()
                         .method(HttpMethod.DELETE));
