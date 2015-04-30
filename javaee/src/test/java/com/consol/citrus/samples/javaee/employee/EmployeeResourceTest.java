@@ -17,9 +17,9 @@
 package com.consol.citrus.samples.javaee.employee;
 
 import com.consol.citrus.Citrus;
-import com.consol.citrus.arquillian.annotation.InjectCitrus;
+import com.consol.citrus.annotations.CitrusFramework;
+import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.CitrusTestBuilder;
-import com.consol.citrus.dsl.annotations.CitrusTest;
 import com.consol.citrus.http.message.HttpMessage;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
@@ -31,7 +31,8 @@ import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ import java.net.URL;
 @RunAsClient
 public class EmployeeResourceTest {
 
-    @InjectCitrus
+    @CitrusFramework
     private Citrus citrusFramework;
 
     @ArquillianResource
@@ -68,7 +69,8 @@ public class EmployeeResourceTest {
     /**
      * Test adding new employees and getting list of all employees.
      */
-    @Test @InSequence(1)
+    @Test
+    @InSequence(1)
     public void testPostAndGet(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Penny&age=20")
@@ -119,10 +121,11 @@ public class EmployeeResourceTest {
                         "</employees>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.getTestCase());
+        citrusFramework.run(citrus.build());
     }
 
-    @Test @InSequence(2)
+    @Test
+    @InSequence(2)
     public void testGetSingle(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri + "/1")
                 .message(new HttpMessage()
@@ -136,10 +139,11 @@ public class EmployeeResourceTest {
                         "</employee>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.getTestCase());
+        citrusFramework.run(citrus.build());
     }
 
-    @Test @InSequence(3)
+    @Test
+    @InSequence(3)
     public void testPut(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Howard&age=21")
@@ -176,10 +180,11 @@ public class EmployeeResourceTest {
                         "</employees>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.getTestCase());
+        citrusFramework.run(citrus.build());
     }
 
-    @Test @InSequence(4)
+    @Test
+    @InSequence(4)
     public void testDelete(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri + "/Leonard")
                 .message(new HttpMessage()
@@ -211,10 +216,11 @@ public class EmployeeResourceTest {
                         "</employees>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.getTestCase());
+        citrusFramework.run(citrus.build());
     }
 
-    @Test @InSequence(5)
+    @Test
+    @InSequence(5)
     public void testClientSideNegotiation(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage()
@@ -230,10 +236,11 @@ public class EmployeeResourceTest {
                         "]}")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.getTestCase());
+        citrusFramework.run(citrus.build());
     }
 
-    @Test @InSequence(6)
+    @Test
+    @InSequence(6)
     public void testDeleteAll(@CitrusTest CitrusTestBuilder citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage()
@@ -252,7 +259,7 @@ public class EmployeeResourceTest {
                 .message(new HttpMessage("<employees></employees>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.getTestCase());
+        citrusFramework.run(citrus.build());
     }
 
 }

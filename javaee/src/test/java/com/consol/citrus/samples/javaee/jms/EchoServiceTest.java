@@ -17,9 +17,9 @@
 package com.consol.citrus.samples.javaee.jms;
 
 import com.consol.citrus.Citrus;
-import com.consol.citrus.arquillian.annotation.InjectCitrus;
+import com.consol.citrus.annotations.CitrusFramework;
+import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.CitrusTestBuilder;
-import com.consol.citrus.dsl.annotations.CitrusTest;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpointConfiguration;
 import com.consol.citrus.jms.message.JmsMessage;
@@ -41,7 +41,7 @@ import java.net.MalformedURLException;
 @RunWith(Arquillian.class)
 public class EchoServiceTest {
 
-    @InjectCitrus
+    @CitrusFramework
     private Citrus citrusFramework;
 
     @Resource(mappedName = "jms/queue/test")
@@ -83,7 +83,7 @@ public class EchoServiceTest {
                 .messageType(MessageType.PLAINTEXT)
                 .message(new JmsMessage(messageBody));
 
-        citrusFramework.run(citrus.getTestCase());
+        citrusFramework.run(citrus.build());
     }
 
     private void closeConnections() {

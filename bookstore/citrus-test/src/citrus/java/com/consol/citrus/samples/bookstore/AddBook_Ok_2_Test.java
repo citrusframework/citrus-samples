@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.bookstore;
 
 import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
-import com.consol.citrus.dsl.annotations.CitrusTest;
+import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.samples.bookstore.model.*;
 import com.consol.citrus.validation.MarshallingValidationCallback;
 import com.consol.citrus.ws.client.WebServiceClient;

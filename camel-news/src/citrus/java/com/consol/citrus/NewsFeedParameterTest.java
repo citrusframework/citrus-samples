@@ -17,7 +17,7 @@
 package com.consol.citrus;
 
 import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
-import com.consol.citrus.dsl.annotations.CitrusTest;
+import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.testng.CitrusParameters;
 import com.consol.citrus.ws.message.SoapMessageHeaders;

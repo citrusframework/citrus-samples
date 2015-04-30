@@ -18,7 +18,7 @@ package com.consol.citrus.samples.incident;
 
 import com.consol.citrus.annotations.CitrusXmlTest;
 import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
-import com.consol.citrus.dsl.annotations.CitrusTest;
+import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.ws.message.SoapMessageHeaders;

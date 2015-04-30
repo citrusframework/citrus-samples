@@ -21,8 +21,6 @@ import com.consol.citrus.testng.AbstractTestNGCitrusTest;
 import org.testng.annotations.Test;
 
 /**
- * TODO: Description
- *
  * @author Christoph Deppisch
  * @since 2010-02-24
  */
