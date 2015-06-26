@@ -16,9 +16,8 @@
 
   <properties>
     <jee.api.version>7.0</jee.api.version>
-    <arquillian.version>1.1.7.Final</arquillian.version>
+    <arquillian.version>1.1.8.Final</arquillian.version>
     <wildfly.version>8.1.0.Final</wildfly.version>
-    <resteasy.version>3.0.5.Final</resteasy.version>
   </properties>
 
   <dependencyManagement>
@@ -102,24 +101,6 @@
           <groupId>io.undertow</groupId>
           <artifactId>undertow-websockets-jsr</artifactId>
           <version>1.0.0.Beta25</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.resteasy</groupId>
-          <artifactId>resteasy-client</artifactId>
-          <version>${resteasy.version}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.resteasy</groupId>
-          <artifactId>resteasy-jaxb-provider</artifactId>
-          <version>${resteasy.version}</version>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.resteasy</groupId>
-          <artifactId>resteasy-json-p-provider</artifactId>
-          <version>${resteasy.version}</version>
           <scope>test</scope>
         </dependency>
         <dependency>
