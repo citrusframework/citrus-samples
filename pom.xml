@@ -74,29 +74,27 @@
             </execution>
           </executions>
         </plugin>
-        
+
         <plugin>
-          <groupId>org.mortbay.jetty</groupId>
+          <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <configuration>
-              <connectors>
-                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                  <port>${server.port}</port>
-                  <maxIdleTime>60000</maxIdleTime>
-                </connector>
-              </connectors>
-              <stopKey>citrus</stopKey>
-              <stopPort>${server.stop.port}</stopPort>
-              <systemProperties>
-                  <systemProperty>
-                    <name>file.encoding</name>
-                    <value>UTF-8</value>
-                  </systemProperty>
-                  <systemProperty>
-                    <name>log4j.configuration</name>
-                    <value>log4j.xml</value>
-                  </systemProperty>
-              </systemProperties>
+            <httpConnector>
+              <port>${server.port}</port>
+              <idleTimeout>60000</idleTimeout>
+            </httpConnector>
+            <stopKey>citrus</stopKey>
+            <stopPort>${server.stop.port}</stopPort>
+            <systemProperties>
+              <systemProperty>
+                <name>file.encoding</name>
+                <value>UTF-8</value>
+              </systemProperty>
+              <systemProperty>
+                <name>log4j.configuration</name>
+                <value>log4j.xml</value>
+              </systemProperty>
+            </systemProperties>
           </configuration>
         </plugin>
 
