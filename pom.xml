@@ -34,18 +34,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-            <groupId>com.consol.citrus.mvn</groupId>
-            <artifactId>citrus-maven-plugin</artifactId>
-            <version>${citrus.version}</version>
-            <configuration>
-                <author>Christoph Deppisch</author>
-                <targetPackage>com.consol.citrus.samples</targetPackage>
-                <framework>testng</framework>
-                <targetPackage>${citrus.test.package}</targetPackage>
-            </configuration>
-        </plugin>
-        
-        <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <configuration>
             <systemProperties>
