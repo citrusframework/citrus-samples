@@ -18,7 +18,7 @@ package com.consol.citrus.samples.javaee.jms;
 
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
-import com.consol.citrus.dsl.design.DefaultTestDesigner;
+import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpointConfiguration;
 import com.consol.citrus.jms.message.JmsMessage;
@@ -73,7 +73,7 @@ public class EchoServiceTest {
 
     @Test
     @CitrusTest
-    public void shouldBeAbleToSendMessage(@CitrusResource DefaultTestDesigner citrus) throws Exception {
+    public void shouldBeAbleToSendMessage(@CitrusResource TestDesigner citrus) throws Exception {
         String messageBody = "ping";
         citrus.send(jmsSyncEndpoint)
                 .messageType(MessageType.PLAINTEXT)

@@ -18,7 +18,7 @@ package com.consol.citrus.samples.javaee.employee;
 
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
-import com.consol.citrus.dsl.design.DefaultTestDesigner;
+import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.http.message.HttpMessage;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
@@ -71,7 +71,7 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(1)
     @CitrusTest
-    public void testPostAndGet(@CitrusResource DefaultTestDesigner citrus) {
+    public void testPostAndGet(@CitrusResource TestDesigner citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Penny&age=20")
                         .method(HttpMethod.POST)
@@ -127,7 +127,7 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(2)
     @CitrusTest
-    public void testGetSingle(@CitrusResource DefaultTestDesigner citrus) {
+    public void testGetSingle(@CitrusResource TestDesigner citrus) {
         citrus.send(serviceUri + "/1")
                 .message(new HttpMessage()
                         .method(HttpMethod.GET)
@@ -146,7 +146,7 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(3)
     @CitrusTest
-    public void testPut(@CitrusResource DefaultTestDesigner citrus) {
+    public void testPut(@CitrusResource TestDesigner citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Howard&age=21")
                         .method(HttpMethod.PUT)
@@ -188,7 +188,7 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(4)
     @CitrusTest
-    public void testDelete(@CitrusResource DefaultTestDesigner citrus) {
+    public void testDelete(@CitrusResource TestDesigner citrus) {
         citrus.send(serviceUri + "/Leonard")
                 .message(new HttpMessage()
                         .method(HttpMethod.DELETE));
@@ -225,7 +225,7 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(5)
     @CitrusTest
-    public void testClientSideNegotiation(@CitrusResource DefaultTestDesigner citrus) {
+    public void testClientSideNegotiation(@CitrusResource TestDesigner citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage()
                         .method(HttpMethod.GET)
@@ -246,7 +246,7 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(6)
     @CitrusTest
-    public void testDeleteAll(@CitrusResource DefaultTestDesigner citrus) {
+    public void testDeleteAll(@CitrusResource TestDesigner citrus) {
         citrus.send(serviceUri)
                 .message(new HttpMessage()
                         .method(HttpMethod.DELETE));
