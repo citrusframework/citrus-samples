@@ -67,6 +67,12 @@
       <version>2.1.1</version>
     </dependency>
 
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <optional>true</optional>
+    </dependency>
+
     <!-- Arquillian JUnit -->
     <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
