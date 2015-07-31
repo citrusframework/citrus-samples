@@ -32,6 +32,11 @@ sample applications.
 
 In each of the samples folders you will find the Maven pom.xml and ANT executable build script (build.xml) files.
 
+Development
+---------
+If you want to compile and build the citrus-samples locally you need to also have the latest SNAPSHOT version of Citrus core [repo][4] built on that machine. This is because the samples
+reference the latest SNAPSHOT versions of Citrus. Just clone and build and install the Citrus core [repo][4] locally before doing so with the citrus-samples.
+
 Overview
 ---------
 
@@ -40,14 +45,20 @@ The Citrus samples section contains following projects:
 * FlightBooking (/flightbooking)
 * Greeting (/greeting)
 * BookStore (/bookstore)
+* Incident (/incident)
+* Camel News (/camel-news)
+* Java EE (/javaee)
 
 The projects cover following message transports and technologies:
 
-| Transport          | JMS | Http | SOAP | Channel | JDBC | SYNC | ASYNC |
-|--------------------|:---:|:----:|:----:|:-------:|:----:|:----:|:-----:|
-| FlightBooking      |  X  |  X   |      |         |  X   |      |   X   |
-| Greeting           |  X  |      |      |    X    |      |  X   |   X   |
-| BookStore          |  X  |      |  X   |         |      |  X   |       |
+| Transport          | JMS | Http | SOAP | Channel | Camel | Arquillian | JDBC | SYNC | ASYNC |
+|--------------------|:---:|:----:|:----:|:-------:|:-----:|:----------:|:----:|:----:|:-----:|
+| FlightBooking      |  X  |  X   |      |         |       |            |  X   |      |   X   |
+| Greeting           |  X  |      |      |    X    |       |            |      |  X   |   X   |
+| BookStore          |  X  |      |  X   |         |       |            |      |  X   |       |
+| Incident           |  X  |  X   |  X   |         |       |            |      |  X   |   X   |
+| Camel News         |     |      |      |         |   X   |            |      |      |       |
+| Java EE            |  X  |  X   |      |         |       |     X      |      |  X   |   X   |
 
 Pick your sample application for try out and got to the respective folder.
 
@@ -95,3 +106,4 @@ a complete [reference manual][3].
  [1]: http://www.citrusframework.org/images/brand_logo.png "Citrus"
  [2]: http://www.citrusframework.org
  [3]: http://www.citrusframework.org/reference/html/
+ [4]: https://github.com/christophd/citrus
