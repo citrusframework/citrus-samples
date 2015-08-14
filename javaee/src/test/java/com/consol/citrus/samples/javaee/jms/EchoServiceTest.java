@@ -23,6 +23,7 @@ import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpointConfiguration;
 import com.consol.citrus.jms.message.JmsMessage;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.samples.javaee.config.CitrusConfig;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OverProtocol;
 import org.jboss.arquillian.junit.Arquillian;
@@ -55,7 +56,7 @@ public class EchoServiceTest {
     @OverProtocol("Servlet 3.0")
     public static WebArchive createDeployment() throws MalformedURLException {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(EchoService.class);
+                .addClasses(EchoService.class, CitrusConfig.class);
     }
 
     @Before

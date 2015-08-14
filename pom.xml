@@ -141,6 +141,11 @@
           <version>${citrus.version}</version>
         </dependency>
         <dependency>
+          <groupId>com.consol.citrus</groupId>
+          <artifactId>citrus-mail</artifactId>
+          <version>${citrus.version}</version>
+        </dependency>
+        <dependency>
           <groupId>com.consol.citrus.samples</groupId>
           <artifactId>citrus-samples-common</artifactId>
           <version>${citrus.version}</version>

@@ -16,20 +16,31 @@
 
 package com.consol.citrus.samples.javaee.employee.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+     "age",
+     "name",
+     "email",
+})
 @XmlRootElement
 public class Employee {
 
+   @XmlElement(required = true)
    private String name;
+   @XmlElement(required = true)
    private int age;
+   @XmlElement
+   private String email;
 
    public Employee() {
    }
 
-   public Employee(String name, int age) {
+   public Employee(String name, int age, String email) {
       this.name = name;
       this.age = age;
+      this.email = email;
    }
 
    public String getName() {
@@ -48,6 +59,14 @@ public class Employee {
       this.age = age;
    }
 
+   public String getEmail() {
+      return email;
+   }
+
+   public void setEmail(String email) {
+      this.email = email;
+   }
+
    @Override
    public String toString() {
       return name + "(" + age + ")";
@@ -59,6 +78,7 @@ public class Employee {
       int result = 1;
       result = prime * result + age;
       result = prime * result + ((name == null) ? 0 : name.hashCode());
+      result = prime * result + ((email == null) ? 0 : email.hashCode());
       return result;
    }
 
@@ -77,6 +97,11 @@ public class Employee {
          if (other.name != null)
             return false;
       } else if (!name.equals(other.name))
+         return false;
+      if (email == null) {
+         if (other.email != null)
+            return false;
+      } else if (!email.equals(other.email))
          return false;
       return true;
    }

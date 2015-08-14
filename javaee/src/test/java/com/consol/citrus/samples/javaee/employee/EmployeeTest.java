@@ -20,9 +20,12 @@ import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
 import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.http.message.HttpMessage;
+import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
+import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
 import com.consol.citrus.samples.javaee.employee.model.Employees;
+import com.consol.citrus.samples.javaee.mail.MailSessionBean;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -42,7 +45,7 @@ import java.net.URL;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class EmployeeResourceTest {
+public class EmployeeTest {
 
     @CitrusFramework
     private Citrus citrusFramework;
@@ -52,11 +55,14 @@ public class EmployeeResourceTest {
 
     private String serviceUri;
 
-    @Deployment
+    @CitrusEndpoint
+    private MailServer mailServer;
+
+    @Deployment(testable = false)
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(
-                        RegistryApplication.class, EmployeeResource.class, Employees.class,
+                        RegistryApplication.class, MailSessionBean.class, EmployeeResource.class, Employees.class,
                         Employee.class, EmployeeRepository.class);
     }
 
@@ -135,8 +141,8 @@ public class EmployeeResourceTest {
 
         citrus.receive(serviceUri + "/1")
                 .message(new HttpMessage("<employee>" +
-                        "<age>21</age>" +
-                        "<name>Leonard</name>" +
+                            "<age>21</age>" +
+                            "<name>Leonard</name>" +
                         "</employee>")
                         .statusCode(HttpStatus.OK));
 
@@ -148,9 +154,26 @@ public class EmployeeResourceTest {
     @CitrusTest
     public void testPut(@CitrusResource TestDesigner citrus) {
         citrus.send(serviceUri)
-                .message(new HttpMessage("name=Howard&age=21")
+                .fork(true)
+                .message(new HttpMessage("name=Howard&age=21&email=howard@example.com")
                         .method(HttpMethod.PUT)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED));
+
+        citrus.receive(mailServer)
+                .payload("<mail-message xmlns=\"http://www.citrusframework.org/schema/mail/message\">" +
+                            "<from>employee-registry@example.com</from>" +
+                            "<to>howard@example.com</to>" +
+                            "<cc></cc>" +
+                            "<bcc></bcc>" +
+                            "<subject>Welcome new employee</subject>" +
+                            "<body>" +
+                                "<contentType>text/plain; charset=us-ascii</contentType>" +
+                                "<content>We welcome you 'Howard' to our company - now get to work!</content>" +
+                            "</body>" +
+                        "</mail-message>")
+                .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Welcome new employee")
+                .header(CitrusMailMessageHeaders.MAIL_FROM, "employee-registry@example.com")
+                .header(CitrusMailMessageHeaders.MAIL_TO, "howard@example.com");
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage()
@@ -178,6 +201,7 @@ public class EmployeeResourceTest {
                             "<employee>" +
                                 "<age>21</age>" +
                                 "<name>Howard</name>" +
+                                "<email>howard@example.com</email>" +
                             "</employee>" +
                         "</employees>")
                         .statusCode(HttpStatus.OK));
@@ -215,6 +239,7 @@ public class EmployeeResourceTest {
                             "<employee>" +
                                 "<age>21</age>" +
                                 "<name>Howard</name>" +
+                                "<email>howard@example.com</email>" +
                             "</employee>" +
                         "</employees>")
                         .statusCode(HttpStatus.OK));
@@ -236,7 +261,7 @@ public class EmployeeResourceTest {
                 .message(new HttpMessage("{\"employee\":[" +
                             "{\"name\":\"Penny\",\"age\":20}," +
                             "{\"name\":\"Sheldon\",\"age\":22}," +
-                            "{\"name\":\"Howard\",\"age\":21}" +
+                            "{\"name\":\"Howard\",\"age\":21,\"email\":\"howard@example.com\"}" +
                         "]}")
                         .statusCode(HttpStatus.OK));
 

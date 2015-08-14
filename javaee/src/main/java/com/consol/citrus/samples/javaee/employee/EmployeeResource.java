@@ -18,6 +18,8 @@ package com.consol.citrus.samples.javaee.employee;
 
 import com.consol.citrus.samples.javaee.employee.model.Employee;
 import com.consol.citrus.samples.javaee.employee.model.Employees;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -28,9 +30,12 @@ import javax.ws.rs.core.MediaType;
 @RequestScoped
 public class EmployeeResource {
 
+   /** Logger */
+   private static Logger log = LoggerFactory.getLogger(EmployeeResource.class);
+
    // Ideally this state should be stored in a database
    @EJB
-   EmployeeRepository bean;
+   private EmployeeRepository bean;
 
    @GET
    @Produces({ "application/xml", "application/json" })
@@ -51,15 +56,15 @@ public class EmployeeResource {
    @POST
    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
    public void addToList(@FormParam("name") String name,
-         @FormParam("age") int age) {
-      System.out.println("Creating a new item: " + name);
-      bean.addEmployee(new Employee(name, age));
+         @FormParam("age") int age, @FormParam("email") String email) {
+      log.info("Creating a new employee: " + name);
+      bean.addEmployee(new Employee(name, age, email));
    }
 
    @PUT
    public void putToList(@FormParam("name") String name,
-         @FormParam("age") int age) {
-      addToList(name, age);
+         @FormParam("age") int age, @FormParam("email") String email) {
+      addToList(name, age, email);
    }
 
    @DELETE
