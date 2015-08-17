@@ -43,8 +43,8 @@ public class AddBook_Ok_2_Test extends TestNGCitrusTestBuilder {
     @Autowired
     private Marshaller marshaller;
 
-    @CitrusTest
-    public void AddBook_Ok_2_Test() {
+    @CitrusTest(name = "AddBook_Ok_2_Test")
+    public void addBookTest() {
         String isbn = "978-citrus:randomNumber(10)";
         
         send(bookStoreClient)
