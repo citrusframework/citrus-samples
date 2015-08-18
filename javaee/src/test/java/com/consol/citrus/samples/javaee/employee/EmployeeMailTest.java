@@ -116,7 +116,7 @@ public class EmployeeMailTest {
                         "</employees>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.build());
+        citrusFramework.run(citrus.getTestCase());
     }
 
 }

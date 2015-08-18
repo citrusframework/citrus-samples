@@ -84,7 +84,7 @@ public class EchoServiceTest {
                 .messageType(MessageType.PLAINTEXT)
                 .message(new JmsMessage(messageBody));
 
-        citrusFramework.run(citrus.build());
+        citrusFramework.run(citrus.getTestCase());
     }
 
     private void closeConnections() {

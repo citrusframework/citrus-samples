@@ -127,7 +127,7 @@ public class EmployeeTest {
                         "</employees>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.build());
+        citrusFramework.run(citrus.getTestCase());
     }
 
     @Test
@@ -146,7 +146,7 @@ public class EmployeeTest {
                         "</employee>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.build());
+        citrusFramework.run(citrus.getTestCase());
     }
 
     @Test
@@ -206,7 +206,7 @@ public class EmployeeTest {
                         "</employees>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.build());
+        citrusFramework.run(citrus.getTestCase());
     }
 
     @Test
@@ -244,7 +244,7 @@ public class EmployeeTest {
                         "</employees>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.build());
+        citrusFramework.run(citrus.getTestCase());
     }
 
     @Test
@@ -265,7 +265,7 @@ public class EmployeeTest {
                         "]}")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.build());
+        citrusFramework.run(citrus.getTestCase());
     }
 
     @Test
@@ -289,7 +289,7 @@ public class EmployeeTest {
                 .message(new HttpMessage("<employees></employees>")
                         .statusCode(HttpStatus.OK));
 
-        citrusFramework.run(citrus.build());
+        citrusFramework.run(citrus.getTestCase());
     }
 
 }
