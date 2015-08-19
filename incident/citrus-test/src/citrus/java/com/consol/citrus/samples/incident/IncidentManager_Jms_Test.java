@@ -16,9 +16,9 @@
 
 package com.consol.citrus.samples.incident;
 
-import com.consol.citrus.annotations.CitrusXmlTest;
-import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.annotations.CitrusXmlTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
@@ -38,7 +38,7 @@ import java.util.UUID;
  * @since 2.0
  */
 @Test
-public class IncidentManager_Jms_Test extends TestNGCitrusTestBuilder {
+public class IncidentManager_Jms_Test extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("incidentJmsEndpoint")
@@ -54,58 +54,24 @@ public class IncidentManager_Jms_Test extends TestNGCitrusTestBuilder {
 
     @CitrusTest(name = "IncidentManager_Jms_Ok_2_Test")
     public void testIncidentManager_Jms_Ok_2() {
-        OpenIncident incident = new OpenIncident();
-        incident.setIncident(new IncidentType());
-        incident.getIncident().setTicketId(UUID.randomUUID().toString());
-        incident.getIncident().setCaptured(Calendar.getInstance());
-        incident.getIncident().setComponent(ComponentType.NETWORK);
-        incident.getIncident().setState(StateType.NEW);
-        incident.setCustomer(new CustomerType());
-        incident.getCustomer().setId(1000);
-        incident.getCustomer().setFirstname("Christoph");
-        incident.getCustomer().setLastname("Deppisch");
-        incident.getCustomer().setAddress("Franziskanerstr. 38, 80995 München");
-        incident.getIncident().setDescription("Something went wrong!");
-
+        OpenIncident incident = createOpenIncidentTestRequest();
         send(incidentJmsEndpoint)
             .fork(true)
             .payloadModel(incident)
             .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident");
 
-
-        AnalyseIncident analyseIncident = new AnalyseIncident();
-        analyseIncident.setIncident(new org.citrusframework.schema.samples.networkservice.v1.IncidentType());
-        analyseIncident.getIncident().setTicketId(incident.getIncident().getTicketId());
-        analyseIncident.getIncident().setDescription(incident.getIncident().getDescription());
-        analyseIncident.setNetwork(new NetworkType());
-        analyseIncident.getNetwork().setType(NetworkComponentType.valueOf(incident.getIncident().getComponent().name()));
-        analyseIncident.getNetwork().setLineId("@ignore@");
-        analyseIncident.getNetwork().setConnection("@ignore@");
-
+        AnalyseIncident analyseIncident = createAnalyseIncidentTestRequest(incident);
         receive(networkHttpServer)
             .payloadModel(analyseIncident)
             .extractFromPayload("net:AnalyseIncident/net:network/net:lineId", "lineId")
             .extractFromPayload("net:AnalyseIncident/net:network/net:connection", "connection");
 
-        AnalyseIncidentResponse analyseIncidentResponse = new AnalyseIncidentResponse();
-        analyseIncidentResponse.setTicketId(incident.getIncident().getTicketId());
-        analyseIncidentResponse.setResult(new AnalyseIncidentResultType());
-        analyseIncidentResponse.getResult().setLineId("${lineId}");
-        analyseIncidentResponse.getResult().setBandwidth(12000);
-        analyseIncidentResponse.getResult().setLineCheck(CheckType.OK);
-        analyseIncidentResponse.getResult().setConnectionCheck(CheckType.OK);
-        analyseIncidentResponse.getResult().setFieldForceRequired(false);
-        analyseIncidentResponse.getResult().setResultCode("CODE_citrus:randomNumber(4)");
-        analyseIncidentResponse.getResult().setSolved(true);
-
+        AnalyseIncidentResponse analyseIncidentResponse = createAnalyseIncidentTestResponse(incident);
         send(networkHttpServer)
             .payloadModel(analyseIncidentResponse)
             .header("Content-Type", "application/xml");
 
-        OpenIncidentResponse response = new OpenIncidentResponse();
-        response.setScheduled(TestHelper.getDefaultScheduleTime());
-        response.setTicketId(incident.getIncident().getTicketId());
-
+        OpenIncidentResponse response = createOpenIncidentTestResponse(incident);
         receive(incidentJmsEndpoint)
             .payloadModel(response);
     }
@@ -129,6 +95,59 @@ public class IncidentManager_Jms_Test extends TestNGCitrusTestBuilder {
                             "<faultstring>@startsWith('Unmarshalling Error')@</faultstring>" +
                         "</SOAP-ENV:Fault>")
                 .header("SOAPJMS_isFault", "true");
+    }
+
+    private OpenIncident createOpenIncidentTestRequest() {
+        OpenIncident incident = new OpenIncident();
+        incident.setIncident(new IncidentType());
+        incident.getIncident().setTicketId(UUID.randomUUID().toString());
+        incident.getIncident().setCaptured(Calendar.getInstance());
+        incident.getIncident().setComponent(ComponentType.NETWORK);
+        incident.getIncident().setState(StateType.NEW);
+        incident.setCustomer(new CustomerType());
+        incident.getCustomer().setId(1000);
+        incident.getCustomer().setFirstname("Christoph");
+        incident.getCustomer().setLastname("Deppisch");
+        incident.getCustomer().setAddress("Franziskanerstr. 38, 80995 München");
+        incident.getIncident().setDescription("Something went wrong!");
+
+        return incident;
+    }
+
+    private AnalyseIncident createAnalyseIncidentTestRequest(OpenIncident incident) {
+        AnalyseIncident analyseIncident = new AnalyseIncident();
+        analyseIncident.setIncident(new org.citrusframework.schema.samples.networkservice.v1.IncidentType());
+        analyseIncident.getIncident().setTicketId(incident.getIncident().getTicketId());
+        analyseIncident.getIncident().setDescription(incident.getIncident().getDescription());
+        analyseIncident.setNetwork(new NetworkType());
+        analyseIncident.getNetwork().setType(NetworkComponentType.valueOf(incident.getIncident().getComponent().name()));
+        analyseIncident.getNetwork().setLineId("@ignore@");
+        analyseIncident.getNetwork().setConnection("@ignore@");
+
+        return  analyseIncident;
+    }
+
+    private AnalyseIncidentResponse createAnalyseIncidentTestResponse(OpenIncident incident) {
+        AnalyseIncidentResponse analyseIncidentResponse = new AnalyseIncidentResponse();
+        analyseIncidentResponse.setTicketId(incident.getIncident().getTicketId());
+        analyseIncidentResponse.setResult(new AnalyseIncidentResultType());
+        analyseIncidentResponse.getResult().setLineId("${lineId}");
+        analyseIncidentResponse.getResult().setBandwidth(12000);
+        analyseIncidentResponse.getResult().setLineCheck(CheckType.OK);
+        analyseIncidentResponse.getResult().setConnectionCheck(CheckType.OK);
+        analyseIncidentResponse.getResult().setFieldForceRequired(false);
+        analyseIncidentResponse.getResult().setResultCode("CODE_citrus:randomNumber(4)");
+        analyseIncidentResponse.getResult().setSolved(true);
+
+        return analyseIncidentResponse;
+    }
+
+    private OpenIncidentResponse createOpenIncidentTestResponse(OpenIncident incident) {
+        OpenIncidentResponse response = new OpenIncidentResponse();
+        response.setScheduled(TestHelper.getDefaultScheduleTime());
+        response.setTicketId(incident.getIncident().getTicketId());
+
+        return response;
     }
 
 }
