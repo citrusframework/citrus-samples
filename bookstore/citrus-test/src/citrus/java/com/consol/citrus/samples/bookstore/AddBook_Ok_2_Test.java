@@ -16,8 +16,8 @@
 
 package com.consol.citrus.samples.bookstore;
 
-import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.samples.bookstore.model.*;
 import com.consol.citrus.validation.MarshallingValidationCallback;
 import com.consol.citrus.ws.client.WebServiceClient;
@@ -34,7 +34,7 @@ import java.util.Map;
  * @author Christoph Deppisch
  */
 @Test
-public class AddBook_Ok_2_Test extends TestNGCitrusTestBuilder {
+public class AddBook_Ok_2_Test extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("bookStoreClient")

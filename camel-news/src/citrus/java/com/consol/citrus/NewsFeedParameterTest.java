@@ -16,8 +16,8 @@
 
 package com.consol.citrus;
 
-import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.testng.CitrusParameters;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * @since 2.1
  */
 @Test
-public class NewsFeedParameterTest extends TestNGCitrusTestBuilder {
+public class NewsFeedParameterTest extends TestNGCitrusTestDesigner {
 
     @Autowired
     private JmsEndpoint newsJmsEndpoint;

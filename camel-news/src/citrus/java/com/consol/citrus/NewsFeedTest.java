@@ -16,8 +16,8 @@
 
 package com.consol.citrus;
 
-import com.consol.citrus.dsl.TestNGCitrusTestBuilder;
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
 import org.testng.annotations.Test;
 
@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
  * @since 2.1
  */
 @Test
-public class NewsFeedTest extends TestNGCitrusTestBuilder {
+public class NewsFeedTest extends TestNGCitrusTestDesigner {
 
     @CitrusTest(name = "NewsFeed_Ok_Test")
     public void newsFeed_Ok_Test() {
