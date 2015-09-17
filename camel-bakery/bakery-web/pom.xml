@@ -1,0 +1,162 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>citrus-camel-docker</artifactId>
+    <groupId>com.consol.citrus.samples</groupId>
+    <version>2.4-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.consol.citrus.samples</groupId>
+  <artifactId>bakery-web</artifactId>
+  <name>bakery-web</name>
+  <packaging>war</packaging>
+
+  <properties>
+    <application.server>tomcat-7.0</application.server>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-spring</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-camel</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-broker</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jolokia</groupId>
+      <artifactId>jolokia-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jolokia</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <configuration>
+          <watchInterval>500</watchInterval>
+          <logDate>default</logDate>
+          <verbose>true</verbose>
+          <autoPull>always</autoPull>
+          <images>
+            <!-- Docker images to use -->
+            <image>
+              <!-- App-Server image -->
+              <alias>server</alias>
+              <name>consol/${application.server}:latest</name>
+              <run>
+                <namingStrategy>none</namingStrategy>
+                <volumes>
+                  <from>
+                    <image>application</image>
+                  </from>
+                </volumes>
+                <env>
+                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                </env>
+                <ports>
+                  <!-- Port mappings: Container internal port (which must be exposed) will be
+                 dynamically mapped and this (random) port will be assigned to the maven variable
+                 ${application.port}. Multiple port mappings can be specified here-->
+                  <port>${application.host}:${application.port}:8080</port>
+                </ports>
+                <wait>
+                  <!-- The plugin waits until this URL is reachable via HTTP ... -->
+                  <log>Server startup</log>
+                  <http>
+                    <url>http://${application.host}:${application.port}/bakery-web/jolokia</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>red</color>
+                </log>
+              </run>
+            </image>
+            <image>
+              <alias>application</alias>
+              <!-- Application image -->
+              <name>citrus/${project.artifactId}:${project.version}</name>
+              <build>
+                <tags>
+                  <tag>latest</tag>
+                </tags>
+                <assembly>
+                  <descriptorRef>artifact</descriptorRef>
+                </assembly>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>docker</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jolokia</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <!-- Connect this plugin to the maven lifecycle around the integration-test phase. I.e. start the container
+                 in pre-integration-test and stop it in post-integration-test. -->
+            <executions>
+              <execution>
+                <id>start</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>build</goal>
+                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

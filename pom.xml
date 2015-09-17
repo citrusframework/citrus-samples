@@ -21,6 +21,7 @@
     <module>bookstore</module>
     <module>incident</module>
     <module>camel-news</module>
+    <module>camel-bakery</module>
   </modules>
   
   <properties>
@@ -80,12 +81,13 @@
                 <value>UTF-8</value>
               </systemProperty>
               <systemProperty>
-                <name>log4j.configuration</name>
-                <value>log4j.xml</value>
-              </systemProperty>
-              <systemProperty>
                 <name>org.eclipse.jetty.annotations.maxWait</name>
                 <value>120</value>
+              </systemProperty>
+              <!-- enable easy JMX connection to JConsole -->
+              <systemProperty>
+                <name>com.sun.management.jmxremote</name>
+                <value />
               </systemProperty>
             </systemProperties>
           </configuration>
