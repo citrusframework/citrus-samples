@@ -10,12 +10,16 @@
   </parent>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>bakery-web</artifactId>
-  <name>bakery-web</name>
+  <artifactId>factory-worker</artifactId>
+  <name>factory-worker</name>
   <packaging>war</packaging>
 
   <properties>
     <application.server>tomcat-7.0</application.server>
+    <factory.type>cake</factory.type>
+    <factory.costs>10000</factory.costs>
+    <reporting.host>localhost</reporting.host>
+    <reporting.port>8888</reporting.port>
   </properties>
 
   <dependencies>
@@ -26,6 +30,10 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-http</artifactId>
     </dependency>
 
     <dependency>
@@ -49,20 +57,40 @@
   </dependencies>
 
   <build>
-    <finalName>bakery</finalName>
+    <finalName>factory</finalName>
 
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <warName>bakery</warName>
+          <warName>factory</warName>
         </configuration>
       </plugin>
 
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <systemProperties>
+            <systemProperty>
+              <name>factory.type</name>
+              <value>${factory.type}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>factory.costs</name>
+              <value>${factory.costs}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>reporting.host</name>
+              <value>${reporting.host}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>reporting.port</name>
+              <value>${reporting.port}</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -99,7 +127,7 @@
                   <!-- The plugin waits until this URL is reachable via HTTP ... -->
                   <log>Server startup</log>
                   <http>
-                    <url>http://${application.host}:${application.port}/bakery/jolokia</url>
+                    <url>http://${application.host}:${application.port}/factory/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>

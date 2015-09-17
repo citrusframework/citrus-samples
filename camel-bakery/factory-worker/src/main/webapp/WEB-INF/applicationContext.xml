@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+    <property-placeholder xmlns="http://www.springframework.org/schema/context" location="classpath:application.properties"/>
+
+    <component-scan xmlns="http://www.springframework.org/schema/context" base-package="com.consol.citrus.samples.bakery.routes"/>
+
+    <!-- Embedded ActiveMQ Broker -->
+    <broker xmlns="http://activemq.apache.org/schema/core" useJmx="true" persistent="false">
+      <transportConnectors>
+        <transportConnector uri="${jms.broker.url}"/>
+      </transportConnectors>
+    </broker>
+
+    <bean id="jms" class="org.apache.activemq.camel.component.ActiveMQComponent">
+      <property name="brokerURL" value="failover:${jms.broker.url}"/>
+    </bean>
+
+    <!-- Camel context -->
+    <camelContext id="factory-worker" xmlns="http://camel.apache.org/schema/spring">
+        <contextScan/>
+    </camelContext>
+
+</beans>

@@ -10,14 +10,20 @@
   </parent>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-camel-docker</artifactId>
-  <name>citrus-camel-docker</name>
+  <artifactId>citrus-camel-bakery</artifactId>
+  <name>citrus-camel-bakery</name>
   <packaging>pom</packaging>
 
   <modules>
     <module>bakery-web</module>
     <module>bakery-report</module>
+    <module>factory-worker</module>
   </modules>
+
+  <properties>
+    <application.host>localhost</application.host>
+    <application.port>${server.port}</application.port>
+  </properties>
 
   <build>
     <pluginManagement>
@@ -47,6 +53,11 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-servlet</artifactId>
+        <version>${apache.camel.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-http</artifactId>
         <version>${apache.camel.version}</version>
       </dependency>
 
