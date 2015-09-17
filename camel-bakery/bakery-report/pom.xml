@@ -10,8 +10,8 @@
   </parent>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>bakery-web</artifactId>
-  <name>bakery-web</name>
+  <artifactId>bakery-report</artifactId>
+  <name>bakery-report</name>
   <packaging>war</packaging>
 
   <properties>
@@ -27,14 +27,9 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-spring</artifactId>
     </dependency>
-
     <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-broker</artifactId>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-servlet</artifactId>
     </dependency>
 
     <dependency>
@@ -49,14 +44,14 @@
   </dependencies>
 
   <build>
-    <finalName>bakery</finalName>
+    <finalName>bakery-report</finalName>
 
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <warName>bakery</warName>
+          <warName>bakery-report</warName>
         </configuration>
       </plugin>
 
@@ -99,7 +94,7 @@
                   <!-- The plugin waits until this URL is reachable via HTTP ... -->
                   <log>Server startup</log>
                   <http>
-                    <url>http://${application.host}:${application.port}/bakery/jolokia</url>
+                    <url>http://${application.host}:${application.port}/bakery-report/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
