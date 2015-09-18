@@ -35,6 +35,6 @@ public class FactoryWorkerRoute extends RouteBuilder {
             .delay(simple("{{env:FACTORY_COSTS:1000}}"))
             .setHeader(Exchange.HTTP_METHOD, constant("GET"))
             .setBody(constant(""))
-            .to("http://{{env:REPORT_PORT_8080_TCP_ADDR:localhost}}:{{env:REPORT_PORT_8080_TCP_PORT:18002}}/services/reporting");
+            .to("http://{{env:REPORT_PORT_8080_TCP_ADDR:localhost}}:{{env:REPORT_PORT_8080_TCP_PORT:18002}}/report/services/reporting");
     }
 }

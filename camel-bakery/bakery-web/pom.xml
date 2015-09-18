@@ -63,6 +63,11 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <webAppConfig>
+            <contextPath>/bakery</contextPath>
+          </webAppConfig>
+        </configuration>
       </plugin>
 
       <plugin>

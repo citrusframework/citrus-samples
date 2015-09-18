@@ -10,8 +10,8 @@
   </parent>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>factory-worker</artifactId>
-  <name>factory-worker</name>
+  <artifactId>bakery-worker</artifactId>
+  <name>bakery-worker</name>
   <packaging>war</packaging>
 
   <properties>
@@ -57,14 +57,14 @@
   </dependencies>
 
   <build>
-    <finalName>factory</finalName>
+    <finalName>worker</finalName>
 
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <warName>factory</warName>
+          <warName>worker</warName>
         </configuration>
       </plugin>
 
@@ -72,6 +72,9 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
+          <webAppConfig>
+            <contextPath>/worker</contextPath>
+          </webAppConfig>
           <systemProperties>
             <systemProperty>
               <name>factory.type</name>
@@ -127,7 +130,7 @@
                   <!-- The plugin waits until this URL is reachable via HTTP ... -->
                   <log>Server startup</log>
                   <http>
-                    <url>http://${application.host}:${application.port}/factory/jolokia</url>
+                    <url>http://${application.host}:${application.port}/worker/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>

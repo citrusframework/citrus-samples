@@ -17,7 +17,7 @@
   <modules>
     <module>bakery-web</module>
     <module>bakery-report</module>
-    <module>factory-worker</module>
+    <module>bakery-worker</module>
     <module>bakery-integration</module>
   </modules>
 

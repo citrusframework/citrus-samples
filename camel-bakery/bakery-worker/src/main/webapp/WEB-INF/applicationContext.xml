@@ -23,7 +23,7 @@
     </bean>
 
     <!-- Camel context -->
-    <camelContext id="factory-worker" xmlns="http://camel.apache.org/schema/spring">
+    <camelContext id="bakery-worker" xmlns="http://camel.apache.org/schema/spring">
         <contextScan/>
     </camelContext>
 

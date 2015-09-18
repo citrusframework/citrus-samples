@@ -106,13 +106,13 @@
               </run>
             </image>
             <image>
-              <alias>factory-worker-server</alias>
+              <alias>bakery-worker-server</alias>
               <name>consol/${application.server}:latest</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <volumes>
                   <from>
-                    <image>factory-worker</image>
+                    <image>bakery-worker</image>
                   </from>
                 </volumes>
                 <links>
@@ -124,12 +124,12 @@
                   <FACTORY_COSTS>5000</FACTORY_COSTS>
                 </env>
                 <ports>
-                  <port>${factory-worker.host}:${factory-worker.port}:8080</port>
+                  <port>${bakery-worker.host}:${bakery-worker.port}:8080</port>
                 </ports>
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://${factory-worker.host}:${factory-worker.port}/factory/jolokia</url>
+                    <url>http://${bakery-worker.host}:${bakery-worker.port}/worker/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -151,8 +151,8 @@
               <name>citrus/bakery-report:${project.version}</name>
             </image>
             <image>
-              <alias>factory-worker</alias>
-              <name>citrus/factory-worker:${project.version}</name>
+              <alias>bakery-worker</alias>
+              <name>citrus/bakery-worker:${project.version}</name>
             </image>
           </images>
         </configuration>
