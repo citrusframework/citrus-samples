@@ -36,7 +36,7 @@ public class BakeryReportRoute extends RouteBuilder implements Processor {
 
     @Override
     public void configure() throws Exception {
-        from("servlet:///report?servletName=bakery-report").routeId("bakery_report")
+        from("servlet:///reporting?servletName=bakery-report").routeId("bakery_report")
             .process(this);
     }
 

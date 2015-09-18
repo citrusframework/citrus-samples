@@ -25,22 +25,16 @@ import org.springframework.stereotype.Component;
  * @since 2.3.1
  */
 @Component
-public class FactoryWorkerRoute extends RouteBuilder implements Processor {
+public class FactoryWorkerRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("jms:queue:factory.{{factory.type}}.inbound").routeId("{{factory.type}}_factory")
+        from("jms:queue:factory.{{env:FACTORY_TYPE:default}}.inbound").routeId("{{env:FACTORY_TYPE:default}}_factory")
             .setHeader("name", xpath("order/@type"))
-            .setHeader("amount", xpath("order/amount"))
-            .process(this)
-            .delay(simple("{{factory.costs}}"))
-                .to("http://{{reporting.host}}:{{reporting.port}}/services/report");
-    }
-
-    @Override
-    public void process(Exchange exchange) throws Exception {
-        Message in = exchange.getIn();
-        in.setHeader(Exchange.HTTP_QUERY, String.format("name=%s&amount=%s", in.getHeader("name"), in.getHeader("amount")));
-        in.setBody("");
+            .setHeader("amount", xpath("order/amount/text()"))
+            .delay(simple("{{env:FACTORY_COSTS:1000}}"))
+            .setHeader(Exchange.HTTP_METHOD, constant("GET"))
+            .setBody(constant(""))
+            .to("http://{{env:REPORT_PORT_8080_TCP_ADDR:localhost}}:{{env:REPORT_PORT_8080_TCP_PORT:18002}}/services/reporting");
     }
 }

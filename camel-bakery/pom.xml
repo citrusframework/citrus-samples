@@ -18,6 +18,7 @@
     <module>bakery-web</module>
     <module>bakery-report</module>
     <module>factory-worker</module>
+    <module>bakery-integration</module>
   </modules>
 
   <properties>
@@ -31,7 +32,7 @@
         <plugin>
           <groupId>org.jolokia</groupId>
           <artifactId>docker-maven-plugin</artifactId>
-          <version>0.13.4</version>
+          <version>0.13.5-SNAPSHOT</version>
         </plugin>
       </plugins>
     </pluginManagement>

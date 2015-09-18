@@ -44,14 +44,14 @@
   </dependencies>
 
   <build>
-    <finalName>bakery-report</finalName>
+    <finalName>report</finalName>
 
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <warName>bakery-report</warName>
+          <warName>report</warName>
         </configuration>
       </plugin>
 
@@ -94,7 +94,7 @@
                   <!-- The plugin waits until this URL is reachable via HTTP ... -->
                   <log>Server startup</log>
                   <http>
-                    <url>http://${application.host}:${application.port}/bakery-report/jolokia</url>
+                    <url>http://${application.host}:${application.port}/report/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
