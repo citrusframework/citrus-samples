@@ -15,6 +15,7 @@
 
   <properties>
     <application.server>tomcat-7.0</application.server>
+    <message.broker>activemq-5.12</message.broker>
   </properties>
 
   <dependencies>
@@ -41,6 +42,31 @@
           <logDate>default</logDate>
           <verbose>true</verbose>
           <images>
+            <image>
+              <alias>activemq-broker</alias>
+              <name>consol/${message.broker}:latest</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <ports>
+                  <port>${activemq.host}:61616:61616</port>
+                  <port>${activemq.host}:${activemq.port}:8161</port>
+                </ports>
+                <wait>
+                  <log>Broker startup</log>
+                  <http>
+                    <url>http://${activemq.host}:${activemq.port}/admin</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>red</color>
+                </log>
+              </run>
+            </image>
             <image>
               <alias>bakery-web-server</alias>
               <name>consol/${application.server}:latest</name>
