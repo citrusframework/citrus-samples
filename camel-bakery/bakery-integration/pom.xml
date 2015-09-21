@@ -17,23 +17,19 @@
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-core</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-http</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-java-dsl</artifactId>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-broker</artifactId>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
