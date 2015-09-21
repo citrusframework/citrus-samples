@@ -98,13 +98,13 @@
                   <!-- Port mappings: Container internal port (which must be exposed) will be
                  dynamically mapped and this (random) port will be assigned to the maven variable
                  ${application.port}. Multiple port mappings can be specified here-->
-                  <port>${application.host}:${application.port}:8080</port>
+                  <port>${application.port}:8080</port>
                 </ports>
                 <wait>
                   <!-- The plugin waits until this URL is reachable via HTTP ... -->
                   <log>Server startup</log>
                   <http>
-                    <url>http://${application.host}:${application.port}/bakery/jolokia</url>
+                    <url>http://localhost:${application.port}/bakery/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>

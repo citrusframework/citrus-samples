@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  * @since 2.3.1
  */
 @Test
-public class Bakery_PlaceOrders_OK_Test extends TestNGCitrusTestDesigner {
+public class PlaceUnknownOrder_OK_Test extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")
@@ -43,9 +43,12 @@ public class Bakery_PlaceOrders_OK_Test extends TestNGCitrusTestDesigner {
     private HttpClient reportingClient;
 
     @CitrusTest
-    public void placeCakeOrder() {
+    public void placeUnknownOrderType() {
         send(bakeryOrderEndpoint)
-            .payload("<order type=\"cake\"><amount>1</amount></order>");
+            .payload("<order type=\"baguette\"><amount>1</amount></order>");
+
+        receive("jms:factory.unknown.inbound")
+            .payload("<order type=\"baguette\"><amount>1</amount></order>");
 
         send(reportingClient)
             .http()
@@ -56,40 +59,6 @@ public class Bakery_PlaceOrders_OK_Test extends TestNGCitrusTestDesigner {
             .messageType(MessageType.JSON)
             .http()
                 .status(HttpStatus.OK)
-                .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": 1}");
-    }
-
-    @CitrusTest
-    public void placePretzelOrder() {
-        send(bakeryOrderEndpoint)
-                .payload("<order type=\"pretzel\"><amount>1</amount></order>");
-
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .queryParam("type", "json");
-
-        receive(reportingClient)
-                .messageType(MessageType.JSON)
-                .http()
-                .status(HttpStatus.OK)
-                .payload("{\"pretzel\": 1,\"bread\": \"@ignore@\",\"cake\": \"@ignore@\"}");
-    }
-
-    @CitrusTest
-    public void placeBreadOrder() {
-        send(bakeryOrderEndpoint)
-                .payload("<order type=\"bread\"><amount>1</amount></order>");
-
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .queryParam("type", "json");
-
-        receive(reportingClient)
-                .messageType(MessageType.JSON)
-                .http()
-                .status(HttpStatus.OK)
-                .payload("{\"pretzel\": \"@ignore@\",\"bread\": 1,\"cake\": \"@ignore@\"}");
+                .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": \"@ignore@\"}");
     }
 }

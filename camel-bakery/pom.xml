@@ -21,11 +21,6 @@
     <module>bakery-integration</module>
   </modules>
 
-  <properties>
-    <application.host>localhost</application.host>
-    <application.port>${server.port}</application.port>
-  </properties>
-
   <build>
     <pluginManagement>
       <plugins>
