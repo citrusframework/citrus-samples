@@ -23,7 +23,7 @@
 
     <!-- JMS connection factory and message broker -->
     <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-      <property name="brokerURL" value="${jms.broker.url}" />
+      <property name="brokerURL" value="tcp://${activemq.server.host}:${activemq.server.port}" />
       <property name="watchTopicAdvisories" value="false"/>
     </bean>
   
@@ -34,5 +34,5 @@
     <!-- Reporting client -->
     <citrus-http:client id="reportingClient"
                         request-method="GET"
-                        request-url="http://localhost:32830/report/services/reporting"/>
+                        request-url="http://${report.server.host}:${report.server.port}/report/services/reporting"/>
 </beans>

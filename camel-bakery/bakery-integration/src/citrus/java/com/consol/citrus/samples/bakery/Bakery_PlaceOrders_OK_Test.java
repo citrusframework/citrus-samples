@@ -18,9 +18,13 @@ package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
+import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
 /**
@@ -34,9 +38,58 @@ public class Bakery_PlaceOrders_OK_Test extends TestNGCitrusTestDesigner {
     @Qualifier("bakeryOrderEndpoint")
     private JmsEndpoint bakeryOrderEndpoint;
 
+    @Autowired
+    @Qualifier("reportingClient")
+    private HttpClient reportingClient;
+
     @CitrusTest
-    public void placeOrders() {
+    public void placeCakeOrder() {
         send(bakeryOrderEndpoint)
-            .payload("<order type=\"cake\"><amount>3</amount></order>");
+            .payload("<order type=\"cake\"><amount>1</amount></order>");
+
+        send(reportingClient)
+            .http()
+                .method(HttpMethod.GET)
+                .queryParam("type", "json");
+
+        receive(reportingClient)
+            .messageType(MessageType.JSON)
+            .http()
+                .status(HttpStatus.OK)
+                .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": 1}");
+    }
+
+    @CitrusTest
+    public void placePretzelOrder() {
+        send(bakeryOrderEndpoint)
+                .payload("<order type=\"pretzel\"><amount>1</amount></order>");
+
+        send(reportingClient)
+                .http()
+                .method(HttpMethod.GET)
+                .queryParam("type", "json");
+
+        receive(reportingClient)
+                .messageType(MessageType.JSON)
+                .http()
+                .status(HttpStatus.OK)
+                .payload("{\"pretzel\": 1,\"bread\": \"@ignore@\",\"cake\": \"@ignore@\"}");
+    }
+
+    @CitrusTest
+    public void placeBreadOrder() {
+        send(bakeryOrderEndpoint)
+                .payload("<order type=\"bread\"><amount>1</amount></order>");
+
+        send(reportingClient)
+                .http()
+                .method(HttpMethod.GET)
+                .queryParam("type", "json");
+
+        receive(reportingClient)
+                .messageType(MessageType.JSON)
+                .http()
+                .status(HttpStatus.OK)
+                .payload("{\"pretzel\": \"@ignore@\",\"bread\": 1,\"cake\": \"@ignore@\"}");
     }
 }

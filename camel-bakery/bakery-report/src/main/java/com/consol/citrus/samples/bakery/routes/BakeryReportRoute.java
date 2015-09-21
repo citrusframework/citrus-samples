@@ -18,6 +18,8 @@ package com.consol.citrus.samples.bakery.routes;
 
 import org.apache.camel.*;
 import org.apache.camel.builder.RouteBuilder;
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -29,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 2.3.1
  */
 @Component
-public class BakeryReportRoute extends RouteBuilder implements Processor {
+public class BakeryReportRoute extends RouteBuilder implements Processor, InitializingBean {
 
     /** in memory report **/
     private Map<String, AtomicInteger> report = new HashMap<>();
@@ -44,6 +46,10 @@ public class BakeryReportRoute extends RouteBuilder implements Processor {
     public void process(Exchange exchange) throws Exception {
         Message in = exchange.getIn();
 
+        if (in.getHeader("reset") != null && in.getHeader("reset", String.class).equals("true")) {
+            resetReports();
+        }
+
         if (in.getHeader("name") != null) {
             String name = in.getHeader("name", String.class);
             Integer amount = in.getHeader("amount", Integer.class);
@@ -57,12 +63,28 @@ public class BakeryReportRoute extends RouteBuilder implements Processor {
         }
 
         if (in.getHeader("type") != null && in.getHeader("type", String.class).equals("json")) {
-            in.setBody(report.toString());
+            in.setBody(jsonReport());
         } else {
             in.setBody(htmlReport());
         }
     }
 
+    /**
+     * Construc JSON report data.
+     * @return
+     */
+    private String jsonReport() {
+        JSONObject jsonReport = new JSONObject();
+        for (Map.Entry<String, AtomicInteger> goods : report.entrySet()) {
+            jsonReport.put(goods.getKey(), goods.getValue().get());
+        }
+        return jsonReport.toString();
+    }
+
+    /**
+     * Construct HTML report data.
+     * @return
+     */
     private String htmlReport() {
         StringBuilder response = new StringBuilder();
         response.append("<html><body><h1>Camel bakery reporting</h1><p>Today we have produced following goods:</p>");
@@ -81,4 +103,19 @@ public class BakeryReportRoute extends RouteBuilder implements Processor {
         return response.toString();
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        resetReports();
+    }
+
+    /**
+     * Reset all reports in memory.
+     */
+    private void resetReports() {
+        report.clear();
+
+        report.put("cake", new AtomicInteger());
+        report.put("pretzel", new AtomicInteger());
+        report.put("bread", new AtomicInteger());
+    }
 }

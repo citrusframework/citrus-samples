@@ -31,10 +31,26 @@
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-java-dsl</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-broker</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <activemq.server.port>${activemq.server.port}</activemq.server.port>
+            <report.server.port>${report.server.port}</report.server.port>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.jolokia</groupId>
         <artifactId>docker-maven-plugin</artifactId>
@@ -48,13 +64,13 @@
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <ports>
-                  <port>${activemq.host}:61616:61616</port>
-                  <port>${activemq.host}:${activemq.port}:8161</port>
+                  <port>${activemq.server.port}:61616</port>
+                  <port>${activemq.admin.port}:8161</port>
                 </ports>
                 <wait>
                   <log>Broker startup</log>
                   <http>
-                    <url>http://${activemq.host}:${activemq.port}/admin</url>
+                    <url>http://localhost:${activemq.admin.port}</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -77,16 +93,19 @@
                     <image>bakery-web</image>
                   </from>
                 </volumes>
+                <links>
+                  <link>activemq-broker:activemq</link>
+                </links>
                 <env>
                   <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
                 </env>
                 <ports>
-                  <port>${bakery-web.host}:${bakery-web.port}:8080</port>
+                  <port>${bakery.server.port}:8080</port>
                 </ports>
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://${bakery-web.host}:${bakery-web.port}/bakery/jolokia</url>
+                    <url>http://localhost:${bakery.server.port}/bakery/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -100,7 +119,7 @@
               </run>
             </image>
             <image>
-              <alias>bakery-report-server</alias>
+              <alias>report-server</alias>
               <name>consol/${application.server}:latest</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
@@ -113,12 +132,12 @@
                   <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
                 </env>
                 <ports>
-                  <port>${bakery-report.host}:${bakery-report.port}:8080</port>
+                  <port>${report.server.port}:8080</port>
                 </ports>
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://${bakery-report.host}:${bakery-report.port}/report/jolokia</url>
+                    <url>http://localhost:${report.server.port}/report/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -132,7 +151,7 @@
               </run>
             </image>
             <image>
-              <alias>bakery-worker-server</alias>
+              <alias>worker-server-cake</alias>
               <name>consol/${application.server}:latest</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
@@ -142,20 +161,97 @@
                   </from>
                 </volumes>
                 <links>
-                  <link>bakery-report-server:report</link>
+                  <link>report-server:report</link>
+                  <link>activemq-broker:activemq</link>
                 </links>
                 <env>
                   <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
                   <FACTORY_TYPE>cake</FACTORY_TYPE>
-                  <FACTORY_COSTS>5000</FACTORY_COSTS>
+                  <FACTORY_COSTS>500</FACTORY_COSTS>
                 </env>
                 <ports>
-                  <port>${bakery-worker.host}:${bakery-worker.port}:8080</port>
+                  <port>${worker1.server.port}:8080</port>
                 </ports>
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://${bakery-worker.host}:${bakery-worker.port}/worker/jolokia</url>
+                    <url>http://localhost:${worker1.server.port}/worker/jolokia</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>1000</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>red</color>
+                </log>
+              </run>
+            </image>
+            <image>
+              <alias>worker-server-bread</alias>
+              <name>consol/${application.server}:latest</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <volumes>
+                  <from>
+                    <image>bakery-worker</image>
+                  </from>
+                </volumes>
+                <links>
+                  <link>report-server:report</link>
+                  <link>activemq-broker:activemq</link>
+                </links>
+                <env>
+                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                  <FACTORY_TYPE>bread</FACTORY_TYPE>
+                  <FACTORY_COSTS>800</FACTORY_COSTS>
+                </env>
+                <ports>
+                  <port>${worker2.server.port}:8080</port>
+                </ports>
+                <wait>
+                  <log>Server startup</log>
+                  <http>
+                    <url>http://localhost:${worker2.server.port}/worker/jolokia</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>red</color>
+                </log>
+              </run>
+            </image>
+            <image>
+              <alias>worker-server-pretzel</alias>
+              <name>consol/${application.server}:latest</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <volumes>
+                  <from>
+                    <image>bakery-worker</image>
+                  </from>
+                </volumes>
+                <links>
+                  <link>report-server:report</link>
+                  <link>activemq-broker:activemq</link>
+                </links>
+                <env>
+                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                  <FACTORY_TYPE>pretzel</FACTORY_TYPE>
+                  <FACTORY_COSTS>100</FACTORY_COSTS>
+                </env>
+                <ports>
+                  <port>${worker3.server.port}:8080</port>
+                </ports>
+                <wait>
+                  <log>Server startup</log>
+                  <http>
+                    <url>http://localhost:${worker3.server.port}/worker/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -187,6 +283,19 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>fixed-ports</id>
+      <properties>
+        <activemq.server.port>61616</activemq.server.port>
+        <activemq.admin.port>8161</activemq.admin.port>
+        <bakery.server.port>18001</bakery.server.port>
+        <report.server.port>18002</report.server.port>
+        <worker1.server.port>18003</worker1.server.port>
+        <worker2.server.port>18004</worker2.server.port>
+        <worker3.server.port>18005</worker3.server.port>
+      </properties>
+    </profile>
+
     <profile>
       <id>docker</id>
       <build>
