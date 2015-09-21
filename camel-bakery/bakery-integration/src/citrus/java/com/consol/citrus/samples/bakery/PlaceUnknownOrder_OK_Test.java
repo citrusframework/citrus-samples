@@ -18,13 +18,9 @@ package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
-import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
 /**
@@ -39,26 +35,15 @@ public class PlaceUnknownOrder_OK_Test extends TestNGCitrusTestDesigner {
     private JmsEndpoint bakeryOrderEndpoint;
 
     @Autowired
-    @Qualifier("reportingClient")
-    private HttpClient reportingClient;
+    @Qualifier("unknownOrderEndpoint")
+    private JmsEndpoint unknownOrderEndpoint;
 
     @CitrusTest
     public void placeUnknownOrderType() {
         send(bakeryOrderEndpoint)
             .payload("<order type=\"baguette\"><amount>1</amount></order>");
 
-        receive("jms:factory.unknown.inbound")
+        receive(unknownOrderEndpoint)
             .payload("<order type=\"baguette\"><amount>1</amount></order>");
-
-        send(reportingClient)
-            .http()
-                .method(HttpMethod.GET)
-                .queryParam("type", "json");
-
-        receive(reportingClient)
-            .messageType(MessageType.JSON)
-            .http()
-                .status(HttpStatus.OK)
-                .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": \"@ignore@\"}");
     }
 }

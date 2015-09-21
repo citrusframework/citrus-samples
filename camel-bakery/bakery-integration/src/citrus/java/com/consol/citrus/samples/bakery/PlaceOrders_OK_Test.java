@@ -17,6 +17,8 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.container.IteratingConditionExpression;
+import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
@@ -47,16 +49,22 @@ public class PlaceOrders_OK_Test extends TestNGCitrusTestDesigner {
         send(bakeryOrderEndpoint)
             .payload("<order type=\"cake\"><amount>1</amount></order>");
 
-        send(reportingClient)
-            .http()
-                .method(HttpMethod.GET)
-                .queryParam("type", "json");
-
-        receive(reportingClient)
-            .messageType(MessageType.JSON)
-            .http()
-                .status(HttpStatus.OK)
-                .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": 1}");
+        repeatOnError(
+            send(reportingClient)
+                .http()
+                    .method(HttpMethod.GET)
+                    .queryParam("type", "json"),
+            receive(reportingClient)
+                .messageType(MessageType.JSON)
+                .http()
+                    .status(HttpStatus.OK)
+                    .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": \"@greaterThan(0)@\"}")
+        ).until(new IteratingConditionExpression() {
+            @Override
+            public boolean evaluate(int index, TestContext context) {
+                return index > 10;
+            }
+        }).autoSleep(500L);
     }
 
     @CitrusTest
@@ -64,16 +72,22 @@ public class PlaceOrders_OK_Test extends TestNGCitrusTestDesigner {
         send(bakeryOrderEndpoint)
                 .payload("<order type=\"pretzel\"><amount>1</amount></order>");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .queryParam("type", "json");
-
-        receive(reportingClient)
-                .messageType(MessageType.JSON)
-                .http()
-                .status(HttpStatus.OK)
-                .payload("{\"pretzel\": 1,\"bread\": \"@ignore@\",\"cake\": \"@ignore@\"}");
+        repeatOnError(
+            send(reportingClient)
+                    .http()
+                    .method(HttpMethod.GET)
+                    .queryParam("type", "json"),
+            receive(reportingClient)
+                    .messageType(MessageType.JSON)
+                    .http()
+                    .status(HttpStatus.OK)
+                    .payload("{\"pretzel\": \"@greaterThan(0)@\",\"bread\": \"@ignore@\",\"cake\": \"@ignore@\"}")
+        ).until(new IteratingConditionExpression() {
+            @Override
+            public boolean evaluate(int index, TestContext context) {
+                return index > 10;
+            }
+        }).autoSleep(500L);
     }
 
     @CitrusTest
@@ -81,15 +95,21 @@ public class PlaceOrders_OK_Test extends TestNGCitrusTestDesigner {
         send(bakeryOrderEndpoint)
                 .payload("<order type=\"bread\"><amount>1</amount></order>");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .queryParam("type", "json");
-
-        receive(reportingClient)
-                .messageType(MessageType.JSON)
-                .http()
-                .status(HttpStatus.OK)
-                .payload("{\"pretzel\": \"@ignore@\",\"bread\": 1,\"cake\": \"@ignore@\"}");
+        repeatOnError(
+            send(reportingClient)
+                    .http()
+                    .method(HttpMethod.GET)
+                    .queryParam("type", "json"),
+            receive(reportingClient)
+                    .messageType(MessageType.JSON)
+                    .http()
+                    .status(HttpStatus.OK)
+                    .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@greaterThan(0)@\",\"cake\": \"@ignore@\"}")
+        ).until(new IteratingConditionExpression() {
+            @Override
+            public boolean evaluate(int index, TestContext context) {
+                return index > 10;
+            }
+        }).autoSleep(500L);
     }
 }

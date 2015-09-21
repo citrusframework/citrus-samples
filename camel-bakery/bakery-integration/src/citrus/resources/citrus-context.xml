@@ -31,6 +31,10 @@
     <citrus-jms:endpoint id="bakeryOrderEndpoint"
                          destination-name="bakery.order.inbound"/>
 
+    <!-- Unknown order types result in this inbound endpoint -->
+    <citrus-jms:endpoint id="unknownOrderEndpoint"
+                       destination-name="factory.unknown.inbound"/>
+
     <!-- Reporting client -->
     <citrus-http:client id="reportingClient"
                         request-method="GET"
