@@ -13,28 +13,27 @@
   <artifactId>bakery-integration</artifactId>
   <name>bakery-integration</name>
 
-  <properties>
-    <application.server>tomcat-7.0</application.server>
-    <message.broker>activemq-5.12</message.broker>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-core</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-http</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-java-dsl</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-broker</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -283,19 +282,6 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>fixed-ports</id>
-      <properties>
-        <activemq.server.port>61616</activemq.server.port>
-        <activemq.admin.port>8161</activemq.admin.port>
-        <bakery.server.port>18001</bakery.server.port>
-        <report.server.port>18002</report.server.port>
-        <worker1.server.port>18003</worker1.server.port>
-        <worker2.server.port>18004</worker2.server.port>
-        <worker3.server.port>18005</worker3.server.port>
-      </properties>
-    </profile>
-
     <profile>
       <id>docker</id>
       <build>

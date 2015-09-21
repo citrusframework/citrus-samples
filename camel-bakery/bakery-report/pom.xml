@@ -14,10 +14,6 @@
   <name>bakery-report</name>
   <packaging>war</packaging>
 
-  <properties>
-    <application.server>tomcat-7.0</application.server>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.camel</groupId>
@@ -41,6 +37,22 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-java-dsl</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-http</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -52,6 +64,16 @@
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
           <warName>report</warName>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <report.server.port>${report.server.port}</report.server.port>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
 
@@ -92,14 +114,14 @@
                 <ports>
                   <!-- Port mappings: Container internal port (which must be exposed) will be
                  dynamically mapped and this (random) port will be assigned to the maven variable
-                 ${application.port}. Multiple port mappings can be specified here-->
-                  <port>${application.port}:8080</port>
+                 ${report.server.port}. Multiple port mappings can be specified here-->
+                  <port>${report.server.port}:8080</port>
                 </ports>
                 <wait>
                   <!-- The plugin waits until this URL is reachable via HTTP ... -->
                   <log>Server startup</log>
                   <http>
-                    <url>http://localhost:${application.port}/report/jolokia</url>
+                    <url>http://localhost:${report.server.port}/report/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
