@@ -21,6 +21,12 @@
     <!-- Listeners -->
     <bean class="com.consol.citrus.report.MessageTracingTestListener"/>
 
+    <!-- JMS connection factory and message broker -->
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+      <property name="brokerURL" value="tcp://${activemq.server.host}:${activemq.server.port}" />
+      <property name="watchTopicAdvisories" value="false"/>
+    </bean>
+
     <!-- Order Inbound endpoint -->
     <citrus-jms:endpoint id="bakeryOrderEndpoint"
                          destination-name="bakery.order.inbound"/>
@@ -31,5 +37,5 @@
     <citrus-jms:endpoint id="factoryBreadEndpoint"
                          destination-name="factory.bread.inbound"/>
     <citrus-jms:endpoint id="factoryCakeEndpoint"
-                         destination-name="bakery.cake.inbound"/>
+                         destination-name="factory.cake.inbound"/>
 </beans>

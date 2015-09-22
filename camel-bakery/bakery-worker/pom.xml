@@ -18,8 +18,6 @@
     <application.server>tomcat-7.0</application.server>
     <factory.type>cake</factory.type>
     <factory.costs>500</factory.costs>
-    <activemq.server.port>61616</activemq.server.port>
-    <report.server.port>18080</report.server.port>
   </properties>
 
   <dependencies>
@@ -75,6 +73,10 @@
           <webAppConfig>
             <contextPath>/worker</contextPath>
           </webAppConfig>
+          <httpConnector>
+            <port>${worker1.server.port}</port>
+            <idleTimeout>60000</idleTimeout>
+          </httpConnector>
           <systemProperties>
             <systemProperty>
               <name>FACTORY_TYPE</name>
@@ -100,20 +102,6 @@
               <name>REPORT_PORT_8080_TCP_PORT</name>
               <value>${report.server.port}</value>
             </systemProperty>
-          </systemProperties>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.activemq.tooling</groupId>
-        <artifactId>activemq-maven-plugin</artifactId>
-        <configuration>
-          <fork>false</fork>
-          <systemProperties>
-            <property>
-              <name>log4j.configuration</name>
-              <value>log4j.properties</value>
-            </property>
           </systemProperties>
         </configuration>
       </plugin>
@@ -146,13 +134,13 @@
                   <!-- Port mappings: Container internal port (which must be exposed) will be
                  dynamically mapped and this (random) port will be assigned to the maven variable
                  ${application.port}. Multiple port mappings can be specified here-->
-                  <port>${application.port}:8080</port>
+                  <port>${worker1.server.port}:8080</port>
                 </ports>
                 <wait>
                   <!-- The plugin waits until this URL is reachable via HTTP ... -->
                   <log>Server startup</log>
                   <http>
-                    <url>http://localhost:${application.port}/worker/jolokia</url>
+                    <url>http://localhost:${worker1.server.port}/worker/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -265,7 +253,7 @@
             </configuration>
             <executions>
               <execution>
-                <id>start-hurricanweb</id>
+                <id>start-server</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>deploy-war</goal>
@@ -277,28 +265,10 @@
                   </war>
                   <stopPort>9999</stopPort>
                   <stopKey>stopMe</stopKey>
-                  <systemProperties>
-                    <systemProperty>
-                      <name>jetty.port</name>
-                      <value>${server.port}</value>
-                    </systemProperty>
-                    <systemProperty>
-                      <name>file.encoding</name>
-                      <value>UTF-8</value>
-                    </systemProperty>
-                    <systemProperty>
-                      <name>catalina.base</name>
-                      <value>${project.build.directory}</value>
-                    </systemProperty>
-                    <systemProperty>
-                      <name>log4j.configuration</name>
-                      <value>log4j.properties</value>
-                    </systemProperty>
-                  </systemProperties>
                 </configuration>
               </execution>
               <execution>
-                <id>stop-hurricanweb</id>
+                <id>stop-server</id>
                 <phase>post-integration-test</phase>
                 <goals>
                   <goal>stop</goal>

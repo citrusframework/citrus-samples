@@ -39,6 +39,15 @@
           <groupId>org.apache.activemq.tooling</groupId>
           <artifactId>activemq-maven-plugin</artifactId>
           <version>${activemq.version}</version>
+          <configuration>
+            <fork>false</fork>
+            <systemProperties>
+              <property>
+                <name>log4j.configuration</name>
+                <value>log4j.properties</value>
+              </property>
+            </systemProperties>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -96,7 +105,10 @@
 
   <profiles>
     <profile>
-      <id>fixed-ports</id>
+      <id>fixed-server-ports</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <properties>
         <activemq.server.port>61616</activemq.server.port>
         <activemq.admin.port>8161</activemq.admin.port>

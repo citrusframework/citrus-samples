@@ -72,7 +72,7 @@ public class BakeryWeb_OK_Test extends TestNGCitrusTestDesigner {
         send(bakeryOrderEndpoint)
                 .payload("<order type=\"baguette\"><amount>1</amount></order>");
 
-        receive("jms:factory.unknown.endpoint")
+        receive("jms:factory.unknown.inbound")
                 .payload("<order type=\"baguette\"><amount>1</amount></order>");
     }
 }
