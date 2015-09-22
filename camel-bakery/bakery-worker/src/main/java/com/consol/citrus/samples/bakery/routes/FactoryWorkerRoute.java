@@ -18,6 +18,7 @@ package com.consol.citrus.samples.bakery.routes;
 
 import org.apache.camel.*;
 import org.apache.camel.builder.RouteBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,14 +28,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class FactoryWorkerRoute extends RouteBuilder {
 
+    @Value("${FACTORY_TYPE}")
+    private String factoryType = "default";
+
+    @Value("${FACTORY_COSTS}")
+    private String factoryCosts = "1000";
+
+    @Value("${REPORT_PORT_8080_TCP_ADDR}")
+    private String reportServerHost = "localhost";
+
+    @Value("${REPORT_PORT_8080_TCP_PORT}")
+    private String reportServerPort = "8080";
+
     @Override
     public void configure() throws Exception {
-        from("jms:queue:factory.{{env:FACTORY_TYPE:default}}.inbound").routeId("{{env:FACTORY_TYPE:default}}_factory")
+        from("jms:queue:factory." + factoryType + ".inbound").routeId(factoryType + "_factory")
             .setHeader("name", xpath("order/@type"))
             .setHeader("amount", xpath("order/amount/text()"))
-            .delay(simple("{{env:FACTORY_COSTS:1000}}"))
+            .delay(constant(factoryCosts))
             .setHeader(Exchange.HTTP_METHOD, constant("GET"))
             .setBody(constant(""))
-            .to("http://{{env:REPORT_PORT_8080_TCP_ADDR:localhost}}:{{env:REPORT_PORT_8080_TCP_PORT:18002}}/report/services/reporting");
+            .to("http://" + reportServerHost + ":" + reportServerPort + "/report/services/reporting");
     }
 }

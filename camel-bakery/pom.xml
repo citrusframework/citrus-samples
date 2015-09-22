@@ -34,6 +34,12 @@
           <artifactId>docker-maven-plugin</artifactId>
           <version>0.13.5-SNAPSHOT</version>
         </plugin>
+
+        <plugin>
+          <groupId>org.apache.activemq.tooling</groupId>
+          <artifactId>activemq-maven-plugin</artifactId>
+          <version>${activemq.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
