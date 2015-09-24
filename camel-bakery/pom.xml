@@ -134,6 +134,71 @@
     </profile>
 
     <profile>
+      <id>jetty-embedded</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.activemq.tooling</groupId>
+            <artifactId>activemq-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>start-activemq</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop-activemq</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <fork>true</fork>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
+            <configuration>
+              <daemon>false</daemon>
+              <reload>manual</reload>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>deploy-war</goal>
+                </goals>
+                <configuration>
+                  <daemon>true</daemon>
+                  <stopPort>${server.stop.port}</stopPort>
+                  <stopKey>stopMe</stopKey>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+                <configuration>
+                  <stopPort>${server.stop.port}</stopPort>
+                  <stopKey>stopMe</stopKey>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
       <id>fixed-server-ports</id>
       <activation>
         <property>

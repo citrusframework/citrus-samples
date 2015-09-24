@@ -70,6 +70,9 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
+          <war>
+            ${settings.localRepository}/com/consol/citrus/samples/bakery-worker/${project.version}/bakery-worker-${project.version}.war
+          </war>
           <webAppConfig>
             <contextPath>/worker</contextPath>
           </webAppConfig>
@@ -100,7 +103,7 @@
             </systemProperty>
             <systemProperty>
               <name>REPORT_PORT_8080_TCP_PORT</name>
-              <value>${report.server.port}</value>
+              <value>18008</value>
             </systemProperty>
           </systemProperties>
         </configuration>
@@ -214,68 +217,5 @@
       </testResource>
     </testResources>
   </build>
-
-  <profiles>
-    <profile>
-      <id>jetty-embedded</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.activemq.tooling</groupId>
-            <artifactId>activemq-maven-plugin</artifactId>
-            <configuration>
-              <fork>true</fork>
-            </configuration>
-            <executions>
-              <execution>
-                <id>start-activemq</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-maven-plugin</artifactId>
-            <configuration>
-              <daemon>false</daemon>
-              <reload>manual</reload>
-            </configuration>
-            <executions>
-              <execution>
-                <id>start-server</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>deploy-war</goal>
-                </goals>
-                <configuration>
-                  <daemon>true</daemon>
-                  <war>
-                    ${settings.localRepository}/com/consol/citrus/samples/bakery-worker/${project.version}/bakery-worker-${project.version}.war
-                  </war>
-                  <stopPort>9999</stopPort>
-                  <stopKey>stopMe</stopKey>
-                </configuration>
-              </execution>
-              <execution>
-                <id>stop-server</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-                <configuration>
-                  <stopPort>9999</stopPort>
-                  <stopKey>stopMe</stopKey>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
 </project>

@@ -13,6 +13,11 @@
   <artifactId>bakery-integration</artifactId>
   <name>bakery-integration</name>
 
+  <properties>
+    <factory.type>cake</factory.type>
+    <factory.costs>500</factory.costs>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.consol.citrus</groupId>
@@ -43,6 +48,90 @@
             <activemq.server.port>${activemq.server.port}</activemq.server.port>
             <report.server.port>${report.server.port}</report.server.port>
           </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <war>
+            ${settings.localRepository}/com/consol/citrus/samples/bakery-web/${project.version}/bakery-web-${project.version}.war
+          </war>
+          <webApp>
+            <contextPath>/bakery</contextPath>
+            <tempDirectory>${project.build.directory}/tmp/bakery</tempDirectory>
+          </webApp>
+          <httpConnector>
+            <port>${bakery.server.port}</port>
+            <idleTimeout>60000</idleTimeout>
+          </httpConnector>
+          <!-- jetty.xml for using multiple ports inside of one jetty -->
+          <jettyXml>
+            ${pom.basedir}/src/jetty/jetty-embedded.xml
+          </jettyXml>
+          <contextHandlers>
+            <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
+              <war>
+                ${settings.localRepository}/com/consol/citrus/samples/bakery-report/${project.version}/bakery-report-${project.version}.war
+              </war>
+              <contextPath>/report</contextPath>
+              <tempDirectory>${project.build.directory}/tmp/report</tempDirectory>
+            </contextHandler>
+            <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
+              <war>
+                ${settings.localRepository}/com/consol/citrus/samples/bakery-worker/${project.version}/bakery-worker-${project.version}.war
+              </war>
+              <contextPath>/worker</contextPath>
+              <tempDirectory>${project.build.directory}/tmp/worker1</tempDirectory>
+            </contextHandler>
+          </contextHandlers>
+          <systemProperties>
+            <systemProperty>
+              <name>FACTORY_TYPE</name>
+              <value>${factory.type}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>FACTORY_COSTS</name>
+              <value>${factory.costs}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>ACTIVEMQ_PORT_61616_TCP_ADDR</name>
+              <value>localhost</value>
+            </systemProperty>
+            <systemProperty>
+              <name>ACTIVEMQ_PORT_61616_TCP_PORT</name>
+              <value>${activemq.server.port}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>REPORT_PORT_8080_TCP_ADDR</name>
+              <value>localhost</value>
+            </systemProperty>
+            <systemProperty>
+              <name>REPORT_PORT_8080_TCP_PORT</name>
+              <value>${report.server.port}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>bakery.server.port</name>
+              <value>${bakery.server.port}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>report.server.port</name>
+              <value>${report.server.port}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>worker1.server.port</name>
+              <value>${worker1.server.port}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>worker2.server.port</name>
+              <value>${worker2.server.port}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>worker3.server.port</name>
+              <value>${worker3.server.port}</value>
+            </systemProperty>
+          </systemProperties>
         </configuration>
       </plugin>
 
