@@ -15,7 +15,7 @@
   <packaging>war</packaging>
 
   <properties>
-    <application.server>tomcat-7.0</application.server>
+    <jetty.embedded.skip>false</jetty.embedded.skip>
   </properties>
 
   <dependencies>

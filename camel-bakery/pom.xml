@@ -24,11 +24,21 @@
   <properties>
     <application.server>tomcat-7.0</application.server>
     <message.broker>activemq-5.12</message.broker>
+    <jetty.embedded.skip>true</jetty.embedded.skip>
   </properties>
 
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+          <configuration>
+            <daemon>false</daemon>
+            <reload>manual</reload>
+          </configuration>
+        </plugin>
+
         <plugin>
           <groupId>org.jolokia</groupId>
           <artifactId>docker-maven-plugin</artifactId>
@@ -164,10 +174,6 @@
           <plugin>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
-            <configuration>
-              <daemon>false</daemon>
-              <reload>manual</reload>
-            </configuration>
             <executions>
               <execution>
                 <id>start-server</id>
@@ -179,6 +185,7 @@
                   <daemon>true</daemon>
                   <stopPort>${server.stop.port}</stopPort>
                   <stopKey>stopMe</stopKey>
+                  <skip>${jetty.embedded.skip}</skip>
                 </configuration>
               </execution>
               <execution>
@@ -190,6 +197,7 @@
                 <configuration>
                   <stopPort>${server.stop.port}</stopPort>
                   <stopKey>stopMe</stopKey>
+                  <skip>${jetty.embedded.skip}</skip>
                 </configuration>
               </execution>
             </executions>

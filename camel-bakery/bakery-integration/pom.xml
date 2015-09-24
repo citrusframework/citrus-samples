@@ -16,6 +16,7 @@
   <properties>
     <factory.type>cake</factory.type>
     <factory.costs>500</factory.costs>
+    <jetty.embedded.skip>false</jetty.embedded.skip>
   </properties>
 
   <dependencies>

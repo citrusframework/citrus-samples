@@ -14,6 +14,10 @@
   <name>bakery-report</name>
   <packaging>war</packaging>
 
+  <properties>
+    <jetty.embedded.skip>false</jetty.embedded.skip>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.camel</groupId>
