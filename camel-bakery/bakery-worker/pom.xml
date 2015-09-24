@@ -113,31 +113,56 @@
           <watchInterval>500</watchInterval>
           <logDate>default</logDate>
           <verbose>true</verbose>
-          <autoPull>always</autoPull>
           <images>
-            <!-- Docker images to use -->
             <image>
-              <!-- App-Server image -->
-              <alias>server</alias>
+              <alias>activemq-broker</alias>
+              <name>consol/${message.broker}:latest</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <ports>
+                  <port>${activemq.server.port}:61616</port>
+                  <port>${activemq.admin.port}:8161</port>
+                </ports>
+                <wait>
+                  <log>Broker startup</log>
+                  <http>
+                    <url>http://localhost:${activemq.admin.port}</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>red</color>
+                </log>
+              </run>
+            </image>
+            <image>
+              <alias>worker-server-cake</alias>
               <name>consol/${application.server}:latest</name>
               <run>
-                <namingStrategy>none</namingStrategy>
+                <namingStrategy>alias</namingStrategy>
                 <volumes>
                   <from>
                     <image>application</image>
                   </from>
                 </volumes>
+                <links>
+                  <link>activemq-broker:activemq</link>
+                </links>
                 <env>
                   <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                  <FACTORY_TYPE>${factory.type}</FACTORY_TYPE>
+                  <FACTORY_COSTS>${factory.costs}</FACTORY_COSTS>
+                  <REPORT_PORT_8080_TCP_ADDR>192.168.2.100</REPORT_PORT_8080_TCP_ADDR>
+                  <REPORT_PORT_8080_TCP_PORT>18008</REPORT_PORT_8080_TCP_PORT>
                 </env>
                 <ports>
-                  <!-- Port mappings: Container internal port (which must be exposed) will be
-                 dynamically mapped and this (random) port will be assigned to the maven variable
-                 ${application.port}. Multiple port mappings can be specified here-->
                   <port>${worker1.server.port}:8080</port>
                 </ports>
                 <wait>
-                  <!-- The plugin waits until this URL is reachable via HTTP ... -->
                   <log>Server startup</log>
                   <http>
                     <url>http://localhost:${worker1.server.port}/worker/jolokia</url>
@@ -155,7 +180,6 @@
             </image>
             <image>
               <alias>application</alias>
-              <!-- Application image -->
               <name>citrus/${project.artifactId}:${project.version}</name>
               <build>
                 <tags>
@@ -192,37 +216,6 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>docker</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <!-- Connect this plugin to the maven lifecycle around the integration-test phase. I.e. start the container
-                 in pre-integration-test and stop it in post-integration-test. -->
-            <executions>
-              <execution>
-                <id>start</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>build</goal>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <profile>
       <id>jetty-embedded</id>
       <build>

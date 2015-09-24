@@ -296,37 +296,4 @@
     </testResources>
   </build>
 
-  <profiles>
-    <profile>
-      <id>docker</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <!-- Connect this plugin to the maven lifecycle around the integration-test phase. I.e. start the container
-                 in pre-integration-test and stop it in post-integration-test. -->
-            <executions>
-              <execution>
-                <id>start</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>build</goal>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
 </project>

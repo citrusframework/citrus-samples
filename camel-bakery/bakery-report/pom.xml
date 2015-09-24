@@ -85,15 +85,12 @@
           <watchInterval>500</watchInterval>
           <logDate>default</logDate>
           <verbose>true</verbose>
-          <autoPull>always</autoPull>
           <images>
-            <!-- Docker images to use -->
             <image>
-              <!-- App-Server image -->
-              <alias>server</alias>
+              <alias>report-server</alias>
               <name>consol/${application.server}:latest</name>
               <run>
-                <namingStrategy>none</namingStrategy>
+                <namingStrategy>alias</namingStrategy>
                 <volumes>
                   <from>
                     <image>application</image>
@@ -103,13 +100,9 @@
                   <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
                 </env>
                 <ports>
-                  <!-- Port mappings: Container internal port (which must be exposed) will be
-                 dynamically mapped and this (random) port will be assigned to the maven variable
-                 ${report.server.port}. Multiple port mappings can be specified here-->
                   <port>${report.server.port}:8080</port>
                 </ports>
                 <wait>
-                  <!-- The plugin waits until this URL is reachable via HTTP ... -->
                   <log>Server startup</log>
                   <http>
                     <url>http://localhost:${report.server.port}/report/jolokia</url>
@@ -127,7 +120,6 @@
             </image>
             <image>
               <alias>application</alias>
-              <!-- Application image -->
               <name>citrus/${project.artifactId}:${project.version}</name>
               <build>
                 <tags>
@@ -164,37 +156,6 @@
   </build>
 
   <profiles>
-    <profile>
-      <id>docker</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jolokia</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <!-- Connect this plugin to the maven lifecycle around the integration-test phase. I.e. start the container
-                 in pre-integration-test and stop it in post-integration-test. -->
-            <executions>
-              <execution>
-                <id>start</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>build</goal>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <profile>
       <id>jetty-embedded</id>
       <build>

@@ -33,7 +33,7 @@
 
     <!-- Reporting Http server -->
     <citrus-http:server id="reportingServer"
-                        port="18080"
+                        port="${report.server.port}"
                         timeout="5000"
                         auto-start="true"/>
 </beans>
