@@ -32,10 +32,10 @@
                          destination-name="bakery.order.inbound"/>
 
     <!-- Order factory endpoints -->
-    <citrus-jms:endpoint id="factoryPretzelEndpoint"
+    <citrus-jms:endpoint id="workerPretzelEndpoint"
                          destination-name="factory.pretzel.inbound"/>
-    <citrus-jms:endpoint id="factoryBreadEndpoint"
+    <citrus-jms:endpoint id="workerBreadEndpoint"
                          destination-name="factory.bread.inbound"/>
-    <citrus-jms:endpoint id="factoryCakeEndpoint"
+    <citrus-jms:endpoint id="workerCakeEndpoint"
                          destination-name="factory.cake.inbound"/>
 </beans>
