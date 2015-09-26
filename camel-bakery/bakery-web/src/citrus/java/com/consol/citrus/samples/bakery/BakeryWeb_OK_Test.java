@@ -35,35 +35,35 @@ public class BakeryWeb_OK_Test extends TestNGCitrusTestDesigner {
     private JmsEndpoint bakeryOrderEndpoint;
 
     @Autowired
-    @Qualifier("factoryCakeEndpoint")
-    private JmsEndpoint factoryCakeEndpoint;
+    @Qualifier("workerCakeEndpoint")
+    private JmsEndpoint workerCakeEndpoint;
 
     @Autowired
-    @Qualifier("factoryPretzelEndpoint")
-    private JmsEndpoint factoryPretzelEndpoint;
+    @Qualifier("workerPretzelEndpoint")
+    private JmsEndpoint workerPretzelEndpoint;
 
     @Autowired
-    @Qualifier("factoryBreadEndpoint")
-    private JmsEndpoint factoryBreadEndpoint;
+    @Qualifier("workerBreadEndpoint")
+    private JmsEndpoint workerBreadEndpoint;
 
     @CitrusTest
     public void routeMessagesContentBased() {
         send(bakeryOrderEndpoint)
                 .payload("<order type=\"cake\"><amount>1</amount></order>");
 
-        receive(factoryCakeEndpoint)
+        receive(workerCakeEndpoint)
                 .payload("<order type=\"cake\"><amount>1</amount></order>");
 
         send(bakeryOrderEndpoint)
                 .payload("<order type=\"pretzel\"><amount>1</amount></order>");
 
-        receive(factoryPretzelEndpoint)
+        receive(workerPretzelEndpoint)
                 .payload("<order type=\"pretzel\"><amount>1</amount></order>");
 
         send(bakeryOrderEndpoint)
                 .payload("<order type=\"bread\"><amount>1</amount></order>");
 
-        receive(factoryBreadEndpoint)
+        receive(workerBreadEndpoint)
                 .payload("<order type=\"bread\"><amount>1</amount></order>");
     }
 
