@@ -18,6 +18,7 @@
     <factory.type>cake</factory.type>
     <factory.costs>500</factory.costs>
     <jetty.embedded.skip>false</jetty.embedded.skip>
+    <docker.host.ip>192.168.2.100</docker.host.ip>
   </properties>
 
   <dependencies>
@@ -159,7 +160,7 @@
                   <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
                   <FACTORY_TYPE>${factory.type}</FACTORY_TYPE>
                   <FACTORY_COSTS>${factory.costs}</FACTORY_COSTS>
-                  <REPORT_PORT_8080_TCP_ADDR>192.168.2.100</REPORT_PORT_8080_TCP_ADDR>
+                  <REPORT_PORT_8080_TCP_ADDR>${docker.host.ip}</REPORT_PORT_8080_TCP_ADDR>
                   <REPORT_PORT_8080_TCP_PORT>18008</REPORT_PORT_8080_TCP_PORT>
                 </env>
                 <ports>
