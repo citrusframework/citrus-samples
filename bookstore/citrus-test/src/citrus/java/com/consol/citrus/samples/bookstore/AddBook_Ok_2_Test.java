@@ -19,7 +19,7 @@ package com.consol.citrus.samples.bookstore;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.samples.bookstore.model.*;
-import com.consol.citrus.validation.MarshallingValidationCallback;
+import com.consol.citrus.validation.xml.XmlMarshallingValidationCallback;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,7 +52,7 @@ public class AddBook_Ok_2_Test extends TestNGCitrusTestDesigner {
             .header("citrus_soap_action", "addBook");
         
         receive(bookStoreClient)
-            .validationCallback(new MarshallingValidationCallback<AddBookResponseMessage>() {
+            .validationCallback(new XmlMarshallingValidationCallback<AddBookResponseMessage>() {
                 @Override
                 public void validate(AddBookResponseMessage response, Map<String, Object> headers) {
                     Assert.isTrue(response.isSuccess());
