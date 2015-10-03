@@ -11,6 +11,10 @@
         <param-value>/WEB-INF/applicationContext.xml</param-value>
     </context-param>
 
+    <listener>
+        <listener-class>com.consol.citrus.samples.bakery.servlet.InitializeFactoryListener</listener-class>
+    </listener>
+
     <!-- the listener that kick-starts Spring -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
