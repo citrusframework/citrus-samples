@@ -14,6 +14,7 @@
   <name>citrus-camel-news</name>
 
   <properties>
+    <activemq.embedded.disabled>false</activemq.embedded.disabled>
     <citrus.test.package>com.consol.citrus.samples.camel</citrus.test.package>
   </properties>
 

@@ -24,7 +24,6 @@
   <properties>
     <application.server>tomcat-7.0</application.server>
     <message.broker>activemq-5.12</message.broker>
-    <jetty.embedded.skip>true</jetty.embedded.skip>
   </properties>
 
   <build>
@@ -42,22 +41,7 @@
         <plugin>
           <groupId>org.jolokia</groupId>
           <artifactId>docker-maven-plugin</artifactId>
-          <version>0.13.5-SNAPSHOT</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.activemq.tooling</groupId>
-          <artifactId>activemq-maven-plugin</artifactId>
-          <version>${activemq.version}</version>
-          <configuration>
-            <fork>false</fork>
-            <systemProperties>
-              <property>
-                <name>log4j.configuration</name>
-                <value>log4j.properties</value>
-              </property>
-            </systemProperties>
-          </configuration>
+          <version>0.13.5</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -136,68 +120,6 @@
                 <goals>
                   <goal>stop</goal>
                 </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>jetty-embedded</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.activemq.tooling</groupId>
-            <artifactId>activemq-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>start-activemq</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop-activemq</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <fork>true</fork>
-            </configuration>
-          </plugin>
-
-          <plugin>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>start-server</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>deploy-war</goal>
-                </goals>
-                <configuration>
-                  <daemon>true</daemon>
-                  <stopPort>${server.stop.port}</stopPort>
-                  <stopKey>stopMe</stopKey>
-                  <skip>${jetty.embedded.skip}</skip>
-                </configuration>
-              </execution>
-              <execution>
-                <id>stop-server</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-                <configuration>
-                  <stopPort>${server.stop.port}</stopPort>
-                  <stopKey>stopMe</stopKey>
-                </configuration>
               </execution>
             </executions>
           </plugin>

@@ -17,7 +17,8 @@
   <properties>
     <factory.type>cake</factory.type>
     <factory.costs>500</factory.costs>
-    <jetty.embedded.skip>false</jetty.embedded.skip>
+    <jetty.embedded.disabled>false</jetty.embedded.disabled>
+    <activemq.embedded.disabled>false</activemq.embedded.disabled>
     <docker.host.ip>192.168.2.100</docker.host.ip>
   </properties>
 

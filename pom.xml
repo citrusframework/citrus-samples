@@ -29,6 +29,8 @@
     <server.stop.port>18100</server.stop.port>
     <apache.cxf.version>3.1.1</apache.cxf.version>
     <citrus.version>2.4-SNAPSHOT</citrus.version>
+    <jetty.embedded.disabled>true</jetty.embedded.disabled>
+    <activemq.embedded.disabled>true</activemq.embedded.disabled>
   </properties>
   
   <build>
@@ -63,6 +65,21 @@
               </configuration>
             </execution>
           </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.activemq.tooling</groupId>
+          <artifactId>activemq-maven-plugin</artifactId>
+          <version>${activemq.version}</version>
+          <configuration>
+            <fork>false</fork>
+            <systemProperties>
+              <property>
+                <name>log4j.configuration</name>
+                <value>log4j.properties</value>
+              </property>
+            </systemProperties>
+          </configuration>
         </plugin>
 
         <plugin>
@@ -290,6 +307,74 @@
         <scope>runtime</scope>
     </dependency>    
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>jetty-embedded</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.activemq.tooling</groupId>
+            <artifactId>activemq-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>start-activemq</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <fork>true</fork>
+                  <skip>${activemq.embedded.disabled}</skip>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-activemq</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+                <configuration>
+                  <skip>${activemq.embedded.disabled}</skip>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>deploy-war</goal>
+                </goals>
+                <configuration>
+                  <daemon>true</daemon>
+                  <stopPort>${server.stop.port}</stopPort>
+                  <stopKey>stopMe</stopKey>
+                  <skip>${jetty.embedded.disabled}</skip>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+                <configuration>
+                  <stopPort>${server.stop.port}</stopPort>
+                  <stopKey>stopMe</stopKey>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   
   <repositories>
     <repository>

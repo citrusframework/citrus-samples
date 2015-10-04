@@ -14,7 +14,8 @@
   <name>bakery-integration</name>
 
   <properties>
-    <jetty.embedded.skip>false</jetty.embedded.skip>
+    <jetty.embedded.disabled>false</jetty.embedded.disabled>
+    <activemq.embedded.disabled>false</activemq.embedded.disabled>
   </properties>
 
   <dependencies>

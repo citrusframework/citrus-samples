@@ -7,7 +7,10 @@
             http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-    <import resource="activemq-context.xml"/>
+    <!-- ActiveMQ connection factory-->
+    <bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+      <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
 
     <!-- Http inbound endpoint for incoming incident requests -->
     <jaxws:endpoint id="httpIncidentEndpoint" implementor="com.consol.citrus.samples.incident.service.IncidentManagerService"
