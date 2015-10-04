@@ -66,7 +66,7 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
           <war>
-            ${settings.localRepository}/com/consol/citrus/samples/bakery-web/${project.version}/bakery-web-${project.version}.war
+            ${build.directory}/bakery.war
           </war>
           <webAppConfig>
             <contextPath>/bakery</contextPath>

@@ -73,7 +73,7 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
           <war>
-            ${settings.localRepository}/com/consol/citrus/samples/bakery-worker/${project.version}/bakery-worker-${project.version}.war
+            ${build.directory}/worker.war
           </war>
           <webAppConfig>
             <contextPath>/worker</contextPath>

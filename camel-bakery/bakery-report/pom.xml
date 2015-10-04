@@ -74,7 +74,7 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
           <war>
-            ${settings.localRepository}/com/consol/citrus/samples/bakery-report/${project.version}/bakery-report-${project.version}.war
+            ${build.directory}/report.war
           </war>
           <webAppConfig>
             <contextPath>/report</contextPath>
