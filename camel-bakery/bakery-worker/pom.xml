@@ -104,7 +104,7 @@
             </systemProperty>
             <systemProperty>
               <name>REPORT_PORT_8080_TCP_PORT</name>
-              <value>18008</value>
+              <value>${report.server.port}</value>
             </systemProperty>
           </systemProperties>
         </configuration>
@@ -161,7 +161,7 @@
                   <FACTORY_TYPE>${factory.type}</FACTORY_TYPE>
                   <FACTORY_COSTS>${factory.costs}</FACTORY_COSTS>
                   <REPORT_PORT_8080_TCP_ADDR>${docker.host.ip}</REPORT_PORT_8080_TCP_ADDR>
-                  <REPORT_PORT_8080_TCP_PORT>18008</REPORT_PORT_8080_TCP_PORT>
+                  <REPORT_PORT_8080_TCP_PORT>${report.server.port}</REPORT_PORT_8080_TCP_PORT>
                 </env>
                 <ports>
                   <port>${worker1.server.port}:8080</port>

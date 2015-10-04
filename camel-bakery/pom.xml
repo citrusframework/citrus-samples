@@ -197,7 +197,6 @@
                 <configuration>
                   <stopPort>${server.stop.port}</stopPort>
                   <stopKey>stopMe</stopKey>
-                  <skip>${jetty.embedded.skip}</skip>
                 </configuration>
               </execution>
             </executions>
