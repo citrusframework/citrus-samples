@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
+
+  <testcase name="NewsFeedXml_Ok_IT">
+    <meta-info>
+      <author>Citrus</author>
+      <creationdate>2014-11-21</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Citrus</last-updated-by>
+      <last-updated-on>2014-11-21T00:00:00</last-updated-on>
+    </meta-info>
+
+    <actions>
+      <echo>
+        <message>Send JMS request message to queue destination</message>
+      </echo>
+
+      <send endpoint="newsJmsEndpoint">
+        <message>
+          <data>
+            <![CDATA[
+              <nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news">
+                <nf:Message>Citrus rocks!</nf:Message>
+              </nf:News>
+            ]]>
+          </data>
+        </message>
+        <header>
+          <element name="Operation" value="HelloService/sayHello"/>
+        </header>
+      </send>
+
+      <echo>
+        <message>Receive JMS message on queue destination</message>
+      </echo>
+
+      <receive endpoint="newsSoapServer">
+        <message>
+          <data>
+            <![CDATA[
+              <nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news">
+                <nf:Message>Citrus rocks!</nf:Message>
+              </nf:News>
+            ]]>
+          </data>
+        </message>
+        <header>
+          <element name="citrus_soap_action" value="newsFeed"/>
+        </header>
+      </receive>
+
+      <send endpoint="newsSoapServer">
+        <message>
+          <data></data>
+        </message>
+        <header>
+          <element name="citrus_http_status_code" value="200"/>
+        </header>
+      </send>
+    </actions>
+  </testcase>
+</spring:beans>

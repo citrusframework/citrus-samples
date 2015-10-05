@@ -66,23 +66,4 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <testSourceDirectory>src/citrus/java</testSourceDirectory>
-    <testResources>
-      <testResource>
-        <directory>src/citrus/resources</directory>
-        <includes>
-          <include>**/*</include>
-        </includes>
-        <filtering>true</filtering>
-      </testResource>
-      <testResource>
-        <directory>src/citrus/tests</directory>
-        <includes>
-          <include>**/*.xml</include>
-        </includes>
-      </testResource>
-    </testResources>
-  </build>
-  
 </project>

@@ -13,27 +13,6 @@
   <artifactId>citrus-bookstore-test</artifactId>
   <name>citrus-bookstore-test</name>
   
-  <build>
-      <testSourceDirectory>src/citrus/java</testSourceDirectory>
-      <testResources>
-          <testResource>
-              <directory>src/citrus/resources</directory>
-              <includes>
-                  <include>**</include>
-              </includes>
-              <excludes>
-                  <exclude>*.java</exclude>
-              </excludes>
-          </testResource>
-          <testResource>
-              <directory>src/citrus/tests</directory>
-              <includes>
-                  <include>**/*</include>
-              </includes>
-          </testResource>
-      </testResources>
-  </build>
-  
   <dependencies>
     <!-- Citrus -->
     <dependency>

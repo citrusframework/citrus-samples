@@ -37,37 +37,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.18.1</version>
-          <configuration>
-            <systemProperties>
-              <property>
-                <name>javax.xml.parsers.SAXParserFactory</name>
-                <value>org.apache.xerces.jaxp.SAXParserFactoryImpl</value>
-              </property>
-              <property>
-                <name>user.language</name>
-                <value>en</value>
-              </property>
-            </systemProperties>
-            <skip>true</skip>
-            <failIfNoTests>false</failIfNoTests>
-          </configuration>
-          <executions>
-            <execution>
-              <id>samples-integration-tests</id>
-              <phase>integration-test</phase>
-              <goals>
-                <goal>test</goal>
-              </goals>
-              <configuration>
-                <skip>false</skip>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
-        <plugin>
           <groupId>org.apache.activemq.tooling</groupId>
           <artifactId>activemq-maven-plugin</artifactId>
           <version>${activemq.version}</version>
@@ -112,15 +81,12 @@
     </pluginManagement>
     
     <plugins>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-        </plugin>
-        <plugin>
-          <artifactId>maven-source-plugin</artifactId>
-        </plugin>
-        <plugin>
-          <artifactId>maven-javadoc-plugin</artifactId>
-        </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
   
