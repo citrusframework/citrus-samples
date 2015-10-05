@@ -41,17 +41,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <systemPropertyVariables>
-            <activemq.server.port>${activemq.server.port}</activemq.server.port>
-            <report.server.port>${report.server.port}</report.server.port>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>

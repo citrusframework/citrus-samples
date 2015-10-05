@@ -28,17 +28,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class FactoryWorkerRoute extends RouteBuilder {
 
-    @Value("${FACTORY_TYPE}")
-    private String factoryType = "default";
+    @Value("${FACTORY_TYPE:default}")
+    private String factoryType;
 
-    @Value("${FACTORY_COSTS}")
-    private String factoryCosts = "1000";
+    @Value("${FACTORY_COSTS:1000}")
+    private String factoryCosts;
 
-    @Value("${REPORT_PORT_8080_TCP_ADDR}")
-    private String reportServerHost = "localhost";
+    @Value("${REPORT_PORT_8080_TCP_ADDR:localhost}")
+    private String reportServerHost;
 
-    @Value("${REPORT_PORT_8080_TCP_PORT}")
-    private String reportServerPort = "8080";
+    @Value("${REPORT_PORT_8080_TCP_PORT:19002}")
+    private String reportServerPort;
 
     @Override
     public void configure() throws Exception {
