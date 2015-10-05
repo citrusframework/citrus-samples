@@ -44,9 +44,10 @@ public class FactoryWorkerRoute extends RouteBuilder {
     public void configure() throws Exception {
         from("jms:queue:factory." + factoryType + ".inbound").routeId(factoryType + "_factory")
             .setHeader("name", xpath("order/@type"))
+            .setHeader("id", xpath("order/id/text()"))
             .setHeader("amount", xpath("order/amount/text()"))
             .delay(constant(factoryCosts))
-            .setHeader(Exchange.HTTP_METHOD, constant("GET"))
+            .setHeader(Exchange.HTTP_METHOD, constant("PUT"))
             .setBody(constant(""))
             .to("http://" + reportServerHost + ":" + reportServerPort + "/report/services/reporting");
     }

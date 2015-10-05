@@ -19,6 +19,7 @@ package com.consol.citrus.samples.bakery;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.container.IteratingConditionExpression;
 import com.consol.citrus.context.TestContext;
+import com.consol.citrus.dsl.functions.Functions;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
@@ -46,19 +47,22 @@ public class PlaceOrders_Ok_IT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void placeCakeOrder() {
+        variable("orderId", Functions.randomNumber(10L));
+
         send(bakeryOrderEndpoint)
-            .payload("<order type=\"cake\"><amount>1</amount></order>");
+            .payload("<order type=\"cake\"><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
             send(reportingClient)
                 .http()
                     .method(HttpMethod.GET)
-                    .queryParam("type", "json"),
+                    .path("/order")
+                    .queryParam("id", "${orderId}"),
             receive(reportingClient)
-                .messageType(MessageType.JSON)
+                .messageType(MessageType.PLAINTEXT)
                 .http()
                     .status(HttpStatus.OK)
-                    .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": \"@greaterThan(0)@\"}")
+                    .payload("true")
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
@@ -69,19 +73,22 @@ public class PlaceOrders_Ok_IT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void placePretzelOrder() {
+        variable("orderId", Functions.randomNumber(10L));
+
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"pretzel\"><amount>1</amount></order>");
+                .payload("<order type=\"pretzel\"><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
             send(reportingClient)
                     .http()
                     .method(HttpMethod.GET)
-                    .queryParam("type", "json"),
+                    .path("/order")
+                    .queryParam("id", "${orderId}"),
             receive(reportingClient)
-                    .messageType(MessageType.JSON)
+                    .messageType(MessageType.PLAINTEXT)
                     .http()
                     .status(HttpStatus.OK)
-                    .payload("{\"pretzel\": \"@greaterThan(0)@\",\"bread\": \"@ignore@\",\"cake\": \"@ignore@\"}")
+                    .payload("true")
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
@@ -92,19 +99,22 @@ public class PlaceOrders_Ok_IT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void placeBreadOrder() {
+        variable("orderId", Functions.randomNumber(10L));
+
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"bread\"><amount>1</amount></order>");
+                .payload("<order type=\"bread\"><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
             send(reportingClient)
                     .http()
                     .method(HttpMethod.GET)
-                    .queryParam("type", "json"),
+                    .path("/order")
+                    .queryParam("id", "${orderId}"),
             receive(reportingClient)
-                    .messageType(MessageType.JSON)
+                    .messageType(MessageType.PLAINTEXT)
                     .http()
                     .status(HttpStatus.OK)
-                    .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@greaterThan(0)@\",\"cake\": \"@ignore@\"}")
+                    .payload("true")
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {

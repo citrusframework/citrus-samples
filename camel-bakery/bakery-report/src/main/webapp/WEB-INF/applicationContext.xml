@@ -8,6 +8,8 @@
 
     <component-scan xmlns="http://www.springframework.org/schema/context" base-package="com.consol.citrus.samples.bakery.routes"/>
 
+    <bean id="reportService" class="com.consol.citrus.samples.bakery.service.ReportService"/>
+
     <!-- Camel context -->
     <camelContext id="bakery-report" xmlns="http://camel.apache.org/schema/spring">
         <contextScan/>

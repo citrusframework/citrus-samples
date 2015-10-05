@@ -49,30 +49,30 @@ public class BakeryWeb_Ok_IT extends TestNGCitrusTestDesigner {
     @CitrusTest
     public void routeMessagesContentBased() {
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"cake\"><amount>1</amount></order>");
+                .payload("<order type=\"cake\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
 
         receive(workerCakeEndpoint)
-                .payload("<order type=\"cake\"><amount>1</amount></order>");
+                .payload("<order type=\"cake\"><id>@ignore@</id><amount>1</amount></order>");
 
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"pretzel\"><amount>1</amount></order>");
+                .payload("<order type=\"pretzel\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
 
         receive(workerPretzelEndpoint)
-                .payload("<order type=\"pretzel\"><amount>1</amount></order>");
+                .payload("<order type=\"pretzel\"><id>@ignore@</id><amount>1</amount></order>");
 
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"bread\"><amount>1</amount></order>");
+                .payload("<order type=\"bread\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
 
         receive(workerBreadEndpoint)
-                .payload("<order type=\"bread\"><amount>1</amount></order>");
+                .payload("<order type=\"bread\"><id>@ignore@</id><amount>1</amount></order>");
     }
 
     @CitrusTest
     public void routeUnknownOrderType() {
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"baguette\"><amount>1</amount></order>");
+                .payload("<order type=\"baguette\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
 
         receive("jms:factory.unknown.inbound")
-                .payload("<order type=\"baguette\"><amount>1</amount></order>");
+                .payload("<order type=\"baguette\"><id>@ignore@</id><amount>1</amount></order>");
     }
 }

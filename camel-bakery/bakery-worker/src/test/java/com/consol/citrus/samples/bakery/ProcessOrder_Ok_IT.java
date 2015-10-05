@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.functions.Functions;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.message.HttpMessageHeaders;
 import com.consol.citrus.http.server.HttpServer;
@@ -44,13 +45,16 @@ public class ProcessOrder_Ok_IT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void processOrderWithReporting() {
+        variable("orderId", Functions.randomNumber(10L));
+
         send(factoryOrderEndpoint)
-            .payload("<order type=\"cake\"><amount>1</amount></order>");
+            .payload("<order type=\"cake\"><id>${orderId}</id><amount>1</amount></order>");
 
         receive(reportingServer)
             .http()
                 .uri("/report/services/reporting")
-                .method(HttpMethod.GET)
+                .method(HttpMethod.PUT)
+                .header("id", "${orderId}")
                 .header("name", "cake")
                 .header("amount", "1")
                 .timeout(5000L);
