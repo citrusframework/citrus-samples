@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ReportService implements InitializingBean {
 
     /** In memory report **/
-    private Map<String, AtomicInteger> report = new HashMap<>();
+    private Map<String, AtomicInteger> report = new LinkedHashMap<>();
 
     /** In memory id store of produced items */
     private ArrayList<String> produced = new ArrayList<>();
