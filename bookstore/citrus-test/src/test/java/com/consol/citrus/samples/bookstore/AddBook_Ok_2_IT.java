@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.bookstore;
 
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.samples.bookstore.model.*;
 import com.consol.citrus.validation.xml.XmlMarshallingValidationCallback;
@@ -54,7 +55,7 @@ public class AddBook_Ok_2_IT extends TestNGCitrusTestDesigner {
         receive(bookStoreClient)
             .validationCallback(new XmlMarshallingValidationCallback<AddBookResponseMessage>() {
                 @Override
-                public void validate(AddBookResponseMessage response, Map<String, Object> headers) {
+                public void validate(AddBookResponseMessage response, Map<String, Object> headers, TestContext context) {
                     Assert.isTrue(response.isSuccess());
                 }
             });

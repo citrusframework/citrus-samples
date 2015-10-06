@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.functions.Functions;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
@@ -60,7 +61,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
                 .status(HttpStatus.OK)
                 .validationCallback(new AbstractValidationCallback<String>() {
                     @Override
-                    public void validate(String payload, Map headers) {
+                    public void validate(String payload, Map headers, TestContext context) {
                         Assert.assertFalse(payload.contains(orderId));
                     }
                 });
@@ -91,7 +92,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
                 .status(HttpStatus.OK)
                 .validationCallback(new AbstractValidationCallback<String>() {
                     @Override
-                    public void validate(String payload, Map headers) {
+                    public void validate(String payload, Map headers, TestContext context) {
                         Assert.assertTrue(payload.contains(orderId));
                     }
                 });
