@@ -89,6 +89,30 @@ public class ReportService implements InitializingBean {
         }
 
         response.append("</ul>");
+
+        response.append("<p><a href=\"reporting/orders\">Show orders</a></p>");
+        response.append("</body></html>");
+
+        return response.toString();
+    }
+
+    /**
+     * Gets list of all produced order ids.
+     * @return
+     */
+    public String orders() {
+        StringBuilder response = new StringBuilder();
+        response.append("<html><body>");
+
+        response.append("<ul>");
+
+        for (String orderId : produced) {
+            response.append("<li>")
+                    .append(orderId)
+                    .append("</li>");
+        }
+
+        response.append("</ul>");
         response.append("</body></html>");
 
         return response.toString();

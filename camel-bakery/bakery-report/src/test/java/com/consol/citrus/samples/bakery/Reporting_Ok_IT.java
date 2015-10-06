@@ -17,7 +17,6 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.functions.Functions;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
@@ -39,80 +38,8 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
     private HttpClient reportingClient;
 
     @CitrusTest
-    public void getOrderStatus() {
-        echo("First receive false status");
-
-        variable("orderId", Functions.randomNumber(10L));
-
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/order")
-                .queryParam("id", "${orderId}");
-
-        receive(reportingClient)
-                .messageType(MessageType.PLAINTEXT)
-                .http()
-                .status(HttpStatus.OK)
-                .payload("false");
-
-        echo("Add some 'pretzel' order with id");
-
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.PUT)
-                .queryParam("id", "${orderId}")
-                .queryParam("name", "pretzel")
-                .queryParam("amount", "1");
-
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK);
-
-        echo("Receive report positive status for order id");
-
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/order")
-                .queryParam("id", "${orderId}");
-
-        receive(reportingClient)
-                .messageType(MessageType.PLAINTEXT)
-                .http()
-                .status(HttpStatus.OK)
-                .payload("true");
-    }
-
-    @CitrusTest
-    public void addOrders() {
-        echo("First receive empty report");
-
-        send(reportingClient)
-            .http()
-                .method(HttpMethod.GET)
-                .path("/json");
-
-        receive(reportingClient)
-            .messageType(MessageType.JSON)
-            .http()
-                .status(HttpStatus.OK)
-                .payload("{\"pretzel\": 0,\"bread\": 0,\"cake\": 0}");
-
-        echo("Add some 'cake' orders");
-
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.PUT)
-                .queryParam("id", "citrus:randomNumber(10)")
-                .queryParam("name", "cake")
-                .queryParam("amount", "10");
-
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK);
-
-        echo("Receive report with changed data");
+    public void getJsonReport() {
+        echo("Receive Json report");
 
         send(reportingClient)
                 .http()
@@ -123,7 +50,37 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
                 .messageType(MessageType.JSON)
                 .http()
                 .status(HttpStatus.OK)
-                .payload("{\"pretzel\": 0,\"bread\": 0,\"cake\": 10}");
+                .payload("{\"pretzel\": \"@isNumber()@\",\"bread\": \"@isNumber()@\",\"cake\": \"@isNumber()@\"}");
+    }
+
+    @CitrusTest
+    public void getHtmlReport() {
+        echo("Receive Html report");
+
+        send(reportingClient)
+                .http()
+                .method(HttpMethod.GET);
+
+        receive(reportingClient)
+                .http()
+                .status(HttpStatus.OK)
+                .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"org/w3/xhtml/xhtml1-strict.dtd\">\n" +
+                        "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
+                            "<head>\n" +
+                                "<title></title>\n" +
+                            "</head>\n" +
+                        "<body>\n" +
+                            "<h1>Camel bakery reporting</h1>\n" +
+                            "<p>Today we have produced following goods:</p>\n" +
+                            "<ul>\n" +
+                                "<li>@startsWith('cake:')@</li>\n" +
+                                "<li>@startsWith('pretzel:')@</li>\n" +
+                                "<li>@startsWith('bread:')@</li>\n" +
+                            "</ul>" +
+                            "<p><a href=\"reporting/orders\">Show orders</a></p>" +
+                        "</body>" +
+                        "</html>")
+                .build().setMessageType("xhtml");
     }
 
     @CitrusTest
@@ -199,34 +156,5 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
                 .http()
                 .status(HttpStatus.OK)
                 .payload("{\"pretzel\": 0,\"bread\": 0,\"cake\": 0}");
-    }
-
-    @CitrusTest
-    public void getHtmlReport() {
-        echo("Receive Html report");
-
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET);
-
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK)
-                .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"org/w3/xhtml/xhtml1-strict.dtd\">\n" +
-                        "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
-                            "<head>\n" +
-                                "<title></title>\n" +
-                            "</head>\n" +
-                        "<body>\n" +
-                            "<h1>Camel bakery reporting</h1>\n" +
-                            "<p>Today we have produced following goods:</p>\n" +
-                            "<ul>\n" +
-                                "<li>@startsWith('cake:')@</li>\n" +
-                                "<li>@startsWith('pretzel:')@</li>\n" +
-                                "<li>@startsWith('bread:')@</li>\n" +
-                            "</ul>" +
-                        "</body>" +
-                        "</html>")
-                .build().setMessageType("xhtml");
     }
 }

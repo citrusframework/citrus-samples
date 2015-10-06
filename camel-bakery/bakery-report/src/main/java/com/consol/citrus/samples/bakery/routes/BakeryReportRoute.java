@@ -38,6 +38,7 @@ public class BakeryReportRoute extends RouteBuilder {
             .put().to("bean:reportService?method=add(${header.id}, ${header.name}, ${header.amount})")
             .get().to("bean:reportService?method=html")
             .get("/order").to("bean:reportService?method=status(${header.id})")
+            .get("/orders").to("bean:reportService?method=orders()")
             .get("/json").to("bean:reportService?method=json")
             .get("/reset").to("bean:reportService?method=reset");
     }
