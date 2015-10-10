@@ -22,7 +22,6 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -41,15 +40,12 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
     public void getJsonReport() {
         echo("Receive Json report");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/json");
+        http().client(reportingClient)
+                .get("/json");
 
-        receive(reportingClient)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .http()
-                .status(HttpStatus.OK)
                 .payload("{\"pretzel\": \"@isNumber()@\",\"bread\": \"@isNumber()@\",\"cake\": \"@isNumber()@\"}");
     }
 
@@ -57,13 +53,11 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
     public void getHtmlReport() {
         echo("Receive Html report");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET);
+        http().client(reportingClient)
+                .get();
 
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"org/w3/xhtml/xhtml1-strict.dtd\">\n" +
                         "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                             "<head>\n" +

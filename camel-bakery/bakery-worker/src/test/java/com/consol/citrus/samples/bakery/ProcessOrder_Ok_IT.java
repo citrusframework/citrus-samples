@@ -19,12 +19,10 @@ package com.consol.citrus.samples.bakery;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.functions.Functions;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
-import com.consol.citrus.http.message.HttpMessageHeaders;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -50,18 +48,14 @@ public class ProcessOrder_Ok_IT extends TestNGCitrusTestDesigner {
         send(factoryOrderEndpoint)
             .payload("<order type=\"cake\"><id>${orderId}</id><amount>1</amount></order>");
 
-        receive(reportingServer)
-            .http()
-                .uri("/report/services/reporting")
-                .method(HttpMethod.PUT)
+        http().server(reportingServer)
+            .put("/report/services/reporting")
                 .header("id", "${orderId}")
                 .header("name", "cake")
                 .header("amount", "1")
                 .timeout(5000L);
 
-        send(reportingServer)
-            .http()
-            .header(HttpMessageHeaders.HTTP_STATUS_CODE,
-                    Integer.valueOf(HttpStatus.OK.value()));
+        http().server(reportingServer)
+            .respond(HttpStatus.OK);
     }
 }
