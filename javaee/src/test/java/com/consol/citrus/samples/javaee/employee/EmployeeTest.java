@@ -85,7 +85,7 @@ public class EmployeeTest {
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage()
-                        .statusCode(HttpStatus.NO_CONTENT));
+                        .status(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Leonard&age=21")
@@ -94,7 +94,7 @@ public class EmployeeTest {
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage()
-                        .statusCode(HttpStatus.NO_CONTENT));
+                        .status(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
                 .message(new HttpMessage("name=Sheldon&age=22")
@@ -103,7 +103,7 @@ public class EmployeeTest {
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage()
-                        .statusCode(HttpStatus.NO_CONTENT));
+                        .status(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
                 .message(new HttpMessage()
@@ -125,7 +125,7 @@ public class EmployeeTest {
                                 "<name>Sheldon</name>" +
                             "</employee>" +
                         "</employees>")
-                        .statusCode(HttpStatus.OK));
+                        .status(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -144,7 +144,7 @@ public class EmployeeTest {
                             "<age>21</age>" +
                             "<name>Leonard</name>" +
                         "</employee>")
-                        .statusCode(HttpStatus.OK));
+                        .status(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -177,7 +177,7 @@ public class EmployeeTest {
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage()
-                        .statusCode(HttpStatus.NO_CONTENT));
+                        .status(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
                 .message(new HttpMessage()
@@ -204,7 +204,7 @@ public class EmployeeTest {
                                 "<email>howard@example.com</email>" +
                             "</employee>" +
                         "</employees>")
-                        .statusCode(HttpStatus.OK));
+                        .status(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -219,7 +219,7 @@ public class EmployeeTest {
 
         citrus.receive(serviceUri + "/Leonard")
                 .message(new HttpMessage()
-                        .statusCode(HttpStatus.NO_CONTENT));
+                        .status(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
                 .message(new HttpMessage()
@@ -242,7 +242,7 @@ public class EmployeeTest {
                                 "<email>howard@example.com</email>" +
                             "</employee>" +
                         "</employees>")
-                        .statusCode(HttpStatus.OK));
+                        .status(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -263,7 +263,7 @@ public class EmployeeTest {
                             "{\"name\":\"Sheldon\",\"age\":22}," +
                             "{\"name\":\"Howard\",\"age\":21,\"email\":\"howard@example.com\"}" +
                         "]}")
-                        .statusCode(HttpStatus.OK));
+                        .status(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -278,7 +278,7 @@ public class EmployeeTest {
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage()
-                        .statusCode(HttpStatus.NO_CONTENT));
+                        .status(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
                 .message(new HttpMessage()
@@ -287,7 +287,7 @@ public class EmployeeTest {
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage("<employees></employees>")
-                        .statusCode(HttpStatus.OK));
+                        .status(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }

@@ -87,74 +87,59 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
     public void resetReport() {
         echo("Add some 'cake', 'pretzel' and 'bread' orders");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.PUT)
+        http().client(reportingClient)
+                .put()
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "cake")
                 .queryParam("amount", "10");
 
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK);
+        http().client(reportingClient)
+                .response(HttpStatus.OK);
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.PUT)
+        http().client(reportingClient)
+                .put()
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "pretzel")
                 .queryParam("amount", "100");
 
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK);
+        http().client(reportingClient)
+                .response(HttpStatus.OK);
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.PUT)
+        http().client(reportingClient)
+                .put()
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "bread")
                 .queryParam("amount", "5");
 
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK);
+        http().client(reportingClient)
+                .response(HttpStatus.OK);
 
         echo("Receive report with changed data");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/json");
+        http().client(reportingClient)
+                .get("/json");
 
-        receive(reportingClient)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .http()
-                .status(HttpStatus.OK)
                 .payload("{\"pretzel\": \"@greaterThan(0)@\",\"bread\": \"@greaterThan(0)@\",\"cake\": \"@greaterThan(0)@\"}");
 
         echo("Reset report data");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/reset");
+        http().client(reportingClient)
+                .get("/reset");
 
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK);
+        http().client(reportingClient)
+                .response(HttpStatus.OK);
 
         echo("Receive empty report data");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/json");
+        http().client(reportingClient)
+                .get("/json");
 
-        receive(reportingClient)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .http()
-                .status(HttpStatus.OK)
                 .payload("{\"pretzel\": 0,\"bread\": 0,\"cake\": 0}");
     }
 }

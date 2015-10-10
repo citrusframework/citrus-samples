@@ -25,7 +25,6 @@ import com.consol.citrus.message.MessageType;
 import com.consol.citrus.validation.callback.AbstractValidationCallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -50,15 +49,12 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
 
         echo("First check order id not present");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/orders");
+        http().client(reportingClient)
+                .get("/orders");
 
-        receive(reportingClient)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
-                .http()
-                .status(HttpStatus.OK)
                 .validationCallback(new AbstractValidationCallback<String>() {
                     @Override
                     public void validate(String payload, Map headers, TestContext context) {
@@ -68,28 +64,23 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
 
         echo("Add some 'bread' order with id");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.PUT)
+        http().client(reportingClient)
+                .put()
                 .queryParam("id", "${orderId}")
                 .queryParam("name", "bread")
                 .queryParam("amount", "1");
 
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK);
+        http().client(reportingClient)
+                .response(HttpStatus.OK);
 
         echo("Receive order id in list of produced goods");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/orders");
+        http().client(reportingClient)
+                .get("/orders");
 
-        receive(reportingClient)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
-                .http()
-                .status(HttpStatus.OK)
                 .validationCallback(new AbstractValidationCallback<String>() {
                     @Override
                     public void validate(String payload, Map headers, TestContext context) {
@@ -102,41 +93,33 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
     public void addOrders() {
         echo("First receive report and save current amount of produced cakes to variable");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/json");
+        http().client(reportingClient)
+                .get("/json");
 
-        receive(reportingClient)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .http()
-                .status(HttpStatus.OK)
                 .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": \"@variable('producedCakes')@\"}");
 
         echo("Add some 'cake' orders");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.PUT)
+        http().client(reportingClient)
+                .put()
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "cake")
                 .queryParam("amount", "10");
 
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK);
+        http().client(reportingClient)
+                .response(HttpStatus.OK);
 
         echo("Receive report with changed data");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/json");
+        http().client(reportingClient)
+                .get("/json");
 
-        receive(reportingClient)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .http()
-                .status(HttpStatus.OK)
                 .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": \"@greaterThan(${producedCakes})@\"}");
     }
 
@@ -146,43 +129,35 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
 
         echo("First receive negative order status");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/order")
+        http().client(reportingClient)
+                .get("/order")
                 .queryParam("id", "${orderId}");
 
-        receive(reportingClient)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
-                .http()
-                .status(HttpStatus.OK)
                 .payload("false");
 
         echo("Add some 'pretzel' order with id");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.PUT)
+        http().client(reportingClient)
+                .put()
                 .queryParam("id", "${orderId}")
                 .queryParam("name", "pretzel")
                 .queryParam("amount", "1");
 
-        receive(reportingClient)
-                .http()
-                .status(HttpStatus.OK);
+        http().client(reportingClient)
+                .response(HttpStatus.OK);
 
         echo("Receive report positive status for order id");
 
-        send(reportingClient)
-                .http()
-                .method(HttpMethod.GET)
-                .path("/order")
+        http().client(reportingClient)
+                .get("/order")
                 .queryParam("id", "${orderId}");
 
-        receive(reportingClient)
+        http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
-                .http()
-                .status(HttpStatus.OK)
                 .payload("true");
     }
 }

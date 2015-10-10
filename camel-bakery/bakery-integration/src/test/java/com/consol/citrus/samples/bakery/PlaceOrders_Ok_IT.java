@@ -26,7 +26,6 @@ import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -53,16 +52,13 @@ public class PlaceOrders_Ok_IT extends TestNGCitrusTestDesigner {
             .payload("<order type=\"cake\"><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
-            send(reportingClient)
-                .http()
-                    .method(HttpMethod.GET)
-                    .path("/order")
-                    .queryParam("id", "${orderId}"),
-            receive(reportingClient)
+            http().client(reportingClient)
+                .get("/order")
+                .queryParam("id", "${orderId}"),
+            http().client(reportingClient)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
-                .http()
-                    .status(HttpStatus.OK)
-                    .payload("true")
+                .payload("true")
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
@@ -79,15 +75,12 @@ public class PlaceOrders_Ok_IT extends TestNGCitrusTestDesigner {
                 .payload("<order type=\"pretzel\"><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
-            send(reportingClient)
-                    .http()
-                    .method(HttpMethod.GET)
-                    .path("/order")
+            http().client(reportingClient)
+                    .get("/order")
                     .queryParam("id", "${orderId}"),
-            receive(reportingClient)
+            http().client(reportingClient)
+                    .response(HttpStatus.OK)
                     .messageType(MessageType.PLAINTEXT)
-                    .http()
-                    .status(HttpStatus.OK)
                     .payload("true")
         ).until(new IteratingConditionExpression() {
             @Override
@@ -105,15 +98,12 @@ public class PlaceOrders_Ok_IT extends TestNGCitrusTestDesigner {
                 .payload("<order type=\"bread\"><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
-            send(reportingClient)
-                    .http()
-                    .method(HttpMethod.GET)
-                    .path("/order")
+            http().client(reportingClient)
+                    .get("/order")
                     .queryParam("id", "${orderId}"),
-            receive(reportingClient)
+            http().client(reportingClient)
+                    .response(HttpStatus.OK)
                     .messageType(MessageType.PLAINTEXT)
-                    .http()
-                    .status(HttpStatus.OK)
                     .payload("true")
         ).until(new IteratingConditionExpression() {
             @Override

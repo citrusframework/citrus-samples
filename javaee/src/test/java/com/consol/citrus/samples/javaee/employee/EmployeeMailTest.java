@@ -98,7 +98,7 @@ public class EmployeeMailTest {
 
         citrus.receive(serviceUri)
                 .message(new HttpMessage()
-                        .statusCode(HttpStatus.NO_CONTENT));
+                        .status(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
                 .fork(true)
@@ -114,7 +114,7 @@ public class EmployeeMailTest {
                                 "<email>rajesh@example.com</email>" +
                             "</employee>" +
                         "</employees>")
-                        .statusCode(HttpStatus.OK));
+                        .status(HttpStatus.OK));
 
         citrusFramework.run(citrus.getTestCase());
     }
