@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author Christoph Deppisch
- * @since 2.3.1
+ * @since 2.4
  */
 @Component
 public class OrderInboundTimer extends RouteBuilder implements Processor {

@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
- * @since 2.3.1
+ * @since 2.4
  */
 @Test
 public class ProcessOrder_Ok_IT extends TestNGCitrusTestDesigner {
