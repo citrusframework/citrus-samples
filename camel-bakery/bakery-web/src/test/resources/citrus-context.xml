@@ -27,7 +27,11 @@
       <property name="watchTopicAdvisories" value="false"/>
     </bean>
 
-    <!-- Order Inbound endpoint -->
+    <!-- Order Http inbound endpoint -->
+    <citrus-http:client id="bakeryClient"
+                         request-url="http://${bakery.server.host}:${bakery.server.port}/bakery/services"/>
+
+    <!-- Order Jms inbound endpoint -->
     <citrus-jms:endpoint id="bakeryOrderEndpoint"
                          destination-name="bakery.order.inbound"/>
 

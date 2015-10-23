@@ -16,28 +16,57 @@
 
 package com.consol.citrus.samples.bakery.routes;
 
+import org.apache.camel.*;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Component
-public class BakeryRouter extends RouteBuilder {
+public class BakeryRouter extends RouteBuilder implements Processor {
 
     @Override
     public void configure() throws Exception {
-        from("jms:queue:bakery.order.inbound").routeId("bakery_inbound")
+        restConfiguration()
+                .component("servlet")
+                .contextPath("bakery/services")
+                .port(18001)
+                .dataFormatProperty("prettyPrint", "true");
+
+        rest("/order")
+            .consumes("application/json")
+            .post().route().unmarshal().json(JsonLibrary.Jackson).process(this).to("direct:bakery");
+
+        from("jms:queue:bakery.order.inbound").routeId("bakery_jms_inbound")
+            .to("direct:bakery");
+
+        from("direct:bakery").routeId("bakery")
             .choice()
                 .when(xpath("order/@type = 'bread'"))
-                    .to("jms:queue:factory.bread.inbound")
+                    .inOnly("jms:queue:factory.bread.inbound")
                 .when(xpath("order/@type = 'pretzel'"))
-                    .to("jms:queue:factory.pretzel.inbound")
+                    .inOnly("jms:queue:factory.pretzel.inbound")
                 .when(xpath("order/@type = 'cake'"))
-                    .to("jms:queue:factory.cake.inbound")
+                    .inOnly("jms:queue:factory.cake.inbound")
                 .otherwise()
-                    .to("jms:queue:factory.unknown.inbound")
-            .endChoice();
+                    .inOnly("jms:queue:factory.unknown.inbound")
+            .end()
+            .setBody(simple(""));
+    }
+
+    @Override
+    public void process(Exchange exchange) throws Exception {
+        Message in = exchange.getIn();
+
+        Map<String, Object> orderJson = (Map<String, Object>) in.getBody(Map.class).get("order");
+        in.setBody("<order type=\"" + orderJson.get("type") + "\">" +
+                "<id>" + orderJson.get("id") + "</id>" +
+                "<amount>" + orderJson.get("amount") + "</amount>" +
+            "</order>");
     }
 }

@@ -50,7 +50,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
         echo("First check order id not present");
 
         http().client(reportingClient)
-                .get("/orders");
+                .get("/reporting/orders");
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
@@ -65,7 +65,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
         echo("Add some 'bread' order with id");
 
         http().client(reportingClient)
-                .put()
+                .put("/reporting")
                 .queryParam("id", "${orderId}")
                 .queryParam("name", "bread")
                 .queryParam("amount", "1");
@@ -76,7 +76,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
         echo("Receive order id in list of produced goods");
 
         http().client(reportingClient)
-                .get("/orders");
+                .get("/reporting/orders");
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
@@ -94,7 +94,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
         echo("First receive report and save current amount of produced cakes to variable");
 
         http().client(reportingClient)
-                .get("/json");
+                .get("/reporting/json");
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
@@ -104,7 +104,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
         echo("Add some 'cake' orders");
 
         http().client(reportingClient)
-                .put()
+                .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "cake")
                 .queryParam("amount", "10");
@@ -115,7 +115,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
         echo("Receive report with changed data");
 
         http().client(reportingClient)
-                .get("/json");
+                .get("/reporting/json");
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
@@ -130,7 +130,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
         echo("First receive negative order status");
 
         http().client(reportingClient)
-                .get("/order")
+                .get("/reporting/order")
                 .queryParam("id", "${orderId}");
 
         http().client(reportingClient)
@@ -141,7 +141,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
         echo("Add some 'pretzel' order with id");
 
         http().client(reportingClient)
-                .put()
+                .put("/reporting")
                 .queryParam("id", "${orderId}")
                 .queryParam("name", "pretzel")
                 .queryParam("amount", "1");
@@ -152,7 +152,7 @@ public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
         echo("Receive report positive status for order id");
 
         http().client(reportingClient)
-                .get("/order")
+                .get("/reporting/order")
                 .queryParam("id", "${orderId}");
 
         http().client(reportingClient)

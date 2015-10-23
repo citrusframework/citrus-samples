@@ -1,10 +1,51 @@
-<html>
-  <body>
-    <h2>Camel Bakery Web</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Citrus Administration</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Baker Web UI">
+  <meta name="author" content="ConSol Software GmbH">
 
-    <p>This is a simple example web application that was created with camel-archetype-web.</p>
-    <br/>
-    <p>The bakery application uses content based router in a Camel route that distributes incoming orders to respective bread factory.</p>
+  <script src="javascript/jquery.js"></script>
 
-  </body>
+  <link type="text/css" href="styles/bootstrap.css" rel="stylesheet" />
+
+  <script type="text/javascript">
+    $( document ).ready(function() {
+        $("#orderForm").submit(function( event ) {
+            event.preventDefault();
+
+            var orderId = Math.floor((Math.random() * 100000) + 1);
+
+            $.ajax({
+                method: "POST",
+                url: "services/order",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ order: {id: orderId, type: $("#type").val(), amount: $("#amount").val()}}),
+                complete: function() {
+                    $( '<p>' ).text( "Submitted order: " + orderId ).appendTo( "body" );
+                }
+            });
+        });
+    });
+  </script>
+</head>
+
+<body>
+<div id="content">
+  <h1>Bakery Web</h1>
+
+  <form id="orderForm" action="/">
+    <select id="type">
+      <option>bread</option>
+      <option>pretzel</option>
+      <option>cake</option>
+    </select>
+    <input type="text" id="amount" value="1"/>
+    <input type="submit" value="Place order"/>
+  </form>
+</div>
+
+</body>
 </html>

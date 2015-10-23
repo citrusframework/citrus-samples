@@ -41,7 +41,7 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
         echo("Receive Json report");
 
         http().client(reportingClient)
-                .get("/json");
+                .get("/reporting/json");
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
@@ -54,7 +54,7 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
         echo("Receive Html report");
 
         http().client(reportingClient)
-                .get();
+                .get("/reporting");
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
@@ -82,7 +82,7 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
         echo("Add some 'cake', 'pretzel' and 'bread' orders");
 
         http().client(reportingClient)
-                .put()
+                .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "cake")
                 .queryParam("amount", "10");
@@ -91,7 +91,7 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
                 .response(HttpStatus.OK);
 
         http().client(reportingClient)
-                .put()
+                .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "pretzel")
                 .queryParam("amount", "100");
@@ -100,7 +100,7 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
                 .response(HttpStatus.OK);
 
         http().client(reportingClient)
-                .put()
+                .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "bread")
                 .queryParam("amount", "5");
@@ -111,7 +111,7 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
         echo("Receive report with changed data");
 
         http().client(reportingClient)
-                .get("/json");
+                .get("/reporting/json");
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
@@ -121,7 +121,7 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
         echo("Reset report data");
 
         http().client(reportingClient)
-                .get("/reset");
+                .get("/reporting/reset");
 
         http().client(reportingClient)
                 .response(HttpStatus.OK);
@@ -129,7 +129,7 @@ public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
         echo("Receive empty report data");
 
         http().client(reportingClient)
-                .get("/json");
+                .get("/reporting/json");
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
