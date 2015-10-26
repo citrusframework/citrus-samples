@@ -180,6 +180,10 @@
               <key>REPORT_PORT_8080_TCP_ADDR</key>
               <value>localhost</value>
             </systemProperty>
+            <systemProperty>
+              <key>REPORT_PORT_8080_TCP_PORT</key>
+              <value>19002</value>
+            </systemProperty>
           </systemProperties>
         </configuration>
       </plugin>
@@ -218,8 +222,8 @@
               </run>
             </image>
             <image>
-              <alias>worker-server-cake</alias>
-              <name>consol/${application.server}:latest</name>
+              <alias>worker-cake</alias>
+              <name>jolokia/java-jolokia:7</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <volumes>
@@ -231,21 +235,14 @@
                   <link>activemq-broker:activemq</link>
                 </links>
                 <env>
-                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
                   <FACTORY_TYPE>${factory.type}</FACTORY_TYPE>
                   <FACTORY_COSTS>${factory.costs}</FACTORY_COSTS>
                   <REPORT_PORT_8080_TCP_ADDR>${docker.host.ip}</REPORT_PORT_8080_TCP_ADDR>
+                  <REPORT_PORT_8080_TCP_PORT>19002</REPORT_PORT_8080_TCP_PORT>
                 </env>
-                <ports>
-                  <port>${worker1.server.port}:8080</port>
-                </ports>
+                <cmd>java -jar maven/worker.jar</cmd>
                 <wait>
-                  <log>Server startup</log>
-                  <http>
-                    <url>http://localhost:${worker1.server.port}/worker/jolokia</url>
-                    <method>GET</method>
-                    <status>200</status>
-                  </http>
+                  <log>.*bakery-worker..started</log>
                   <time>60000</time>
                   <shutdown>500</shutdown>
                 </wait>
@@ -263,7 +260,7 @@
                   <tag>latest</tag>
                 </tags>
                 <assembly>
-                  <descriptorRef>artifact</descriptorRef>
+                  <descriptorRef>artifact-with-dependencies</descriptorRef>
                 </assembly>
               </build>
             </image>
@@ -326,6 +323,7 @@
                   <arguments>
                     <argument>${factory.type}</argument>
                     <argument>${factory.costs}</argument>
+                    <argument>19002</argument>
                   </arguments>
                 </configuration>
               </execution>

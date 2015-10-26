@@ -204,8 +204,8 @@
               </run>
             </image>
             <image>
-              <alias>worker-server-cake</alias>
-              <name>consol/${application.server}:latest</name>
+              <alias>worker-cake</alias>
+              <name>jolokia/java-jolokia:7</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <volumes>
@@ -218,58 +218,12 @@
                   <link>activemq-broker:activemq</link>
                 </links>
                 <env>
-                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
                   <FACTORY_TYPE>cake</FACTORY_TYPE>
                   <FACTORY_COSTS>500</FACTORY_COSTS>
                 </env>
-                <ports>
-                  <port>${worker1.server.port}:8080</port>
-                </ports>
+                <cmd>java -jar maven/worker.jar</cmd>
                 <wait>
-                  <log>Server startup</log>
-                  <http>
-                    <url>http://localhost:${worker1.server.port}/worker/jolokia</url>
-                    <method>GET</method>
-                    <status>200</status>
-                  </http>
-                  <time>60000</time>
-                  <shutdown>1000</shutdown>
-                </wait>
-                <log>
-                  <enabled>true</enabled>
-                  <color>red</color>
-                </log>
-              </run>
-            </image>
-            <image>
-              <alias>worker-server-bread</alias>
-              <name>consol/${application.server}:latest</name>
-              <run>
-                <namingStrategy>alias</namingStrategy>
-                <volumes>
-                  <from>
-                    <image>bakery-worker</image>
-                  </from>
-                </volumes>
-                <links>
-                  <link>report-server:report</link>
-                  <link>activemq-broker:activemq</link>
-                </links>
-                <env>
-                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
-                  <FACTORY_TYPE>bread</FACTORY_TYPE>
-                  <FACTORY_COSTS>800</FACTORY_COSTS>
-                </env>
-                <ports>
-                  <port>${worker2.server.port}:8080</port>
-                </ports>
-                <wait>
-                  <log>Server startup</log>
-                  <http>
-                    <url>http://localhost:${worker2.server.port}/worker/jolokia</url>
-                    <method>GET</method>
-                    <status>200</status>
-                  </http>
+                  <log>.*bakery-worker..started</log>
                   <time>60000</time>
                   <shutdown>500</shutdown>
                 </wait>
@@ -280,8 +234,8 @@
               </run>
             </image>
             <image>
-              <alias>worker-server-pretzel</alias>
-              <name>consol/${application.server}:latest</name>
+              <alias>worker-bread</alias>
+              <name>jolokia/java-jolokia:7</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <volumes>
@@ -294,20 +248,42 @@
                   <link>activemq-broker:activemq</link>
                 </links>
                 <env>
-                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                  <FACTORY_TYPE>bread</FACTORY_TYPE>
+                  <FACTORY_COSTS>800</FACTORY_COSTS>
+                </env>
+                <cmd>java -jar maven/worker.jar</cmd>
+                <wait>
+                  <log>.*bakery-worker..started</log>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>red</color>
+                </log>
+              </run>
+            </image>
+            <image>
+              <alias>worker-pretzel</alias>
+              <name>jolokia/java-jolokia:7</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <volumes>
+                  <from>
+                    <image>bakery-worker</image>
+                  </from>
+                </volumes>
+                <links>
+                  <link>report-server:report</link>
+                  <link>activemq-broker:activemq</link>
+                </links>
+                <env>
                   <FACTORY_TYPE>pretzel</FACTORY_TYPE>
                   <FACTORY_COSTS>100</FACTORY_COSTS>
                 </env>
-                <ports>
-                  <port>${worker3.server.port}:8080</port>
-                </ports>
+                <cmd>java -jar maven/worker.jar</cmd>
                 <wait>
-                  <log>Server startup</log>
-                  <http>
-                    <url>http://localhost:${worker3.server.port}/worker/jolokia</url>
-                    <method>GET</method>
-                    <status>200</status>
-                  </http>
+                  <log>.*bakery-worker..started</log>
                   <time>60000</time>
                   <shutdown>500</shutdown>
                 </wait>
