@@ -37,7 +37,7 @@ public class FactoryWorkerRoute extends RouteBuilder {
     @Value("${REPORT_PORT_8080_TCP_ADDR:localhost}")
     private String reportServerHost;
 
-    @Value("${REPORT_PORT_8080_TCP_PORT:19002}")
+    @Value("${REPORT_PORT_8080_TCP_PORT:18002}")
     private String reportServerPort;
 
     @Override

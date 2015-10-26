@@ -12,12 +12,10 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>bakery-worker</artifactId>
   <name>bakery-worker</name>
-  <packaging>war</packaging>
 
   <properties>
     <factory.type>cake</factory.type>
     <factory.costs>500</factory.costs>
-    <jetty.embedded.disabled>false</jetty.embedded.disabled>
     <activemq.embedded.disabled>false</activemq.embedded.disabled>
     <docker.host.ip>192.168.2.100</docker.host.ip>
   </properties>
@@ -37,6 +35,15 @@
     </dependency>
 
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-camel</artifactId>
     </dependency>
@@ -49,11 +56,6 @@
       <groupId>org.jolokia</groupId>
       <artifactId>jolokia-core</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
@@ -62,45 +64,120 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
+        <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <warName>worker</warName>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+              <mainClass>com.consol.citrus.samples.bakery.WorkerApp</mainClass>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
 
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-start-scripts</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/script</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <resource>META-INF/spring.handlers</resource>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <resource>META-INF/spring.schemas</resource>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
         <configuration>
-          <war>
-            ${build.directory}/worker.war
-          </war>
-          <webAppConfig>
-            <contextPath>/worker</contextPath>
-          </webAppConfig>
-          <httpConnector>
-            <port>${worker1.server.port}</port>
-            <idleTimeout>60000</idleTimeout>
-          </httpConnector>
+          <mainClass>com.consol.citrus.samples.bakery.WorkerApp</mainClass>
           <systemProperties>
             <systemProperty>
-              <name>FACTORY_TYPE</name>
+              <key>FACTORY_TYPE</key>
               <value>${factory.type}</value>
             </systemProperty>
             <systemProperty>
-              <name>FACTORY_COSTS</name>
+              <key>FACTORY_COSTS</key>
               <value>${factory.costs}</value>
             </systemProperty>
             <systemProperty>
-              <name>ACTIVEMQ_PORT_61616_TCP_ADDR</name>
+              <key>ACTIVEMQ_PORT_61616_TCP_ADDR</key>
               <value>localhost</value>
             </systemProperty>
             <systemProperty>
-              <name>ACTIVEMQ_PORT_61616_TCP_PORT</name>
+              <key>ACTIVEMQ_PORT_61616_TCP_PORT</key>
               <value>${activemq.server.port}</value>
             </systemProperty>
             <systemProperty>
-              <name>REPORT_PORT_8080_TCP_ADDR</name>
+              <key>REPORT_PORT_8080_TCP_ADDR</key>
               <value>localhost</value>
             </systemProperty>
           </systemProperties>
@@ -195,5 +272,78 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>worker-embedded</id>
+      <activation>
+        <property>
+          <name>embedded</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>grant-start-permissions</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>chmod</executable>
+                  <arguments>
+                    <argument>u+x</argument>
+                    <argument>${project.build.directory}/start.sh</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>grant-stop-permissions</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>chmod</executable>
+                  <arguments>
+                    <argument>u+x</argument>
+                    <argument>${project.build.directory}/stop.sh</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>start-application</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>${project.build.directory}/start.sh</executable>
+                  <arguments>
+                    <argument>${factory.type}</argument>
+                    <argument>${factory.costs}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-application</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>${project.build.directory}/stop.sh</executable>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>

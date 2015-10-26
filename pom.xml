@@ -276,7 +276,12 @@
 
   <profiles>
     <profile>
-      <id>jetty-embedded</id>
+      <id>activemq-embedded</id>
+      <activation>
+        <property>
+          <name>embedded</name>
+        </property>
+      </activation>
       <build>
         <plugins>
           <plugin>
@@ -306,7 +311,19 @@
               </execution>
             </executions>
           </plugin>
+        </plugins>
+      </build>
+    </profile>
 
+    <profile>
+      <id>jetty-embedded</id>
+      <activation>
+        <property>
+          <name>embedded</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
           <plugin>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>

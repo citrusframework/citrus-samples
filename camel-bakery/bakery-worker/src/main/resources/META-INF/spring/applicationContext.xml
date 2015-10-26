@@ -8,7 +8,7 @@
        http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
 
     <property-placeholder xmlns="http://www.springframework.org/schema/context"
-                          location="classpath:application.properties"/>
+                          location="classpath:META-INF/spring/application.properties"/>
 
     <component-scan xmlns="http://www.springframework.org/schema/context" base-package="com.consol.citrus.samples.bakery.routes"/>
 

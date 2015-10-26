@@ -16,39 +16,6 @@
           <Set name="name">instance_report</Set>
         </New>
       </Item>
-      <Item>
-        <New class="org.eclipse.jetty.server.ServerConnector">
-          <Arg>
-            <Ref refid="Server"/>
-          </Arg>
-          <Set name="port">
-            <SystemProperty name="worker1.server.port"/>
-          </Set>
-          <Set name="name">instance_worker1</Set>
-        </New>
-      </Item>
-      <Item>
-        <New class="org.eclipse.jetty.server.ServerConnector">
-          <Arg>
-            <Ref refid="Server"/>
-          </Arg>
-          <Set name="port">
-            <SystemProperty name="worker2.server.port"/>
-          </Set>
-          <Set name="name">instance_worker2</Set>
-        </New>
-      </Item>
-      <Item>
-        <New class="org.eclipse.jetty.server.ServerConnector">
-          <Arg>
-            <Ref refid="Server"/>
-          </Arg>
-          <Set name="port">
-            <SystemProperty name="worker3.server.port"/>
-          </Set>
-          <Set name="name">instance_worker3</Set>
-        </New>
-      </Item>
     </Array>
   </Set>
 

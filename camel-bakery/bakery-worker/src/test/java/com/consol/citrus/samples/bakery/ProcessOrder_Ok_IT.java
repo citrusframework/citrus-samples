@@ -53,7 +53,7 @@ public class ProcessOrder_Ok_IT extends TestNGCitrusTestDesigner {
                 .header("id", "${orderId}")
                 .header("name", "cake")
                 .header("amount", "1")
-                .timeout(5000L);
+                .timeout(10000L);
 
         http().server(reportingServer)
             .respond(HttpStatus.OK);
