@@ -313,11 +313,8 @@
 
   <profiles>
     <profile>
-      <id>unix-workers-embedded</id>
+      <id>workers-embedded</id>
       <activation>
-        <os>
-          <family>unix</family>
-        </os>
         <property>
           <name>embedded</name>
         </property>
@@ -392,9 +389,6 @@
         <os>
           <family>windows</family>
         </os>
-        <property>
-          <name>embedded</name>
-        </property>
       </activation>
       <build>
         <plugins>
