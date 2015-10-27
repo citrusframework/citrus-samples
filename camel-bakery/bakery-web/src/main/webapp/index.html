@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Citrus Administration</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Baker Web UI">
-  <meta name="author" content="ConSol Software GmbH">
+  <head>
+    <title>Bakery Web Application</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Baker Web UI">
+    <meta name="author" content="ConSol Software GmbH">
 
-  <script src="javascript/jquery.js"></script>
+    <script src="javascript/jquery.js"></script>
 
-  <link type="text/css" href="styles/bootstrap.css" rel="stylesheet" />
+    <link type="text/css" href="styles/bootstrap.css" rel="stylesheet" />
 
-  <script type="text/javascript">
-    $( document ).ready(function() {
-        $("#orderForm").submit(function( event ) {
-            event.preventDefault();
+    <script type="text/javascript">
+      $( document ).ready(function() {
+          $("#orderForm").submit(function( event ) {
+              event.preventDefault();
 
-            var orderId = Math.floor((Math.random() * 100000) + 1);
+              var orderId = Math.floor((Math.random() * 100000) + 1);
 
-            $.ajax({
-                method: "POST",
-                url: "services/order",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({ order: {id: orderId, type: $("#type").val(), amount: $("#amount").val()}}),
-                complete: function() {
-                    $( '<p>' ).text( "Submitted order: " + orderId ).appendTo( "body" );
-                }
-            });
-        });
-    });
-  </script>
-</head>
+              $.ajax({
+                  method: "POST",
+                  url: "services/order",
+                  contentType: "application/json; charset=utf-8",
+                  data: JSON.stringify({ order: {id: orderId, type: $("#type").val(), amount: $("#amount").val()}}),
+                  complete: function() {
+                      $( '<br/><span class="lead">' ).text( "Submitted '" + $("#type").val() + "' order: #" + orderId ).appendTo( "#content" );
+                  }
+              });
+          });
+      });
+    </script>
+  </head>
 
-<body>
-<div id="content">
-  <h1>Bakery Web</h1>
+  <body>
+    <div id="content" class="container">
+      <h1>Bakery Web Application</h1>
 
-  <form id="orderForm" action="/">
-    <select id="type">
-      <option>bread</option>
-      <option>pretzel</option>
-      <option>cake</option>
-    </select>
-    <input type="text" id="amount" value="1"/>
-    <input type="submit" value="Place order"/>
-  </form>
-</div>
+      <p class="lead">Place new orders for bakery application</p>
 
-</body>
+      <form id="orderForm" action="/">
+        <div class="row">
+          <div class="col-xs-1">
+            <input type="text" id="amount" class="form-control" value="10"/>
+          </div>
+          <div class="col-xs-3">
+            <select id="type" class="form-control">
+              <option>bread</option>
+              <option>pretzel</option>
+              <option>cake</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Place order</button>
+        </div>
+
+      </form>
+    </div>
+  </body>
 </html>

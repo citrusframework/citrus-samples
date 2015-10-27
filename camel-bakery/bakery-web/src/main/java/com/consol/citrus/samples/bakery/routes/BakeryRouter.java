@@ -68,5 +68,11 @@ public class BakeryRouter extends RouteBuilder implements Processor {
                 "<id>" + orderJson.get("id") + "</id>" +
                 "<amount>" + orderJson.get("amount") + "</amount>" +
             "</order>");
+
+        in.getHeaders().remove(Exchange.HTTP_BASE_URI);
+        in.getHeaders().remove(Exchange.HTTP_METHOD);
+        in.getHeaders().remove(Exchange.HTTP_PATH);
+        in.getHeaders().remove(Exchange.HTTP_URI);
+        in.getHeaders().remove(Exchange.HTTP_URL);
     }
 }
