@@ -33,10 +33,6 @@ public class WorkerApp extends Main {
             System.setProperty("FACTORY_COSTS", args[1]);
         }
 
-        if (args.length > 2) {
-            System.setProperty("REPORT_PORT_8080_TCP_PORT", args[2]);
-        }
-
         WorkerApp application = new WorkerApp();
         application.run();
     }

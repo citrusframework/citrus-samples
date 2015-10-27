@@ -70,6 +70,17 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <report.server.host>${host.name}</report.server.host>
+            <report.server.port>${report.server.port}</report.server.port>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
@@ -113,7 +124,7 @@
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://localhost:${report.server.port}/report/jolokia</url>
+                    <url>http://${host.name}:${report.server.port}/report/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>

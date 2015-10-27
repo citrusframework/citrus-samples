@@ -41,6 +41,19 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <activemq.server.host>${host.name}</activemq.server.host>
+            <activemq.server.port>${activemq.server.port}</activemq.server.port>
+            <report.server.host>${host.name}</report.server.host>
+            <report.server.port>${report.server.port}</report.server.port>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
@@ -78,7 +91,7 @@
           <systemProperties>
             <systemProperty>
               <name>ACTIVEMQ_PORT_61616_TCP_ADDR</name>
-              <value>localhost</value>
+              <value>${host.name}</value>
             </systemProperty>
             <systemProperty>
               <name>ACTIVEMQ_PORT_61616_TCP_PORT</name>
@@ -86,7 +99,7 @@
             </systemProperty>
             <systemProperty>
               <name>REPORT_PORT_8080_TCP_ADDR</name>
-              <value>localhost</value>
+              <value>${host.name}</value>
             </systemProperty>
             <systemProperty>
               <name>REPORT_PORT_8080_TCP_PORT</name>
@@ -123,7 +136,7 @@
                 <wait>
                   <log>Broker startup</log>
                   <http>
-                    <url>http://localhost:${activemq.admin.port}</url>
+                    <url>http://${host.name}:${activemq.admin.port}</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -158,7 +171,7 @@
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://localhost:${bakery.server.port}/bakery/jolokia</url>
+                    <url>http://${host.name}:${bakery.server.port}/bakery/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -190,7 +203,7 @@
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://localhost:${report.server.port}/report/jolokia</url>
+                    <url>http://${host.name}:${report.server.port}/report/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>

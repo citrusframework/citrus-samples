@@ -79,6 +79,19 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <activemq.server.host>${host.name}</activemq.server.host>
+            <activemq.server.port>${activemq.server.port}</activemq.server.port>
+            <report.server.host>${host.name}</report.server.host>
+            <report.server.port>${report.server.port}</report.server.port>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
@@ -170,7 +183,7 @@
             </systemProperty>
             <systemProperty>
               <key>ACTIVEMQ_PORT_61616_TCP_ADDR</key>
-              <value>localhost</value>
+              <value>${host.name}</value>
             </systemProperty>
             <systemProperty>
               <key>ACTIVEMQ_PORT_61616_TCP_PORT</key>
@@ -178,11 +191,11 @@
             </systemProperty>
             <systemProperty>
               <key>REPORT_PORT_8080_TCP_ADDR</key>
-              <value>localhost</value>
+              <value>${host.name}</value>
             </systemProperty>
             <systemProperty>
               <key>REPORT_PORT_8080_TCP_PORT</key>
-              <value>19002</value>
+              <value>${report.server.port}</value>
             </systemProperty>
           </systemProperties>
         </configuration>
@@ -208,7 +221,7 @@
                 <wait>
                   <log>Broker startup</log>
                   <http>
-                    <url>http://localhost:${activemq.admin.port}</url>
+                    <url>http://${host.name}:${activemq.admin.port}</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -238,7 +251,7 @@
                   <FACTORY_TYPE>${factory.type}</FACTORY_TYPE>
                   <FACTORY_COSTS>${factory.costs}</FACTORY_COSTS>
                   <REPORT_PORT_8080_TCP_ADDR>${docker.host.ip}</REPORT_PORT_8080_TCP_ADDR>
-                  <REPORT_PORT_8080_TCP_PORT>19002</REPORT_PORT_8080_TCP_PORT>
+                  <REPORT_PORT_8080_TCP_PORT>${report.server.port}</REPORT_PORT_8080_TCP_PORT>
                 </env>
                 <cmd>java -jar maven/worker.jar</cmd>
                 <wait>
@@ -323,7 +336,6 @@
                   <arguments>
                     <argument>${factory.type}</argument>
                     <argument>${factory.costs}</argument>
-                    <argument>19002</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -367,7 +379,6 @@
                   <arguments>
                     <argument>${factory.type}</argument>
                     <argument>${factory.costs}</argument>
-                    <argument>19002</argument>
                   </arguments>
                 </configuration>
               </execution>
