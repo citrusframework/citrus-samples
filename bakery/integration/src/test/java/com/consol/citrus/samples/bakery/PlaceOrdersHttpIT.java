@@ -63,7 +63,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
-                return index > 10;
+                return index > 20;
             }
         }).autoSleep(100L);
 
@@ -92,7 +92,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
-                return index > 10;
+                return index > 20;
             }
         }).autoSleep(100L);
 
@@ -121,7 +121,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
-                return index > 10;
+                return index > 20;
             }
         }).autoSleep(100L);
 
