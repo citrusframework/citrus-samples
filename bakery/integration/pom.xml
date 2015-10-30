@@ -77,14 +77,14 @@
           <contextHandlers>
             <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
               <war>
-                ${settings.localRepository}/com/consol/citrus/samples/bakery-web/${project.version}/bakery-web-${project.version}.war
+                ${settings.localRepository}/com/consol/citrus/samples/web/${project.version}/bakery-web-${project.version}.war
               </war>
               <contextPath>/bakery</contextPath>
               <tempDirectory>${project.build.directory}/tmp/bakery</tempDirectory>
             </contextHandler>
             <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
               <war>
-                ${settings.localRepository}/com/consol/citrus/samples/bakery-report/${project.version}/bakery-report-${project.version}.war
+                ${settings.localRepository}/com/consol/citrus/samples/report/${project.version}/bakery-report-${project.version}.war
               </war>
               <contextPath>/report</contextPath>
               <tempDirectory>${project.build.directory}/tmp/report</tempDirectory>
@@ -147,7 +147,7 @@
                 </wait>
                 <log>
                   <enabled>true</enabled>
-                  <color>red</color>
+                  <color>green</color>
                 </log>
               </run>
             </image>
@@ -182,7 +182,7 @@
                 </wait>
                 <log>
                   <enabled>true</enabled>
-                  <color>red</color>
+                  <color>green</color>
                 </log>
               </run>
             </image>
@@ -214,7 +214,7 @@
                 </wait>
                 <log>
                   <enabled>true</enabled>
-                  <color>red</color>
+                  <color>green</color>
                 </log>
               </run>
             </image>
@@ -244,7 +244,7 @@
                 </wait>
                 <log>
                   <enabled>true</enabled>
-                  <color>red</color>
+                  <color>green</color>
                 </log>
               </run>
             </image>
@@ -274,7 +274,7 @@
                 </wait>
                 <log>
                   <enabled>true</enabled>
-                  <color>red</color>
+                  <color>green</color>
                 </log>
               </run>
             </image>
@@ -304,7 +304,7 @@
                 </wait>
                 <log>
                   <enabled>true</enabled>
-                  <color>red</color>
+                  <color>green</color>
                 </log>
               </run>
             </image>
@@ -347,7 +347,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${basedir}/../bakery-worker/target/start.sh</executable>
+                  <executable>${basedir}/../worker/target/start.sh</executable>
                   <arguments>
                     <argument>chocolate</argument>
                     <argument>200</argument>
@@ -361,7 +361,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${basedir}/../bakery-worker/target/start.sh</executable>
+                  <executable>${basedir}/../worker/target/start.sh</executable>
                   <arguments>
                     <argument>blueberry</argument>
                     <argument>400</argument>
@@ -375,7 +375,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${basedir}/../bakery-worker/target/start.sh</executable>
+                  <executable>${basedir}/../worker/target/start.sh</executable>
                   <arguments>
                     <argument>caramel</argument>
                     <argument>100</argument>
@@ -389,7 +389,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${basedir}/../bakery-worker/target/stop.sh</executable>
+                  <executable>${basedir}/../worker/target/stop.sh</executable>
                 </configuration>
               </execution>
             </executions>
@@ -418,7 +418,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${basedir}/../bakery-worker/target/start.bat</executable>
+                  <executable>${basedir}/../worker/target/start.bat</executable>
                   <arguments>
                     <argument>chocolate</argument>
                     <argument>200</argument>
@@ -432,7 +432,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${basedir}/../bakery-worker/target/start.bat</executable>
+                  <executable>${basedir}/../worker/target/start.bat</executable>
                   <arguments>
                     <argument>blueberry</argument>
                     <argument>400</argument>
@@ -446,7 +446,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${basedir}/../bakery-worker/target/start.bat</executable>
+                  <executable>${basedir}/../worker/target/start.bat</executable>
                   <arguments>
                     <argument>caramel</argument>
                     <argument>100</argument>
@@ -460,7 +460,7 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>${basedir}/../bakery-worker/target/stop.bat</executable>
+                  <executable>${basedir}/../worker/target/stop.bat</executable>
                 </configuration>
               </execution>
             </executions>

@@ -142,7 +142,7 @@
                 </wait>
                 <log>
                   <enabled>true</enabled>
-                  <color>red</color>
+                  <color>green</color>
                 </log>
               </run>
             </image>
@@ -177,7 +177,7 @@
                 </wait>
                 <log>
                   <enabled>true</enabled>
-                  <color>red</color>
+                  <color>green</color>
                 </log>
               </run>
             </image>
