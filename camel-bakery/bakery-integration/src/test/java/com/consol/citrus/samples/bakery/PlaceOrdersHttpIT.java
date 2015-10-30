@@ -65,7 +65,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
             public boolean evaluate(int index, TestContext context) {
                 return index > 10;
             }
-        }).autoSleep(500L);
+        }).autoSleep(100L);
 
         http().client(bakeryClient)
                 .response(HttpStatus.OK)
@@ -94,7 +94,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
             public boolean evaluate(int index, TestContext context) {
                 return index > 10;
             }
-        }).autoSleep(500L);
+        }).autoSleep(100L);
 
         http().client(bakeryClient)
                 .response(HttpStatus.OK)
@@ -123,7 +123,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
             public boolean evaluate(int index, TestContext context) {
                 return index > 10;
             }
-        }).autoSleep(500L);
+        }).autoSleep(100L);
 
         http().client(bakeryClient)
                 .response(HttpStatus.OK)

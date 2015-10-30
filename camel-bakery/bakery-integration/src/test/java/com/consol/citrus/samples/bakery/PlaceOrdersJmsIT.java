@@ -53,7 +53,7 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
 
         repeatOnError(
             http().client(reportingClient)
-                .get("/order")
+                .get("/reporting/order")
                 .queryParam("id", "${orderId}"),
             http().client(reportingClient)
                 .response(HttpStatus.OK)
@@ -64,7 +64,7 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
             public boolean evaluate(int index, TestContext context) {
                 return index > 10;
             }
-        }).autoSleep(500L);
+        }).autoSleep(100L);
     }
 
     @CitrusTest
@@ -76,7 +76,7 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
 
         repeatOnError(
             http().client(reportingClient)
-                    .get("/order")
+                    .get("/reporting/order")
                     .queryParam("id", "${orderId}"),
             http().client(reportingClient)
                     .response(HttpStatus.OK)
@@ -87,7 +87,7 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
             public boolean evaluate(int index, TestContext context) {
                 return index > 10;
             }
-        }).autoSleep(500L);
+        }).autoSleep(100L);
     }
 
     @CitrusTest
@@ -99,7 +99,7 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
 
         repeatOnError(
             http().client(reportingClient)
-                    .get("/order")
+                    .get("/reporting/order")
                     .queryParam("id", "${orderId}"),
             http().client(reportingClient)
                     .response(HttpStatus.OK)
@@ -110,6 +110,6 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
             public boolean evaluate(int index, TestContext context) {
                 return index > 10;
             }
-        }).autoSleep(500L);
+        }).autoSleep(100L);
     }
 }
