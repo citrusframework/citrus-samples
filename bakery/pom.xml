@@ -10,15 +10,15 @@
   </parent>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-camel-bakery</artifactId>
-  <name>citrus-camel-bakery</name>
+  <artifactId>citrus-bakery</artifactId>
+  <name>citrus-bakery</name>
   <packaging>pom</packaging>
 
   <modules>
-    <module>bakery-web</module>
-    <module>bakery-worker</module>
-    <module>bakery-report</module>
-    <module>bakery-integration</module>
+    <module>web</module>
+    <module>worker</module>
+    <module>report</module>
+    <module>integration</module>
   </modules>
 
   <properties>

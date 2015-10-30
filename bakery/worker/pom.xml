@@ -10,8 +10,8 @@
   </parent>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>bakery-worker</artifactId>
-  <name>bakery-worker</name>
+  <artifactId>citrus-bakery-worker</artifactId>
+  <name>citrus-bakery-worker</name>
 
   <properties>
     <factory.type>cake</factory.type>

@@ -15,7 +15,7 @@
   
   <modules>
     <module>common</module>
-    <module>camel-bakery</module>
+    <module>bakery</module>
     <module>javaee</module>
     <module>flightbooking</module>
     <module>greeting</module>

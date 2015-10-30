@@ -10,8 +10,8 @@
   </parent>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>bakery-report</artifactId>
-  <name>bakery-report</name>
+  <artifactId>citrus-bakery-report</artifactId>
+  <name>citrus-bakery-report</name>
   <packaging>war</packaging>
 
   <properties>
