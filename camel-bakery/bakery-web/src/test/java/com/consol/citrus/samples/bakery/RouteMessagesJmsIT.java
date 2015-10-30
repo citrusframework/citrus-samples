@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class NewOrderJmsIT extends TestNGCitrusTestDesigner {
+public class RouteMessagesJmsIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")

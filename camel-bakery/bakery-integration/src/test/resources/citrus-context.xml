@@ -13,7 +13,7 @@
        http://www.citrusframework.org/schema/http/config http://www.citrusframework.org/schema/http/config/citrus-http-config.xsd">
 
     <context:property-placeholder location="classpath:citrus.properties"/>
-	
+
     <citrus:global-variables>
         <citrus:variable name="project.name" value="Citrus Bakery sample"/>
     </citrus:global-variables>
@@ -42,5 +42,5 @@
     <!-- Reporting client -->
     <citrus-http:client id="reportingClient"
                         request-method="GET"
-                        request-url="http://${report.server.host}:${report.server.port}/report/services/reporting"/>
+                        request-url="http://${report.server.host}:${report.server.port}/report/services"/>
 </beans>

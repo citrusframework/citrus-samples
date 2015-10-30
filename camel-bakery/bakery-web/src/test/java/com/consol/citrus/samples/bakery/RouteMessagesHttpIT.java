@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class NewOrderHttpIT extends TestNGCitrusTestDesigner {
+public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("bakeryClient")

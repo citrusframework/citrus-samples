@@ -54,7 +54,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
 
         repeatOnError(
             http().client(reportingClient)
-                .get("/order")
+                .get("/reporting/order")
                 .queryParam("id", "${orderId}"),
             http().client(reportingClient)
                 .response(HttpStatus.OK)
@@ -66,6 +66,10 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
                 return index > 10;
             }
         }).autoSleep(500L);
+
+        http().client(bakeryClient)
+                .response(HttpStatus.OK)
+                .messageType(MessageType.PLAINTEXT);
     }
 
     @CitrusTest
@@ -79,7 +83,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
 
         repeatOnError(
             http().client(reportingClient)
-                    .get("/order")
+                    .get("/reporting/order")
                     .queryParam("id", "${orderId}"),
             http().client(reportingClient)
                     .response(HttpStatus.OK)
@@ -91,6 +95,10 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
                 return index > 10;
             }
         }).autoSleep(500L);
+
+        http().client(bakeryClient)
+                .response(HttpStatus.OK)
+                .messageType(MessageType.PLAINTEXT);
     }
 
     @CitrusTest
@@ -104,7 +112,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
 
         repeatOnError(
             http().client(reportingClient)
-                    .get("/order")
+                    .get("/reporting/order")
                     .queryParam("id", "${orderId}"),
             http().client(reportingClient)
                     .response(HttpStatus.OK)
@@ -116,5 +124,9 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
                 return index > 10;
             }
         }).autoSleep(500L);
+
+        http().client(bakeryClient)
+                .response(HttpStatus.OK)
+                .messageType(MessageType.PLAINTEXT);
     }
 }
