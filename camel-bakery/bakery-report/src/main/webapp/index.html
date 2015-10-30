@@ -16,6 +16,8 @@
     </style>
 
     <script type="text/javascript">
+        var intervalID;
+
         $( document ).ready(function() {
             $("#reset").click(function( event ) {
                 event.preventDefault();
@@ -48,6 +50,14 @@
                 });
             });
 
+            $("#autoReload").change(function( event ) {
+                if ($("#autoReload:checked").size()) {
+                    intervalID = window.setInterval(function() { $("#reload").click(); }, 1000);
+                } else {
+                    window.clearInterval(intervalID);
+                }
+            });
+
             $("#reload").click();
         });
       </script>
@@ -60,6 +70,12 @@
       <p class="lead">Today we have produced following goods:</p>
       <div id="overview"></div>
       <br/>
+
+      <from action="/">
+        <label for="autoReload">Auto reload</label>
+        <input type="checkbox" id="autoReload"/>
+      </from>
+
       <p><a class="btn btn-default" id="reload" href="services/reporting">Reload</a> <a class="btn btn-default" id="reset" href="services/reset">Reset</a></p>
     </div>
   </body>
