@@ -24,7 +24,8 @@
   <properties>
     <application.server>tomcat-7.0</application.server>
     <message.broker>activemq-5.12</message.broker>
-    <host.name>localhost</host.name>
+    <docker.host.name>localhost</docker.host.name>
+    <docker.host.ip>192.168.2.100</docker.host.ip>
   </properties>
 
   <build>
@@ -124,7 +125,7 @@
     <profile>
       <id>docker</id>
       <properties>
-        <host.name>dockerhost</host.name>
+        <docker.host.name>dockerhost</docker.host.name>
       </properties>
       <build>
         <plugins>
@@ -166,6 +167,7 @@
         <activemq.admin.port>8161</activemq.admin.port>
         <bakery.server.port>18001</bakery.server.port>
         <report.server.port>18002</report.server.port>
+        <mail.server.port>2222</mail.server.port>
       </properties>
     </profile>
   </profiles>

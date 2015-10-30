@@ -55,6 +55,10 @@
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-http</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-mail</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -74,8 +78,9 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <report.server.host>${host.name}</report.server.host>
+            <report.server.host>${docker.host.name}</report.server.host>
             <report.server.port>${report.server.port}</report.server.port>
+            <mail.server.port>${mail.server.port}</mail.server.port>
           </systemPropertyVariables>
         </configuration>
       </plugin>
@@ -94,6 +99,16 @@
             <port>${report.server.port}</port>
             <idleTimeout>60000</idleTimeout>
           </httpConnector>
+          <systemProperties>
+            <systemProperty>
+              <name>MAIL_PORT_2222_TCP_ADDR</name>
+              <value>${docker.host.name}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>MAIL_PORT_2222_TCP_PORT</name>
+              <value>${mail.server.port}</value>
+            </systemProperty>
+          </systemProperties>
         </configuration>
       </plugin>
 
@@ -117,6 +132,8 @@
                 </volumes>
                 <env>
                   <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                  <MAIL_PORT_2222_TCP_ADDR>${docker.host.ip}</MAIL_PORT_2222_TCP_ADDR>
+                  <MAIL_PORT_2222_TCP_PORT>${mail.server.port}</MAIL_PORT_2222_TCP_PORT>
                 </env>
                 <ports>
                   <port>${report.server.port}:8080</port>
@@ -124,7 +141,7 @@
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://${host.name}:${report.server.port}/report/jolokia</url>
+                    <url>http://${docker.host.name}:${report.server.port}/report/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>

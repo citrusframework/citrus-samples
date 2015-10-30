@@ -4,8 +4,7 @@
     xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
-       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
     <property-placeholder xmlns="http://www.springframework.org/schema/context"
                           location="classpath:application.properties"/>

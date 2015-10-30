@@ -17,7 +17,6 @@
     <factory.type>chocolate</factory.type>
     <factory.costs>200</factory.costs>
     <activemq.embedded.disabled>false</activemq.embedded.disabled>
-    <docker.host.ip>192.168.2.100</docker.host.ip>
   </properties>
 
   <dependencies>
@@ -82,9 +81,9 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <activemq.server.host>${host.name}</activemq.server.host>
+            <activemq.server.host>${docker.host.name}</activemq.server.host>
             <activemq.server.port>${activemq.server.port}</activemq.server.port>
-            <report.server.host>${host.name}</report.server.host>
+            <report.server.host>${docker.host.name}</report.server.host>
             <report.server.port>${report.server.port}</report.server.port>
           </systemPropertyVariables>
         </configuration>
@@ -183,7 +182,7 @@
             </systemProperty>
             <systemProperty>
               <key>ACTIVEMQ_PORT_61616_TCP_ADDR</key>
-              <value>${host.name}</value>
+              <value>${docker.host.name}</value>
             </systemProperty>
             <systemProperty>
               <key>ACTIVEMQ_PORT_61616_TCP_PORT</key>
@@ -191,7 +190,7 @@
             </systemProperty>
             <systemProperty>
               <key>REPORT_PORT_8080_TCP_ADDR</key>
-              <value>${host.name}</value>
+              <value>${docker.host.name}</value>
             </systemProperty>
             <systemProperty>
               <key>REPORT_PORT_8080_TCP_PORT</key>
@@ -221,7 +220,7 @@
                 <wait>
                   <log>Broker startup</log>
                   <http>
-                    <url>http://${host.name}:${activemq.admin.port}</url>
+                    <url>http://${docker.host.name}:${activemq.admin.port}</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>

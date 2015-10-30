@@ -1,0 +1,11 @@
+<mail-message xmlns="http://www.citrusframework.org/schema/mail/message">
+  <from>cookie-report@example.com</from>
+  <to>stakeholders@example.com</to>
+  <cc></cc>
+  <bcc></bcc>
+  <subject>Congratulations!</subject>
+  <body>
+    <contentType>text/plain; charset=us-ascii</contentType>
+    <content>Produced 1000+ cookies of type '${orderType}', we are rich now!</content>
+  </body>
+</mail-message>

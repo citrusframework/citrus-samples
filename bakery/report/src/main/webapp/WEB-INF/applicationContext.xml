@@ -6,8 +6,12 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
+    <property-placeholder xmlns="http://www.springframework.org/schema/context"
+                          location="classpath:application.properties"/>
+
     <component-scan xmlns="http://www.springframework.org/schema/context" base-package="com.consol.citrus.samples.bakery.routes"/>
 
+    <bean id="mailService" class="com.consol.citrus.samples.bakery.service.MailService"/>
     <bean id="reportService" class="com.consol.citrus.samples.bakery.service.ReportService"/>
 
     <!-- Camel context -->

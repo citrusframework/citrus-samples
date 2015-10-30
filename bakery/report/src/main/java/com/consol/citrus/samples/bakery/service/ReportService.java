@@ -18,6 +18,7 @@ package com.consol.citrus.samples.bakery.service;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,6 +34,9 @@ public class ReportService implements InitializingBean {
 
     /** In memory id store of produced items */
     private ArrayList<String> produced = new ArrayList<>();
+
+    @Autowired
+    private MailService mailService;
 
     /**
      * Gets the status of a very specific item found by its id.
@@ -52,12 +56,23 @@ public class ReportService implements InitializingBean {
         produced.add(id);
 
         if (report.containsKey(name)) {
-            for (int i = 0; i < amount; i++) {
-                report.get(name).incrementAndGet();
-            }
+            report.get(name).addAndGet(amount);
         } else {
             report.put(name, new AtomicInteger(amount));
         }
+
+        if (report.get(name).get() >= 1000) {
+            informStakeholders(name);
+        }
+    }
+
+    /**
+     * Inform stakeholders that we have produced a large amount of cookies.
+     * @param name
+     */
+    private void informStakeholders(String name) {
+        mailService.sendMail("stakeholders@example.com", "Congratulations!",
+                String.format("Produced 1000+ cookies of type '%s', we are rich now!", name));
     }
 
     /**

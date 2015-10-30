@@ -78,9 +78,9 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <activemq.server.host>${host.name}</activemq.server.host>
+            <activemq.server.host>${docker.host.name}</activemq.server.host>
             <activemq.server.port>${activemq.server.port}</activemq.server.port>
-            <bakery.server.host>${host.name}</bakery.server.host>
+            <bakery.server.host>${docker.host.name}</bakery.server.host>
             <bakery.server.port>${bakery.server.port}</bakery.server.port>
           </systemPropertyVariables>
         </configuration>
@@ -103,7 +103,7 @@
           <systemProperties>
             <systemProperty>
               <name>ACTIVEMQ_PORT_61616_TCP_ADDR</name>
-              <value>${host.name}</value>
+              <value>${docker.host.name}</value>
             </systemProperty>
             <systemProperty>
               <name>ACTIVEMQ_PORT_61616_TCP_PORT</name>
@@ -133,7 +133,7 @@
                 <wait>
                   <log>Broker startup</log>
                   <http>
-                    <url>http://${host.name}:${activemq.admin.port}</url>
+                    <url>http://${docker.host.name}:${activemq.admin.port}</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -168,7 +168,7 @@
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://${host.name}:${bakery.server.port}/bakery/jolokia</url>
+                    <url>http://${docker.host.name}:${bakery.server.port}/bakery/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
