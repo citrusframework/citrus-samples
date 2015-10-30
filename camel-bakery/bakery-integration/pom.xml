@@ -47,6 +47,8 @@
           <systemPropertyVariables>
             <activemq.server.host>${host.name}</activemq.server.host>
             <activemq.server.port>${activemq.server.port}</activemq.server.port>
+            <bakery.server.host>${host.name}</bakery.server.host>
+            <bakery.server.port>${bakery.server.port}</bakery.server.port>
             <report.server.host>${host.name}</report.server.host>
             <report.server.port>${report.server.port}</report.server.port>
           </systemPropertyVariables>

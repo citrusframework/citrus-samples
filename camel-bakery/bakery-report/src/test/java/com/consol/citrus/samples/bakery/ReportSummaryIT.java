@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class Reporting_Ok_IT extends TestNGCitrusTestDesigner {
+public class ReportSummaryIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("reportingClient")

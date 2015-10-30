@@ -36,7 +36,7 @@ import java.util.Map;
  * @since 2.4
  */
 @Test
-public class Reporting_Orders_IT extends TestNGCitrusTestDesigner {
+public class ReportOrdersIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("reportingClient")

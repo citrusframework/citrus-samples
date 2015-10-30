@@ -28,27 +28,51 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class LoadTest_Ok_IT extends TestNGCitrusTestDesigner {
+public class NewOrderJmsIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")
     private JmsEndpoint bakeryOrderEndpoint;
 
+    @Autowired
+    @Qualifier("workerCakeEndpoint")
+    private JmsEndpoint workerCakeEndpoint;
+
+    @Autowired
+    @Qualifier("workerPretzelEndpoint")
+    private JmsEndpoint workerPretzelEndpoint;
+
+    @Autowired
+    @Qualifier("workerBreadEndpoint")
+    private JmsEndpoint workerBreadEndpoint;
+
     @CitrusTest
-    public void loadCakeOrder() {
+    public void routeMessagesContentBased() {
         send(bakeryOrderEndpoint)
                 .payload("<order type=\"cake\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
-    }
 
-    @CitrusTest
-    public void loadPretzelOrder() {
+        receive(workerCakeEndpoint)
+                .payload("<order type=\"cake\"><id>@ignore@</id><amount>1</amount></order>");
+
         send(bakeryOrderEndpoint)
                 .payload("<order type=\"pretzel\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+
+        receive(workerPretzelEndpoint)
+                .payload("<order type=\"pretzel\"><id>@ignore@</id><amount>1</amount></order>");
+
+        send(bakeryOrderEndpoint)
+                .payload("<order type=\"bread\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+
+        receive(workerBreadEndpoint)
+                .payload("<order type=\"bread\"><id>@ignore@</id><amount>1</amount></order>");
     }
 
     @CitrusTest
-    public void loadBreadOrder() {
+    public void routeUnknownOrderType() {
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"bread\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+                .payload("<order type=\"baguette\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+
+        receive("jms:factory.unknown.inbound")
+                .payload("<order type=\"baguette\"><id>@ignore@</id><amount>1</amount></order>");
     }
 }

@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class ProcessOrder_Ok_IT extends TestNGCitrusTestDesigner {
+public class ProcessOrdersIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("factoryOrderEndpoint")

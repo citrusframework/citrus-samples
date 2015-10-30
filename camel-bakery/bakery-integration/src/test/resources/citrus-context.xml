@@ -26,6 +26,10 @@
       <property name="brokerURL" value="tcp://${activemq.server.host}:${activemq.server.port}" />
       <property name="watchTopicAdvisories" value="false"/>
     </bean>
+
+    <!-- Order Http inbound endpoint -->
+    <citrus-http:client id="bakeryClient"
+                        request-url="http://${bakery.server.host}:${bakery.server.port}/bakery/services"/>
   
     <!-- Order Inbound endpoint -->
     <citrus-jms:endpoint id="bakeryOrderEndpoint"
@@ -33,7 +37,7 @@
 
     <!-- Unknown order types result in this inbound endpoint -->
     <citrus-jms:endpoint id="unknownOrderEndpoint"
-                       destination-name="factory.unknown.inbound"/>
+                         destination-name="factory.unknown.inbound"/>
 
     <!-- Reporting client -->
     <citrus-http:client id="reportingClient"

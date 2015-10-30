@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class PlaceUnknownOrder_Ok_IT extends TestNGCitrusTestDesigner {
+public class PlaceUnknownOrderIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")
