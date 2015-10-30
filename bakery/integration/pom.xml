@@ -77,14 +77,14 @@
           <contextHandlers>
             <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
               <war>
-                ${settings.localRepository}/com/consol/citrus/samples/web/${project.version}/bakery-web-${project.version}.war
+                ${settings.localRepository}/com/consol/citrus/samples/web/${project.version}/citrus-bakery-web-${project.version}.war
               </war>
               <contextPath>/bakery</contextPath>
               <tempDirectory>${project.build.directory}/tmp/bakery</tempDirectory>
             </contextHandler>
             <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
               <war>
-                ${settings.localRepository}/com/consol/citrus/samples/report/${project.version}/bakery-report-${project.version}.war
+                ${settings.localRepository}/com/consol/citrus/samples/report/${project.version}/citrus-bakery-report-${project.version}.war
               </war>
               <contextPath>/report</contextPath>
               <tempDirectory>${project.build.directory}/tmp/report</tempDirectory>
