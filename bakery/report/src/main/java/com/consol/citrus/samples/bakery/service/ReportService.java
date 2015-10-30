@@ -125,9 +125,9 @@ public class ReportService implements InitializingBean {
         report.clear();
         produced.clear();
 
-        report.put("cake", new AtomicInteger());
-        report.put("pretzel", new AtomicInteger());
-        report.put("bread", new AtomicInteger());
+        report.put("chocolate", new AtomicInteger());
+        report.put("caramel", new AtomicInteger());
+        report.put("blueberry", new AtomicInteger());
     }
 
     @Override

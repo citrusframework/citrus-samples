@@ -41,9 +41,9 @@ public class PlaceUnknownOrderIT extends TestNGCitrusTestDesigner {
     @CitrusTest
     public void placeUnknownOrderType() {
         send(bakeryOrderEndpoint)
-            .payload("<order type=\"baguette\"><id>999</id><amount>1</amount></order>");
+            .payload("<order type=\"brownie\"><id>999</id><amount>1</amount></order>");
 
         receive(unknownOrderEndpoint)
-            .payload("<order type=\"baguette\"><id>999</id><amount>1</amount></order>");
+            .payload("<order type=\"brownie\"><id>999</id><amount>1</amount></order>");
     }
 }

@@ -29,7 +29,7 @@
 
     <!-- Order factory endpoints -->
     <citrus-jms:endpoint id="factoryOrderEndpoint"
-                         destination-name="factory.cake.inbound"/>
+                         destination-name="factory.chocolate.inbound"/>
 
     <!-- Reporting Http server -->
     <citrus-http:server id="reportingServer"

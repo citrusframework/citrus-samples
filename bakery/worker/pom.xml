@@ -14,8 +14,8 @@
   <name>citrus-bakery-worker</name>
 
   <properties>
-    <factory.type>cake</factory.type>
-    <factory.costs>500</factory.costs>
+    <factory.type>chocolate</factory.type>
+    <factory.costs>200</factory.costs>
     <activemq.embedded.disabled>false</activemq.embedded.disabled>
     <docker.host.ip>192.168.2.100</docker.host.ip>
   </properties>
@@ -235,7 +235,7 @@
               </run>
             </image>
             <image>
-              <alias>worker-cake</alias>
+              <alias>worker-chocolate</alias>
               <name>jolokia/java-jolokia:7</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
@@ -267,7 +267,7 @@
             </image>
             <image>
               <alias>application</alias>
-              <name>citrus/${project.artifactId}:${project.version}</name>
+              <name>citrus/bakery-worker:${project.version}</name>
               <build>
                 <tags>
                   <tag>latest</tag>

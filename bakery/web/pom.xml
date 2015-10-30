@@ -183,7 +183,7 @@
             </image>
             <image>
               <alias>application</alias>
-              <name>citrus/${project.artifactId}:${project.version}</name>
+              <name>citrus/bakery-web:${project.version}</name>
               <build>
                 <tags>
                   <tag>latest</tag>

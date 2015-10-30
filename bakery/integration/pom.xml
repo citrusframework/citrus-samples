@@ -219,7 +219,7 @@
               </run>
             </image>
             <image>
-              <alias>worker-cake</alias>
+              <alias>worker-chocolate</alias>
               <name>jolokia/java-jolokia:7</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
@@ -233,8 +233,8 @@
                   <link>activemq-broker:activemq</link>
                 </links>
                 <env>
-                  <FACTORY_TYPE>cake</FACTORY_TYPE>
-                  <FACTORY_COSTS>500</FACTORY_COSTS>
+                  <FACTORY_TYPE>chocolate</FACTORY_TYPE>
+                  <FACTORY_COSTS>200</FACTORY_COSTS>
                 </env>
                 <cmd>java -jar maven/worker.jar</cmd>
                 <wait>
@@ -249,7 +249,7 @@
               </run>
             </image>
             <image>
-              <alias>worker-bread</alias>
+              <alias>worker-blueberry</alias>
               <name>jolokia/java-jolokia:7</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
@@ -263,8 +263,8 @@
                   <link>activemq-broker:activemq</link>
                 </links>
                 <env>
-                  <FACTORY_TYPE>bread</FACTORY_TYPE>
-                  <FACTORY_COSTS>800</FACTORY_COSTS>
+                  <FACTORY_TYPE>blueberry</FACTORY_TYPE>
+                  <FACTORY_COSTS>400</FACTORY_COSTS>
                 </env>
                 <cmd>java -jar maven/worker.jar</cmd>
                 <wait>
@@ -279,7 +279,7 @@
               </run>
             </image>
             <image>
-              <alias>worker-pretzel</alias>
+              <alias>worker-caramel</alias>
               <name>jolokia/java-jolokia:7</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
@@ -293,7 +293,7 @@
                   <link>activemq-broker:activemq</link>
                 </links>
                 <env>
-                  <FACTORY_TYPE>pretzel</FACTORY_TYPE>
+                  <FACTORY_TYPE>caramel</FACTORY_TYPE>
                   <FACTORY_COSTS>100</FACTORY_COSTS>
                 </env>
                 <cmd>java -jar maven/worker.jar</cmd>
@@ -341,7 +341,7 @@
             <artifactId>exec-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>start-cake-worker</id>
+                <id>start-chocolate-worker</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>exec</goal>
@@ -349,13 +349,13 @@
                 <configuration>
                   <executable>${basedir}/../bakery-worker/target/start.sh</executable>
                   <arguments>
-                    <argument>cake</argument>
-                    <argument>500</argument>
+                    <argument>chocolate</argument>
+                    <argument>200</argument>
                   </arguments>
                 </configuration>
               </execution>
               <execution>
-                <id>start-bread-worker</id>
+                <id>start-blueberry-worker</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>exec</goal>
@@ -363,13 +363,13 @@
                 <configuration>
                   <executable>${basedir}/../bakery-worker/target/start.sh</executable>
                   <arguments>
-                    <argument>bread</argument>
-                    <argument>500</argument>
+                    <argument>blueberry</argument>
+                    <argument>400</argument>
                   </arguments>
                 </configuration>
               </execution>
               <execution>
-                <id>start-pretzel-worker</id>
+                <id>start-caramel-worker</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>exec</goal>
@@ -377,8 +377,8 @@
                 <configuration>
                   <executable>${basedir}/../bakery-worker/target/start.sh</executable>
                   <arguments>
-                    <argument>pretzel</argument>
-                    <argument>500</argument>
+                    <argument>caramel</argument>
+                    <argument>100</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -412,7 +412,7 @@
             <artifactId>exec-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>start-cake-worker</id>
+                <id>start-chocolate-worker</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>exec</goal>
@@ -420,13 +420,13 @@
                 <configuration>
                   <executable>${basedir}/../bakery-worker/target/start.bat</executable>
                   <arguments>
-                    <argument>cake</argument>
-                    <argument>500</argument>
+                    <argument>chocolate</argument>
+                    <argument>200</argument>
                   </arguments>
                 </configuration>
               </execution>
               <execution>
-                <id>start-bread-worker</id>
+                <id>start-blueberry-worker</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>exec</goal>
@@ -434,13 +434,13 @@
                 <configuration>
                   <executable>${basedir}/../bakery-worker/target/start.bat</executable>
                   <arguments>
-                    <argument>bread</argument>
-                    <argument>500</argument>
+                    <argument>blueberry</argument>
+                    <argument>400</argument>
                   </arguments>
                 </configuration>
               </execution>
               <execution>
-                <id>start-pretzel-worker</id>
+                <id>start-caramel-worker</id>
                 <phase>pre-integration-test</phase>
                 <goals>
                   <goal>exec</goal>
@@ -448,8 +448,8 @@
                 <configuration>
                   <executable>${basedir}/../bakery-worker/target/start.bat</executable>
                   <arguments>
-                    <argument>pretzel</argument>
-                    <argument>500</argument>
+                    <argument>caramel</argument>
+                    <argument>100</argument>
                   </arguments>
                 </configuration>
               </execution>

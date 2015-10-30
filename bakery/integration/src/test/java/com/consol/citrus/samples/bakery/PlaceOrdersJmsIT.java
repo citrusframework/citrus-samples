@@ -45,11 +45,11 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
     private HttpClient reportingClient;
 
     @CitrusTest
-    public void placeCakeOrder() {
+    public void placeChocolateCookieOrder() {
         variable("orderId", Functions.randomNumber(10L));
 
         send(bakeryOrderEndpoint)
-            .payload("<order type=\"cake\"><id>${orderId}</id><amount>1</amount></order>");
+            .payload("<order type=\"chocolate\"><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
             http().client(reportingClient)
@@ -68,11 +68,11 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
     }
 
     @CitrusTest
-    public void placePretzelOrder() {
+    public void placeCaramelCookieOrder() {
         variable("orderId", Functions.randomNumber(10L));
 
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"pretzel\"><id>${orderId}</id><amount>1</amount></order>");
+                .payload("<order type=\"caramel\"><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
             http().client(reportingClient)
@@ -91,11 +91,11 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
     }
 
     @CitrusTest
-    public void placeBreadOrder() {
+    public void placeBlueberryCookieOrder() {
         variable("orderId", Functions.randomNumber(10L));
 
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"bread\"><id>${orderId}</id><amount>1</amount></order>");
+                .payload("<order type=\"blueberry\"><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
             http().client(reportingClient)

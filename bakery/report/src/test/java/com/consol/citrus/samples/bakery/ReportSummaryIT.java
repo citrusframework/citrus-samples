@@ -46,7 +46,7 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
         http().client(reportingClient)
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .payload("{\"pretzel\": \"@isNumber()@\",\"bread\": \"@isNumber()@\",\"cake\": \"@isNumber()@\"}");
+                .payload("{\"caramel\": \"@isNumber()@\",\"blueberry\": \"@isNumber()@\",\"chocolate\": \"@isNumber()@\"}");
     }
 
     @CitrusTest
@@ -67,9 +67,9 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
                             "<h1>Camel bakery reporting</h1>\n" +
                             "<p>Today we have produced following goods:</p>\n" +
                             "<ul>\n" +
-                                "<li>@startsWith('cake:')@</li>\n" +
-                                "<li>@startsWith('pretzel:')@</li>\n" +
-                                "<li>@startsWith('bread:')@</li>\n" +
+                                "<li>@startsWith('chocolate:')@</li>\n" +
+                                "<li>@startsWith('caramel:')@</li>\n" +
+                                "<li>@startsWith('blueberry:')@</li>\n" +
                             "</ul>" +
                             "<p><a href=\"reporting/orders\">Show orders</a></p>" +
                         "</body>" +
@@ -79,12 +79,12 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void resetReport() {
-        echo("Add some 'cake', 'pretzel' and 'bread' orders");
+        echo("Add some 'chocolate', 'caramel' and 'blueberry' orders");
 
         http().client(reportingClient)
                 .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
-                .queryParam("name", "cake")
+                .queryParam("name", "chocolate")
                 .queryParam("amount", "10");
 
         http().client(reportingClient)
@@ -93,7 +93,7 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
         http().client(reportingClient)
                 .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
-                .queryParam("name", "pretzel")
+                .queryParam("name", "caramel")
                 .queryParam("amount", "100");
 
         http().client(reportingClient)
@@ -102,7 +102,7 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
         http().client(reportingClient)
                 .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
-                .queryParam("name", "bread")
+                .queryParam("name", "blueberry")
                 .queryParam("amount", "5");
 
         http().client(reportingClient)
@@ -116,7 +116,7 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
         http().client(reportingClient)
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .payload("{\"pretzel\": \"@greaterThan(0)@\",\"bread\": \"@greaterThan(0)@\",\"cake\": \"@greaterThan(0)@\"}");
+                .payload("{\"caramel\": \"@greaterThan(0)@\",\"blueberry\": \"@greaterThan(0)@\",\"chocolate\": \"@greaterThan(0)@\"}");
 
         echo("Reset report data");
 
@@ -134,6 +134,6 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
         http().client(reportingClient)
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .payload("{\"pretzel\": 0,\"bread\": 0,\"cake\": 0}");
+                .payload("{\"caramel\": 0,\"blueberry\": 0,\"chocolate\": 0}");
     }
 }

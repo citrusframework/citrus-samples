@@ -35,44 +35,44 @@ public class RouteMessagesJmsIT extends TestNGCitrusTestDesigner {
     private JmsEndpoint bakeryOrderEndpoint;
 
     @Autowired
-    @Qualifier("workerCakeEndpoint")
-    private JmsEndpoint workerCakeEndpoint;
+    @Qualifier("workerChocolateEndpoint")
+    private JmsEndpoint workerChocolateEndpoint;
 
     @Autowired
-    @Qualifier("workerPretzelEndpoint")
-    private JmsEndpoint workerPretzelEndpoint;
+    @Qualifier("workerCaramelEndpoint")
+    private JmsEndpoint workerCaramelEndpoint;
 
     @Autowired
-    @Qualifier("workerBreadEndpoint")
-    private JmsEndpoint workerBreadEndpoint;
+    @Qualifier("workerBlueberryEndpoint")
+    private JmsEndpoint workerBlueberryEndpoint;
 
     @CitrusTest
     public void routeMessagesContentBased() {
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"cake\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+                .payload("<order type=\"chocolate\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
 
-        receive(workerCakeEndpoint)
-                .payload("<order type=\"cake\"><id>@ignore@</id><amount>1</amount></order>");
-
-        send(bakeryOrderEndpoint)
-                .payload("<order type=\"pretzel\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
-
-        receive(workerPretzelEndpoint)
-                .payload("<order type=\"pretzel\"><id>@ignore@</id><amount>1</amount></order>");
+        receive(workerChocolateEndpoint)
+                .payload("<order type=\"chocolate\"><id>@ignore@</id><amount>1</amount></order>");
 
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"bread\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+                .payload("<order type=\"caramel\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
 
-        receive(workerBreadEndpoint)
-                .payload("<order type=\"bread\"><id>@ignore@</id><amount>1</amount></order>");
+        receive(workerCaramelEndpoint)
+                .payload("<order type=\"caramel\"><id>@ignore@</id><amount>1</amount></order>");
+
+        send(bakeryOrderEndpoint)
+                .payload("<order type=\"blueberry\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+
+        receive(workerBlueberryEndpoint)
+                .payload("<order type=\"blueberry\"><id>@ignore@</id><amount>1</amount></order>");
     }
 
     @CitrusTest
     public void routeUnknownOrderType() {
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"baguette\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+                .payload("<order type=\"brownie\"><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
 
         receive("jms:factory.unknown.inbound")
-                .payload("<order type=\"baguette\"><id>@ignore@</id><amount>1</amount></order>");
+                .payload("<order type=\"brownie\"><id>@ignore@</id><amount>1</amount></order>");
     }
 }

@@ -62,12 +62,12 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
                     }
                 });
 
-        echo("Add some 'bread' order with id");
+        echo("Add some 'blueberry' order with id");
 
         http().client(reportingClient)
                 .put("/reporting")
                 .queryParam("id", "${orderId}")
-                .queryParam("name", "bread")
+                .queryParam("name", "blueberry")
                 .queryParam("amount", "1");
 
         http().client(reportingClient)
@@ -91,7 +91,7 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void addOrders() {
-        echo("First receive report and save current amount of produced cakes to variable");
+        echo("First receive report and save current amount of produced chocolate cookies to variable");
 
         http().client(reportingClient)
                 .get("/reporting/json");
@@ -99,14 +99,14 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
         http().client(reportingClient)
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": \"@variable('producedCakes')@\"}");
+                .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@variable('producedCookies')@\"}");
 
-        echo("Add some 'cake' orders");
+        echo("Add some 'chocolate' orders");
 
         http().client(reportingClient)
                 .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
-                .queryParam("name", "cake")
+                .queryParam("name", "chocolate")
                 .queryParam("amount", "10");
 
         http().client(reportingClient)
@@ -120,7 +120,7 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
         http().client(reportingClient)
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .payload("{\"pretzel\": \"@ignore@\",\"bread\": \"@ignore@\",\"cake\": \"@greaterThan(${producedCakes})@\"}");
+                .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(${producedCookies})@\"}");
     }
 
     @CitrusTest
@@ -138,12 +138,12 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
                 .messageType(MessageType.PLAINTEXT)
                 .payload("false");
 
-        echo("Add some 'pretzel' order with id");
+        echo("Add some 'caramel' order with id");
 
         http().client(reportingClient)
                 .put("/reporting")
                 .queryParam("id", "${orderId}")
-                .queryParam("name", "pretzel")
+                .queryParam("name", "caramel")
                 .queryParam("amount", "1");
 
         http().client(reportingClient)
