@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class PlaceOrderAndReceiveMailIT extends TestNGCitrusTestDesigner {
+public class PlaceBulkOrderIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")
@@ -50,7 +50,7 @@ public class PlaceOrderAndReceiveMailIT extends TestNGCitrusTestDesigner {
     private MailServer mailServer;
 
     @CitrusTest
-    public void shouldSendMail() {
+    public void placeBulkCookieOrder() {
         echo("Add 1000+ order and receive mail");
 
         variable("orderType", "chocolate");
