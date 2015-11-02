@@ -10,6 +10,8 @@
     <script src="javascript/jquery.js"></script>
 
     <link type="text/css" href="styles/bootstrap.css" rel="stylesheet" />
+    <link type="text/css" href="styles/bootstrap-slider.css" rel="stylesheet" />
+    <link type="text/css" href="styles/custom.css" rel="stylesheet" />
 
     <script type="text/javascript">
       $( document ).ready(function() {
@@ -28,6 +30,8 @@
                   }
               });
           });
+
+          $("#amount").slider({ tooltip: 'always' });
       });
     </script>
   </head>
@@ -36,24 +40,34 @@
     <div id="content" class="container">
       <h1>Cookie Bakery Application</h1>
 
-      <p class="lead">Place new cookie orders for bakery application</p>
+      <p class="lead">Place new cookie orders:</p>
+      <br/>
 
-      <form id="orderForm" action="/">
-        <div class="row">
-          <div class="col-xs-1">
-            <input type="text" id="amount" class="form-control" value="10"/>
+      <form id="orderForm" class="form-horizontal" action="/">
+        <div class="form-group">
+          <label for="amount" class="col-sm-1 control-label">Amount</label>
+          <div class="col-sm-3">
+            <input id="amount" class="form-control" type="text" data-slider-min="1" data-slider-max="40" data-slider-step="1" data-slider-value="5"/>
           </div>
-          <div class="col-xs-3">
-            <select id="type" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="type" class="col-sm-1 control-label">Type</label>
+          <div class="col-sm-3">
+            <select id="type" class="form-control" class="form-control">
               <option>blueberry</option>
               <option>caramel</option>
               <option>chocolate</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary">Place order</button>
         </div>
-
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-3">
+            <button type="submit" class="btn btn-primary">Place order</button>
+          </div>
+        </div>
       </form>
     </div>
+
+    <script type='text/javascript' src="javascript/bootstrap-slider.js"></script>
   </body>
 </html>

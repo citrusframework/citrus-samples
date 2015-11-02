@@ -1,0 +1,8 @@
+.slider-track {
+    border: 1px solid #ccc;
+}
+
+.slider-handle {
+    background-image: none;
+    background-repeat: no-repeat;
+}
