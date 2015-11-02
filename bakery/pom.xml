@@ -25,7 +25,6 @@
     <application.server>tomcat-7.0</application.server>
     <message.broker>activemq-5.12</message.broker>
     <docker.host.name>localhost</docker.host.name>
-    <docker.host.ip>192.168.2.100</docker.host.ip>
   </properties>
 
   <build>

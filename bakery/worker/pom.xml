@@ -249,7 +249,7 @@
                 <env>
                   <FACTORY_TYPE>${factory.type}</FACTORY_TYPE>
                   <FACTORY_COSTS>${factory.costs}</FACTORY_COSTS>
-                  <REPORT_PORT_8080_TCP_ADDR>${docker.host.ip}</REPORT_PORT_8080_TCP_ADDR>
+                  <REPORT_PORT_8080_TCP_ADDR>${env.HOST_IP}</REPORT_PORT_8080_TCP_ADDR>
                   <REPORT_PORT_8080_TCP_PORT>${report.server.port}</REPORT_PORT_8080_TCP_PORT>
                 </env>
                 <cmd>java -jar maven/worker.jar</cmd>
