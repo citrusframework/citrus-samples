@@ -46,7 +46,7 @@ public class ProcessOrdersIT extends TestNGCitrusTestDesigner {
         variable("orderId", Functions.randomNumber(10L));
 
         send(factoryOrderEndpoint)
-            .payload("<order type=\"chocolate\"><id>${orderId}</id><amount>1</amount></order>");
+            .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>");
 
         http().server(reportingServer)
             .put("/report/services/reporting")

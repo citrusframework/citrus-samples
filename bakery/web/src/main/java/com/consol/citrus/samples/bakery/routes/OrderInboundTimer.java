@@ -45,7 +45,8 @@ public class OrderInboundTimer extends RouteBuilder implements Processor {
 
         String orderType = orderTypes[index++ % orderTypes.length];
 
-        in.setBody("<order type=\"" + orderType + "\">" +
+        in.setBody("<order>" +
+                        "<type>" + orderType + "</type>" +
                         "<id>" + index + "</id>" +
                         "<amount>1</amount>" +
                     "</order>");

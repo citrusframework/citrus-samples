@@ -49,7 +49,7 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
         variable("orderId", Functions.randomNumber(10L));
 
         send(bakeryOrderEndpoint)
-            .payload("<order type=\"chocolate\"><id>${orderId}</id><amount>1</amount></order>");
+            .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
             http().client(reportingClient)
@@ -72,7 +72,7 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
         variable("orderId", Functions.randomNumber(10L));
 
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"caramel\"><id>${orderId}</id><amount>1</amount></order>");
+                .payload("<order><type>caramel</type><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
             http().client(reportingClient)
@@ -95,7 +95,7 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
         variable("orderId", Functions.randomNumber(10L));
 
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"blueberry\"><id>${orderId}</id><amount>1</amount></order>");
+                .payload("<order><type>blueberry</type><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError(
             http().client(reportingClient)

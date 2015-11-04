@@ -57,7 +57,7 @@ public class PlaceBulkOrderIT extends TestNGCitrusTestDesigner {
         variable("orderId", Functions.randomNumber(10L));
 
         send(bakeryOrderEndpoint)
-                .payload("<order type=\"${orderType}\"><id>${orderId}</id><amount>1001</amount></order>");
+                .payload("<order><type>${orderType}</type><id>${orderId}</id><amount>1001</amount></order>");
 
         echo("Receive report mail for 1000+ order");
 

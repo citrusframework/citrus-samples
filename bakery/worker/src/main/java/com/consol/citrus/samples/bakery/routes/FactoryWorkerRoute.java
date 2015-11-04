@@ -43,7 +43,7 @@ public class FactoryWorkerRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
         from("jms:queue:factory." + factoryType + ".inbound").routeId(factoryType + "_factory")
-            .setHeader("name", xpath("order/@type"))
+            .setHeader("name", xpath("order/type/text()"))
             .setHeader("id", xpath("order/id/text()"))
             .setHeader("amount", xpath("order/amount/text()"))
             .delay(constant(factoryCosts))

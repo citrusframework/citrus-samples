@@ -47,11 +47,11 @@ public class BakeryRouter extends RouteBuilder implements Processor {
 
         from("direct:bakery").routeId("bakery")
             .choice()
-                .when(xpath("order/@type = 'blueberry'"))
+                .when(xpath("order/type/text() = 'blueberry'"))
                     .inOnly("jms:queue:factory.blueberry.inbound")
-                .when(xpath("order/@type = 'caramel'"))
+                .when(xpath("order/type/text() = 'caramel'"))
                     .inOnly("jms:queue:factory.caramel.inbound")
-                .when(xpath("order/@type = 'chocolate'"))
+                .when(xpath("order/type/text() = 'chocolate'"))
                     .inOnly("jms:queue:factory.chocolate.inbound")
                 .otherwise()
                     .inOnly("jms:queue:factory.unknown.inbound")
@@ -64,10 +64,11 @@ public class BakeryRouter extends RouteBuilder implements Processor {
         Message in = exchange.getIn();
 
         Map<String, Object> orderJson = (Map<String, Object>) in.getBody(Map.class).get("order");
-        in.setBody("<order type=\"" + orderJson.get("type") + "\">" +
-                "<id>" + orderJson.get("id") + "</id>" +
-                "<amount>" + orderJson.get("amount") + "</amount>" +
-            "</order>");
+        in.setBody("<order>" +
+                        "<type>" + orderJson.get("type") + "</type>" +
+                        "<id>" + orderJson.get("id") + "</id>" +
+                        "<amount>" + orderJson.get("amount") + "</amount>" +
+                    "</order>");
 
         in.getHeaders().remove(Exchange.HTTP_BASE_URI);
         in.getHeaders().remove(Exchange.HTTP_METHOD);

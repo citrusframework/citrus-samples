@@ -61,7 +61,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
                 .messageType(MessageType.PLAINTEXT);
 
         receive(workerChocolateEndpoint)
-                .payload("<order type=\"chocolate\"><id>@ignore@</id><amount>1</amount></order>");
+                .payload("<order><type>chocolate</type><id>@ignore@</id><amount>1</amount></order>");
 
         http().client(bakeryClient)
                 .post("/order")
@@ -73,7 +73,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
                 .messageType(MessageType.PLAINTEXT);
 
         receive(workerCaramelEndpoint)
-                .payload("<order type=\"caramel\"><id>@ignore@</id><amount>1</amount></order>");
+                .payload("<order><type>caramel</type><id>@ignore@</id><amount>1</amount></order>");
 
         http().client(bakeryClient)
                 .post("/order")
@@ -85,7 +85,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
                 .messageType(MessageType.PLAINTEXT);
 
         receive(workerBlueberryEndpoint)
-                .payload("<order type=\"blueberry\"><id>@ignore@</id><amount>1</amount></order>");
+                .payload("<order><type>blueberry</type><id>@ignore@</id><amount>1</amount></order>");
     }
 
     @CitrusTest
@@ -99,6 +99,6 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
                 .messageType(MessageType.PLAINTEXT);
 
         receive("jms:factory.unknown.inbound")
-                .payload("<order type=\"brownie\"><id>@ignore@</id><amount>1</amount></order>");
+                .payload("<order><type>brownie</type><id>@ignore@</id><amount>1</amount></order>");
     }
 }
