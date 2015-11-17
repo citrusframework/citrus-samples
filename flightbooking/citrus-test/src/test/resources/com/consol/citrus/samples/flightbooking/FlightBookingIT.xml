@@ -53,6 +53,68 @@
                     <element name="bookingCorrelationId" value="${correlationId}"/>
                 </header>
             </send>
+
+            <receive endpoint="royalAirlineServer">
+                <message>
+                    <data>
+                        <![CDATA[
+                            <fbs:FlightBookingRequestMessage xmlns:fbs="http://www.consol.com/schemas/flightbooking">
+                                <fbs:correlationId>${correlationId}</fbs:correlationId>
+                                <fbs:bookingId>???</fbs:bookingId>
+                                <fbs:customer>
+                                    <fbs:id>${customerId}</fbs:id>
+                                    <fbs:firstname>John</fbs:firstname>
+                                    <fbs:lastname>Doe</fbs:lastname>
+                                </fbs:customer>
+                                <fbs:flight>
+                                    <fbs:flightId>RA 1780</fbs:flightId>
+                                    <fbs:airline>RoyalAirline</fbs:airline>
+                                    <fbs:fromAirport>FRA</fbs:fromAirport>
+                                    <fbs:toAirport>HAM</fbs:toAirport>
+                                    <fbs:scheduledDeparture>2009-04-15T16:00:00+02:00</fbs:scheduledDeparture>
+                                    <fbs:scheduledArrival>2009-04-15T17:10:00+02:00</fbs:scheduledArrival>
+                                </fbs:flight>
+                            </fbs:FlightBookingRequestMessage>
+                        ]]>
+                    </data>
+                    <ignore path="//fbs:FlightBookingRequestMessage/fbs:bookingId"/>
+                </message>
+                <header>
+                    <element name="bookingCorrelationId" value="${correlationId}"/>
+                </header>
+                <extract>
+                    <header name="X-sequenceNumber" variable="${sequenceNumber}"/>
+                    <header name="X-sequenceSize" variable="${sequenceSize}"/>
+                    <message path="//fbs:FlightBookingRequestMessage/fbs:bookingId" variable="${royalAirlineBookingId}"/>
+                </extract>
+            </receive>
+
+            <send endpoint="royalAirlineServer">
+                <message>
+                    <data>
+                        <![CDATA[
+                            <fbs:FlightBookingConfirmationMessage xmlns:fbs="http://www.consol.com/schemas/flightbooking">
+                                <fbs:correlationId>${correlationId}</fbs:correlationId>
+                                <fbs:bookingId>${royalAirlineBookingId}</fbs:bookingId>
+                                <fbs:success>true</fbs:success>
+                                <fbs:flight>
+                                    <fbs:flightId>RA 1780</fbs:flightId>
+                                    <fbs:airline>RoyalAirline</fbs:airline>
+                                    <fbs:fromAirport>FRA</fbs:fromAirport>
+                                    <fbs:toAirport>HAM</fbs:toAirport>
+                                    <fbs:scheduledDeparture>2009-04-15T16:00:00+02:00</fbs:scheduledDeparture>
+                                    <fbs:scheduledArrival>2009-04-15T17:10:00+02:00</fbs:scheduledArrival>
+                                </fbs:flight>
+                            </fbs:FlightBookingConfirmationMessage>
+                        ]]>
+                    </data>
+                </message>
+                <header>
+                    <element name="X-sequenceNumber" value="${sequenceNumber}"/>
+                    <element name="X-sequenceSize" value="${sequenceSize}"/>
+                    <element name="bookingCorrelationId" value="${correlationId}"/>
+                </header>
+            </send>
             
             <receive endpoint="smartAirlineBookingRequestEndpoint">
                 <message>
@@ -116,68 +178,6 @@
                 </header>
             </send>
             
-            <receive endpoint="royalAirlineServer">
-                <message>
-                    <data>
-                        <![CDATA[
-                            <fbs:FlightBookingRequestMessage xmlns:fbs="http://www.consol.com/schemas/flightbooking">
-                                <fbs:correlationId>${correlationId}</fbs:correlationId>
-                                <fbs:bookingId>???</fbs:bookingId>
-                                <fbs:customer>
-                                    <fbs:id>${customerId}</fbs:id>
-                                    <fbs:firstname>John</fbs:firstname>
-                                    <fbs:lastname>Doe</fbs:lastname>
-                                </fbs:customer>
-                                <fbs:flight>
-                                    <fbs:flightId>RA 1780</fbs:flightId>
-                                    <fbs:airline>RoyalAirline</fbs:airline>
-                                    <fbs:fromAirport>FRA</fbs:fromAirport>
-                                    <fbs:toAirport>HAM</fbs:toAirport>
-                                    <fbs:scheduledDeparture>2009-04-15T16:00:00+02:00</fbs:scheduledDeparture>
-                                    <fbs:scheduledArrival>2009-04-15T17:10:00+02:00</fbs:scheduledArrival>
-                                </fbs:flight>
-                            </fbs:FlightBookingRequestMessage>
-                        ]]>
-                    </data>
-                    <ignore path="//fbs:FlightBookingRequestMessage/fbs:bookingId"/>
-                </message>
-                <header>
-                    <element name="bookingCorrelationId" value="${correlationId}"/>
-                </header>
-                <extract>
-                    <header name="X-sequenceNumber" variable="${sequenceNumber}"/>
-                    <header name="X-sequenceSize" variable="${sequenceSize}"/>
-                    <message path="//fbs:FlightBookingRequestMessage/fbs:bookingId" variable="${royalAirlineBookingId}"/>
-                </extract>
-            </receive>
-            
-            <send endpoint="royalAirlineServer">
-                <message>
-                    <data>
-                        <![CDATA[
-                            <fbs:FlightBookingConfirmationMessage xmlns:fbs="http://www.consol.com/schemas/flightbooking">
-                                <fbs:correlationId>${correlationId}</fbs:correlationId>
-                                <fbs:bookingId>${royalAirlineBookingId}</fbs:bookingId>
-                                <fbs:success>true</fbs:success>
-                                <fbs:flight>
-                                    <fbs:flightId>RA 1780</fbs:flightId>
-                                    <fbs:airline>RoyalAirline</fbs:airline>
-                                    <fbs:fromAirport>FRA</fbs:fromAirport>
-                                    <fbs:toAirport>HAM</fbs:toAirport>
-                                    <fbs:scheduledDeparture>2009-04-15T16:00:00+02:00</fbs:scheduledDeparture>
-                                    <fbs:scheduledArrival>2009-04-15T17:10:00+02:00</fbs:scheduledArrival>
-                                </fbs:flight>
-                            </fbs:FlightBookingConfirmationMessage>
-                        ]]>
-                    </data>
-                </message>
-                <header>
-                    <element name="X-sequenceNumber" value="${sequenceNumber}"/>
-                    <element name="X-sequenceSize" value="${sequenceSize}"/>
-                    <element name="bookingCorrelationId" value="${correlationId}"/>
-                </header>
-            </send>
-            
             <receive endpoint="travelAgencyBookingResponseEndpoint">
                 <message>
                     <data>
@@ -187,14 +187,6 @@
                                 <fbs:success>true</fbs:success>
                                 <fbs:flights>
                                     <fbs:flight>
-                                        <fbs:flightId>SM 1269</fbs:flightId>
-                                        <fbs:airline>SmartAirline</fbs:airline>
-                                        <fbs:fromAirport>MUC</fbs:fromAirport>
-                                        <fbs:toAirport>FRA</fbs:toAirport>
-                                        <fbs:scheduledDeparture>2009-04-15T11:55:00+02:00</fbs:scheduledDeparture>
-                                        <fbs:scheduledArrival>2009-04-15T13:00:00+02:00</fbs:scheduledArrival>
-                                    </fbs:flight>
-                                    <fbs:flight>
                                         <fbs:flightId>RA 1780</fbs:flightId>
                                         <fbs:airline>RoyalAirline</fbs:airline>
                                         <fbs:fromAirport>FRA</fbs:fromAirport>
@@ -202,7 +194,15 @@
                                         <fbs:scheduledDeparture>2009-04-15T16:00:00+02:00</fbs:scheduledDeparture>
                                         <fbs:scheduledArrival>2009-04-15T17:10:00+02:00</fbs:scheduledArrival>
                                     </fbs:flight>
-                                </fbs:flights>                                
+                                    <fbs:flight>
+                                        <fbs:flightId>SM 1269</fbs:flightId>
+                                        <fbs:airline>SmartAirline</fbs:airline>
+                                        <fbs:fromAirport>MUC</fbs:fromAirport>
+                                        <fbs:toAirport>FRA</fbs:toAirport>
+                                        <fbs:scheduledDeparture>2009-04-15T11:55:00+02:00</fbs:scheduledDeparture>
+                                        <fbs:scheduledArrival>2009-04-15T13:00:00+02:00</fbs:scheduledArrival>
+                                    </fbs:flight>
+                                </fbs:flights>
                             </fbs:TravelBookingResponseMessage>
                         ]]>
                     </data>

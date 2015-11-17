@@ -58,8 +58,8 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
                 .queryParam("id", "${orderId}"),
             http().client(reportingClient)
                 .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT)
-                .payload("true")
+                .messageType(MessageType.JSON)
+                .payload("{\"status\": true}")
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
@@ -87,8 +87,8 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
                     .queryParam("id", "${orderId}"),
             http().client(reportingClient)
                     .response(HttpStatus.OK)
-                    .messageType(MessageType.PLAINTEXT)
-                    .payload("true")
+                    .messageType(MessageType.JSON)
+                    .payload("{\"status\": true}")
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
@@ -116,8 +116,8 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
                     .queryParam("id", "${orderId}"),
             http().client(reportingClient)
                     .response(HttpStatus.OK)
-                    .messageType(MessageType.PLAINTEXT)
-                    .payload("true")
+                    .messageType(MessageType.JSON)
+                    .payload("{\"status\": true}")
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {

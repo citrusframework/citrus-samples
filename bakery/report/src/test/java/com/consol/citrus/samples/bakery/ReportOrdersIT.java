@@ -135,8 +135,8 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT)
-                .payload("false");
+                .messageType(MessageType.JSON)
+                .payload("{\"status\": false}");
 
         echo("Add some 'caramel' order with id");
 
@@ -157,7 +157,7 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT)
-                .payload("true");
+                .messageType(MessageType.JSON)
+                .payload("{\"status\": true}");
     }
 }

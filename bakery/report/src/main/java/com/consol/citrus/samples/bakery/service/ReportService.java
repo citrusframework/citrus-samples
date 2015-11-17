@@ -42,8 +42,10 @@ public class ReportService implements InitializingBean {
      * Gets the status of a very specific item found by its id.
      * @return
      */
-    public boolean status(String id) {
-        return produced.contains(id);
+    public String status(String id) {
+        JSONObject statusJSon = new JSONObject();
+        statusJSon.put("status", produced.contains(id));
+        return statusJSon.toString();
     }
 
     /**
