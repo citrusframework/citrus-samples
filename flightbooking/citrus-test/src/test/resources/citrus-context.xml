@@ -38,7 +38,8 @@
     <!-- Royal Airline Http server mock -->
     <citrus-http:server id="royalAirlineServer"
                         port="8074"
-                        auto-start="true"/>
+                        auto-start="true"
+                        timeout="5000"/>
 
     <!-- Trave Agency JMS endpoints -->
     <citrus-jms:endpoint id="travelAgencyBookingRequestEndpoint"
