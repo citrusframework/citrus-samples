@@ -27,7 +27,7 @@
   <properties>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>
-    <apache.cxf.version>3.1.1</apache.cxf.version>
+    <apache.cxf.version>3.1.4</apache.cxf.version>
     <citrus.version>2.5-SNAPSHOT</citrus.version>
     <jetty.embedded.disabled>true</jetty.embedded.disabled>
     <activemq.embedded.disabled>true</activemq.embedded.disabled>
