@@ -43,7 +43,7 @@ public class ProcessOrdersIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void processOrderWithReporting() {
-        variable("orderId", Functions.randomNumber(10L));
+        variable("orderId", Functions.randomNumber(10L, null));
 
         send(factoryOrderEndpoint)
             .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>");

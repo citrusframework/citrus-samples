@@ -45,7 +45,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void placeChocolateCookieOrder() {
-        variable("orderId", Functions.randomNumber(10L));
+        variable("orderId", Functions.randomNumber(10L, null));
 
         http().client(bakeryClient)
                 .post("/order")
@@ -74,7 +74,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void placeCaramelCookieOrder() {
-        variable("orderId", Functions.randomNumber(10L));
+        variable("orderId", Functions.randomNumber(10L, null));
 
         http().client(bakeryClient)
                 .post("/order")
@@ -103,7 +103,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void placeBlueberryCookieOrder() {
-        variable("orderId", Functions.randomNumber(10L));
+        variable("orderId", Functions.randomNumber(10L, null));
 
         http().client(bakeryClient)
                 .post("/order")

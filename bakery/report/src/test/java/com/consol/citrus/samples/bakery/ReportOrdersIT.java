@@ -44,7 +44,7 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void getOrders() {
-        final String orderId = Functions.randomNumber(10L);
+        final String orderId = Functions.randomNumber(10L, null);
         variable("orderId", orderId);
 
         echo("First check order id not present");
@@ -125,7 +125,7 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void getOrderStatus() {
-        variable("orderId", Functions.randomNumber(10L));
+        variable("orderId", Functions.randomNumber(10L, null));
 
         echo("First receive negative order status");
 
