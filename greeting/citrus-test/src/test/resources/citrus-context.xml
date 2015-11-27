@@ -10,7 +10,7 @@
        http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
        http://www.citrusframework.org/schema/jms/config http://www.citrusframework.org/schema/jms/config/citrus-jms-config.xsd">
 
-    <import resource="com/consol/citrus/samples/greeting/channel/greeting-channel.xml"/>
+    <import resource="classpath:com/consol/citrus/samples/greeting/channel/greeting-channel.xml"/>
 	
     <!-- Common settings -->
     <citrus:schema-repository id="schemaRepository">

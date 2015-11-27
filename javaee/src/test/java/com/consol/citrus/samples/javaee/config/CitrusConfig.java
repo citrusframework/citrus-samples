@@ -16,7 +16,7 @@
 
 package com.consol.citrus.samples.javaee.config;
 
-import com.consol.citrus.config.CitrusBaseConfig;
+import com.consol.citrus.config.CitrusSpringConfig;
 import com.consol.citrus.mail.server.MailServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.3
  */
 @Configuration
-public class CitrusConfig extends CitrusBaseConfig {
+public class CitrusConfig extends CitrusSpringConfig {
 
     private MailServer mailServer;
 
