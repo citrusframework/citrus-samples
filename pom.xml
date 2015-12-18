@@ -55,6 +55,13 @@
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <configuration>
+            <webAppConfig>
+              <!--
+                Limit the list of jars jetty scans in WEB-INF/lib when looking for annotations to process
+                - this will help speed up jetty startup times
+              -->
+              <webInfIncludeJarPattern>.*/spring-web[^/]*\.jar$|.*/spring-ws-[^/]*\.jar$</webInfIncludeJarPattern>
+            </webAppConfig>
             <httpConnector>
               <port>${server.port}</port>
               <idleTimeout>60000</idleTimeout>
