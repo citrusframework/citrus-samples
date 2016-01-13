@@ -18,6 +18,7 @@
     <jee.api.version>7.0</jee.api.version>
     <arquillian.version>1.1.10.Final</arquillian.version>
     <wildfly.version>8.2.1.Final</wildfly.version>
+    <arquillian.wildfly.version>1.0.2.Final</arquillian.wildfly.version>
   </properties>
 
   <dependencyManagement>
@@ -114,9 +115,9 @@
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.wildfly</groupId>
+          <groupId>org.wildfly.arquillian</groupId>
           <artifactId>wildfly-arquillian-container-managed</artifactId>
-          <version>${wildfly.version}</version>
+          <version>${arquillian.wildfly.version}</version>
         </dependency>
       </dependencies>
 
