@@ -68,6 +68,7 @@
             </httpConnector>
             <stopKey>citrus</stopKey>
             <stopPort>${server.stop.port}</stopPort>
+            <stopWait>10</stopWait>
             <systemProperties>
               <systemProperty>
                 <name>file.encoding</name>
@@ -357,6 +358,7 @@
                 <configuration>
                   <stopPort>${server.stop.port}</stopPort>
                   <stopKey>stopMe</stopKey>
+                  <stopWait>10</stopWait>
                 </configuration>
               </execution>
             </executions>
