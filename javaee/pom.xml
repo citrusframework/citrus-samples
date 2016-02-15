@@ -176,8 +176,11 @@
             </executions>
           </plugin>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
+              <junitArtifactName>junit:junit</junitArtifactName>
+              <testNGArtifactName>none:none</testNGArtifactName>
               <systemProperties>
                 <property>
                   <name>java.util.logging.manager</name>
