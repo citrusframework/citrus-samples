@@ -101,7 +101,6 @@ public class EmployeeMailTest {
                         .status(HttpStatus.NO_CONTENT));
 
         citrus.send(serviceUri)
-                .fork(true)
                 .message(new HttpMessage()
                         .method(HttpMethod.GET)
                         .accept(MediaType.APPLICATION_XML));
