@@ -16,9 +16,13 @@
 
 package com.consol.citrus.samples.javaee.jms;
 
+import com.consol.citrus.samples.javaee.employee.EmployeeRepository;
+import com.consol.citrus.samples.javaee.employee.model.Employee;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.annotation.Resource;
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
+import javax.ejb.*;
 import javax.jms.*;
 
 /**
@@ -26,10 +30,16 @@ import javax.jms.*;
  * @since 2.2
  */
 @MessageDriven(activationConfig = {
-        @ActivationConfigProperty( propertyName = "destination", propertyValue = "jms/queue/test"),
+        @ActivationConfigProperty( propertyName = "destination", propertyValue = "jms/queue/employee"),
         @ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.jms.Queue")
 })
-public class EchoService implements MessageListener {
+public class EmployeeJmsResource implements MessageListener {
+
+    /** Logger */
+    private static Logger log = LoggerFactory.getLogger(EmployeeJmsResource.class);
+
+    @EJB
+    private EmployeeRepository bean;
 
     @Resource(mappedName = "java:/ConnectionFactory")
     private ConnectionFactory factory;
@@ -38,12 +48,19 @@ public class EchoService implements MessageListener {
     public void onMessage(Message msg) {
         try
         {
-            System.out.println("Received JMS request " + msg.getJMSMessageID());
+            log.info("Received JMS request " + msg.getJMSMessageID());
+
+            Employee employee = new Employee(msg.getStringProperty("name"), msg.getIntProperty("age"), msg.getStringProperty("email"));
+            bean.addEmployee(employee);
 
             Connection connection = factory.createConnection();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             MessageProducer producer = session.createProducer(msg.getJMSReplyTo());
-            producer.send(msg);
+
+            TextMessage reply = session.createTextMessage("Successfully created employee: " + employee.toString());
+            reply.setBooleanProperty("success", true);
+
+            producer.send(reply);
             producer.close();
             session.close();
             connection.close();

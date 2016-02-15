@@ -368,7 +368,7 @@
         </jms-connection-factories>
         <jms-destinations>
           <jms-queue name="testQueue">
-            <entry name="java:/jms/queue/test"/>
+            <entry name="java:/jms/queue/employee"/>
             <entry name="java:jboss/exported/jms/queues/testQueue"/>
           </jms-queue>
           <jms-queue name="ExpiryQueue">

@@ -13,7 +13,7 @@
   </container>
 
   <extension qualifier="citrus">
-    <property name="autoPackage">true</property>
+    <property name="autoPackage">false</property>
     <property name="citrusVersion">2.6-SNAPSHOT</property>
     <property name="configurationClass">com.consol.citrus.samples.javaee.config.CitrusConfig</property>
   </extension>
