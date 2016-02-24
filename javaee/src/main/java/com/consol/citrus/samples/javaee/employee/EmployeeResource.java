@@ -33,22 +33,21 @@ public class EmployeeResource {
    /** Logger */
    private static Logger log = LoggerFactory.getLogger(EmployeeResource.class);
 
-   // Ideally this state should be stored in a database
    @EJB
-   private EmployeeRepository bean;
+   private EmployeeRepository repository;
 
    @GET
    @Produces({ "application/xml", "application/json" })
    public Employees getList() {
-      return bean.getEmployees();
+      return repository.getEmployees();
    }
 
    @GET
    @Produces({ "application/json", "application/xml" })
    @Path("{id}")
    public Employee get(@PathParam("id") int id) {
-      if (id < bean.getEmployees().getEmployees().size())
-         return bean.getEmployees().getEmployees().get(id);
+      if (id < repository.getEmployees().getEmployees().size())
+         return repository.getEmployees().getEmployees().get(id);
       else
          return null;
    }
@@ -58,7 +57,7 @@ public class EmployeeResource {
    public void addToList(@FormParam("name") String name,
          @FormParam("age") int age, @FormParam("email") String email) {
       log.info("Creating a new employee: " + name);
-      bean.addEmployee(new Employee(name, age, email));
+      repository.addEmployee(new Employee(name, age, email));
    }
 
    @PUT
@@ -69,13 +68,13 @@ public class EmployeeResource {
 
    @DELETE
    public void deleteAll() {
-      bean.deleteEmployees();
+      repository.deleteEmployees();
    }
 
    @DELETE
    @Path("{name}")
    public void deleteFromList(@PathParam("name") String name) {
-      bean.deleteEmployee(name);
+      repository.deleteEmployee(name);
    }
 
 }

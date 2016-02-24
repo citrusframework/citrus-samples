@@ -45,7 +45,7 @@ import java.net.URL;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class EmployeeTest {
+public class EmployeeResourceTest {
 
     @CitrusFramework
     private Citrus citrusFramework;
@@ -71,9 +71,6 @@ public class EmployeeTest {
         serviceUri = new URL(baseUri, "registry/employee").toExternalForm();
     }
 
-    /**
-     * Test adding new employees and getting list of all employees.
-     */
     @Test
     @InSequence(1)
     @CitrusTest
