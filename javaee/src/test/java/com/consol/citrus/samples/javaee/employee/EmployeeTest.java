@@ -259,8 +259,8 @@ public class EmployeeTest {
         citrus.receive(serviceUri)
                 .messageType(MessageType.JSON)
                 .message(new HttpMessage("{\"employee\":[" +
-                            "{\"name\":\"Penny\",\"age\":20}," +
-                            "{\"name\":\"Sheldon\",\"age\":22}," +
+                            "{\"name\":\"Penny\",\"age\":20,\"email\":null}," +
+                            "{\"name\":\"Sheldon\",\"age\":22,\"email\":null}," +
                             "{\"name\":\"Howard\",\"age\":21,\"email\":\"howard@example.com\"}" +
                         "]}")
                         .status(HttpStatus.OK));
