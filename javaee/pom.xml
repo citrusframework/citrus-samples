@@ -17,7 +17,7 @@
   <properties>
     <jee.api.version>7.0</jee.api.version>
     <arquillian.version>1.1.11.Final</arquillian.version>
-    <wildfly.version>9.0.2.Final</wildfly.version>
+    <wildfly.version>10.0.0.Final</wildfly.version>
   </properties>
 
   <dependencyManagement>
