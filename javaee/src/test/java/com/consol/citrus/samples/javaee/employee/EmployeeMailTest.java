@@ -24,7 +24,7 @@ import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
 import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
 import com.consol.citrus.samples.javaee.employee.model.Employees;
-import com.consol.citrus.samples.javaee.mail.MailSessionBean;
+import com.consol.citrus.samples.javaee.mail.MailService;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -59,7 +59,7 @@ public class EmployeeMailTest {
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class)
                 .addClasses(
-                        RegistryApplication.class, MailSessionBean.class, EmployeeResource.class, Employees.class,
+                        RegistryApplication.class, MailService.class, EmployeeResource.class, Employees.class,
                         Employee.class, EmployeeRepository.class);
     }
 

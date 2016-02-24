@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2015 the original author or authors.
+ * Copyright 2006-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.javaee.jms;
+package com.consol.citrus.samples.javaee.employee.jms;
 
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
@@ -27,7 +27,7 @@ import com.consol.citrus.samples.javaee.config.CitrusConfig;
 import com.consol.citrus.samples.javaee.employee.EmployeeRepository;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
 import com.consol.citrus.samples.javaee.employee.model.Employees;
-import com.consol.citrus.samples.javaee.mail.MailSessionBean;
+import com.consol.citrus.samples.javaee.mail.MailService;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OverProtocol;
 import org.jboss.arquillian.junit.Arquillian;
@@ -60,7 +60,7 @@ public class EmployeeJmsTest {
     @OverProtocol("Servlet 3.0")
     public static WebArchive createDeployment() throws MalformedURLException {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(MailSessionBean.class, EmployeeJmsResource.class, Employees.class,
+                .addClasses(MailService.class, EmployeeJmsResource.class, Employees.class,
                         Employee.class, EmployeeRepository.class, CitrusConfig.class)
                 .addAsLibraries(CitrusArchiveBuilder.latestVersion().core().javaDsl().mail().jms().build());
     }

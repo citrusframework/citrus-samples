@@ -31,10 +31,10 @@ import java.util.Properties;
  * @since 2.3
  */
 @Singleton
-public class MailSessionBean {
+public class MailService {
 
     /** Logger */
-    private static Logger log = LoggerFactory.getLogger(MailSessionBean.class);
+    private static Logger log = LoggerFactory.getLogger(MailService.class);
 
     private int port = 2222;
     private String host = "localhost";

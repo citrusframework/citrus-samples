@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2015 the original author or authors.
+ * Copyright 2006-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.javaee.jms;
+package com.consol.citrus.samples.javaee.employee.jms;
 
 import com.consol.citrus.samples.javaee.employee.EmployeeRepository;
 import com.consol.citrus.samples.javaee.employee.model.Employee;

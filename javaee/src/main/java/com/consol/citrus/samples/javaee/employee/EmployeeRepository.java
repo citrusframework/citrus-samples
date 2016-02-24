@@ -18,7 +18,7 @@ package com.consol.citrus.samples.javaee.employee;
 
 import com.consol.citrus.samples.javaee.employee.model.Employee;
 import com.consol.citrus.samples.javaee.employee.model.Employees;
-import com.consol.citrus.samples.javaee.mail.MailSessionBean;
+import com.consol.citrus.samples.javaee.mail.MailService;
 
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -29,7 +29,7 @@ public class EmployeeRepository {
    private final Employees employees;
 
    @EJB
-   private MailSessionBean mailSessionBean;
+   private MailService mailService;
 
    public EmployeeRepository() {
       employees = new Employees();
@@ -39,7 +39,7 @@ public class EmployeeRepository {
       employees.getEmployees().add(e);
 
       if (e.getEmail() != null && e.getEmail().length() > 0) {
-         mailSessionBean.sendMail(e.getName().toLowerCase() + "@example.com", "Welcome new employee",
+         mailService.sendMail(e.getName().toLowerCase() + "@example.com", "Welcome new employee",
                  String.format("We welcome you '%s' to our company - now get to work!", e.getName()));
       }
    }
