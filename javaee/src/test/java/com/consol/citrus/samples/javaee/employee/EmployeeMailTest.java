@@ -19,7 +19,6 @@ package com.consol.citrus.samples.javaee.employee;
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
 import com.consol.citrus.dsl.design.TestDesigner;
-import com.consol.citrus.http.message.HttpMessage;
 import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
 import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
@@ -34,7 +33,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 import javax.ws.rs.core.MediaType;
@@ -74,11 +72,11 @@ public class EmployeeMailTest {
     @Test
     @CitrusTest
     public void testPostWithWelcomeEmail(@CitrusResource TestDesigner citrus) {
-        citrus.send(serviceUri)
+        citrus.http().client(serviceUri)
+                .post()
                 .fork(true)
-                .message(new HttpMessage("name=Rajesh&age=20&email=rajesh@example.com")
-                        .method(HttpMethod.POST)
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .payload("name=Rajesh&age=20&email=rajesh@example.com");
 
         citrus.receive(mailServer)
                 .payload("<mail-message xmlns=\"http://www.citrusframework.org/schema/mail/message\">" +
@@ -96,24 +94,22 @@ public class EmployeeMailTest {
                 .header(CitrusMailMessageHeaders.MAIL_FROM, "employee-registry@example.com")
                 .header(CitrusMailMessageHeaders.MAIL_TO, "rajesh@example.com");
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage()
-                        .status(HttpStatus.NO_CONTENT));
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.NO_CONTENT);
 
-        citrus.send(serviceUri)
-                .message(new HttpMessage()
-                        .method(HttpMethod.GET)
-                        .accept(MediaType.APPLICATION_XML));
+        citrus.http().client(serviceUri)
+                .get()
+                .accept(MediaType.APPLICATION_XML);
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage("<employees>" +
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.OK)
+                .payload("<employees>" +
                             "<employee>" +
                                 "<age>20</age>" +
                                 "<name>Rajesh</name>" +
                                 "<email>rajesh@example.com</email>" +
                             "</employee>" +
-                        "</employees>")
-                        .status(HttpStatus.OK));
+                        "</employees>");
 
         citrusFramework.run(citrus.getTestCase());
     }

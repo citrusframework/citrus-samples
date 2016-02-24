@@ -19,7 +19,6 @@ package com.consol.citrus.samples.javaee.employee;
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
 import com.consol.citrus.dsl.design.TestDesigner;
-import com.consol.citrus.http.message.HttpMessage;
 import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
 import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.message.MessageType;
@@ -36,7 +35,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 import javax.ws.rs.core.MediaType;
@@ -75,40 +73,37 @@ public class EmployeeResourceTest {
     @InSequence(1)
     @CitrusTest
     public void testPostAndGet(@CitrusResource TestDesigner citrus) {
-        citrus.send(serviceUri)
-                .message(new HttpMessage("name=Penny&age=20")
-                        .method(HttpMethod.POST)
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
+        citrus.http().client(serviceUri)
+                .post()
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .payload("name=Penny&age=20");
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage()
-                        .status(HttpStatus.NO_CONTENT));
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.NO_CONTENT);
 
-        citrus.send(serviceUri)
-                .message(new HttpMessage("name=Leonard&age=21")
-                        .method(HttpMethod.POST)
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
+        citrus.http().client(serviceUri)
+                .post()
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .payload("name=Leonard&age=21");
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage()
-                        .status(HttpStatus.NO_CONTENT));
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.NO_CONTENT);
 
-        citrus.send(serviceUri)
-                .message(new HttpMessage("name=Sheldon&age=22")
-                        .method(HttpMethod.POST)
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
+        citrus.http().client(serviceUri)
+                .post()
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .payload("name=Sheldon&age=22");
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage()
-                        .status(HttpStatus.NO_CONTENT));
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.NO_CONTENT);
 
-        citrus.send(serviceUri)
-                .message(new HttpMessage()
-                        .method(HttpMethod.GET)
-                        .accept(MediaType.APPLICATION_XML));
+        citrus.http().client(serviceUri)
+                .get()
+                .accept(MediaType.APPLICATION_XML);
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage("<employees>" +
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.OK)
+                .payload("<employees>" +
                             "<employee>" +
                                 "<age>20</age>" +
                                 "<name>Penny</name>" +
@@ -121,8 +116,7 @@ public class EmployeeResourceTest {
                                 "<age>22</age>" +
                                 "<name>Sheldon</name>" +
                             "</employee>" +
-                        "</employees>")
-                        .status(HttpStatus.OK));
+                        "</employees>");
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -131,17 +125,16 @@ public class EmployeeResourceTest {
     @InSequence(2)
     @CitrusTest
     public void testGetSingle(@CitrusResource TestDesigner citrus) {
-        citrus.send(serviceUri + "/1")
-                .message(new HttpMessage()
-                        .method(HttpMethod.GET)
-                        .accept(MediaType.APPLICATION_XML));
+        citrus.http().client(serviceUri)
+                .get("/1")
+                .accept(MediaType.APPLICATION_XML);
 
-        citrus.receive(serviceUri + "/1")
-                .message(new HttpMessage("<employee>" +
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.OK)
+                .payload("<employee>" +
                             "<age>21</age>" +
                             "<name>Leonard</name>" +
-                        "</employee>")
-                        .status(HttpStatus.OK));
+                        "</employee>");
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -150,11 +143,11 @@ public class EmployeeResourceTest {
     @InSequence(3)
     @CitrusTest
     public void testPut(@CitrusResource TestDesigner citrus) {
-        citrus.send(serviceUri)
+        citrus.http().client(serviceUri)
+                .put()
                 .fork(true)
-                .message(new HttpMessage("name=Howard&age=21&email=howard@example.com")
-                        .method(HttpMethod.PUT)
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED));
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .payload("name=Howard&age=21&email=howard@example.com");
 
         citrus.receive(mailServer)
                 .payload("<mail-message xmlns=\"http://www.citrusframework.org/schema/mail/message\">" +
@@ -172,17 +165,16 @@ public class EmployeeResourceTest {
                 .header(CitrusMailMessageHeaders.MAIL_FROM, "employee-registry@example.com")
                 .header(CitrusMailMessageHeaders.MAIL_TO, "howard@example.com");
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage()
-                        .status(HttpStatus.NO_CONTENT));
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.NO_CONTENT);
 
-        citrus.send(serviceUri)
-                .message(new HttpMessage()
-                        .method(HttpMethod.GET)
-                        .accept(MediaType.APPLICATION_XML));
+        citrus.http().client(serviceUri)
+                .get()
+                .accept(MediaType.APPLICATION_XML);
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage("<employees>" +
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.OK)
+                .payload("<employees>" +
                             "<employee>" +
                                 "<age>20</age>" +
                                 "<name>Penny</name>" +
@@ -200,8 +192,7 @@ public class EmployeeResourceTest {
                                 "<name>Howard</name>" +
                                 "<email>howard@example.com</email>" +
                             "</employee>" +
-                        "</employees>")
-                        .status(HttpStatus.OK));
+                        "</employees>");
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -210,21 +201,19 @@ public class EmployeeResourceTest {
     @InSequence(4)
     @CitrusTest
     public void testDelete(@CitrusResource TestDesigner citrus) {
-        citrus.send(serviceUri + "/Leonard")
-                .message(new HttpMessage()
-                        .method(HttpMethod.DELETE));
+        citrus.http().client(serviceUri)
+                .delete("/Leonard");
 
-        citrus.receive(serviceUri + "/Leonard")
-                .message(new HttpMessage()
-                        .status(HttpStatus.NO_CONTENT));
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.NO_CONTENT);
 
-        citrus.send(serviceUri)
-                .message(new HttpMessage()
-                        .method(HttpMethod.GET)
-                        .accept(MediaType.APPLICATION_XML));
+        citrus.http().client(serviceUri)
+                .get()
+                .accept(MediaType.APPLICATION_XML);
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage("<employees>" +
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.OK)
+                .payload("<employees>" +
                             "<employee>" +
                                 "<age>20</age>" +
                                 "<name>Penny</name>" +
@@ -238,8 +227,7 @@ public class EmployeeResourceTest {
                                 "<name>Howard</name>" +
                                 "<email>howard@example.com</email>" +
                             "</employee>" +
-                        "</employees>")
-                        .status(HttpStatus.OK));
+                        "</employees>");
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -248,19 +236,18 @@ public class EmployeeResourceTest {
     @InSequence(5)
     @CitrusTest
     public void testClientSideNegotiation(@CitrusResource TestDesigner citrus) {
-        citrus.send(serviceUri)
-                .message(new HttpMessage()
-                        .method(HttpMethod.GET)
-                        .accept(MediaType.APPLICATION_JSON));
+        citrus.http().client(serviceUri)
+                .get()
+                .accept(MediaType.APPLICATION_JSON);
 
-        citrus.receive(serviceUri)
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
-                .message(new HttpMessage("{\"employee\":[" +
+                .payload("{\"employee\":[" +
                             "{\"name\":\"Penny\",\"age\":20,\"email\":null}," +
                             "{\"name\":\"Sheldon\",\"age\":22,\"email\":null}," +
                             "{\"name\":\"Howard\",\"age\":21,\"email\":\"howard@example.com\"}" +
-                        "]}")
-                        .status(HttpStatus.OK));
+                        "]}");
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -269,22 +256,19 @@ public class EmployeeResourceTest {
     @InSequence(6)
     @CitrusTest
     public void testDeleteAll(@CitrusResource TestDesigner citrus) {
-        citrus.send(serviceUri)
-                .message(new HttpMessage()
-                        .method(HttpMethod.DELETE));
+        citrus.http().client(serviceUri)
+                .delete();
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage()
-                        .status(HttpStatus.NO_CONTENT));
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.NO_CONTENT);
 
-        citrus.send(serviceUri)
-                .message(new HttpMessage()
-                        .method(HttpMethod.GET)
-                        .accept(MediaType.APPLICATION_XML));
+        citrus.http().client(serviceUri)
+                .get()
+                .accept(MediaType.APPLICATION_XML);
 
-        citrus.receive(serviceUri)
-                .message(new HttpMessage("<employees></employees>")
-                        .status(HttpStatus.OK));
+        citrus.http().client(serviceUri)
+                .response(HttpStatus.OK)
+                .payload("<employees></employees>");
 
         citrusFramework.run(citrus.getTestCase());
     }
