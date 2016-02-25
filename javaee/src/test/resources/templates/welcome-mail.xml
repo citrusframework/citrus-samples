@@ -1,0 +1,11 @@
+<mail-message xmlns="http://www.citrusframework.org/schema/mail/message">
+  <from>employee-registry@example.com</from>
+  <to>${employee.email}</to>
+  <cc></cc>
+  <bcc></bcc>
+  <subject>Welcome new employee</subject>
+  <body>
+    <contentType>text/plain; charset=us-ascii</contentType>
+    <content>We welcome you '${employee.name}' to our company - now get to work!</content>
+  </body>
+</mail-message>

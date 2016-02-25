@@ -19,8 +19,6 @@ package com.consol.citrus.samples.javaee.employee;
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
 import com.consol.citrus.dsl.design.TestDesigner;
-import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
-import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
 import com.consol.citrus.samples.javaee.employee.model.Employees;
@@ -52,9 +50,6 @@ public class EmployeeResourceTest {
     private URL baseUri;
 
     private String serviceUri;
-
-    @CitrusEndpoint
-    private MailServer mailServer;
 
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
@@ -148,22 +143,6 @@ public class EmployeeResourceTest {
                 .fork(true)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .payload("name=Howard&age=21&email=howard@example.com");
-
-        citrus.receive(mailServer)
-                .payload("<mail-message xmlns=\"http://www.citrusframework.org/schema/mail/message\">" +
-                            "<from>employee-registry@example.com</from>" +
-                            "<to>howard@example.com</to>" +
-                            "<cc></cc>" +
-                            "<bcc></bcc>" +
-                            "<subject>Welcome new employee</subject>" +
-                            "<body>" +
-                                "<contentType>text/plain; charset=us-ascii</contentType>" +
-                                "<content>We welcome you 'Howard' to our company - now get to work!</content>" +
-                            "</body>" +
-                        "</mail-message>")
-                .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Welcome new employee")
-                .header(CitrusMailMessageHeaders.MAIL_FROM, "employee-registry@example.com")
-                .header(CitrusMailMessageHeaders.MAIL_TO, "howard@example.com");
 
         citrus.http().client(serviceUri)
                 .response(HttpStatus.NO_CONTENT);

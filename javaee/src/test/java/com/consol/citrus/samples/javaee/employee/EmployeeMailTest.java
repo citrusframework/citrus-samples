@@ -33,6 +33,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 
 import javax.ws.rs.core.MediaType;
@@ -72,27 +73,24 @@ public class EmployeeMailTest {
     @Test
     @CitrusTest
     public void testPostWithWelcomeEmail(@CitrusResource TestDesigner citrus) {
+        citrus.variable("employee.name", "Rajesh");
+        citrus.variable("employee.age", "20");
+        citrus.variable("employee.email", "rajesh@example.com");
+
         citrus.http().client(serviceUri)
                 .post()
                 .fork(true)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=Rajesh&age=20&email=rajesh@example.com");
+                .payload("name=${employee.name}&age=${employee.age}&email=${employee.email}");
 
         citrus.receive(mailServer)
-                .payload("<mail-message xmlns=\"http://www.citrusframework.org/schema/mail/message\">" +
-                            "<from>employee-registry@example.com</from>" +
-                            "<to>rajesh@example.com</to>" +
-                            "<cc></cc>" +
-                            "<bcc></bcc>" +
-                            "<subject>Welcome new employee</subject>" +
-                            "<body>" +
-                                "<contentType>text/plain; charset=us-ascii</contentType>" +
-                                "<content>We welcome you 'Rajesh' to our company - now get to work!</content>" +
-                            "</body>" +
-                        "</mail-message>")
+                .payload(new ClassPathResource("templates/welcome-mail.xml"))
                 .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Welcome new employee")
                 .header(CitrusMailMessageHeaders.MAIL_FROM, "employee-registry@example.com")
-                .header(CitrusMailMessageHeaders.MAIL_TO, "rajesh@example.com");
+                .header(CitrusMailMessageHeaders.MAIL_TO, "${employee.email}");
+
+        citrus.send(mailServer)
+                .payload(new ClassPathResource("templates/welcome-mail-response.xml"));
 
         citrus.http().client(serviceUri)
                 .response(HttpStatus.NO_CONTENT);
@@ -105,9 +103,9 @@ public class EmployeeMailTest {
                 .response(HttpStatus.OK)
                 .payload("<employees>" +
                             "<employee>" +
-                                "<age>20</age>" +
-                                "<name>Rajesh</name>" +
-                                "<email>rajesh@example.com</email>" +
+                                "<age>${employee.age}</age>" +
+                                "<name>${employee.name}</name>" +
+                                "<email>${employee.email}</email>" +
                             "</employee>" +
                         "</employees>");
 
