@@ -24,7 +24,6 @@ import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpointConfiguration;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.Deployments;
-import com.consol.citrus.samples.javaee.config.CitrusConfig;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OverProtocol;
 import org.jboss.arquillian.junit.Arquillian;
@@ -58,7 +57,6 @@ public class EmployeeJmsTest {
     @OverProtocol("Servlet 3.0")
     public static WebArchive createDeployment() throws IOException {
         return Deployments.employeeJmsRegistry()
-                    .addClass(CitrusConfig.class)
                     .addAsResource(new ClassPathResource("wsdl/SmsGateway.wsdl").getFile(), new BasicPath("/wsdl/SmsGateway.wsdl"))
                     .addAsLibraries(CitrusArchiveBuilder.latestVersion().core().javaDsl().mail().jms().build());
     }
