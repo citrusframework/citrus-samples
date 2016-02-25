@@ -30,51 +30,51 @@ import javax.ws.rs.core.MediaType;
 @RequestScoped
 public class EmployeeResource {
 
-   /** Logger */
-   private static Logger log = LoggerFactory.getLogger(EmployeeResource.class);
+    /** Logger */
+    private static Logger log = LoggerFactory.getLogger(EmployeeResource.class);
 
-   @EJB
-   private EmployeeRepository repository;
+    @EJB
+    private EmployeeRepository repository;
 
-   @GET
-   @Produces({ "application/xml", "application/json" })
-   public Employees getList() {
-      return repository.getEmployees();
-   }
+    @GET
+    @Produces({ "application/xml", "application/json" })
+    public Employees getList() {
+        return repository.getEmployees();
+    }
 
-   @GET
-   @Produces({ "application/json", "application/xml" })
-   @Path("{id}")
-   public Employee get(@PathParam("id") int id) {
-      if (id < repository.getEmployees().getEmployees().size())
-         return repository.getEmployees().getEmployees().get(id);
-      else
-         return null;
-   }
+    @GET
+    @Produces({ "application/json", "application/xml" })
+    @Path("{id}")
+    public Employee get(@PathParam("id") int id) {
+        if (id < repository.getEmployees().getEmployees().size())
+            return repository.getEmployees().getEmployees().get(id);
+        else
+            return null;
+    }
 
-   @POST
-   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-   public void addToList(@FormParam("name") String name,
-         @FormParam("age") int age, @FormParam("email") String email) {
-      log.info("Creating a new employee: " + name);
-      repository.addEmployee(new Employee(name, age, email));
-   }
+    @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void addToList(@FormParam("name") String name,
+                          @FormParam("age") int age, @FormParam("email") String email) {
+        log.info("Creating a new employee: " + name);
+        repository.addEmployee(new Employee(name, age, email));
+    }
 
-   @PUT
-   public void putToList(@FormParam("name") String name,
-         @FormParam("age") int age, @FormParam("email") String email) {
-      addToList(name, age, email);
-   }
+    @PUT
+    public void putToList(@FormParam("name") String name,
+                          @FormParam("age") int age, @FormParam("email") String email) {
+        addToList(name, age, email);
+    }
 
-   @DELETE
-   public void deleteAll() {
-      repository.deleteEmployees();
-   }
+    @DELETE
+    public void deleteAll() {
+        repository.deleteEmployees();
+    }
 
-   @DELETE
-   @Path("{name}")
-   public void deleteFromList(@PathParam("name") String name) {
-      repository.deleteEmployee(name);
-   }
+    @DELETE
+    @Path("{name}")
+    public void deleteFromList(@PathParam("name") String name) {
+        repository.deleteEmployee(name);
+    }
 
 }

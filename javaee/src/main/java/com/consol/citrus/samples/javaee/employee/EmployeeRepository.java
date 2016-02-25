@@ -26,44 +26,44 @@ import javax.ejb.Singleton;
 @Singleton
 public class EmployeeRepository {
 
-   private final Employees employees;
+    private final Employees employees;
 
-   @EJB
-   private MailService mailService;
+    @EJB
+    private MailService mailService;
 
-   public EmployeeRepository() {
-      employees = new Employees();
-   }
+    public EmployeeRepository() {
+        employees = new Employees();
+    }
 
-   public void addEmployee(Employee e) {
-      employees.getEmployees().add(e);
+    public void addEmployee(Employee e) {
+        employees.getEmployees().add(e);
 
-      if (e.getEmail() != null && e.getEmail().length() > 0) {
-         mailService.sendMail(e.getName().toLowerCase() + "@example.com", "Welcome new employee",
-                 String.format("We welcome you '%s' to our company - now get to work!", e.getName()));
-      }
-   }
+        if (e.getEmail() != null && e.getEmail().length() > 0) {
+            mailService.sendMail(e.getName().toLowerCase() + "@example.com", "Welcome new employee",
+                    String.format("We welcome you '%s' to our company - now get to work!", e.getName()));
+        }
+    }
 
-   public void deleteEmployee(String name) {
-      Employee found = findEmployeeByName(name);
-      if (found != null) {
-         employees.getEmployees().remove(found);
-      }
-   }
+    public void deleteEmployee(String name) {
+        Employee found = findEmployeeByName(name);
+        if (found != null) {
+            employees.getEmployees().remove(found);
+        }
+    }
 
-   public void deleteEmployees() {
-      employees.getEmployees().clear();
-   }
+    public void deleteEmployees() {
+        employees.getEmployees().clear();
+    }
 
-   private Employee findEmployeeByName(String name) {
-      for (Employee employee : employees.getEmployees()) {
-         if (name.equals(employee.getName()))
-            return employee;
-      }
-      return null;
-   }
+    private Employee findEmployeeByName(String name) {
+        for (Employee employee : employees.getEmployees()) {
+            if (name.equals(employee.getName()))
+                return employee;
+        }
+        return null;
+    }
 
-   public Employees getEmployees() {
-      return employees;
-   }
+    public Employees getEmployees() {
+        return employees;
+    }
 }

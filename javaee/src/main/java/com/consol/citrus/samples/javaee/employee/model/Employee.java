@@ -20,89 +20,89 @@ import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-     "age",
-     "name",
-     "email",
+        "age",
+        "name",
+        "email",
 })
 @XmlRootElement
 public class Employee {
 
-   @XmlElement(required = true)
-   private String name;
-   @XmlElement(required = true)
-   private int age;
-   @XmlElement
-   private String email;
+    @XmlElement(required = true)
+    private String name;
+    @XmlElement(required = true)
+    private int age;
+    @XmlElement
+    private String email;
 
-   public Employee() {
-   }
+    public Employee() {
+    }
 
-   public Employee(String name, int age, String email) {
-      this.name = name;
-      this.age = age;
-      this.email = email;
-   }
+    public Employee(String name, int age, String email) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+    }
 
-   public String getName() {
-      return name;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   public int getAge() {
-      return age;
-   }
+    public int getAge() {
+        return age;
+    }
 
-   public void setAge(int age) {
-      this.age = age;
-   }
+    public void setAge(int age) {
+        this.age = age;
+    }
 
-   public String getEmail() {
-      return email;
-   }
+    public String getEmail() {
+        return email;
+    }
 
-   public void setEmail(String email) {
-      this.email = email;
-   }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-   @Override
-   public String toString() {
-      return name + "(" + age + ")";
-   }
+    @Override
+    public String toString() {
+        return name + "(" + age + ")";
+    }
 
-   @Override
-   public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + age;
-      result = prime * result + ((name == null) ? 0 : name.hashCode());
-      result = prime * result + ((email == null) ? 0 : email.hashCode());
-      return result;
-   }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + age;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        return result;
+    }
 
-   @Override
-   public boolean equals(Object obj) {
-      if (this == obj)
-         return true;
-      if (obj == null)
-         return false;
-      if (getClass() != obj.getClass())
-         return false;
-      Employee other = (Employee) obj;
-      if (age != other.age)
-         return false;
-      if (name == null) {
-         if (other.name != null)
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-      } else if (!name.equals(other.name))
-         return false;
-      if (email == null) {
-         if (other.email != null)
+        if (getClass() != obj.getClass())
             return false;
-      } else if (!email.equals(other.email))
-         return false;
-      return true;
-   }
+        Employee other = (Employee) obj;
+        if (age != other.age)
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (email == null) {
+            if (other.email != null)
+                return false;
+        } else if (!email.equals(other.email))
+            return false;
+        return true;
+    }
 }
