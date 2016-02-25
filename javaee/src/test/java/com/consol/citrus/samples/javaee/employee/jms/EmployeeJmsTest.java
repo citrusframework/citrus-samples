@@ -23,24 +23,22 @@ import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpointConfiguration;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.samples.javaee.Deployments;
 import com.consol.citrus.samples.javaee.config.CitrusConfig;
-import com.consol.citrus.samples.javaee.employee.EmployeeRepository;
-import com.consol.citrus.samples.javaee.employee.model.Employee;
-import com.consol.citrus.samples.javaee.employee.model.Employees;
-import com.consol.citrus.samples.javaee.mail.MailService;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.OverProtocol;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.impl.base.path.BasicPath;
 import org.junit.*;
 import org.junit.runner.RunWith;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jms.connection.SingleConnectionFactory;
 
 import javax.annotation.Resource;
 import javax.jms.ConnectionFactory;
 import javax.jms.Queue;
-import java.net.MalformedURLException;
+import java.io.IOException;
 
 @RunWith(Arquillian.class)
 public class EmployeeJmsTest {
@@ -58,11 +56,11 @@ public class EmployeeJmsTest {
 
     @Deployment
     @OverProtocol("Servlet 3.0")
-    public static WebArchive createDeployment() throws MalformedURLException {
-        return ShrinkWrap.create(WebArchive.class)
-                .addClasses(MailService.class, EmployeeJmsResource.class, Employees.class,
-                        Employee.class, EmployeeRepository.class, CitrusConfig.class)
-                .addAsLibraries(CitrusArchiveBuilder.latestVersion().core().javaDsl().mail().jms().build());
+    public static WebArchive createDeployment() throws IOException {
+        return Deployments.employeeJmsRegistry()
+                    .addClass(CitrusConfig.class)
+                    .addAsResource(new ClassPathResource("wsdl/SmsGateway.wsdl").getFile(), new BasicPath("/wsdl/SmsGateway.wsdl"))
+                    .addAsLibraries(CitrusArchiveBuilder.latestVersion().core().javaDsl().mail().jms().build());
     }
 
     @Before

@@ -18,8 +18,12 @@ package com.consol.citrus.samples.javaee.config;
 
 import com.consol.citrus.config.CitrusSpringConfig;
 import com.consol.citrus.mail.server.MailServer;
+import com.consol.citrus.ws.server.WebServiceServer;
+import com.consol.citrus.xml.XsdSchemaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Arrays;
 
 /**
  * @author Christoph Deppisch
@@ -29,6 +33,17 @@ import org.springframework.context.annotation.Configuration;
 public class CitrusConfig extends CitrusSpringConfig {
 
     private MailServer mailServer;
+    private WebServiceServer smsGatewayServer;
+
+    @Bean
+    public XsdSchemaRepository schemaRepository() throws Exception {
+        XsdSchemaRepository schemaRepository = new XsdSchemaRepository();
+
+        schemaRepository.setLocations(Arrays.asList("classpath:wsdl/SmsGateway.wsdl"));
+        schemaRepository.afterPropertiesSet();
+
+        return schemaRepository;
+    }
 
     @Bean
     public MailServer mailServer() {
@@ -39,5 +54,17 @@ public class CitrusConfig extends CitrusSpringConfig {
         }
 
         return mailServer;
+    }
+
+    @Bean
+    public WebServiceServer smsGatewayServer() {
+        if (smsGatewayServer == null) {
+            smsGatewayServer = new WebServiceServer();
+            smsGatewayServer.setPort(18008);
+            smsGatewayServer.setDefaultTimeout(5000L);
+            smsGatewayServer.setAutoStart(true);
+        }
+
+        return smsGatewayServer;
     }
 }

@@ -50,7 +50,8 @@ public class EmployeeJmsResource implements MessageListener {
         {
             log.info("Received JMS request " + msg.getJMSMessageID());
 
-            Employee employee = new Employee(msg.getStringProperty("name"), msg.getIntProperty("age"), msg.getStringProperty("email"));
+            Employee employee = new Employee(msg.getStringProperty("name"), msg.getIntProperty("age"),
+                    msg.getStringProperty("email"), msg.getStringProperty("mobile"));
             bean.addEmployee(employee);
 
             Connection connection = factory.createConnection();

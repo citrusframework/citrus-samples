@@ -1,0 +1,5 @@
+<sms:SendSmsRequest xmlns:sms="http://www.smsgateway.org/schema/SmsGateway/v1">
+  <sms:communicationId>@variable('communicationId')@</sms:communicationId>
+  <sms:msisdn>${employee.mobile}</sms:msisdn>
+  <sms:text>Welcome on board '${employee.name}' - now get to work!</sms:text>
+</sms:SendSmsRequest>

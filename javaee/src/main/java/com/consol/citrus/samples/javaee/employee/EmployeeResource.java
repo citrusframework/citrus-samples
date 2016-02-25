@@ -55,15 +55,15 @@ public class EmployeeResource {
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void addToList(@FormParam("name") String name,
-                          @FormParam("age") int age, @FormParam("email") String email) {
+                          @FormParam("age") int age, @FormParam("email") String email, @FormParam("mobile") String mobile) {
         log.info("Creating a new employee: " + name);
-        repository.addEmployee(new Employee(name, age, email));
+        repository.addEmployee(new Employee(name, age, email, mobile));
     }
 
     @PUT
     public void putToList(@FormParam("name") String name,
-                          @FormParam("age") int age, @FormParam("email") String email) {
-        addToList(name, age, email);
+                          @FormParam("age") int age, @FormParam("email") String email, @FormParam("mobile") String mobile) {
+        addToList(name, age, email, mobile);
     }
 
     @DELETE

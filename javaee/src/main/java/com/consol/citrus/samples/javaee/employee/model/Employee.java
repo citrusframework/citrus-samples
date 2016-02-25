@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.*;
         "age",
         "name",
         "email",
+        "mobile"
 })
 @XmlRootElement
 public class Employee {
@@ -33,14 +34,17 @@ public class Employee {
     private int age;
     @XmlElement
     private String email;
+    @XmlElement
+    private String mobile;
 
     public Employee() {
     }
 
-    public Employee(String name, int age, String email) {
+    public Employee(String name, int age, String email, String mobile) {
         this.name = name;
         this.age = age;
         this.email = email;
+        this.mobile = mobile;
     }
 
     public String getName() {
@@ -67,6 +71,14 @@ public class Employee {
         this.email = email;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     @Override
     public String toString() {
         return name + "(" + age + ")";
@@ -79,6 +91,7 @@ public class Employee {
         result = prime * result + age;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((mobile == null) ? 0 : mobile.hashCode());
         return result;
     }
 
@@ -102,6 +115,11 @@ public class Employee {
             if (other.email != null)
                 return false;
         } else if (!email.equals(other.email))
+            return false;
+        if (mobile == null) {
+            if (other.mobile != null)
+                return false;
+        } else if (!mobile.equals(other.mobile))
             return false;
         return true;
     }

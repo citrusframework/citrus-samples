@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2015 the original author or authors.
+ * Copyright 2006-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,8 @@ package com.consol.citrus.samples.javaee.employee;
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
 import com.consol.citrus.dsl.design.TestDesigner;
-import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
-import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.samples.javaee.Deployments;
+import com.consol.citrus.ws.server.WebServiceServer;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -34,11 +33,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.net.URL;
 
 @RunWith(Arquillian.class)
 @RunAsClient
-public class EmployeeMailTest {
+public class EmployeeSmsGatewayTest {
 
     @CitrusFramework
     private Citrus citrusFramework;
@@ -49,10 +49,10 @@ public class EmployeeMailTest {
     private String serviceUri;
 
     @CitrusEndpoint
-    private MailServer mailServer;
+    private WebServiceServer smsGatewayServer;
 
     @Deployment(testable = false)
-    public static WebArchive createDeployment() {
+    public static WebArchive createDeployment() throws IOException {
         return Deployments.employeeWebRegistry();
     }
 
@@ -64,24 +64,21 @@ public class EmployeeMailTest {
     @Test
     @CitrusTest
     public void testPostWithWelcomeEmail(@CitrusResource TestDesigner citrus) {
-        citrus.variable("employee.name", "Rajesh");
-        citrus.variable("employee.age", "20");
-        citrus.variable("employee.email", "rajesh@example.com");
+        citrus.variable("employee.name", "Bernadette");
+        citrus.variable("employee.age", "24");
+        citrus.variable("employee.mobile", "4915199999999");
 
         citrus.http().client(serviceUri)
                 .post()
                 .fork(true)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=${employee.name}&age=${employee.age}&email=${employee.email}");
+                .payload("name=${employee.name}&age=${employee.age}&mobile=${employee.mobile}");
 
-        citrus.receive(mailServer)
-                .payload(new ClassPathResource("templates/welcome-mail.xml"))
-                .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Welcome new employee")
-                .header(CitrusMailMessageHeaders.MAIL_FROM, "employee-registry@example.com")
-                .header(CitrusMailMessageHeaders.MAIL_TO, "${employee.email}");
+        citrus.receive(smsGatewayServer)
+                .payload(new ClassPathResource("templates/send-sms-request.xml"));
 
-        citrus.send(mailServer)
-                .payload(new ClassPathResource("templates/welcome-mail-response.xml"));
+        citrus.send(smsGatewayServer)
+                .payload(new ClassPathResource("templates/send-sms-response.xml"));
 
         citrus.http().client(serviceUri)
                 .response(HttpStatus.NO_CONTENT);
@@ -96,11 +93,10 @@ public class EmployeeMailTest {
                             "<employee>" +
                                 "<age>${employee.age}</age>" +
                                 "<name>${employee.name}</name>" +
-                                "<email>${employee.email}</email>" +
+                                "<mobile>${employee.mobile}</mobile>" +
                             "</employee>" +
                         "</employees>");
 
         citrusFramework.run(citrus.getTestCase());
     }
-
 }

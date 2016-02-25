@@ -1,0 +1,6 @@
+<sms:SendSmsResponse xmlns:sms="http://www.smsgateway.org/schema/SmsGateway/v1">
+  <sms:communicationId>${communicationId}</sms:communicationId>
+  <sms:success>true</sms:success>
+  <sms:statusCode>200</sms:statusCode>
+  <sms:statusMsg>OK</sms:statusMsg>
+</sms:SendSmsResponse>
