@@ -221,20 +221,11 @@
             <configuration>
               <junitArtifactName>junit:junit</junitArtifactName>
               <testNGArtifactName>none:none</testNGArtifactName>
-              <systemProperties>
-                <property>
-                  <name>java.util.logging.manager</name>
-                  <value>org.jboss.logmanager.LogManager</value>
-                </property>
-                <property>
-                  <name>jboss.home</name>
-                  <value>${serverRoot}</value>
-                </property>
-                <property>
-                  <name>module.path</name>
-                  <value>${serverRoot}/modules</value>
-                </property>
-              </systemProperties>
+              <systemPropertyVariables>
+                <jboss.home>${serverRoot}</jboss.home>
+                <module.path>${serverRoot}/modules</module.path>
+                <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+              </systemPropertyVariables>
               <environmentVariables>
                 <JBOSS_HOME>${serverRoot}</JBOSS_HOME>
               </environmentVariables>
