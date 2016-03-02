@@ -20,8 +20,8 @@ import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
 import com.consol.citrus.arquillian.shrinkwrap.CitrusArchiveBuilder;
 import com.consol.citrus.dsl.design.TestDesigner;
+import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
-import com.consol.citrus.jms.endpoint.JmsSyncEndpointConfiguration;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.Deployments;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -56,15 +56,15 @@ public class EmployeeJmsTest {
     public static WebArchive createDeployment() throws IOException {
         return Deployments.employeeJmsRegistry()
                     .addAsResource(new ClassPathResource("wsdl/SmsGateway.wsdl").getFile(), new BasicPath("/wsdl/SmsGateway.wsdl"))
-                    .addAsLibraries(CitrusArchiveBuilder.latestVersion().core().javaDsl().mail().jms().build());
+                    .addAsLibraries(CitrusArchiveBuilder.latestVersion().core().javaDsl().mail().ws().jms().build());
     }
 
     @Before
     public void setUp() {
-        JmsSyncEndpointConfiguration endpointConfiguration = new JmsSyncEndpointConfiguration();
-        endpointConfiguration.setConnectionFactory(new SingleConnectionFactory(connectionFactory));
-        endpointConfiguration.setDestination(employeeQueue);
-        employeeJmsEndpoint = new JmsSyncEndpoint(endpointConfiguration);
+        employeeJmsEndpoint = CitrusEndpoints.jms().synchronous()
+                                    .destination(employeeQueue)
+                                    .connectionFactory(new SingleConnectionFactory(connectionFactory))
+                                    .build();
     }
 
     @After
