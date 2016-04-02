@@ -56,7 +56,7 @@ public class EmployeeJmsTest {
     public static WebArchive createDeployment() throws IOException {
         return Deployments.employeeJmsRegistry()
                     .addAsResource(new ClassPathResource("wsdl/SmsGateway.wsdl").getFile(), new BasicPath("/wsdl/SmsGateway.wsdl"))
-                    .addAsLibraries(CitrusArchiveBuilder.latestVersion().core().javaDsl().mail().ws().jms().build());
+                    .addAsLibraries(CitrusArchiveBuilder.latestVersion().core().javaDsl().http().mail().ws().jms().build());
     }
 
     @Before

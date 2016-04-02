@@ -55,6 +55,19 @@
       <groupId>org.jolokia</groupId>
       <artifactId>jolokia-core</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-ws</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-jms</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
