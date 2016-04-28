@@ -73,7 +73,7 @@ Web container of your choice.
 Once the sample application is deployed and running you can execute the Citrus test cases in citrus-test folder.
 Open a separate command line terminal and navigate to the citrus-test folder.
 
-Execute all Citrus tests by calling "mvn integration-test". You can also pick a single test by calling "mvn integration-test -Ptest=TestName".
+Execute all Citrus tests by calling "mvn integration-test". You can also pick a single test by calling "mvn integration-test -Dtest=TestName".
 You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
 and Citrus test client). And of course green tests at the very end of the build.
 
