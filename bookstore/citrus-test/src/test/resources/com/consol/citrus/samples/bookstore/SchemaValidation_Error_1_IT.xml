@@ -27,25 +27,27 @@
         
         <actions>
             <ws:assert fault-code="${faultCode}" fault-string="Client sent invalid request!">
-                <send endpoint="bookStoreClient">
-                    <message>
-                        <data>
-                            <![CDATA[
-                                <bkr:AddBookRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore">
-                                    <bkr:book>
-                                        <bkr:title>Maven: The Definitive Guide</bkr:title>
-                                        <bkr:author>Mike Loukides, Sonatype</bkr:author>
-                                        <bkr:isbn>${isbn}</bkr:isbn>
-                                        <bkr:year>03.Okt.2008</bkr:year>
-                                    </bkr:book>
-                                </bkr:AddBookRequestMessage>                        
-                            ]]>
-                        </data>
-                    </message>
-                    <header>
-                        <element name="citrus_soap_action" value="addBook"/>
-                    </header>
-                </send>
+                <ws:when>
+                    <send endpoint="bookStoreClient">
+                        <message>
+                            <data>
+                                <![CDATA[
+                                    <bkr:AddBookRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore">
+                                        <bkr:book>
+                                            <bkr:title>Maven: The Definitive Guide</bkr:title>
+                                            <bkr:author>Mike Loukides, Sonatype</bkr:author>
+                                            <bkr:isbn>${isbn}</bkr:isbn>
+                                            <bkr:year>03.Okt.2008</bkr:year>
+                                        </bkr:book>
+                                    </bkr:AddBookRequestMessage>
+                                ]]>
+                            </data>
+                        </message>
+                        <header>
+                            <element name="citrus_soap_action" value="addBook"/>
+                        </header>
+                    </send>
+                </ws:when>
             </ws:assert>
         </actions>
     </testcase>
