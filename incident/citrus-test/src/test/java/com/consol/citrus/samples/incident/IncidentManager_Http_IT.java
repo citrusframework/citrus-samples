@@ -35,14 +35,6 @@ public class IncidentManager_Http_IT extends TestNGCitrusTestDesigner {
     @Qualifier("networkBackendHttpServer")
     private HttpServer networkHttpServer;
 
-    @CitrusXmlTest(name = "IncidentManager_Http_Ok_1_IT")
-    public void testIncidentManager_Http_Ok_1() {
-    }
-
-    @CitrusXmlTest(name = "IncidentManager_Http_Ok_2_IT")
-    public void testIncidentManager_Http_Ok_2() {
-    }
-
     @CitrusXmlTest(name = "IncidentManager_Http_FieldForceError_1_IT")
     public void testIncidentManager_Http_FieldForceError_1() {
     }
