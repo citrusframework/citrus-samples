@@ -71,10 +71,16 @@
                                 message-converter="soapMessageConverter"
                                 destination-name="JMS.Citrus.v1.IncidentManager"/>
 
+  <!-- SOAP client interceptor basically for logging whole SOAP envelope to logger -->
+  <util:list id="serverInterceptors">
+    <bean class="com.consol.citrus.http.interceptor.LoggingHandlerInterceptor"/>
+  </util:list>
+
   <!-- Http server simulating network backend system -->
   <citrus-http:server id="networkBackendHttpServer"
           auto-start="true"
           port="18002"
+          interceptors="serverInterceptors"
           timeout="10000"/>
 
   <!-- Field force JMS components -->
