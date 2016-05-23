@@ -28,11 +28,13 @@
           </executions>
           <configuration>
             <extension>true</extension>
-            <wsdl>false</wsdl>
-            <xmlschema>true</xmlschema>
-            <schemaDirectory>src/main/resources/com/consol/citrus/samples/flightbooking/schema</schemaDirectory>
-            <bindingDirectory>src/main/resources/com/consol/citrus/samples/flightbooking/schema</bindingDirectory>
-            <schemaFiles>**/*.xsd</schemaFiles>
+            <sourceType>xmlschema</sourceType>
+            <sources>
+              <source>src/main/resources/com/consol/citrus/samples/flightbooking/schema/FlightBookingSchema.xsd</source>
+            </sources>
+            <xjbSources>
+              <xjbSource>src/main/resources/com/consol/citrus/samples/flightbooking/schema/binding.xjb</xjbSource>
+            </xjbSources>
           </configuration>
           <dependencies>
             <dependency>

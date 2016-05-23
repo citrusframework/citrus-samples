@@ -28,12 +28,14 @@
         </executions>
         <configuration>
           <extension>true</extension>
-          <wsdl>false</wsdl>
-          <xmlschema>true</xmlschema>
-          <schemaDirectory>src/main/resources/com/consol/citrus/samples/incident/schema</schemaDirectory>
-          <bindingDirectory>src/main/resources/com/consol/citrus/samples/incident/schema</bindingDirectory>
-          <bindingFiles>binding-jaxb.xjb</bindingFiles>
-          <schemaFiles>**/*.xsd</schemaFiles>
+          <sourceType>xmlschema</sourceType>
+          <sources>
+            <source>src/main/resources/com/consol/citrus/samples/incident/schema/FieldForceService.xsd</source>
+            <source>src/main/resources/com/consol/citrus/samples/incident/schema/NetworkService.xsd</source>
+          </sources>
+          <xjbSources>
+            <xjbSource>src/main/resources/com/consol/citrus/samples/incident/schema/binding-jaxb.xjb</xjbSource>
+          </xjbSources>
         </configuration>
         <dependencies>
           <dependency>
