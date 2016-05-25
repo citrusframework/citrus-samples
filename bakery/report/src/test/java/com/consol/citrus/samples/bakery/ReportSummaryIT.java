@@ -58,6 +58,7 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
 
         http().client(reportingClient)
                 .response(HttpStatus.OK)
+                .messageType("xhtml")
                 .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"org/w3/xhtml/xhtml1-strict.dtd\">\n" +
                         "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                             "<head>\n" +
@@ -74,7 +75,7 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
                             "<p><a href=\"reporting/orders\">Show orders</a></p>" +
                         "</body>" +
                         "</html>")
-                .build().setMessageType("xhtml");
+                .build();
     }
 
     @CitrusTest
