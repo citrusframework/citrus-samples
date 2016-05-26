@@ -63,9 +63,9 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
-                return index > 20;
+                return index > 50;
             }
-        }).autoSleep(100L);
+        }).autoSleep(200L);
 
         http().client(bakeryClient)
                 .response(HttpStatus.OK)
@@ -92,9 +92,9 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
-                return index > 20;
+                return index > 50;
             }
-        }).autoSleep(100L);
+        }).autoSleep(200L);
 
         http().client(bakeryClient)
                 .response(HttpStatus.OK)
@@ -121,9 +121,9 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         ).until(new IteratingConditionExpression() {
             @Override
             public boolean evaluate(int index, TestContext context) {
-                return index > 20;
+                return index > 50;
             }
-        }).autoSleep(100L);
+        }).autoSleep(200L);
 
         http().client(bakeryClient)
                 .response(HttpStatus.OK)
