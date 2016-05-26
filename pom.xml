@@ -22,6 +22,7 @@
     <module>bookstore</module>
     <module>incident</module>
     <module>camel-news</module>
+    <module>cucumber-bdd</module>
   </modules>
   
   <properties>
@@ -142,6 +143,11 @@
           <version>${citrus.version}</version>
         </dependency>
         <dependency>
+          <groupId>com.consol.citrus</groupId>
+          <artifactId>citrus-docker</artifactId>
+          <version>${citrus.version}</version>
+        </dependency>
+        <dependency>
           <groupId>com.consol.citrus.samples</groupId>
           <artifactId>citrus-samples-common</artifactId>
           <version>${citrus.version}</version>
@@ -211,6 +217,18 @@
           <groupId>org.hibernate.javax.persistence</groupId>
           <artifactId>hibernate-jpa-2.0-api</artifactId>
           <version>1.0.1.Final</version>
+        </dependency>
+
+        <!-- Cucumber -->
+        <dependency>
+          <groupId>info.cukes</groupId>
+          <artifactId>cucumber-java</artifactId>
+          <version>1.2.4</version>
+        </dependency>
+        <dependency>
+          <groupId>info.cukes</groupId>
+          <artifactId>cucumber-junit</artifactId>
+          <version>1.2.4</version>
         </dependency>
       </dependencies>
   </dependencyManagement>
