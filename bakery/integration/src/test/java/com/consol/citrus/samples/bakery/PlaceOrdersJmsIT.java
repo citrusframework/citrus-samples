@@ -51,20 +51,22 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
         send(bakeryOrderEndpoint)
             .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>");
 
-        repeatOnError(
-            http().client(reportingClient)
-                .get("/reporting/order")
-                .queryParam("id", "${orderId}"),
-            http().client(reportingClient)
-                .response(HttpStatus.OK)
-                .messageType(MessageType.JSON)
-                .payload("{\"status\": true}")
-        ).until(new IteratingConditionExpression() {
-            @Override
-            public boolean evaluate(int index, TestContext context) {
-                return index > 50;
-            }
-        }).autoSleep(200L);
+        repeatOnError()
+            .until(new IteratingConditionExpression() {
+                @Override
+                public boolean evaluate(int index, TestContext context) {
+                    return index > 20;
+                }
+            })
+            .autoSleep(100L)
+            .actions(http().client(reportingClient)
+                            .get("/reporting/order")
+                            .queryParam("id", "${orderId}"),
+                    http().client(reportingClient)
+                            .response(HttpStatus.OK)
+                            .messageType(MessageType.JSON)
+                            .payload("{\"status\": true}")
+            );
     }
 
     @CitrusTest
@@ -74,20 +76,22 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
         send(bakeryOrderEndpoint)
                 .payload("<order><type>caramel</type><id>${orderId}</id><amount>1</amount></order>");
 
-        repeatOnError(
-            http().client(reportingClient)
-                    .get("/reporting/order")
-                    .queryParam("id", "${orderId}"),
-            http().client(reportingClient)
-                    .response(HttpStatus.OK)
-                    .messageType(MessageType.JSON)
-                    .payload("{\"status\": true}")
-        ).until(new IteratingConditionExpression() {
-            @Override
-            public boolean evaluate(int index, TestContext context) {
-                return index > 50;
-            }
-        }).autoSleep(200L);
+        repeatOnError()
+            .until(new IteratingConditionExpression() {
+                @Override
+                public boolean evaluate(int index, TestContext context) {
+                    return index > 20;
+                }
+            })
+            .autoSleep(100L)
+            .actions(http().client(reportingClient)
+                            .get("/reporting/order")
+                            .queryParam("id", "${orderId}"),
+                    http().client(reportingClient)
+                            .response(HttpStatus.OK)
+                            .messageType(MessageType.JSON)
+                            .payload("{\"status\": true}")
+            );
     }
 
     @CitrusTest
@@ -97,19 +101,21 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
         send(bakeryOrderEndpoint)
                 .payload("<order><type>blueberry</type><id>${orderId}</id><amount>1</amount></order>");
 
-        repeatOnError(
-            http().client(reportingClient)
-                    .get("/reporting/order")
-                    .queryParam("id", "${orderId}"),
-            http().client(reportingClient)
-                    .response(HttpStatus.OK)
-                    .messageType(MessageType.JSON)
-                    .payload("{\"status\": true}")
-        ).until(new IteratingConditionExpression() {
-            @Override
-            public boolean evaluate(int index, TestContext context) {
-                return index > 50;
-            }
-        }).autoSleep(200L);
+        repeatOnError()
+            .until(new IteratingConditionExpression() {
+                @Override
+                public boolean evaluate(int index, TestContext context) {
+                    return index > 20;
+                }
+            })
+            .autoSleep(100L)
+            .actions(http().client(reportingClient)
+                            .get("/reporting/order")
+                            .queryParam("id", "${orderId}"),
+                    http().client(reportingClient)
+                            .response(HttpStatus.OK)
+                            .messageType(MessageType.JSON)
+                            .payload("{\"status\": true}")
+            );
     }
 }

@@ -52,20 +52,22 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
                 .contentType("application/json")
                 .payload("{ \"order\": { \"type\": \"chocolate\", \"id\": ${orderId}, \"amount\": 1}}");
 
-        repeatOnError(
-            http().client(reportingClient)
-                .get("/reporting/order")
-                .queryParam("id", "${orderId}"),
-            http().client(reportingClient)
-                .response(HttpStatus.OK)
-                .messageType(MessageType.JSON)
-                .payload("{\"status\": true}")
-        ).until(new IteratingConditionExpression() {
-            @Override
-            public boolean evaluate(int index, TestContext context) {
-                return index > 50;
-            }
-        }).autoSleep(200L);
+        repeatOnError()
+            .until(new IteratingConditionExpression() {
+                @Override
+                public boolean evaluate(int index, TestContext context) {
+                    return index > 20;
+                }
+            })
+            .autoSleep(100L)
+            .actions(http().client(reportingClient)
+                            .get("/reporting/order")
+                            .queryParam("id", "${orderId}"),
+                    http().client(reportingClient)
+                            .response(HttpStatus.OK)
+                            .messageType(MessageType.JSON)
+                            .payload("{\"status\": true}")
+            );
 
         http().client(bakeryClient)
                 .response(HttpStatus.OK)
@@ -81,20 +83,22 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
                 .contentType("application/json")
                 .payload("{ \"order\": { \"type\": \"caramel\", \"id\": ${orderId}, \"amount\": 1}}");
 
-        repeatOnError(
-            http().client(reportingClient)
-                    .get("/reporting/order")
-                    .queryParam("id", "${orderId}"),
-            http().client(reportingClient)
-                    .response(HttpStatus.OK)
-                    .messageType(MessageType.JSON)
-                    .payload("{\"status\": true}")
-        ).until(new IteratingConditionExpression() {
-            @Override
-            public boolean evaluate(int index, TestContext context) {
-                return index > 50;
-            }
-        }).autoSleep(200L);
+        repeatOnError()
+            .until(new IteratingConditionExpression() {
+                @Override
+                public boolean evaluate(int index, TestContext context) {
+                    return index > 20;
+                }
+            })
+            .autoSleep(100L)
+            .actions(http().client(reportingClient)
+                            .get("/reporting/order")
+                            .queryParam("id", "${orderId}"),
+                    http().client(reportingClient)
+                            .response(HttpStatus.OK)
+                            .messageType(MessageType.JSON)
+                            .payload("{\"status\": true}")
+            );
 
         http().client(bakeryClient)
                 .response(HttpStatus.OK)
@@ -110,20 +114,22 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
                 .contentType("application/json")
                 .payload("{ \"order\": { \"type\": \"blueberry\", \"id\": ${orderId}, \"amount\": 1}}");
 
-        repeatOnError(
-            http().client(reportingClient)
-                    .get("/reporting/order")
-                    .queryParam("id", "${orderId}"),
-            http().client(reportingClient)
-                    .response(HttpStatus.OK)
-                    .messageType(MessageType.JSON)
-                    .payload("{\"status\": true}")
-        ).until(new IteratingConditionExpression() {
-            @Override
-            public boolean evaluate(int index, TestContext context) {
-                return index > 50;
-            }
-        }).autoSleep(200L);
+        repeatOnError()
+            .until(new IteratingConditionExpression() {
+                @Override
+                public boolean evaluate(int index, TestContext context) {
+                    return index > 20;
+                }
+            })
+            .autoSleep(100L)
+            .actions(http().client(reportingClient)
+                            .get("/reporting/order")
+                            .queryParam("id", "${orderId}"),
+                    http().client(reportingClient)
+                            .response(HttpStatus.OK)
+                            .messageType(MessageType.JSON)
+                            .payload("{\"status\": true}")
+            );
 
         http().client(bakeryClient)
                 .response(HttpStatus.OK)
