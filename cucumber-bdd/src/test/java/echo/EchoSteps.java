@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.cucumber;
+package echo;
 
-import com.consol.citrus.Citrus;
-import com.consol.citrus.annotations.CitrusFramework;
-import com.consol.citrus.dsl.design.DefaultTestDesigner;
+import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.message.MessageType;
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.*;
 
 /**
@@ -32,24 +27,8 @@ import cucumber.api.java.en.*;
 public class EchoSteps {
 
     /** Test designer filled with actions by step definitions */
+    @CitrusResource
     private TestDesigner designer;
-
-    @CitrusFramework
-    private Citrus citrus;
-
-    @Before
-    public void init(Scenario scenario) {
-        designer = new DefaultTestDesigner();
-        designer.name(scenario.getId());
-        designer.description(scenario.getName());
-    }
-
-    @After
-    public void execute(Scenario scenario) {
-        if (!scenario.isFailed()) {
-            citrus.run(designer.getTestCase());
-        }
-    }
 
     @Given("^My name is (.*)$")
     public void my_name_is(String name) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.cucumber;
+package echo;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
@@ -24,6 +24,8 @@ import org.junit.runner.RunWith;
  * @author Christoph Deppisch
  */
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin = { "cucumber.runtime.java.CitrusPlugin", "default_summary" } )
+@CucumberOptions(
+        glue = { "com.consol.citrus.cucumber", "echo" },
+        plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
 public class EchoFeatureIT {
 }
