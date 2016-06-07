@@ -27,18 +27,6 @@
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-cucumber</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-ws</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-jms</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-docker</artifactId>
-    </dependency>
 
     <!-- Cucumber -->
     <dependency>
