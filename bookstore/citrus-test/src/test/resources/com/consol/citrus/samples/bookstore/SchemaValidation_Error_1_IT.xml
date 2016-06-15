@@ -26,7 +26,7 @@
         </variables>
         
         <actions>
-            <ws:assert fault-code="${faultCode}" fault-string="Client sent invalid request!">
+            <ws:assert-fault fault-code="${faultCode}" fault-string="Client sent invalid request!">
                 <ws:when>
                     <send endpoint="bookStoreClient">
                         <message>
@@ -48,7 +48,7 @@
                         </header>
                     </send>
                 </ws:when>
-            </ws:assert>
+            </ws:assert-fault>
         </actions>
     </testcase>
 </spring:beans>
