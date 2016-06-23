@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <artifactId>citrus-samples</artifactId>
+    <groupId>com.consol.citrus.samples</groupId>
+    <version>2.6-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.consol.citrus.samples</groupId>
+  <artifactId>citrus-cucumber-spring2</artifactId>
+  <name>citrus-cucumber-spring2</name>
+
+  <properties>
+    <citrus.test.package>com.consol.citrus.samples.cucumber</citrus.test.package>
+  </properties>
+
+  <dependencies>
+    <!-- Citrus -->
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-camel</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-cucumber</artifactId>
+    </dependency>
+
+    <!-- Cucumber -->
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-spring</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

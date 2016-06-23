@@ -23,6 +23,8 @@
     <module>incident</module>
     <module>camel-news</module>
     <module>cucumber-bdd</module>
+    <module>cucumber-spring</module>
+    <module>cucumber-spring2</module>
   </modules>
   
   <properties>
@@ -228,6 +230,11 @@
         <dependency>
           <groupId>info.cukes</groupId>
           <artifactId>cucumber-junit</artifactId>
+          <version>1.2.4</version>
+        </dependency>
+        <dependency>
+          <groupId>info.cukes</groupId>
+          <artifactId>cucumber-spring</artifactId>
           <version>1.2.4</version>
         </dependency>
       </dependencies>
