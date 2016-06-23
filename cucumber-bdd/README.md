@@ -25,11 +25,11 @@ Also you may look at the step definitions where Citrus test designer is used to 
 Configuration
 ---------
 
-In order to enable Citrus Cucumber support we need to specify a special objet factory in *cucumber.properties*.
+In order to enable Citrus Cucumber support we need to specify a special object factory in *cucumber.properties*.
     
     cucumber.api.java.ObjectFactory=cucumber.runtime.java.CitrusObjectFactory
     
-The object factory takes care on creating all step definition instances. The object factory is able to inject *CitrusResource*
+The object factory takes care on creating all step definition instances. The object factory is able to inject *@CitrusResource*
 annotated fields in step classes.
     
 The usage of this special object factory is mandatory in order to combine Citrus and Cucumber capabilities. 

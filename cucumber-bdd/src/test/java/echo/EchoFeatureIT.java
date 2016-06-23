@@ -25,7 +25,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        glue = { "com.consol.citrus.cucumber", "echo" },
         plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
 public class EchoFeatureIT {
 }
