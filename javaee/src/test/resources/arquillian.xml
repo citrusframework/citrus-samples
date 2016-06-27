@@ -14,6 +14,6 @@
 
   <extension qualifier="citrus">
     <property name="autoPackage">false</property>
-    <property name="citrusVersion">2.6-SNAPSHOT</property>
+    <property name="citrusVersion">2.6</property>
   </extension>
 </arquillian>
