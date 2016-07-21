@@ -53,12 +53,6 @@
   </build>
   
   <dependencies>
-    <!-- Citrus -->
-    <dependency>
-        <groupId>com.consol.citrus.samples</groupId>
-        <artifactId>citrus-samples-common</artifactId>
-    </dependency>
-    
     <!-- Spring Framework -->
     <dependency>
         <groupId>org.springframework.ws</groupId>

@@ -34,11 +34,6 @@
         <artifactId>citrus-flightbooking-model</artifactId>
     </dependency>
     
-    <dependency>
-        <groupId>com.consol.citrus.samples</groupId>
-        <artifactId>citrus-samples-common</artifactId>
-    </dependency>
-    
     <!-- Spring framework -->
     <dependency>
         <groupId>org.springframework.ws</groupId>

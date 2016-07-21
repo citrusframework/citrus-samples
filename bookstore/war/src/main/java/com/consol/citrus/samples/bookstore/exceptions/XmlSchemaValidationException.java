@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2010 the original author or authors.
+ * Copyright 2006-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.common.exceptions;
+package com.consol.citrus.samples.bookstore.exceptions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

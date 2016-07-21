@@ -34,12 +34,6 @@
         <artifactId>citrus-bookstore-model</artifactId>
     </dependency>
     
-    <!-- Citrus -->
-    <dependency>
-        <groupId>com.consol.citrus.samples</groupId>
-        <artifactId>citrus-samples-common</artifactId>
-    </dependency>
-    
     <!-- Spring framework -->
     <dependency>
         <groupId>org.springframework.ws</groupId>

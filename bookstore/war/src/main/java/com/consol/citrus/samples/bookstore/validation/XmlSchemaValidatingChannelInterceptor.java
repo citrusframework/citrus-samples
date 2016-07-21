@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2010 the original author or authors.
+ * Copyright 2006-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.common.xml.validation;
+package com.consol.citrus.samples.bookstore.validation;
 
-import com.consol.citrus.samples.common.exceptions.XmlSchemaValidationException;
+import com.consol.citrus.samples.bookstore.exceptions.XmlSchemaValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -73,8 +73,6 @@ public class XmlSchemaValidatingChannelInterceptor extends ChannelInterceptorAda
         }
     }
 
-    /**
-     * @see org.springframework.integration.channel.interceptor.ChannelInterceptorAdapter#preSend(org.springframework.messaging.Message  *      org.springframework.messaging.MessageChannel  */
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         validateSchema(message, channel);

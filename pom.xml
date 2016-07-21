@@ -14,7 +14,6 @@
   <packaging>pom</packaging>
   
   <modules>
-    <module>common</module>
     <module>bakery</module>
     <module>javaee</module>
     <module>flightbooking</module>
@@ -154,12 +153,7 @@
           <artifactId>citrus-cucumber</artifactId>
           <version>${citrus.version}</version>
         </dependency>
-        <dependency>
-          <groupId>com.consol.citrus.samples</groupId>
-          <artifactId>citrus-samples-common</artifactId>
-          <version>${citrus.version}</version>
-        </dependency>
-        
+
         <!-- Spring framework -->
         <dependency>
             <groupId>org.springframework</groupId>
