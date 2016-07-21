@@ -261,6 +261,7 @@
       <version>${spring.integration.version}</version>
     </dependency>
 
+    <!-- ActiveMQ broker -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-broker</artifactId>
