@@ -6,14 +6,16 @@
 
   <bindings schemaLocation="FlightBookingSchema.xsd">
     <globalBindings>
-      <xjc:javaType
+      <javaType
               name="java.util.Calendar"
               xmlType="xs:dateTime"
-              adapter="org.w3._2001.xmlschema.Adapter1" />
-      <xjc:javaType
+              parseMethod="javax.xml.bind.DatatypeConverter.parseDateTime"
+              printMethod="javax.xml.bind.DatatypeConverter.printDateTime" />
+      <javaType
               name="java.util.Calendar"
               xmlType="xs:date"
-              adapter="org.w3._2001.xmlschema.Adapter2" />
+              parseMethod="javax.xml.bind.DatatypeConverter.parseDate"
+              printMethod="javax.xml.bind.DatatypeConverter.printDate" />
       <xjc:simple />
     </globalBindings>
     <schemaBindings><package name="com.consol.citrus.samples.flightbooking.model"/></schemaBindings>

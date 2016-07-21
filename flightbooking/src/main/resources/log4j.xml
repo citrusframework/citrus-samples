@@ -26,11 +26,6 @@
   <!-- Limit categories -->
   <!-- ================ -->
 
-  <!-- Our own classes-->
-  <logger name="com.consol.citrus">
-    <level value="DEBUG"/>
-  </logger>
-
   <logger name="org.springframework">
     <level value="INFO"/>
   </logger>
