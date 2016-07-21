@@ -44,7 +44,7 @@
                                         <fbs:scheduledDeparture>2009-04-15T16:00:00+02:00</fbs:scheduledDeparture>
                                         <fbs:scheduledArrival>2009-04-15T17:10:00+02:00</fbs:scheduledArrival>
                                     </fbs:flight>
-                                </fbs:flights>                                
+                                </fbs:flights>
                             </fbs:TravelBookingRequestMessage>
                         ]]>
                     </data>
@@ -115,7 +115,7 @@
                     <element name="bookingCorrelationId" value="${correlationId}"/>
                 </header>
             </send>
-            
+
             <receive endpoint="smartAirlineBookingRequestEndpoint">
                 <message>
                     <data>
@@ -150,7 +150,7 @@
                     <message path="//fbs:FlightBookingRequestMessage/fbs:bookingId" variable="${smartAirlineBookingId}"/>
                 </extract>
             </receive>
-            
+
             <send endpoint="smartAirlineBookingResponseEndpoint">
                 <message>
                     <data>
@@ -177,7 +177,7 @@
                     <element name="bookingCorrelationId" value="${correlationId}"/>
                 </header>
             </send>
-            
+
             <receive endpoint="travelAgencyBookingResponseEndpoint">
                 <message>
                     <data>
