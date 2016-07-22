@@ -2,15 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <artifactId>citrus-samples</artifactId>
-    <groupId>com.consol.citrus.samples</groupId>
-    <version>2.7-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-bakery</artifactId>
+  <version>2.7-SNAPSHOT</version>
   <name>citrus-bakery</name>
   <packaging>pom</packaging>
 
@@ -22,6 +16,21 @@
   </modules>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <spring.version>4.2.3.RELEASE</spring.version>
+    <apache.camel.version>2.16.0</apache.camel.version>
+    <activemq.version>5.12.1</activemq.version>
+    <slf4j.version>1.7.13</slf4j.version>
+    <testng.version>6.9.9</testng.version>
+    <citrus.version>2.7-SNAPSHOT</citrus.version>
+    <jetty.version>9.2.15.v20160210</jetty.version>
+    <server.port>18001</server.port>
+    <server.stop.port>18100</server.stop.port>
+    <skip.integration.tests>false</skip.integration.tests>
+    <skip.unit.tests>false</skip.unit.tests>
+    <jetty.embedded.disabled>true</jetty.embedded.disabled>
+    <activemq.embedded.disabled>true</activemq.embedded.disabled>
     <application.server>tomcat-7.0</application.server>
     <message.broker>activemq-5.12</message.broker>
     <docker.host.name>localhost</docker.host.name>
@@ -31,9 +40,141 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.3</version>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <source>1.7</source>
+            <target>1.7</target>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.4</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.10.3</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.6</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>2.6</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.7</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.10</version>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.19.1</version>
+          <configuration>
+            <systemProperties>
+              <property>
+                <name>javax.xml.parsers.SAXParserFactory</name>
+                <value>org.apache.xerces.jaxp.SAXParserFactoryImpl</value>
+              </property>
+              <property>
+                <name>user.language</name>
+                <value>en</value>
+              </property>
+            </systemProperties>
+            <forkMode>once</forkMode>
+            <failIfNoTests>false</failIfNoTests>
+            <skipTests>${skip.unit.tests}</skipTests>
+            <excludes>
+              <exclude>**/IT*.java</exclude>
+              <exclude>**/*IT.java</exclude>
+            </excludes>
+            <workingDirectory>${project.build.directory}</workingDirectory>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>2.19.1</version>
+          <executions>
+            <execution>
+              <id>integration-tests</id>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+              <configuration>
+                <failIfNoTests>false</failIfNoTests>
+                <skipTests>${skip.integration.tests}</skipTests>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.activemq.tooling</groupId>
+          <artifactId>activemq-maven-plugin</artifactId>
+          <version>${activemq.version}</version>
+          <configuration>
+            <fork>false</fork>
+            <systemProperties>
+              <property>
+                <name>log4j.configuration</name>
+                <value>log4j.properties</value>
+              </property>
+            </systemProperties>
+          </configuration>
+        </plugin>
+
+        <plugin>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
+          <version>${jetty.version}</version>
           <configuration>
+            <webAppConfig>
+              <!--
+                Limit the list of jars jetty scans in WEB-INF/lib when looking for annotations to process
+                - this will help speed up jetty startup times
+              -->
+              <webInfIncludeJarPattern>.*/spring-web[^/]*\.jar$|.*/spring-ws-[^/]*\.jar$</webInfIncludeJarPattern>
+            </webAppConfig>
+            <httpConnector>
+              <port>${server.port}</port>
+              <idleTimeout>60000</idleTimeout>
+            </httpConnector>
+            <stopKey>citrus</stopKey>
+            <stopPort>${server.stop.port}</stopPort>
+            <stopWait>10</stopWait>
+            <systemProperties>
+              <systemProperty>
+                <name>file.encoding</name>
+                <value>UTF-8</value>
+              </systemProperty>
+              <systemProperty>
+                <name>org.eclipse.jetty.annotations.maxWait</name>
+                <value>120</value>
+              </systemProperty>
+              <systemProperty>
+                <name>com.sun.management.jmxremote</name>
+                <value />
+              </systemProperty>
+            </systemProperties>
             <daemon>false</daemon>
             <reload>manual</reload>
           </configuration>
@@ -111,16 +252,227 @@
         <version>1.3.1</version>
       </dependency>
 
-      <!-- Spring Web -->
+      <dependency>
+        <groupId>javax.mail</groupId>
+        <artifactId>mail</artifactId>
+        <version>1.4.7</version>
+      </dependency>
+
+      <!-- Spring Framework -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aop</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jms</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
         <version>${spring.version}</version>
       </dependency>
+
+      <!-- Logging -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.2</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!-- Test scoped dependencies -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>${testng.version}</version>
+      </dependency>
+
+      <!-- Citrus -->
+      <dependency>
+        <groupId>com.consol.citrus</groupId>
+        <artifactId>citrus-core</artifactId>
+        <version>${citrus.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.consol.citrus</groupId>
+        <artifactId>citrus-java-dsl</artifactId>
+        <version>${citrus.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.consol.citrus</groupId>
+        <artifactId>citrus-jms</artifactId>
+        <version>${citrus.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.consol.citrus</groupId>
+        <artifactId>citrus-http</artifactId>
+        <version>${citrus.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.consol.citrus</groupId>
+        <artifactId>citrus-ws</artifactId>
+        <version>${citrus.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.consol.citrus</groupId>
+        <artifactId>citrus-mail</artifactId>
+        <version>${citrus.version}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Test scoped dependencies -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+    </dependency>
+  </dependencies>
+
   <profiles>
+    <profile>
+      <id>activemq-embedded</id>
+      <activation>
+        <property>
+          <name>embedded</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.activemq.tooling</groupId>
+            <artifactId>activemq-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>start-activemq</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <fork>true</fork>
+                  <skip>${activemq.embedded.disabled}</skip>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-activemq</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+                <configuration>
+                  <skip>${activemq.embedded.disabled}</skip>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jetty-embedded</id>
+      <activation>
+        <property>
+          <name>embedded</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>deploy-war</goal>
+                </goals>
+                <configuration>
+                  <daemon>true</daemon>
+                  <stopPort>${server.stop.port}</stopPort>
+                  <stopKey>stopMe</stopKey>
+                  <skip>${jetty.embedded.disabled}</skip>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+                <configuration>
+                  <stopPort>${server.stop.port}</stopPort>
+                  <stopKey>stopMe</stopKey>
+                  <stopWait>10</stopWait>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <profile>
       <id>docker</id>
       <properties>
