@@ -2,113 +2,100 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <artifactId>citrus-samples</artifactId>
-    <groupId>com.consol.citrus.samples</groupId>
-    <version>2.7-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-javaee</artifactId>
+  <version>2.7-SNAPSHOT</version>
   <name>citrus-javaee</name>
   <packaging>war</packaging>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <apache.cxf.version>3.1.4</apache.cxf.version>
+    <slf4j.version>1.7.13</slf4j.version>
+    <testng.version>6.9.9</testng.version>
+    <citrus.version>2.7-SNAPSHOT</citrus.version>
     <jee.api.version>7.0</jee.api.version>
     <arquillian.version>1.1.11.Final</arquillian.version>
     <wildfly.version>10.0.0.Final</wildfly.version>
+    <skip.integration.tests>false</skip.integration.tests>
+    <skip.unit.tests>false</skip.unit.tests>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-bom</artifactId>
-        <version>${arquillian.version}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-jms</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-ws</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-mail</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-java-dsl</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-http</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-arquillian</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>${jee.api.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-frontend-jaxws</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-transports-http</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.shrinkwrap.resolver</groupId>
-      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
-      <version>2.2.2</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-      <optional>true</optional>
-    </dependency>
-
-    <!-- Arquillian JUnit -->
-    <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
-      <version>${arquillian.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.4</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.3</version>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
+        <version>2.6</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <configuration>
+          <systemProperties>
+            <property>
+              <name>javax.xml.parsers.SAXParserFactory</name>
+              <value>org.apache.xerces.jaxp.SAXParserFactoryImpl</value>
+            </property>
+            <property>
+              <name>user.language</name>
+              <value>en</value>
+            </property>
+          </systemProperties>
+          <forkMode>once</forkMode>
+          <failIfNoTests>false</failIfNoTests>
+          <skipTests>${skip.unit.tests}</skipTests>
+          <excludes>
+            <exclude>**/IT*.java</exclude>
+            <exclude>**/*IT.java</exclude>
+          </excludes>
+          <workingDirectory>${project.build.directory}</workingDirectory>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.19.1</version>
+        <executions>
+          <execution>
+            <id>integration-tests</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <failIfNoTests>false</failIfNoTests>
+              <skipTests>${skip.integration.tests}</skipTests>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -135,6 +122,123 @@
       </plugin>
     </plugins>
   </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+        <version>${arquillian.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>${jee.api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <version>${apache.cxf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+      <version>${apache.cxf.version}</version>
+    </dependency>
+
+    <!-- Logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Test scoped dependencies -->
+    <dependency>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+      <version>2.2.2</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Arquillian JUnit -->
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <version>${arquillian.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Citrus -->
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-core</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-jms</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-ws</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-mail</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-java-dsl</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-http</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-arquillian</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <profiles>
     <profile>
