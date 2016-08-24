@@ -22,9 +22,6 @@
     <jetty.version>9.2.15.v20160210</jetty.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>
-    <citrus.test.package>com.consol.citrus.samples.incident</citrus.test.package>
-    <skip.integration.tests>false</skip.integration.tests>
-    <skip.unit.tests>false</skip.unit.tests>
   </properties>
 
   <build>
@@ -72,7 +69,6 @@
           </systemProperties>
           <forkMode>once</forkMode>
           <failIfNoTests>false</failIfNoTests>
-          <skipTests>${skip.unit.tests}</skipTests>
           <excludes>
             <exclude>**/IT*.java</exclude>
             <exclude>**/*IT.java</exclude>
@@ -94,7 +90,6 @@
             </goals>
             <configuration>
               <failIfNoTests>false</failIfNoTests>
-              <skipTests>${skip.integration.tests}</skipTests>
             </configuration>
           </execution>
         </executions>

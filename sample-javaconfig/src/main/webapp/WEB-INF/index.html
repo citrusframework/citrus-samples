@@ -1,0 +1,38 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link type="text/css" rel="stylesheet" media="screen" href="/resources/css/bootstrap.min.css"/>
+  <link type="text/css" rel="stylesheet" media="screen" href="/resources/css/bootstrap-theme.min.css"/>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+
+      <h1>TODO list</h1>
+
+      <ul class="list-group">
+        <!-- for each entry -->
+        <li class="list-group-item">{{ title }}</li>
+      </ul>
+
+      <h2>New TODO entry</h2>
+      <form method="POST">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" name="title" id="title" class="form-control" placeholder="Short title of the task">
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea name="description" id="description" class="form-control" placeholder="Full description of the task" rows="5"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Add</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

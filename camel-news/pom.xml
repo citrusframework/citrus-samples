@@ -17,9 +17,6 @@
     <slf4j.version>1.7.13</slf4j.version>
     <testng.version>6.9.9</testng.version>
     <citrus.version>2.7-SNAPSHOT</citrus.version>
-    <citrus.test.package>com.consol.citrus.samples.camel</citrus.test.package>
-    <skip.integration.tests>false</skip.integration.tests>
-    <skip.unit.tests>false</skip.unit.tests>
   </properties>
 
   <build>
@@ -67,7 +64,6 @@
           </systemProperties>
           <forkMode>once</forkMode>
           <failIfNoTests>false</failIfNoTests>
-          <skipTests>${skip.unit.tests}</skipTests>
           <excludes>
             <exclude>**/IT*.java</exclude>
             <exclude>**/*IT.java</exclude>
@@ -89,7 +85,6 @@
             </goals>
             <configuration>
               <failIfNoTests>false</failIfNoTests>
-              <skipTests>${skip.integration.tests}</skipTests>
             </configuration>
           </execution>
         </executions>

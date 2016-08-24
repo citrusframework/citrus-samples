@@ -19,6 +19,7 @@
     <module>cucumber-bdd</module>
     <module>cucumber-spring</module>
     <module>cucumber-spring2</module>
+    <module>sample-javaconfig</module>
   </modules>
   
   <repositories>

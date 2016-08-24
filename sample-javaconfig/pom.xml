@@ -3,15 +3,17 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-cucumber-spring</artifactId>
+  <artifactId>citrus-sample-javaconfig</artifactId>
+  <name>citrus-sample-javaconfig</name>
   <version>2.7-SNAPSHOT</version>
-  <name>citrus-cucumber-spring</name>
+  <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <jetty.version>9.2.15.v20160210</jetty.version>
     <slf4j.version>1.7.13</slf4j.version>
-    <cucumber.version>1.2.4</cucumber.version>
+    <testng.version>6.9.9</testng.version>
     <citrus.version>2.7-SNAPSHOT</citrus.version>
   </properties>
 
@@ -40,7 +42,7 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
+        <artifactId>maven-war-plugin</artifactId>
         <version>2.6</version>
       </plugin>
 
@@ -79,16 +81,56 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
-            <configuration>
-              <failIfNoTests>false</failIfNoTests>
-            </configuration>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
+        <configuration>
+          <webAppConfig>
+            <!--
+              Limit the list of jars jetty scans in WEB-INF/lib when looking for annotations to process
+              - this will help speed up jetty startup times
+            -->
+            <webInfIncludeJarPattern>.*/spring-web[^/]*\.jar$|.*/spring-ws-[^/]*\.jar$</webInfIncludeJarPattern>
+          </webAppConfig>
+          <httpConnector>
+            <port>8080</port>
+            <idleTimeout>60000</idleTimeout>
+          </httpConnector>
+          <stopKey>stopMe</stopKey>
+          <stopPort>8088</stopPort>
+          <stopWait>10</stopWait>
+          <systemProperties>
+            <systemProperty>
+              <name>file.encoding</name>
+              <value>UTF-8</value>
+            </systemProperty>
+            <systemProperty>
+              <name>org.eclipse.jetty.annotations.maxWait</name>
+              <value>120</value>
+            </systemProperty>
+            <systemProperty>
+              <name>com.sun.management.jmxremote</name>
+              <value />
+            </systemProperty>
+          </systemProperties>
+        </configuration>
       </plugin>
     </plugins>
   </build>
 
   <dependencies>
+    <!-- System Under Test dependencies -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>3.0-alpha-1</version>
+    </dependency>
+
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -99,6 +141,19 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Test scoped dependencies -->
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>${testng.version}</version>
     </dependency>
 
     <!-- Citrus -->
@@ -116,37 +171,52 @@
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-camel</artifactId>
+      <artifactId>citrus-http</artifactId>
       <version>${citrus.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-cucumber</artifactId>
-      <version>${citrus.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- Cucumber -->
-    <dependency>
-      <groupId>info.cukes</groupId>
-      <artifactId>cucumber-junit</artifactId>
-      <version>${cucumber.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>info.cukes</groupId>
-      <artifactId>cucumber-spring</artifactId>
-      <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>jetty-embedded</id>
+      <activation>
+        <property>
+          <name>embedded</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>deploy-war</goal>
+                </goals>
+                <configuration>
+                  <daemon>true</daemon>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+                <configuration>
+                  <stopPort>8088</stopPort>
+                  <stopKey>stopMe</stopKey>
+                  <stopWait>10</stopWait>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
