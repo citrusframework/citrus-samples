@@ -41,7 +41,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     public void testGet() {
         http()
             .client(todoClient)
-            .get("/");
+            .get("/todolist");
 
         http()
             .client(todoClient)

@@ -7,11 +7,22 @@
         <servlet-name>TodoServlet</servlet-name>
         <servlet-class>com.consol.citrus.samples.todolist.servlet.TodoServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>TodoServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/todolist/*</url-pattern>
     </servlet-mapping>
+
+    <!--Webjars Servlet-->
+    <servlet>
+        <servlet-name>WebjarsServlet</servlet-name>
+        <servlet-class>org.webjars.servlet.WebjarsServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WebjarsServlet</servlet-name>
+        <url-pattern>/webjars/*</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>

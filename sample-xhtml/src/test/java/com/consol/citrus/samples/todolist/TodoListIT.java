@@ -37,7 +37,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     public void testIndexPage() {
         http()
             .client(todoClient)
-            .get("/");
+            .get("/todolist");
 
         http()
             .client(todoClient)
@@ -60,7 +60,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         http()
             .client(todoClient)
-            .post("/")
+            .post("/todolist")
             .contentType("application/x-www-form-urlencoded")
             .payload("title=${todoName}&description=${todoDescription}");
 
@@ -70,7 +70,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         http()
             .client(todoClient)
-            .get();
+            .get("/todolist");
 
         http()
             .client(todoClient)
