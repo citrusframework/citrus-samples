@@ -12,7 +12,7 @@
     <module>bakery</module>
     <module>sample-javaee</module>
     <module>flightbooking</module>
-    <module>greeting</module>
+    <module>sample-greeting</module>
     <module>bookstore</module>
     <module>sample-incident</module>
     <module>sample-camel-context</module>
