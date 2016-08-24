@@ -14,7 +14,7 @@
     <module>flightbooking</module>
     <module>greeting</module>
     <module>bookstore</module>
-    <module>incident</module>
+    <module>sample-incident</module>
     <module>camel-news</module>
     <module>cucumber-bdd</module>
     <module>cucumber-spring</module>
