@@ -10,7 +10,7 @@
   
   <modules>
     <module>bakery</module>
-    <module>javaee</module>
+    <module>sample-javaee</module>
     <module>flightbooking</module>
     <module>greeting</module>
     <module>bookstore</module>
