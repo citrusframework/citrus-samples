@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-bookstore</artifactId>
-  <name>citrus-bookstore</name>
+  <artifactId>citrus-sample-bookstore</artifactId>
+  <name>citrus-sample-bookstore</name>
   <version>2.7-SNAPSHOT</version>
   <packaging>war</packaging>
 

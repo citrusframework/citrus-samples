@@ -4,8 +4,8 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-bakery</artifactId>
-  <version>2.7-SNAPSHOT</version>
   <name>citrus-sample-bakery</name>
+  <version>2.7-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
