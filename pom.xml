@@ -16,7 +16,7 @@
     <module>sample-bookstore</module>
     <module>sample-incident</module>
     <module>sample-camel-context</module>
-    <module>cucumber-bdd</module>
+    <module>sample-cucumber</module>
     <module>cucumber-spring</module>
     <module>cucumber-spring2</module>
     <module>sample-javaconfig</module>
