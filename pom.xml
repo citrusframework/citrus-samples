@@ -18,7 +18,7 @@
     <module>sample-camel-context</module>
     <module>sample-cucumber</module>
     <module>sample-cucumber-spring</module>
-    <module>cucumber-spring2</module>
+    <module>sample-cucumber-spring2</module>
     <module>sample-javaconfig</module>
   </modules>
   

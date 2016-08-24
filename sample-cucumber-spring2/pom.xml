@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-cucumber-spring2</artifactId>
+  <artifactId>citrus-sample-cucumber-spring2</artifactId>
   <version>2.7-SNAPSHOT</version>
-  <name>citrus-cucumber-spring2</name>
+  <name>citrus-sample-cucumber-spring2</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
