@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
   
   <modules>
-    <module>bakery</module>
+    <module>sample-bakery</module>
     <module>sample-javaee</module>
     <module>sample-flightbooking</module>
     <module>sample-greeting</module>
