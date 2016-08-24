@@ -15,7 +15,7 @@
     <module>greeting</module>
     <module>bookstore</module>
     <module>sample-incident</module>
-    <module>camel-news</module>
+    <module>sample-camel-context</module>
     <module>cucumber-bdd</module>
     <module>cucumber-spring</module>
     <module>cucumber-spring2</module>

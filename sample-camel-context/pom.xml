@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-camel-news</artifactId>
+  <artifactId>citrus-sample-camel-context</artifactId>
   <version>2.7-SNAPSHOT</version>
-  <name>citrus-camel-news</name>
+  <name>citrus-sample-camel-context</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
