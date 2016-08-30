@@ -18,11 +18,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>4.2.3.RELEASE</spring.version>
-    <apache.camel.version>2.16.0</apache.camel.version>
-    <activemq.version>5.12.1</activemq.version>
-    <slf4j.version>1.7.13</slf4j.version>
-    <testng.version>6.9.9</testng.version>
+    <spring.version>4.2.7.RELEASE</spring.version>
+    <apache.camel.version>2.16.3</apache.camel.version>
+    <activemq.version>5.12.3</activemq.version>
+    <slf4j.version>1.7.21</slf4j.version>
+    <testng.version>6.9.10</testng.version>
     <citrus.version>2.7-SNAPSHOT</citrus.version>
     <jetty.version>9.2.15.v20160210</jetty.version>
     <server.port>18001</server.port>
@@ -39,7 +39,7 @@
       <plugins>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.3</version>
+          <version>3.5.1</version>
           <configuration>
             <encoding>${project.build.sourceEncoding}</encoding>
             <source>1.7</source>
@@ -50,29 +50,29 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>2.4</version>
+          <version>3.0.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.10.3</version>
+          <version>2.10.4</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>2.6</version>
+          <version>3.0.2</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
-          <version>2.6</version>
+          <version>3.0.0</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>2.7</version>
+          <version>3.0.1</version>
         </plugin>
 
         <plugin>
@@ -179,19 +179,19 @@
         <plugin>
           <groupId>io.fabric8</groupId>
           <artifactId>docker-maven-plugin</artifactId>
-          <version>0.15.4</version>
+          <version>0.15.16</version>
         </plugin>
 
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
-          <version>1.2.1</version>
+          <version>1.5.0</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>2.4.1</version>
+          <version>2.4.3</version>
         </plugin>
       </plugins>
     </pluginManagement>
