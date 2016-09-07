@@ -17,28 +17,28 @@ some Citrus test cases.
 Each sample folder demonstrates a special aspect of how to use Citrus. Most of the samples use a simple todo-list application as
 system under test. Please find following list of samples and ther primary objective:
 
-| Sample          | Objective |
-|:---------------:|:---------:|
+| Sample                                | Objective |
+|---------------------------------------|:---------:|
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
 | [sample-xhtml](sample-xhtml)| Shows XHTML validation feature |
 | [sample-camel-context](sample-camel-context)| Interact with Apache Camel context and routes |
 | [sample-cucumber](sample-cucumber)| Shows BDD integration with Cucumber |
 | [sample-cucumber-spring](sample-cucumber-spring)| Shows BDD integration with Cucumber using Spring Framework injection |
-|                 |            |
+|                                       |           |
 
 Following sample projects cover message transports and technologies. Each of these samples provides a separate system under test applicaiton
 that demonstrates the messaging aspect.
 
-| Transport                                           | JMS | Http | SOAP | Channel | Camel | Arquillian | JDBC | SYNC | ASYNC |
-|-----------------------------------------------------|:---:|:----:|:----:|:-------:|:-----:|:----------:|:----:|:----:|:-----:|
-| Bakery [sample-bakery](bakery)                      |  X  |  X   |      |         |       |            |      |  X   |   X   |
-| FlightBooking [sample-flightbooking](flightbooking) |  X  |  X   |      |         |       |            |  X   |      |   X   |
-| Greeting [sample-greeting](greeting)                |  X  |      |      |    X    |       |            |      |  X   |   X   |
-| BookStore [sample-bookstore](bookstore)             |  X  |      |  X   |         |       |            |      |  X   |       |
-| Incident [sample-incident](incident)                |  X  |  X   |  X   |         |       |            |      |  X   |   X   |
-| Java EE [sample-javaee](javaee)                     |  X  |  X   |      |         |       |     X      |      |  X   |   X   |
-|                                                     |     |      |      |         |       |            |      |      |       |
+| Transport                                    | JMS | Http | SOAP | Channel | Camel | Arquillian | JDBC | SYNC | ASYNC |
+|----------------------------------------------|:---:|:----:|:----:|:-------:|:-----:|:----------:|:----:|:----:|:-----:|
+| [sample-bakery](sample-bakery)               |  X  |  X   |      |         |       |            |      |  X   |   X   |
+| [sample-flightbooking](sample-flightbooking) |  X  |  X   |      |         |       |            |  X   |      |   X   |
+| [sample-greeting](sample-greeting)           |  X  |      |      |    X    |       |            |      |  X   |   X   |
+| [sample-bookstore](sample-bookstore)         |  X  |      |  X   |         |       |            |      |  X   |       |
+| [sample-incident](sample-incident)           |  X  |  X   |  X   |         |       |            |      |  X   |   X   |
+| [sample-javaee](sample-javaee)               |  X  |  X   |      |         |       |     X      |      |  X   |   X   |
+|                                              |     |      |      |         |       |            |      |      |       |
 
 Pick your sample application for try out and got to the respective folder.
 
