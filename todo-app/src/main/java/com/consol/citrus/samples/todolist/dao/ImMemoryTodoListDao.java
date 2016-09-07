@@ -14,26 +14,28 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.service;
+package com.consol.citrus.samples.todolist.dao;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListService {
+public class ImMemoryTodoListDao implements TodoListDao {
 
     /** In memory storage */
     private List<TodoEntry> storage = new ArrayList<>();
 
-    public void addEntry(TodoEntry entry) {
+
+    @Override
+    public void save(TodoEntry entry) {
         storage.add(entry);
     }
 
-    public List<TodoEntry> getAllEntries() {
+    @Override
+    public List<TodoEntry> list() {
         return storage;
     }
 }

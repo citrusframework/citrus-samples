@@ -14,18 +14,35 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.dao;
+package com.consol.citrus.samples.todolist.service;
 
+import com.consol.citrus.samples.todolist.dao.*;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 
 import java.util.List;
 
 /**
- *
+ * @author Christoph Deppisch
  */
-public interface TodoListDao {
+public class TodoListService {
 
-    void save(TodoEntry entry);
+    /** In memory storage */
+    private TodoListDao todoListDao;
 
-    List<TodoEntry> list();
+    public TodoListService() {
+        if (System.getProperty("todo.app.storage", "in_memory").equals("jdbc")) {
+            todoListDao = new JdbcTodoListDao();
+        } else {
+            todoListDao = new ImMemoryTodoListDao();
+        }
+    }
+
+    public void addEntry(TodoEntry entry) {
+        todoListDao.save(entry);
+    }
+
+    public List<TodoEntry> getAllEntries() {
+        return todoListDao.list();
+    }
+
 }

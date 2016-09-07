@@ -24,7 +24,7 @@ import java.sql.*;
 import java.util.*;
 
 /**
- *
+ * @author Christoph Deppisch
  */
 public class JdbcTodoListDao implements TodoListDao {
 

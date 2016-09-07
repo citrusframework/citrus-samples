@@ -9,6 +9,7 @@
   <packaging>pom</packaging>
   
   <modules>
+    <module>todo-app</module>
     <module>sample-bakery</module>
     <module>sample-javaee</module>
     <module>sample-flightbooking</module>
