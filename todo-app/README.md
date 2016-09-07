@@ -1,14 +1,14 @@
 ToDo sample application ![Logo][1]
 ==============
 
-This is a very simple sample application that represents the system under test in the Citrus samples. This
-ToDo list application provides several inbound channels for adding, removing and changing todo entries.
+This is a very simple sample application that represents the system under test for the Citrus samples. This
+todo application provides an API for adding, removing and changing todo entries.
 
 Objectives
 ---------
 
-The ToDo sample application should be both simple but yet capable to act as service in a fully qualified integration test
-scenario.
+The todo-list sample application should be both simple but yet capable to act as service in a fully qualified integration test
+scenario. The application provides a REST API for accessing the todo entries via Http.
         
 Run
 ---------
@@ -24,20 +24,21 @@ The build application represents the system under test.
 System under test
 ---------
 
-The application is a web application that you can deploy on any web container.  
+The application is a Spring Boot web application that you can deploy on any web container. Of course Spring Boot provides many other fantastic
+ways of starting the application.
 
-You can start the sample todo list application in Jetty with this command.
+On of these possibilities is the Spring Boot Maven Plugin. You can start the sample todo list application with this command.
 
-    > mvn jetty:run
+    > mvn spring-boot:run
 
-This starts the Jetty web container and automatically deploys the todo list app. Point your browser to
+This starts the application in a Tomcat web container and automatically deploys the todo list app. Point your browser to
  
     http://localhost:8080/todolist/
 
-You will see the web UI of the todo list and add some new todo entries.
+You will see the web UI of the todo list. Now add some new todo entries manually and you are ready to go.
 
-Now we are ready to execute some Citrus tests. Go to one of the sample subfolders and read the instructions on how to interact with the
-system under test.
+Now we are ready to execute some Citrus tests. Choose on of the Citrus sample folders and read the instructions on how to interact with the
+todo application.
 
 Further information
 ---------

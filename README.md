@@ -6,18 +6,15 @@ Sample applications
 
 The Citrus samples applications try to demonstrate how Citrus works in
 different integration test scenarios. The projects are executable with Maven
-or ANT and should give you a detailed picture how Citrus testing works.
-
-In the reference documentation you can also find detailed descriptions of the sample
-applications.
+and should give you a detailed picture how Citrus testing works.
 
 Preconditions
 ---------
 
 See the preconditions for using the Citrus sample applications:
 
-* Java 1.6 or higher
-Installed JDK 1.6 or higher plus JAVA_HOME environment variable set
+* Java 1.7 or higher
+Installed JDK 1.7 or higher plus JAVA_HOME environment variable set
 up and pointing to your Java installation directory
 
 * Apache Maven 3.0.x or higher
@@ -25,17 +22,43 @@ The sample projects are executable via Apache Maven (http://maven.apache.org/). 
 ANT installed and running an your machine in order to use this way of executing the
 sample applications.
 
-* Apache ANT 1.8.x or higher
-The sample projects are executable via Apache ANT (http://ant.apache.org/). You need
-ANT installed and running an your machine in order to use this way of executing the
-sample applications.
+In each of the samples folders you will find the Maven (POM) pom.xml that defines all dependencies and build plugins.
 
-In each of the samples folders you will find the Maven pom.xml and ANT executable build script (build.xml) files.
-
-Development
+Run
 ---------
-If you want to compile and build the citrus-samples locally you need to also have the latest SNAPSHOT version of Citrus core [repo][4] built on that machine. This is because the samples
-reference the latest SNAPSHOT versions of Citrus. Just clone and build and install the Citrus core [repo][4] locally before doing so with the citrus-samples.
+
+You can run all the samples locally on your machine. We are using the Maven build tool for this.
+
+All samples use some project as system under test. These sample application has to be started before executing any Citrus tests.
+Many samples reuse the [todo-list](todo-app) application which is a simple web application that provides a basic REST API. 
+
+You can auto start and deploy the todo-list application within the Maven build by using the following command:
+
+    > mvn clean install -Dembedded=true
+    
+The embedded option automatically starts an embedded Jetty Web Server Container before the integration test phase in Maven. After that
+the Citrus tests will be able to perform its actions in integration-test phase in Maven. After the tests are finished the embedded Jetty 
+container is automatically stopped.
+
+You can also start the Jetty container manually by calling:
+
+    > mvn jetty:run
+
+Execute this command in the respective sample folders and you will get a running Jetty Web Server Container with the system under test deployed.
+
+Once the sample application is deployed and running you can execute the Citrus test cases in that sample folder.
+Open a separate command line terminal in that folder and execute the following command.
+
+    > mvn integration-test
+
+This executes all Citrus tests in that sample. You can also pick a single test by calling 
+
+    > mvn integration-test -Ptest=<testname>
+    
+You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
+and Citrus test client). And of course green tests at the very end of the build.
+
+Please read the instructions in each sample folder for different setup options and execution commands.
 
 Overview
 ---------
@@ -61,41 +84,6 @@ The projects cover following message transports and technologies:
 | Java EE            |  X  |  X   |      |         |       |     X      |      |  X   |   X   |
 
 Pick your sample application for try out and got to the respective folder.
-
-Running the samples
----------
-
-All samples hold a web application project (war folder) and a Citrus test project (citrus-test). First of all start
-the sample application within the war folder. You can do this either by calling "mvn jetty:run" command using an
-embedded Jetty Web Server Container or you call "mvn package" and deploy the resulting war archive to a separate
-Web container of your choice.
-
-Once the sample application is deployed and running you can execute the Citrus test cases in citrus-test folder.
-Open a separate command line terminal and navigate to the citrus-test folder.
-
-Execute all Citrus tests by calling "mvn integration-test". You can also pick a single test by calling "mvn integration-test -Ptest=TestName".
-You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
-and Citrus test client). And of course green tests at the very end of the build.
-
-You can also use Apache ANT to execute the tests. Run the following command to see which targets are offered:
-
-> ant -p
-
-Buildfile: build.xml
-
-Main targets:
-
-citrus.run.single.test  Runs a single test by name
-citrus.run.tests        Runs all Citrus tests
-create.test             Creates a new empty test case
-Default target: citrus.run.tests
-
-The different targets are not very difficult to understand. You can run all tests, a single test case by its name or create
-new test cases.
-
-Just try to call the different options like this:
-
-> ant citrus.run.tests
 
 Information
 ---------
