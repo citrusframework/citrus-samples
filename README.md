@@ -8,6 +8,40 @@ The Citrus samples applications try to demonstrate how Citrus works in
 different integration test scenarios. The projects are executable with Maven
 and should give you a detailed picture how Citrus testing works.
 
+Overview
+---------
+
+The Citrus samples section contains many small projects that each represents a separate system under test and
+some Citrus test cases.
+
+Each sample folder demonstrates a special aspect of how to use Citrus. Most of the samples use a simple todo-list application as
+system under test. Please find following list of samples and ther primary objective:
+
+| Sample          | Objective |
+|:---------------:|:---------:|
+| [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
+| [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
+| [sample-xhtml](sample-xhtml)| Shows XHTML validation feature |
+| [sample-camel-context](sample-camel-context)| Interact with Apache Camel context and routes |
+| [sample-cucumber](sample-cucumber)| Shows BDD integration with Cucumber |
+| [sample-cucumber-spring](sample-cucumber-spring)| Shows BDD integration with Cucumber using Spring Framework injection |
+|                 |            |
+
+Following sample projects cover message transports and technologies. Each of these samples provides a separate system under test applicaiton
+that demonstrates the messaging aspect.
+
+| Transport                                           | JMS | Http | SOAP | Channel | Camel | Arquillian | JDBC | SYNC | ASYNC |
+|-----------------------------------------------------|:---:|:----:|:----:|:-------:|:-----:|:----------:|:----:|:----:|:-----:|
+| Bakery [sample-bakery](bakery)                      |  X  |  X   |      |         |       |            |      |  X   |   X   |
+| FlightBooking [sample-flightbooking](flightbooking) |  X  |  X   |      |         |       |            |  X   |      |   X   |
+| Greeting [sample-greeting](greeting)                |  X  |      |      |    X    |       |            |      |  X   |   X   |
+| BookStore [sample-bookstore](bookstore)             |  X  |      |  X   |         |       |            |      |  X   |       |
+| Incident [sample-incident](incident)                |  X  |  X   |  X   |         |       |            |      |  X   |   X   |
+| Java EE [sample-javaee](javaee)                     |  X  |  X   |      |         |       |     X      |      |  X   |   X   |
+|                                                     |     |      |      |         |       |            |      |      |       |
+
+Pick your sample application for try out and got to the respective folder.
+
 Preconditions
 ---------
 
@@ -59,31 +93,6 @@ You should see Citrus performing several tests with lots of debugging output in 
 and Citrus test client). And of course green tests at the very end of the build.
 
 Please read the instructions in each sample folder for different setup options and execution commands.
-
-Overview
----------
-
-The Citrus samples section contains following projects:
-
-* FlightBooking (/flightbooking)
-* Greeting (/greeting)
-* BookStore (/bookstore)
-* Incident (/incident)
-* Camel News (/camel-news)
-* Java EE (/javaee)
-
-The projects cover following message transports and technologies:
-
-| Transport          | JMS | Http | SOAP | Channel | Camel | Arquillian | JDBC | SYNC | ASYNC |
-|--------------------|:---:|:----:|:----:|:-------:|:-----:|:----------:|:----:|:----:|:-----:|
-| FlightBooking      |  X  |  X   |      |         |       |            |  X   |      |   X   |
-| Greeting           |  X  |      |      |    X    |       |            |      |  X   |   X   |
-| BookStore          |  X  |      |  X   |         |       |            |      |  X   |       |
-| Incident           |  X  |  X   |  X   |         |       |            |      |  X   |   X   |
-| Camel News         |     |      |      |         |   X   |            |      |      |       |
-| Java EE            |  X  |  X   |      |         |       |     X      |      |  X   |   X   |
-
-Pick your sample application for try out and got to the respective folder.
 
 Information
 ---------
