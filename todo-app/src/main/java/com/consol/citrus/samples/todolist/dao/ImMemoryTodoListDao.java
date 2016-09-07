@@ -17,17 +17,20 @@
 package com.consol.citrus.samples.todolist.dao;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 /**
  * @author Christoph Deppisch
  */
+@Component
+@Profile("in_memory")
 public class ImMemoryTodoListDao implements TodoListDao {
 
     /** In memory storage */
     private List<TodoEntry> storage = new ArrayList<>();
-
 
     @Override
     public void save(TodoEntry entry) {

@@ -18,24 +18,19 @@ package com.consol.citrus.samples.todolist.service;
 
 import com.consol.citrus.samples.todolist.dao.*;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author Christoph Deppisch
  */
+@Service
 public class TodoListService {
 
-    /** In memory storage */
+    @Autowired
     private TodoListDao todoListDao;
-
-    public TodoListService() {
-        if (System.getProperty("todo.app.storage", "in_memory").equals("jdbc")) {
-            todoListDao = new JdbcTodoListDao();
-        } else {
-            todoListDao = new ImMemoryTodoListDao();
-        }
-    }
 
     public void addEntry(TodoEntry entry) {
         todoListDao.save(entry);

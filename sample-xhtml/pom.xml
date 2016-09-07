@@ -79,13 +79,6 @@
         <version>${jetty.version}</version>
         <configuration>
           <war>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</war>
-          <webAppConfig>
-            <!--
-              Limit the list of jars jetty scans in WEB-INF/lib when looking for annotations to process
-              - this will help speed up jetty startup times
-            -->
-            <webInfIncludeJarPattern>.*/spring-web[^/]*\.jar$|.*/spring-ws-[^/]*\.jar$</webInfIncludeJarPattern>
-          </webAppConfig>
           <httpConnector>
             <port>8080</port>
             <idleTimeout>60000</idleTimeout>
@@ -97,14 +90,6 @@
             <systemProperty>
               <name>file.encoding</name>
               <value>UTF-8</value>
-            </systemProperty>
-            <systemProperty>
-              <name>org.eclipse.jetty.annotations.maxWait</name>
-              <value>120</value>
-            </systemProperty>
-            <systemProperty>
-              <name>com.sun.management.jmxremote</name>
-              <value />
             </systemProperty>
           </systemProperties>
         </configuration>

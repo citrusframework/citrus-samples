@@ -18,6 +18,8 @@ package com.consol.citrus.samples.todolist.dao;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -26,6 +28,8 @@ import java.util.*;
 /**
  * @author Christoph Deppisch
  */
+@Component
+@Profile("jdbc")
 public class JdbcTodoListDao implements TodoListDao {
 
     private final DataSource dataSource;

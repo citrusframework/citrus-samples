@@ -15,15 +15,16 @@
       <h1>TODO list</h1>
 
       <ul class="list-group">
-        <!-- for each entry -->
-        <li class="list-group-item">{{ title }}</li>
+        {{#todos}}
+        <li class="list-group-item">{{title}}</li>
+        {{/todos}}
       </ul>
 
       <h2>New TODO entry</h2>
       <form method="POST">
         <div class="form-group">
           <label for="title">Title</label>
-          <input type="text" name="title" id="title" class="form-control" placeholder="Short title of the task">
+          <input type="text" name="title" id="title" class="form-control" placeholder="Short title of the task"/>
         </div>
         <div class="form-group">
           <label for="description">Description</label>
