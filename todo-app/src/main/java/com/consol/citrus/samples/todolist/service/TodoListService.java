@@ -40,4 +40,11 @@ public class TodoListService {
         return todoListDao.list();
     }
 
+    public void removeEntry(String title) {
+        todoListDao.deleteByTitle(title);
+    }
+
+    public void removeAll() {
+        todoListDao.deleteAll();
+    }
 }

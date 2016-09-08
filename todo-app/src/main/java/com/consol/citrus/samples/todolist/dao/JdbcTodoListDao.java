@@ -106,6 +106,46 @@ public class JdbcTodoListDao implements TodoListDao {
         }
     }
 
+    @Override
+    public void deleteByTitle(String title) {
+        try {
+            Connection connection = getConnection();
+            try {
+                connection.setAutoCommit(true);
+                PreparedStatement statement = connection.prepareStatement("DELETE FROM todo_entries WHERE title = ?");
+                try {
+                    statement.setString(1, title);
+                    statement.executeUpdate();
+                } finally {
+                    statement.close();
+                }
+            } finally {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Could not delete entries for title " + title, e);
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        try {
+            Connection connection = getConnection();
+            try {
+                Statement statement = connection.createStatement();
+                try {
+                    statement.executeQuery("DELETE FROM todo_entries");
+                } finally {
+                    statement.close();
+                }
+            } finally {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Could not delete entries", e);
+        }
+    }
+
     public Connection getConnection() throws SQLException {
         return getDataSource().getConnection();
     }

@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.dao;
+package todo;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
-
-import java.util.List;
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+import org.junit.runner.RunWith;
 
 /**
  * @author Christoph Deppisch
  */
-public interface TodoListDao {
-
-    void save(TodoEntry entry);
-
-    List<TodoEntry> list();
-
-    void deleteByTitle(String title);
-
-    void deleteAll();
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
+public class TodoFeatureIT {
 }

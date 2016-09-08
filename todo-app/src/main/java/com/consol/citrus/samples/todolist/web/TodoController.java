@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package echo;
+package com.consol.citrus.samples.todolist.web;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.junit.Cucumber;
-import org.junit.runner.RunWith;
+import com.consol.citrus.samples.todolist.service.TodoListService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Christoph Deppisch
  */
-@RunWith(Cucumber.class)
-@CucumberOptions(
-        plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
-public class EchoFeatureIT {
+@Controller
+@RequestMapping("/todo")
+public class TodoController {
+
+    @Autowired
+    private TodoListService todoListService;
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public String removeEntry(@RequestParam(value = "title") String title) {
+        todoListService.removeEntry(title);
+        return "redirect:todolist";
+    }
 }

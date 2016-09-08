@@ -31,20 +31,32 @@ import org.springframework.web.bind.annotation.*;
 public class TodoListController {
 
     @Autowired
-    private TodoListService chaosService;
+    private TodoListService todoListService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
-        model.addAttribute("todos", chaosService.getAllEntries());
+        model.addAttribute("todos", todoListService.getAllEntries());
 
         return "todo";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String add(@RequestParam(value = "title", defaultValue = "10") String title,
-                            @RequestParam(value = "description", defaultValue = "N/A") String description) {
-        chaosService.addEntry(new TodoEntry(title, description));
+    public String add(@RequestParam(value = "title") String title,
+                      @RequestParam(value = "description", defaultValue = "N/A") String description) {
+        todoListService.addEntry(new TodoEntry(title, description));
         return "redirect:todolist";
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public String clear() {
+        todoListService.removeAll();
+        return "redirect:todolist";
+    }
+
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    @ResponseBody
+    public Integer getTodoCount() {
+        return todoListService.getAllEntries().size();
     }
 
 }

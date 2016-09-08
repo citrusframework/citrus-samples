@@ -41,4 +41,21 @@ public class ImMemoryTodoListDao implements TodoListDao {
     public List<TodoEntry> list() {
         return storage;
     }
+
+    @Override
+    public void deleteByTitle(String title) {
+        List<TodoEntry> filtered = new ArrayList<>();
+        for (TodoEntry entry: storage) {
+            if (!entry.getTitle().equals(title)) {
+                filtered.add(entry);
+            }
+        }
+
+        storage = filtered;
+    }
+
+    @Override
+    public void deleteAll() {
+        storage.clear();
+    }
 }
