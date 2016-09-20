@@ -23,7 +23,8 @@ all events and gives a total order processing overview to clients.
 Using Docker
 ---------
 
-This sample is using Docker as infrastructure for starting up the services in separate containers. 
+This sample is using Docker as infrastructure for starting up the services in separate containers. If you are not able to use Docker please
+continue with the embedded Jetty infrastructure described later in this README. Now back to the Docker infrastructure.
 
 ![Infrastructure](src/images/infrastructure.png)
 
@@ -94,11 +95,33 @@ Now lets run the complete lifecycle with all modules build, shipped to Docker an
 mvn clean install -Pdocker
 ```
 
+Using embedded Jetty
+---------
+
+The sample provides an embedded Jetty option for those of you that are not having Docker installed on the localhost. You can activate
+the embedded Jetty infrastructure by calling:
+
+```
+mvn clean install -Dembedded=true
+```
+
+This will automatically start embedded Jetty web containers in preparation of the Maven integration-test phase. The sample application is
+automatically deployed before the Citrus tests start to perform its actions.
+
+You can also start the embedded infrastructure manually. Execute these commands in separate command line terminals:
+
+```
+mvn -pl integration activemq:run -Dembedded=true
+mvn -pl integration jetty:run -Dembedded=true
+```
+
+Now the bakery sample application is started and you can execute the Citrus tests manually.
+
 Citrus test
 ---------
 
-Once the sample application is deployed and running you can execute the Citrus test cases in module folder.
-Open a separate command line terminal and navigate to the citrus-test folder.
+Once the sample application is deployed and running you can execute the Citrus test cases in the module folders.
+Open a separate command line terminal and navigate to the test folder.
 
 Execute all Citrus tests by calling
 
@@ -110,6 +133,8 @@ You can also pick a single test by calling
 
 You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
 and Citrus test client). And of course green tests at the very end of the build.
+
+Of course you can also execute the tests from your favorite IDE as Java unit tests with TestNG.
 
 Information
 ---------
