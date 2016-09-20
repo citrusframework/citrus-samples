@@ -1,57 +1,86 @@
 Citrus samples ![Logo][1]
 ==============
 
-Camel Bakery Demo
+Bakery Demo
 ---------
 
-The Camel bakery demo sample application offers a multi module Maven project with each module being deployed in a separate
+The bakery demo sample application offers a multi module Maven project with each module being deployed in a separate
 Docker container. The modules are:
 
 * web
 * worker
 * report
-* integration
+
+Each of these modules provides Citrus test cases in ***src/test*** Maven test folder. The ***integration*** module contains Citrus
+test cases for a complete end-to-end testing of all modules combined.
+
+The bakery sample application uses several services that are exchanging data over various transports. Incoming order requests are routed content based
+to one of the worker instances. After the worker has processed the order it will add an entry to the central reporting server. The reporting collects
+all events and gives a total order processing overview to clients.
+
+![Architecture](src/images/architecture.png)
 
 Using Docker
 ---------
 
-This sample is using Docker as infrastructure for starting up the services in separate containers. As a prerequisite you must
-have Docker locally installed. Non linux users might add dockerhost to their /etc/hosts configuration in order to simply access the
-services running in Docker containers without any port forwarding:
+This sample is using Docker as infrastructure for starting up the services in separate containers. 
 
-```
-echo $(docker-machine ip your-docker-machine-name) dockerhost | sudo tee -a /etc/hosts
-```
+![Infrastructure](src/images/infrastructure.png)
 
-Now you can build the Docker containers by calling
+As a prerequisite to using this infrastructure you must have Docker locally installed. You can build the Docker containers 
+with the famous fabric8-maven-plugin by calling
 
 ```
 mvn clean package docker:build
 ```
 
-Now you will be able to see some more docker images
+You can build the Docker containers in each sub module and in the ***integration*** module. After building the images
+you will be able to see some more docker images on your host.
 
 ```
 docker images
+
+REPOSITORY                TAG                 IMAGE ID            CREATED         SIZE
+citrus/bakery-report      latest              a9007e0a074a        Some time ago   12.84 MB
+citrus/bakery-worker      latest              c57ddba327bb        Some time ago   34.7 MB
+citrus/bakery-web         latest              6c5b63a8ac11        Some time ago   17.81 MB
 ```
 
-Lets start the complete Docker container infrastructure
+Lets start the complete Docker container infrastructure.
 
 ```
 mvn -pl integration docker:start
 ```
 
-You will then see some Docker containers startet on your host
+After that you will then see some Docker containers started on your host
 
 ```
 docker ps
+
+CONTAINER ID        IMAGE                         COMMAND                  CREATED         STATUS          PORTS                      NAMES
+2e45c4ddff48        jolokia/java-jolokia:7        "java -jar maven/work"   Some time ago   Up 2 minutes                               worker-caramel
+bf50270203be        jolokia/java-jolokia:7        "java -jar maven/work"   Some time ago   Up 2 minutes                               worker-blueberry
+73f24a48f56a        jolokia/java-jolokia:7        "java -jar maven/work"   Some time ago   Up 2 minutes                               worker-chocolate
+18fe23c3506d        consol/tomcat-7.0:latest      "/bin/sh -c /opt/tomc"   Some time ago   Up 2 minutes    0.0.0.0:18002->8080/tcp    report-server
+a8d782ae98be        consol/tomcat-7.0:latest      "/bin/sh -c /opt/tomc"   Some time ago   Up 2 minutes    0.0.0.0:18001->8080/tcp    bakery-web-server
+7f0b6276df3d        consol/activemq-5.12:latest   "/bin/sh -c '/opt/apa"   Some time ago   Up 2 minutes    0.0.0.0:61616->61616/tcp   activemq-broker
 ```
 
-Now execute some Citrus integration tests
+The complete Docker sample infrastructure has been started. This includes the sample services as well as an ActiveMQ 
+message broker. Now we are ready to execute some Citrus integration tests.
 
 ```
 mvn -pl integration integration-test
 ```
+
+You will see some action on the containers log output. You can also access the web UI by opening your browser pointing to
+
+```
+http://localhost:18001/bakery/
+http://localhost:18002/report/
+```
+
+Once you place orders to the bakery web application you will see the reporting changes.
 
 To stop the Docker containers run
 
