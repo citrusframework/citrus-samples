@@ -16,22 +16,31 @@
 
 package com.consol.citrus.samples.todolist;
 
+import com.consol.citrus.samples.todolist.dao.*;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 
 /**
  * @author Christoph Deppisch
  */
 @SpringBootApplication
-@EnableAutoConfiguration
 public class TodoApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(TodoApplication.class);
+    }
+
+    @Bean
+    public TodoListDao todoListDao() {
+        if (System.getProperty("todo.persistence.type", "in_memory").equals("jdbc")) {
+            return new JdbcTodoListDao();
+        } else {
+            return new InMemoryTodoListDao();
+        }
     }
 
     public static void main(String[] args) {

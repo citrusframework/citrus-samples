@@ -21,6 +21,7 @@ system under test. Please find following list of samples and ther primary object
 |---------------------------------------|:---------:|
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
+| [sample-jms](sample-jms)| Shows JMS queue connectivity |
 | [sample-xhtml](sample-xhtml)| Shows XHTML validation feature |
 | [sample-camel-context](sample-camel-context)| Interact with Apache Camel context and routes |
 | [sample-cucumber](sample-cucumber)| Shows BDD integration with Cucumber |
