@@ -77,6 +77,44 @@
           <workingDirectory>${project.build.directory}</workingDirectory>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jaxb2-maven-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>xjc</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <extension>true</extension>
+          <sourceType>xmlschema</sourceType>
+          <sources>
+            <source>src/main/resources/schema/TodoList.xsd</source>
+          </sources>
+          <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+          <clearOutputDir>false</clearOutputDir>
+          <xjbSources>
+            <xjbSource>src/main/resources/schema/binding.xjb</xjbSource>
+          </xjbSources>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.11.0</version>
+          </dependency>
+          <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
 
@@ -128,6 +166,16 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-ws</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>wsdl4j</groupId>
+      <artifactId>wsdl4j</artifactId>
+      <version>1.6.3</version>
     </dependency>
 
     <dependency>

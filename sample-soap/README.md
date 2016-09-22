@@ -1,35 +1,53 @@
-XHTML sample ![Logo][1]
+SOAP WebService sample ![Logo][1]
 ==============
 
-This sample uses XHTML validation features to verify HTML response from a web container. This feature is
-also described in detail in [reference guide][4]
+This sample uses SOAP web services to add new todo entries on the todo app system under test. You can read more about the 
+Citrus SOAP features in [reference guide][4]
 
 Objectives
 ---------
 
-The [todo-list](../todo-app/README.md) sample application provides an index HTML page that displays all todo entries.
-We can validate the HTML content in Citrus with XPath expressions. Citrus automatically converts the HTML to
-XHTML so XPath expressions can be evaluated accordingly.
+The [todo-list](../todo-app/README.md) sample application manages todo entries. The application provides a SOAP web service
+endpoint for adding new entries and listing all entries.
 
-The sample tests show how to use this feature. First we define a global namespace for XHTML in
-configuration.
+The sample tests show how to use this SOAP endpoint as a client. First we define the schema and a global namespace for the SOAP
+messages.
 
-    <citrus:namespace-context>
-      <citrus:namespace prefix="xh" uri="http://www.w3.org/1999/xhtml"/>
-    </citrus:namespace-context>
-    
-Now we can use the XHTML validation feature in the Citrus test.
-    
-    http()
-        .client(todoClient)
-        .response(HttpStatus.OK)
-        .messageType(MessageType.XHTML)
-        .xpath("(//xh:li[@class='list-group-item'])[last()]", "${todoName}");
+    <citrus:schema-repository id="schemaRepository">
+      <citrus:schemas>
+        <citrus:schema id="todoList" location="classpath:schema/TodoList.xsd"/>
+      </citrus:schemas>
+    </citrus:schema-repository>
         
-In a Http client response we can set the message type to XHTML. Citrus automatically converts the HTML response to
-XHTML so we can use XPath to validation the HTML content.
+    <citrus:namespace-context>
+      <citrus:namespace prefix="todo" uri="http://citrusframework.org/samples/todolist-web-service"/>
+    </citrus:namespace-context>
+   
+The schema repository hold all known schemas in this project. Citrus will automatically check the syntax rules for incoming messages
+then. Next we need a SOAP web service client component:
 
-The XPath expression makes sure the the last todo entry displayed is the todo item that we have added before in the test.
+    <citrus-ws:client id="todoListClient"
+                      request-url="http://localhost:8080/services/ws/todolist"/>
+                          
+    <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+    
+The client connects to the web service endpoint on the system under test. In addition to that we define a SOAP message factory that is
+responsible for creating the SOAP envelope. 
+
+Now we can use the web service client in the Citrus test.
+    
+    soap()
+        .client(todoClient)
+        .send()
+        .soapAction("addTodoEntry")
+        .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"));
+        
+    soap()
+        .client(todoClient)
+        .receive()
+        .payload(new ClassPathResource("templates/addTodoEntryResponse.xml"));
+        
+The Citrus test sends a request and validates the SOAP response message. The message payload is loaded from external file resources.        
         
 Run
 ---------
@@ -98,4 +116,4 @@ a complete [reference manual][3].
  [1]: http://www.citrusframework.org/img/brand-logo.png "Citrus"
  [2]: http://www.citrusframework.org
  [3]: http://www.citrusframework.org/reference/html/
- [4]: http://www.citrusframework.org/reference/html/index.html#validation-xhtml
+ [4]: http://www.citrusframework.org/reference/html/index.html#soap

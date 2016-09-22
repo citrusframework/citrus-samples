@@ -23,6 +23,7 @@
     <module>sample-javaconfig</module>
     <module>sample-xhtml</module>
     <module>sample-jms</module>
+    <module>sample-soap</module>
     <module>sample-jdbc</module>
   </modules>
   

@@ -1,0 +1,48 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://citrusframework.org/samples/todolist-web-service"
+           targetNamespace="http://citrusframework.org/samples/todolist-web-service" elementFormDefault="qualified">
+
+  <xs:element name="addTodoEntryRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="title" type="xs:string"/>
+        <xs:element name="description" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="addTodoEntryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="success" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTodoListRequest">
+    <xs:complexType>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTodoListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="list">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="todoEntry" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="id" type="xs:string"/>
+                    <xs:element name="title" type="xs:string"/>
+                    <xs:element name="description" type="xs:string" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
