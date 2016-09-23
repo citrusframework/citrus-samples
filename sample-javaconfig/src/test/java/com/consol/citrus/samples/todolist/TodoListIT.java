@@ -41,10 +41,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     public void testGet() {
         http()
             .client(todoClient)
+            .send()
             .get("/todolist");
 
         http()
             .client(todoClient)
+            .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
             .namespace("xh", "http://www.w3.org/1999/xhtml")

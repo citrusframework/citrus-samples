@@ -50,9 +50,11 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
         echo("First check order id not present");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/orders");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
                 .validationCallback(new AbstractValidationCallback<String>() {
@@ -65,20 +67,24 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
         echo("Add some 'blueberry' order with id");
 
         http().client(reportingClient)
+                .send()
                 .put("/reporting")
                 .queryParam("id", "${orderId}")
                 .queryParam("name", "blueberry")
                 .queryParam("amount", "1");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK);
 
         echo("Receive order id in list of produced goods");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/orders");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
                 .validationCallback(new AbstractValidationCallback<String>() {
@@ -94,9 +100,11 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
         echo("First receive report and save current amount of produced chocolate cookies to variable");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/json");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
                 .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@variable('producedCookies')@\"}");
@@ -104,20 +112,24 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
         echo("Add some 'chocolate' orders");
 
         http().client(reportingClient)
+                .send()
                 .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "chocolate")
                 .queryParam("amount", "10");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK);
 
         echo("Receive report with changed data");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/json");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
                 .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(${producedCookies})@\"}");
@@ -130,10 +142,12 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
         echo("First receive negative order status");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/order")
                 .queryParam("id", "${orderId}");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
                 .payload("{\"status\": false}");
@@ -141,21 +155,25 @@ public class ReportOrdersIT extends TestNGCitrusTestDesigner {
         echo("Add some 'caramel' order with id");
 
         http().client(reportingClient)
+                .send()
                 .put("/reporting")
                 .queryParam("id", "${orderId}")
                 .queryParam("name", "caramel")
                 .queryParam("amount", "1");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK);
 
         echo("Receive report positive status for order id");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/order")
                 .queryParam("id", "${orderId}");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
                 .payload("{\"status\": true}");

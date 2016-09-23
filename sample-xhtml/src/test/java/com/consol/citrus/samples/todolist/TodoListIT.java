@@ -37,10 +37,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     public void testIndexPage() {
         http()
             .client(todoClient)
+            .send()
             .get("/todolist");
 
         http()
             .client(todoClient)
+            .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
             .xpath("//xh:h1", "TODO list")
@@ -60,20 +62,24 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         http()
             .client(todoClient)
+            .send()
             .post("/todolist")
             .contentType("application/x-www-form-urlencoded")
             .payload("title=${todoName}&description=${todoDescription}");
 
         http()
             .client(todoClient)
+            .receive()
             .response(HttpStatus.FOUND);
 
         http()
             .client(todoClient)
+            .send()
             .get("/todolist");
 
         http()
             .client(todoClient)
+            .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
             .xpath("(//xh:li[@class='list-group-item'])[last()]", "${todoName}");

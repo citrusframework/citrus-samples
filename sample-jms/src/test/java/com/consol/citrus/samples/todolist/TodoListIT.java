@@ -48,10 +48,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         http()
             .client(todoClient)
+            .send()
             .get("/todolist");
 
         http()
             .client(todoClient)
+            .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
             .xpath("(//xh:li[@class='list-group-item'])[last()]", "${todoName}");

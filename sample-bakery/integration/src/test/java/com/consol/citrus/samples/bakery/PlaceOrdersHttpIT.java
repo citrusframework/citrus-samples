@@ -48,6 +48,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         variable("orderId", Functions.randomNumber(10L, null));
 
         http().client(bakeryClient)
+                .send()
                 .post("/order")
                 .contentType("application/json")
                 .payload("{ \"order\": { \"type\": \"chocolate\", \"id\": ${orderId}, \"amount\": 1}}");
@@ -61,15 +62,18 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
             })
             .autoSleep(100L)
             .actions(http().client(reportingClient)
+                            .send()
                             .get("/reporting/order")
                             .queryParam("id", "${orderId}"),
                     http().client(reportingClient)
+                            .receive()
                             .response(HttpStatus.OK)
                             .messageType(MessageType.JSON)
                             .payload("{\"status\": true}")
             );
 
         http().client(bakeryClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT);
     }
@@ -79,6 +83,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         variable("orderId", Functions.randomNumber(10L, null));
 
         http().client(bakeryClient)
+                .send()
                 .post("/order")
                 .contentType("application/json")
                 .payload("{ \"order\": { \"type\": \"caramel\", \"id\": ${orderId}, \"amount\": 1}}");
@@ -92,15 +97,18 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
             })
             .autoSleep(100L)
             .actions(http().client(reportingClient)
+                            .send()
                             .get("/reporting/order")
                             .queryParam("id", "${orderId}"),
                     http().client(reportingClient)
+                            .receive()
                             .response(HttpStatus.OK)
                             .messageType(MessageType.JSON)
                             .payload("{\"status\": true}")
             );
 
         http().client(bakeryClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT);
     }
@@ -110,6 +118,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         variable("orderId", Functions.randomNumber(10L, null));
 
         http().client(bakeryClient)
+                .send()
                 .post("/order")
                 .contentType("application/json")
                 .payload("{ \"order\": { \"type\": \"blueberry\", \"id\": ${orderId}, \"amount\": 1}}");
@@ -123,15 +132,18 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
             })
             .autoSleep(100L)
             .actions(http().client(reportingClient)
+                            .send()
                             .get("/reporting/order")
                             .queryParam("id", "${orderId}"),
                     http().client(reportingClient)
+                            .receive()
                             .response(HttpStatus.OK)
                             .messageType(MessageType.JSON)
                             .payload("{\"status\": true}")
             );
 
         http().client(bakeryClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT);
     }

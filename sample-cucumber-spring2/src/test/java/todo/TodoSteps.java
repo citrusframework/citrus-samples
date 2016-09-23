@@ -40,10 +40,12 @@ public class TodoSteps {
     public void empty_todos() {
         designer.http()
                 .client(todoListClient)
+                .send()
                 .delete("/todolist");
 
         designer.http()
                 .client(todoListClient)
+                .receive()
                 .response(HttpStatus.FOUND);
     }
 
@@ -51,12 +53,14 @@ public class TodoSteps {
     public void add_entry(String todoName) {
         designer.http()
                 .client(todoListClient)
+                .send()
                 .post("/todolist")
                 .contentType("application/x-www-form-urlencoded")
                 .payload("title=" + todoName);
 
         designer.http()
                 .client(todoListClient)
+                .receive()
                 .response(HttpStatus.FOUND);
     }
 
@@ -64,10 +68,12 @@ public class TodoSteps {
     public void remove_entry(String todoName) {
         designer.http()
                 .client(todoListClient)
+                .send()
                 .delete("/todo?title=" + todoName);
 
         designer.http()
                 .client(todoListClient)
+                .receive()
                 .response(HttpStatus.FOUND)
                 .messageType(MessageType.PLAINTEXT);
     }
@@ -76,10 +82,12 @@ public class TodoSteps {
     public void verify_todos(int todoCnt) {
         designer.http()
                 .client(todoListClient)
+                .send()
                 .get("/todolist/count");
 
         designer.http()
                 .client(todoListClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
                 .payload(String.valueOf(todoCnt));

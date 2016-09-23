@@ -52,11 +52,13 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
     @CitrusTest
     public void routeMessagesContentBased() {
         http().client(bakeryClient)
+                .send()
                 .post("/order")
                 .contentType("application/json")
                 .payload("{ \"order\": { \"type\": \"chocolate\", \"id\": citrus:randomNumber(10), \"amount\": 1}}");
 
         http().client(bakeryClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT);
 
@@ -64,11 +66,13 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
                 .payload("<order><type>chocolate</type><id>@ignore@</id><amount>1</amount></order>");
 
         http().client(bakeryClient)
+                .send()
                 .post("/order")
                 .contentType("application/json")
                 .payload("{ \"order\": { \"type\": \"caramel\", \"id\": citrus:randomNumber(10), \"amount\": 1}}");
 
         http().client(bakeryClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT);
 
@@ -76,11 +80,13 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
                 .payload("<order><type>caramel</type><id>@ignore@</id><amount>1</amount></order>");
 
         http().client(bakeryClient)
+                .send()
                 .post("/order")
                 .contentType("application/json")
                 .payload("{ \"order\": { \"type\": \"blueberry\", \"id\": citrus:randomNumber(10), \"amount\": 1}}");
 
         http().client(bakeryClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT);
 
@@ -91,10 +97,12 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
     @CitrusTest
     public void routeUnknownOrderType() {
         http().client(bakeryClient)
+                .send()
                 .post("/order")
                 .payload("{ \"order\": { \"type\": \"brownie\", \"id\": citrus:randomNumber(10), \"amount\": 1}}");
 
         http().client(bakeryClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT);
 

@@ -41,9 +41,11 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
         echo("Receive Json report");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/json");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
                 .payload("{\"caramel\": \"@isNumber()@\",\"blueberry\": \"@isNumber()@\",\"chocolate\": \"@isNumber()@\"}");
@@ -54,9 +56,11 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
         echo("Receive Html report");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType("xhtml")
                 .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"org/w3/xhtml/xhtml1-strict.dtd\">\n" +
@@ -83,38 +87,46 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
         echo("Add some 'chocolate', 'caramel' and 'blueberry' orders");
 
         http().client(reportingClient)
+                .send()
                 .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "chocolate")
                 .queryParam("amount", "10");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK);
 
         http().client(reportingClient)
+                .send()
                 .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "caramel")
                 .queryParam("amount", "100");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK);
 
         http().client(reportingClient)
+                .send()
                 .put("/reporting")
                 .queryParam("id", "citrus:randomNumber(10)")
                 .queryParam("name", "blueberry")
                 .queryParam("amount", "5");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK);
 
         echo("Receive report with changed data");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/json");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
                 .payload("{\"caramel\": \"@greaterThan(0)@\",\"blueberry\": \"@greaterThan(0)@\",\"chocolate\": \"@greaterThan(0)@\"}");
@@ -122,17 +134,21 @@ public class ReportSummaryIT extends TestNGCitrusTestDesigner {
         echo("Reset report data");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/reset");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK);
 
         echo("Receive empty report data");
 
         http().client(reportingClient)
+                .send()
                 .get("/reporting/json");
 
         http().client(reportingClient)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
                 .payload("{\"caramel\": 0,\"blueberry\": 0,\"chocolate\": 0}");

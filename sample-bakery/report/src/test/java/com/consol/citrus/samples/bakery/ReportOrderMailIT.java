@@ -50,12 +50,14 @@ public class ReportOrderMailIT extends TestNGCitrusTestDesigner {
          variable("orderType", "chocolate");
 
          http().client(reportingClient)
+                 .send()
                  .put("/reporting")
                  .queryParam("id", "citrus:randomNumber(10)")
                  .queryParam("name", "${orderType}")
                  .queryParam("amount", "1001");
 
          http().client(reportingClient)
+                 .receive()
                  .response(HttpStatus.OK);
 
          echo("Receive report mail for 1000+ order");
@@ -66,12 +68,17 @@ public class ReportOrderMailIT extends TestNGCitrusTestDesigner {
                  .header(CitrusMailMessageHeaders.MAIL_FROM, "cookie-report@example.com")
                  .header(CitrusMailMessageHeaders.MAIL_TO, "stakeholders@example.com");
 
+         send(mailServer)
+                 .payload(new ClassPathResource("templates/mail_response.xml"));
+
          echo("Receive report with 1000+ order");
 
          http().client(reportingClient)
+                 .send()
                  .get("/reporting/json");
 
          http().client(reportingClient)
+                 .receive()
                  .response(HttpStatus.OK)
                  .messageType(MessageType.JSON)
                  .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(1000)@\"}");
