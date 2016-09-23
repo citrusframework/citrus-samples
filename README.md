@@ -15,13 +15,14 @@ The Citrus samples section contains many small projects that each represents a s
 some Citrus test cases.
 
 Each sample folder demonstrates a special aspect of how to use Citrus. Most of the samples use a simple todo-list application as
-system under test. Please find following list of samples and ther primary objective:
+system under test. Please find following list of samples and their primary objective:
 
 | Sample                                | Objective |
 |---------------------------------------|:---------:|
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
 | [sample-jms](sample-jms)| Shows JMS queue connectivity |
+| [sample-soap](https://github.com/christophd/citrus-samples/sample-soap)| Shows SOAP web service support |
 | [sample-xhtml](sample-xhtml)| Shows XHTML validation feature |
 | [sample-camel-context](sample-camel-context)| Interact with Apache Camel context and routes |
 | [sample-cucumber](sample-cucumber)| Shows BDD integration with Cucumber |
