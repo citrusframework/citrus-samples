@@ -20,7 +20,8 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.message.*;
+import com.consol.citrus.message.Message;
+import com.consol.citrus.message.MessageType;
 import com.consol.citrus.validation.AbstractMessageValidator;
 import com.consol.citrus.validation.context.DefaultValidationContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,23 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
     @Test
     @CitrusTest
+    public void testAddTodoEntryBinaryBase64() {
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        send(todoJmsEndpoint)
+                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+                .messageType(MessageType.BINARY)
+                .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+
+        receive(todoJmsEndpoint)
+                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+                .messageType(MessageType.BINARY_BASE64)
+                .payload("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }')");
+    }
+
+    @Test
+    @CitrusTest
     public void testAddTodoEntryBinary() {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
@@ -44,13 +62,13 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         send(todoJmsEndpoint)
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
             .messageType(MessageType.BINARY)
-            .message(new DefaultMessage("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }".getBytes()));
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
 
         receive(todoJmsEndpoint)
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
             .messageType(MessageType.BINARY)
             .validator(new BinaryMessageValidator())
-            .message(new DefaultMessage("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }".getBytes()));
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
     }
 
     /**

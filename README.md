@@ -21,6 +21,7 @@ system under test. Please find following list of samples and their primary objec
 |---------------------------------------|:---------:|
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
+| [sample-binary](sample-binary)| Shows binary message content handling in Citrus |
 | [sample-jms](sample-jms)| Shows JMS queue connectivity |
 | [sample-soap](https://github.com/christophd/citrus-samples/sample-soap)| Shows SOAP web service support |
 | [sample-xhtml](sample-xhtml)| Shows XHTML validation feature |
