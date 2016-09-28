@@ -23,6 +23,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Christoph Deppisch
  */
@@ -34,17 +36,30 @@ public class TodoListController {
     private TodoListService todoListService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list(Model model) {
+    public String listHtml(Model model) {
         model.addAttribute("todos", todoListService.getAllEntries());
 
         return "todo";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String add(@RequestParam(value = "title") String title,
+    @RequestMapping(method = RequestMethod.GET, headers = "accept=application/json")
+    @ResponseBody
+    public List<TodoEntry> list() {
+        return todoListService.getAllEntries();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
+    public String addFormUrlencoded(@RequestParam(value = "title") String title,
                       @RequestParam(value = "description", defaultValue = "N/A") String description) {
         todoListService.addEntry(new TodoEntry(title, description));
         return "redirect:todolist";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, headers = "content-type=application/json")
+    @ResponseBody
+    public String addJson(@RequestBody TodoEntry entry) {
+        todoListService.addEntry(entry);
+        return entry.getId().toString();
     }
 
     @RequestMapping(method = RequestMethod.DELETE)

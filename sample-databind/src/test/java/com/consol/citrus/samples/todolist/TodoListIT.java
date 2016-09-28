@@ -17,14 +17,20 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.samples.todolist.model.TodoEntry;
+import com.consol.citrus.validation.json.JsonMappingValidationCallback;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javax.sql.DataSource;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Christoph Deppisch
@@ -35,69 +41,47 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     private HttpClient todoClient;
 
     @Autowired
-    private DataSource todoDataSource;
+    private ObjectMapper objectMapper;
 
     @Test
     @CitrusTest
-    public void testIndexPage() {
-        http()
-            .client(todoClient)
-            .send()
-            .get("/todolist")
-            .accept("text/html");
-
-        http()
-            .client(todoClient)
-            .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("//xh:h1", "TODO list")
-            .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
-                    "\"org/w3/xhtml/xhtml1-transitional.dtd\">" +
-                    "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
-                        "<head>@ignore@</head>" +
-                        "<body>@ignore@</body>" +
-                    "</html>");
-    }
-
-    @Test
-    @CitrusTest
-    public void testAddTodoEntry() {
+    public void testObjectMapping() {
+        final UUID uuid = UUID.randomUUID();
+        variable("todoId", uuid.toString());
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
-
-        query(todoDataSource)
-            .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")
-            .validate("cnt", "0");
 
         http()
             .client(todoClient)
             .send()
             .post("/todolist")
-            .contentType("application/x-www-form-urlencoded")
-            .payload("title=${todoName}&description=${todoDescription}");
-
-        http()
-            .client(todoClient)
-            .receive()
-            .response(HttpStatus.FOUND);
-
-        http()
-            .client(todoClient)
-            .send()
-            .get("/todolist")
-            .accept("text/html");
+            .contentType("application/json")
+            .payload(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), objectMapper);
 
         http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("(//xh:li[@class='list-group-item'])[last()]", "${todoName}");
+            .messageType(MessageType.PLAINTEXT)
+            .payload("${todoId}");
 
-        query(todoDataSource)
-            .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")
-            .validate("cnt", "1");
+        http()
+            .client(todoClient)
+            .send()
+            .get("/todo/${todoId}")
+            .accept("application/json");
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .validationCallback(new JsonMappingValidationCallback<TodoEntry>(TodoEntry.class, objectMapper) {
+                @Override
+                public void validate(TodoEntry todoEntry, Map<String, Object> headers, TestContext context) {
+                    Assert.assertNotNull(todoEntry);
+                    Assert.assertEquals(todoEntry.getId(), uuid);
+                }
+            });
     }
 
 }

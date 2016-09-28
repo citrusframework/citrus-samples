@@ -23,6 +23,7 @@
     <module>sample-javaconfig</module>
     <module>sample-rest</module>
     <module>sample-xhtml</module>
+    <module>sample-databind</module>
     <module>sample-jms</module>
     <module>sample-binary</module>
     <module>sample-soap</module>

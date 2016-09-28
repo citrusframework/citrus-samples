@@ -16,12 +16,13 @@
 
 package com.consol.citrus.samples.todolist.service;
 
-import com.consol.citrus.samples.todolist.dao.*;
+import com.consol.citrus.samples.todolist.dao.TodoListDao;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Christoph Deppisch
@@ -46,5 +47,15 @@ public class TodoListService {
 
     public void removeAll() {
         todoListDao.deleteAll();
+    }
+
+    public TodoEntry getEntry(UUID uuid) {
+        for (TodoEntry entry : todoListDao.list()) {
+            if (entry.getId().equals(uuid)) {
+                return entry;
+            }
+        }
+
+        throw new RuntimeException(String.format("Unable to find entry with uuid '%s'", uuid));
     }
 }

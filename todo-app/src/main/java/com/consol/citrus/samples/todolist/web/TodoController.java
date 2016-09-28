@@ -16,10 +16,13 @@
 
 package com.consol.citrus.samples.todolist.web;
 
+import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * @author Christoph Deppisch
@@ -30,6 +33,12 @@ public class TodoController {
 
     @Autowired
     private TodoListService todoListService;
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public TodoEntry getEntry(@PathVariable(value = "id") String id) {
+        return todoListService.getEntry(UUID.fromString(id));
+    }
 
     @RequestMapping(method = RequestMethod.DELETE)
     public String removeEntry(@RequestParam(value = "title") String title) {
