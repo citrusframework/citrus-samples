@@ -23,6 +23,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
 | [sample-binary](sample-binary)| Shows binary message content handling in Citrus |
 | [sample-jms](sample-jms)| Shows JMS queue connectivity |
+| [sample-rest](https://github.com/christophd/citrus-samples/sample-rest)| Shows REST API calls as a client |
 | [sample-soap](https://github.com/christophd/citrus-samples/sample-soap)| Shows SOAP web service support |
 | [sample-xhtml](sample-xhtml)| Shows XHTML validation feature |
 | [sample-camel-context](sample-camel-context)| Interact with Apache Camel context and routes |

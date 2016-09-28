@@ -21,6 +21,7 @@
     <module>sample-cucumber-spring</module>
     <module>sample-cucumber-spring2</module>
     <module>sample-javaconfig</module>
+    <module>sample-rest</module>
     <module>sample-xhtml</module>
     <module>sample-jms</module>
     <module>sample-binary</module>
