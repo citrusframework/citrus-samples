@@ -1,4 +1,4 @@
-Json databind sample ![Logo][1]
+Json data binding sample ![Logo][1]
 ==============
 
 This sample demonstrates the usage of object mapping in Citrus. We are able to handle automatic object mapping
@@ -11,27 +11,7 @@ The [todo-list](../todo-app/README.md) sample application provides a REST API fo
 We call this API with object mapping in Citrus so that we do not need to write message payload JSON or XML
 structures but use the model objects directly in our test cases.
 
-We need to include the Spring oxm module in the dependencies:
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-oxm</artifactId>
-      <version>${spring.version}</version>
-      <scope>test</scope>
-    </dependency>
-    
-Also we need to provide a marshaller component in our Spring configuration:
-    
-    <oxm:jaxb2-marshaller id="marshaller" context-path="com.consol.citrus.samples.todolist.model"/>
-    
-Please note that the marshaller supports model object classes in package **com.consol.citrus.samples.todolist.model**. Also
-we need a special **oxm** namespace that we add to the Spring application context root element:
-
-    <beans xmlns="http://www.springframework.org/schema/beans"
-           [...]
-           xmlns:oxm="http://www.springframework.org/schema/oxm">
-    
-In test cases we can now use model objects as message payload.
+In test cases we can use the model objects directly as message payload.
     
     http()
         .client(todoClient)
@@ -40,20 +20,22 @@ In test cases we can now use model objects as message payload.
         .contentType("application/json")
         .payload(new TodoEntry("${todoName}", "${todoDescription}"), objectMapper);
         
-As you can see we are able to send the model object as payload. Citrus will automatically marshall the object to a **application/json** message content 
+As you can see we are able to send the model object. Citrus will automatically convert the object to a **application/json** message content 
 as **POST** request. In a receive action we are able to use a mapping validation callback in order to get access to the model objects of an incoming message payload.
 
     http()
         .client(todoClient)
         .receive()
         .response(HttpStatus.OK)
-        .validationCallback(new JsonMappingValidationCallback<TodoEntry[]>(TodoEntry.class, objectMapper) {
+        .validationCallback(new JsonMappingValidationCallback<TodoEntry>(TodoEntry.class, objectMapper) {
             @Override
             public void validate(TodoEntry todoEntry, Map<String, Object> headers, TestContext context) {
                 Assert.assertNotNull(todoEntry);
                 Assert.assertEquals(todoEntry.getId(), uuid);    
             }
         });
+        
+The validation callback gets the model object as first method parameter. You can now add some validation logic with assertions on the model.        
         
 Run
 ---------
