@@ -22,6 +22,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
 | [sample-binary](sample-binary)| Shows binary message content handling in Citrus |
+| [sample-oxm](sample-oxm)| Shows XML object marshalling feature when sending and receiving messages |
 | [sample-databind](sample-databind)| Shows JSON object mapping feature when sending and receiving messages |
 | [sample-jms](sample-jms)| Shows JMS queue connectivity |
 | [sample-rest](https://github.com/christophd/citrus-samples/sample-rest)| Shows REST API calls as a client |

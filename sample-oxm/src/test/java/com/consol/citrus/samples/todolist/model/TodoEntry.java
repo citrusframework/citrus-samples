@@ -38,7 +38,6 @@ public class TodoEntry {
     private String description;
 
     public TodoEntry() {
-        this.id = UUID.randomUUID();
     }
 
     public TodoEntry(String title, String description) {

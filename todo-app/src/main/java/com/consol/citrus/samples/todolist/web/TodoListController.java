@@ -42,7 +42,7 @@ public class TodoListController {
         return "todo";
     }
 
-    @RequestMapping(method = RequestMethod.GET, headers = "accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, headers = "accept=application/*")
     @ResponseBody
     public List<TodoEntry> list() {
         return todoListService.getAllEntries();
@@ -55,9 +55,9 @@ public class TodoListController {
         return "redirect:todolist";
     }
 
-    @RequestMapping(method = RequestMethod.POST, headers = "content-type=application/json")
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public String addJson(@RequestBody TodoEntry entry) {
+    public String add(@RequestBody TodoEntry entry) {
         todoListService.addEntry(entry);
         return entry.getId().toString();
     }
