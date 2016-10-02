@@ -20,7 +20,7 @@ messages.
     </citrus:schema-repository>
         
     <citrus:namespace-context>
-      <citrus:namespace prefix="todo" uri="http://citrusframework.org/samples/todolist-web-service"/>
+      <citrus:namespace prefix="todo" uri="http://citrusframework.org/samples/todolist"/>
     </citrus:namespace-context>
    
 The schema repository hold all known schemas in this project. Citrus will automatically check the syntax rules for incoming messages

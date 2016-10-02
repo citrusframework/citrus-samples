@@ -35,7 +35,7 @@ import java.util.List;
 @Endpoint
 public class TodoWebServiceEndpoint {
 
-    private static final String NAMESPACE_URI = "http://citrusframework.org/samples/todolist-web-service";
+    private static final String NAMESPACE_URI = "http://citrusframework.org/samples/todolist";
 
     @Autowired
     private TodoListService todoListService;
@@ -74,7 +74,7 @@ public class TodoWebServiceEndpoint {
         DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName("TodoListPort");
         wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://citrusframework.org/samples/todolist-web-service");
+        wsdl11Definition.setTargetNamespace("http://citrusframework.org/samples/todolist");
         wsdl11Definition.setSchema(countriesSchema);
         return wsdl11Definition;
     }

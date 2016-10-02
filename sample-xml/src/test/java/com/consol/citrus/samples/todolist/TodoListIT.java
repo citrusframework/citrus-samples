@@ -21,6 +21,7 @@ import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -44,7 +45,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .send()
             .post("/todolist")
             .contentType("application/xml")
-            .payload("<todo>" +
+            .payload("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
                         "<id>${todoId}</id>" +
                         "<title>${todoName}</title>" +
                         "<description>${todoDescription}</description>" +
@@ -67,11 +68,45 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .payload("<todo>" +
+            .payload("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
                         "<id>${todoId}</id>" +
                         "<title>${todoName}</title>" +
                         "<description>${todoDescription}</description>" +
                     "</todo>");
+    }
+
+    @Test
+    @CitrusTest
+    public void testXmlValidationWithFileResource() {
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        http()
+            .client(todoClient)
+            .send()
+            .post("/todolist")
+            .contentType("application/xml")
+            .payload(new ClassPathResource("templates/todo.xml"));
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.PLAINTEXT)
+            .payload("${todoId}");
+
+        http()
+            .client(todoClient)
+            .send()
+            .get("/todo/${todoId}")
+            .accept("application/xml");
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload(new ClassPathResource("templates/todo.xml"));
     }
 
     @Test
@@ -86,7 +121,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .send()
             .post("/todolist")
             .contentType("application/xml")
-            .payload("<todo>" +
+            .payload("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
                         "<id>${todoId}</id>" +
                         "<title>${todoName}</title>" +
                         "<description>${todoDescription}</description>" +
@@ -109,9 +144,9 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .validate("/todo/id", "${todoId}")
-            .validate("/todo/title", "${todoName}")
-            .validate("/todo/description", "${todoDescription}");
+            .validate("/t:todo/t:id", "${todoId}")
+            .validate("/t:todo/t:title", "${todoName}")
+            .validate("/t:todo/t:description", "${todoDescription}");
     }
 
 }

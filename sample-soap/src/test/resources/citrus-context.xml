@@ -16,7 +16,7 @@
 
     <!-- Default namespace mappings used in XPath expression evaluations -->
     <citrus:namespace-context>
-      <citrus:namespace prefix="todo" uri="http://citrusframework.org/samples/todolist-web-service"/>
+      <citrus:namespace prefix="todo" uri="http://citrusframework.org/samples/todolist"/>
     </citrus:namespace-context>
 
     <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>

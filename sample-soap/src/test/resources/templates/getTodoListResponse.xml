@@ -1,4 +1,4 @@
-<todo:getTodoListResponse xmlns:todo="http://citrusframework.org/samples/todolist-web-service">
+<todo:getTodoListResponse xmlns:todo="http://citrusframework.org/samples/todolist">
   <todo:list>
     <todo:todoEntry>
       <todo:id>@ignore@</todo:id>

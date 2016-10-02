@@ -1,2 +1,2 @@
-<todo:getTodoListRequest xmlns:todo="http://citrusframework.org/samples/todolist-web-service">
+<todo:getTodoListRequest xmlns:todo="http://citrusframework.org/samples/todolist">
 </todo:getTodoListRequest>

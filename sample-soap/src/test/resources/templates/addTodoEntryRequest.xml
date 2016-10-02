@@ -1,4 +1,4 @@
-<todo:addTodoEntryRequest xmlns:todo="http://citrusframework.org/samples/todolist-web-service">
+<todo:addTodoEntryRequest xmlns:todo="http://citrusframework.org/samples/todolist">
   <todo:title>${todoName}</todo:title>
   <todo:description>${todoDescription}</todo:description>
 </todo:addTodoEntryRequest>

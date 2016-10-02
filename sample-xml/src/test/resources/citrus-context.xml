@@ -7,7 +7,17 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
        http://www.citrusframework.org/schema/http/config http://www.citrusframework.org/schema/http/config/citrus-http-config.xsd">
-	
+
+    <citrus:schema-repository id="schemaRepository">
+        <citrus:schemas>
+            <citrus:schema id="todo" location="classpath:schema/Todo.xsd"/>
+        </citrus:schemas>
+    </citrus:schema-repository>
+
+    <citrus:namespace-context>
+        <citrus:namespace prefix="t" uri="http://citrusframework.org/samples/todolist"/>
+    </citrus:namespace-context>
+
     <citrus-http:client id="todoListClient"
                         request-url="http://localhost:8080"/>
 

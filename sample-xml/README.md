@@ -10,7 +10,16 @@ Objectives
 The [todo-list](../todo-app/README.md) sample application provides a REST API for managing todo entries.
 We call this API and receive XML message structures for validation in our test cases.
 
-That is all for configuration, now we can use model objects as message payload in the test cases.
+As we want to deal with XML data it is a good idea to enable schema validation for incoming messages. Just put your
+known schemas to the schema repository and Citrus will automatically validate incoming messages with the available schema rules.
+
+    <citrus:schema-repository id="schemaRepository">
+        <citrus:schemas>
+            <citrus:schema id="todo" location="classpath:schema/Todo.xsd"/>
+        </citrus:schemas>
+    </citrus:schema-repository>
+
+That is all for configuration, now we can use XML as message payload in the test cases.
     
     http()
         .client(todoClient)
@@ -36,6 +45,15 @@ the expected values.
                      "<title>${todoName}</title>" +
                      "<description>${todoDescription}</description>" +
                  "</todo>");
+
+The XMl message payload can be difficult when to read when used as String concatenation. Fortunately we can also use file resources as message
+payloads.
+
+    http()
+        .client(todoClient)
+        .receive()
+        .response(HttpStatus.OK)
+        .payload(new ClassPathResource("templates/todo.xml"));    
         
 An alternative approach would be to use Xpath expressions when validating incoming XML messages.
 
@@ -43,12 +61,30 @@ An alternative approach would be to use Xpath expressions when validating incomi
         .client(todoClient)
         .receive()
         .response(HttpStatus.OK)
-        .validate("/todo/id", "${todoId}")
-        .validate("/todo/title", "${todoName}")
-        .validate("/todo/description", "${todoDescription}");
+        .validate("/t:todo/t:id", "${todoId}")
+        .validate("/t:todo/t:title", "${todoName}")
+        .validate("/t:todo/t:description", "${todoDescription}");
         
-Each expression is evaluated and check for correct values.        
         
+Each expression is evaluated and checked for expected values. XPath is namespace sensitive. So we need to use the correct namespaces
+in the expressions. Here we have used a namespace prefix ***t:***. This prefix is defined in a central namespace context in the configuration.
+       
+    <citrus:namespace-context>
+        <citrus:namespace prefix="t" uri="http://citrusframework.org/samples/todolist"/>
+    </citrus:namespace-context>
+       
+This makes sure that the Xpath expressions are able to find the elements with correct namespaces. Of course you can also specify the 
+namespace context for each receive action individually.       
+        
+    http()
+        .client(todoClient)
+        .receive()
+        .response(HttpStatus.OK)
+        .namespace("t", "http://citrusframework.org/samples/todolist")
+        .validate("/t:todo/t:id", "${todoId}")
+        .validate("/t:todo/t:title", "${todoName}")
+        .validate("/t:todo/t:description", "${todoDescription}");
+                
 Run
 ---------
 
