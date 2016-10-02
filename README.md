@@ -27,6 +27,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-oxm](sample-oxm)| Shows XML object marshalling feature when sending and receiving messages |
 | [sample-databind](sample-databind)| Shows JSON object mapping feature when sending and receiving messages |
 | [sample-dataprovider](sample-dataprovider)| Shows TestNG data provider usage in Citrus |
+| [sample-dynamic-endpoints](sample-dynamic-endpoints)| Shows dynamic endpoint component usage |
 | [sample-jms](sample-jms)| Shows JMS queue connectivity |
 | [sample-rest](https://github.com/christophd/citrus-samples/sample-rest)| Shows REST API calls as a client |
 | [sample-soap](https://github.com/christophd/citrus-samples/sample-soap)| Shows SOAP web service support |
