@@ -25,6 +25,7 @@
     <module>sample-dataprovider</module>
     <module>sample-xhtml</module>
     <module>sample-xml</module>
+    <module>sample-json</module>
     <module>sample-databind</module>
     <module>sample-oxm</module>
     <module>sample-jms</module>
