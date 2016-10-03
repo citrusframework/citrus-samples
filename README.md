@@ -25,6 +25,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-json](sample-json)| Shows Json payload validation feature with JsonPath validation |
 | [sample-xml](sample-xml)| Shows XML validation feature with schema and Xpath validation |
 | [sample-oxm](sample-oxm)| Shows XML object marshalling feature when sending and receiving messages |
+| [sample-mail](sample-mail)| Shows mail server activities in Citrus |
 | [sample-databind](sample-databind)| Shows JSON object mapping feature when sending and receiving messages |
 | [sample-dataprovider](sample-dataprovider)| Shows TestNG data provider usage in Citrus |
 | [sample-dynamic-endpoints](sample-dynamic-endpoints)| Shows dynamic endpoint component usage |
