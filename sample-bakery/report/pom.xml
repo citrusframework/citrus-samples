@@ -91,9 +91,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <warName>report</warName>
-        </configuration>
       </plugin>
 
       <plugin>
@@ -155,7 +152,7 @@
                 </volumes>
                 <env>
                   <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
-                  <MAIL_PORT_2222_TCP_ADDR>${env.HOST_IP}</MAIL_PORT_2222_TCP_ADDR>
+                  <MAIL_PORT_2222_TCP_ADDR>${docker.host.name}</MAIL_PORT_2222_TCP_ADDR>
                   <MAIL_PORT_2222_TCP_PORT>${mail.server.port}</MAIL_PORT_2222_TCP_PORT>
                 </env>
                 <ports>
