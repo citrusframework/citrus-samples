@@ -75,7 +75,7 @@ Run
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
  
-    > mvn clean install -Dembedded=true
+     mvn clean install -Dembedded=true
     
 This executes the complete Maven build lifecycle. The embedded option automatically starts an ActiveMQ message broker 
 before the integration test phase. This is everything we need for this sample as Citrus is both message producer and consumer
@@ -91,11 +91,11 @@ You can execute the test cases in this sample via command line terminal.
 
 Execute all Citrus tests by calling
 
-> mvn integration-test
+     mvn integration-test
 
 You can also pick a single test by calling
 
-> mvn integration-test -Ptest=TodoListIT
+     mvn integration-test -Ptest=TodoListIT
 
 You should see Citrus performing several tests with lots of debugging output and of course green tests at the very 
 end of the build.

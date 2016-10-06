@@ -53,7 +53,7 @@ Run
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
  
-    > mvn clean install -Dembedded=true
+     mvn clean install -Dembedded=true
     
 This executes the complete Maven build lifecycle. The embedded option automatically starts a Jetty web
 container before the integration test phase. The todo-list system under test is automatically deployed in this phase.
@@ -75,7 +75,7 @@ There may be times we want to test against a standalone todo-list application.
 
 You can start the sample todo list application in Jetty with this command.
 
-    > mvn jetty:run
+     mvn jetty:run
 
 This starts the Jetty web container and automatically deploys the todo list app. Point your browser to
  
@@ -93,11 +93,11 @@ Open a separate command line terminal and navigate to the sample folder.
 
 Execute all Citrus tests by calling
 
-> mvn integration-test
+     mvn integration-test
 
 You can also pick a single test by calling
 
-> mvn integration-test -Ptest=TodoListIT
+     mvn integration-test -Ptest=TodoListIT
 
 You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
 and Citrus test client). And of course green tests at the very end of the build.

@@ -16,7 +16,7 @@ Run
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
  
-    > mvn clean install
+     mvn clean install
     
 This executes the complete Maven build lifecycle and creates the sample artifacts that are used throughout the other samples.
 The build application represents the system under test.
@@ -29,7 +29,7 @@ ways of starting the application.
 
 On of these possibilities is the Spring Boot Maven Plugin. You can start the sample todo list application with this command.
 
-    > mvn spring-boot:run
+     mvn spring-boot:run
 
 This starts the application in a Tomcat web container and automatically deploys the todo list app. Point your browser to
  
