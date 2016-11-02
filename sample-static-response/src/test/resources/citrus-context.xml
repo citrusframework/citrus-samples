@@ -28,7 +28,7 @@
                                          mapping-strategy="mappingStrategy"/>
 
     <bean id="mappingKeyExtractor" class="com.consol.citrus.endpoint.adapter.mapping.HeaderMappingKeyExtractor">
-        <property name="headerName" value="citrus_http_request_uri"/>
+        <property name="headerName" value="#{T(com.consol.citrus.http.message.HttpMessageHeaders).HTTP_REQUEST_URI}"/>
     </bean>
 
     <bean id="mappingStrategy" class="com.consol.citrus.endpoint.adapter.mapping.SimpleMappingStrategy">
