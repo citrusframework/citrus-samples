@@ -29,6 +29,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-databind](sample-databind)| Shows JSON object mapping feature when sending and receiving messages |
 | [sample-dataprovider](sample-dataprovider)| Shows TestNG data provider usage in Citrus |
 | [sample-dynamic-endpoints](sample-dynamic-endpoints)| Shows dynamic endpoint component usage |
+| [sample-static-response](sample-static-response)| Shows how to setup a static response generating Http server component |
 | [sample-jms](sample-jms)| Shows JMS queue connectivity |
 | [sample-rest](sample-rest)| Shows REST API calls as a client |
 | [sample-https](sample-https)| Shows how to use SSL connectivity as a client and server |
