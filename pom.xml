@@ -22,7 +22,7 @@
     <module>sample-cucumber-spring2</module>
     <module>sample-javaconfig</module>
     <module>sample-mail</module>
-    <module>sample-rest</module>
+    <module>sample-http</module>
     <module>sample-http-static-response</module>
     <module>sample-https</module>
     <module>sample-dataprovider</module>

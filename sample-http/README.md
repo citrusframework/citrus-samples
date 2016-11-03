@@ -1,4 +1,4 @@
-REST sample ![Logo][1]
+Http REST sample ![Logo][1]
 ==============
 
 This sample demonstrates the Http REST capabilities in Citrus where Citrus calls REST API on a todo web application. REST features are

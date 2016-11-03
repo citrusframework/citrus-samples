@@ -30,7 +30,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-dataprovider](sample-dataprovider)| Shows TestNG data provider usage in Citrus |
 | [sample-dynamic-endpoints](sample-dynamic-endpoints)| Shows dynamic endpoint component usage |
 | [sample-jms](sample-jms)| Shows JMS queue connectivity |
-| [sample-rest](sample-rest)| Shows REST API calls as a client |
+| [sample-http](sample-http)| Shows Http REST API calls as a client |
 | [sample-http-static-response](sample-http-static-response)| Shows how to setup a static response generating Http server component |
 | [sample-https](sample-https)| Shows how to use SSL connectivity as a client and server |
 | [sample-soap](sample-soap)| Shows SOAP web service support |
