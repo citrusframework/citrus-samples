@@ -34,6 +34,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-rest](sample-rest)| Shows REST API calls as a client |
 | [sample-https](sample-https)| Shows how to use SSL connectivity as a client and server |
 | [sample-soap](sample-soap)| Shows SOAP web service support |
+| [sample-soap-static-response](sample-soap-static-response)| Shows how to setup a static response generating SOAP web service server component |
 | [sample-xhtml](sample-xhtml)| Shows XHTML validation feature |
 | [sample-camel-context](sample-camel-context)| Interact with Apache Camel context and routes |
 | [sample-cucumber](sample-cucumber)| Shows BDD integration with Cucumber |

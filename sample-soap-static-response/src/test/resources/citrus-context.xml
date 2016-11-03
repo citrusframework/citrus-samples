@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-ws="http://www.citrusframework.org/schema/ws/config"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/ws/config http://www.citrusframework.org/schema/ws/config/citrus-ws-config.xsd">
+
+    <citrus:global-variables>
+        <citrus:variable name="todoId" value="702c4a4e-5c8a-4ce2-a451-4ed435d3604a"/>
+        <citrus:variable name="todoName" value="todo_1871"/>
+        <citrus:variable name="todoDescription" value="Description: todo_1871"/>
+    </citrus:global-variables>
+	
+    <citrus-ws:client id="todoListClient"
+                        request-url="http://localhost:8080"/>
+
+    <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+
+    <citrus-ws:server id="todoListServer"
+                      port="8080"
+                      auto-start="true"
+                      timeout="10000"
+                      endpoint-adapter="dispatchingEndpointAdapter" />
+
+    <citrus:dispatching-endpoint-adapter id="dispatchingEndpointAdapter"
+                                         mapping-key-extractor="mappingKeyExtractor"
+                                         mapping-strategy="mappingStrategy"/>
+
+    <bean id="mappingKeyExtractor" class="com.consol.citrus.endpoint.adapter.mapping.SoapActionMappingKeyExtractor"/>
+
+    <bean id="mappingStrategy" class="com.consol.citrus.endpoint.adapter.mapping.SimpleMappingStrategy">
+        <property name="adapterMappings">
+            <map>
+                <entry key="getTodo" value-ref="todoResponseAdapter"/>
+                <entry key="getTodoList" value-ref="todoListResponseAdapter"/>
+            </map>
+        </property>
+    </bean>
+
+    <citrus:static-response-adapter id="todoResponseAdapter">
+        <citrus:payload>
+            <![CDATA[
+            <getTodoResponse xmlns="http://citrusframework.org/samples/todolist">
+                <todoEntry xmlns="http://citrusframework.org/samples/todolist">
+                  <id>702c4a4e-5c8a-4ce2-a451-4ed435d3604a</id>
+                  <title>todo_1871</title>
+                  <description>Description: todo_1871</description>
+                </todoEntry>
+            </getTodoResponse>
+            ]]>
+        </citrus:payload>
+    </citrus:static-response-adapter>
+
+    <citrus:static-response-adapter id="todoListResponseAdapter">
+        <citrus:payload>
+            <![CDATA[
+            <getTodoListResponse xmlns="http://citrusframework.org/samples/todolist">
+                <list>
+                    <todoEntry>
+                      <id>702c4a4e-5c8a-4ce2-a451-4ed435d3604a</id>
+                      <title>todo_1871</title>
+                      <description>Description: todo_1871</description>
+                    </todoEntry>
+                </list>
+            </getTodoListResponse>
+            ]]>
+        </citrus:payload>
+    </citrus:static-response-adapter>
+
+</beans>
