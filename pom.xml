@@ -23,6 +23,7 @@
     <module>sample-javaconfig</module>
     <module>sample-mail</module>
     <module>sample-rest</module>
+    <module>sample-http-static-response</module>
     <module>sample-https</module>
     <module>sample-dataprovider</module>
     <module>sample-xhtml</module>
@@ -32,7 +33,6 @@
     <module>sample-oxm</module>
     <module>sample-jms</module>
     <module>sample-dynamic-endpoints</module>
-    <module>sample-static-response</module>
     <module>sample-binary</module>
     <module>sample-soap</module>
     <module>sample-soap-static-response</module>

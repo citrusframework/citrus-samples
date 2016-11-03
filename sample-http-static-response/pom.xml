@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-static-response</artifactId>
-  <name>citrus-sample-static-response</name>
+  <artifactId>citrus-sample-http-static-response</artifactId>
+  <name>citrus-sample-http-static-response</name>
   <version>2.6.2-SNAPSHOT</version>
 
   <properties>

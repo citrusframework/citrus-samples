@@ -1,4 +1,4 @@
-Static response sample ![Logo][1]
+Static Http response sample ![Logo][1]
 ==============
 
 Usually incoming requests on server components are handled by a Citrus test case where the tester defines the received request message. Also the test
