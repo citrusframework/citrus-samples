@@ -19,6 +19,7 @@ system under test. Please find following list of samples and their primary objec
 
 | Sample                                | Objective |
 |---------------------------------------|:---------:|
+| [sample-gradle](sample-gradle)| Uses Gradle build to execute tests |
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
 | [sample-binary](sample-binary)| Shows binary message content handling in Citrus |

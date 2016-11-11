@@ -14,4 +14,6 @@ bin
 .codepro
 .pmd
 logs
+.gradle
+build
 sun-jaxb.episode

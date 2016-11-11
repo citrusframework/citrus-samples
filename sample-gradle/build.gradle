@@ -1,0 +1,35 @@
+group 'com.consol.citrus.samples'
+version '2.6.2-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://labs.consol.de/maven/snapshots-repository/'
+    }
+}
+
+dependencies {
+    testCompile group: 'com.consol.citrus', name: 'citrus-core', version: '2.6.1'
+    testCompile group: 'com.consol.citrus', name: 'citrus-java-dsl', version: '2.6.1'
+    testCompile group: 'org.testng', name: 'testng', version: '6.9.10'
+    testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.21'
+    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21'
+}
+
+tasks.withType (JavaCompile) {
+    options.encoding = propertySourceFileEncoding
+}
+
+tasks.withType (Test) {
+    systemProperty 'file.encoding', propertySourceFileEncoding
+}
+
+test {
+    useTestNG()
+}
