@@ -9,8 +9,10 @@ Objectives
 Citrus uses Maven internally for building software. But of course you can also integrate the Citrus tests in a Gradle
 project. As the Citrus tests are nothing but normal JUnit or TestNG tests the integration in the Gradle build is very easy.
 
-The Gradle build configuration is done in the **build.gradle** file. Here we define the project name and the project version.
+The Gradle build configuration is done in the **build.gradle** and **settings.gradle** files. Here we define the project name 
+and the project version.
 
+    rootProject.name = 'citrus-sample-gradle'
     group 'com.consol.citrus.samples'
     version '2.6.2-SNAPSHOT'
     
@@ -50,16 +52,18 @@ Citrus TestNG test uses a context configuration annotation.
     
 This tells Spring to load the configuration from the Java class ***EndpointConfig***.
     
-    @Bean
-    public ChannelEndpoint testChannelEndpoint() {
-        ChannelEndpointConfiguration endpointConfiguration = new ChannelEndpointConfiguration();
-        endpointConfiguration.setChannel(testChannel());
-        return new ChannelEndpoint(endpointConfiguration);
-    }
-
-    @Bean
-    private MessageChannel testChannel() {
-        return new MessageSelectingQueueChannel();
+    public class EndpointConfig {
+        @Bean
+        public ChannelEndpoint testChannelEndpoint() {
+            ChannelEndpointConfiguration endpointConfiguration = new ChannelEndpointConfiguration();
+            endpointConfiguration.setChannel(testChannel());
+            return new ChannelEndpoint(endpointConfiguration);
+        }
+    
+        @Bean
+        private MessageChannel testChannel() {
+            return new MessageSelectingQueueChannel();
+        }
     }
     
 In the configuration class we are able to define Citrus components for usage in tests. As usual
@@ -95,4 +99,3 @@ a complete [reference manual][3].
  [1]: http://www.citrusframework.org/img/brand-logo.png "Citrus"
  [2]: http://www.citrusframework.org
  [3]: http://www.citrusframework.org/reference/html/
- [4]: http://www.citrusframework.org/reference/html/index.html#validation-xhtml
