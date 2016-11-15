@@ -35,6 +35,7 @@
     <module>sample-dynamic-endpoints</module>
     <module>sample-binary</module>
     <module>sample-soap</module>
+    <module>sample-soap-wssecurity</module>
     <module>sample-soap-static-response</module>
     <module>sample-jdbc</module>
   </modules>
