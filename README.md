@@ -36,6 +36,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-https](sample-https)| Shows how to use SSL connectivity as a client and server |
 | [sample-soap](sample-soap)| Shows SOAP web service support |
 | [sample-soap-wssecurity](sample-soap-wssecurity)| Shows how to configure SOAP web service client and server with WSSecurity enabled |
+| [sample-soap-ssl](sample-soap-ssl)| Shows how to configure SOAP web service with SSL secure connectivity |
 | [sample-soap-static-response](sample-soap-static-response)| Shows how to setup a static response generating SOAP web service server component |
 | [sample-xhtml](sample-xhtml)| Shows XHTML validation feature |
 | [sample-camel-context](sample-camel-context)| Interact with Apache Camel context and routes |
