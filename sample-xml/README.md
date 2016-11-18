@@ -151,4 +151,4 @@ a complete [reference manual][3].
  [1]: http://www.citrusframework.org/img/brand-logo.png "Citrus"
  [2]: http://www.citrusframework.org
  [3]: http://www.citrusframework.org/reference/html/
- [4]: http://www.citrusframework.org/reference/html/index.html#validation-xml
+ [4]: http://www.citrusframework.org/reference/html/validation-xml.html
