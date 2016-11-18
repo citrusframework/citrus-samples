@@ -23,6 +23,7 @@
     <module>sample-javaconfig</module>
     <module>sample-mail</module>
     <module>sample-http</module>
+    <module>sample-http-loadtest</module>
     <module>sample-http-static-response</module>
     <module>sample-https</module>
     <module>sample-dataprovider</module>
