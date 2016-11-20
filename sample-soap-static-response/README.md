@@ -52,9 +52,9 @@ adapters.
         <![CDATA[
         <getTodoResponse xmlns="http://citrusframework.org/samples/todolist">
             <todoEntry xmlns="http://citrusframework.org/samples/todolist">
-              <id>702c4a4e-5c8a-4ce2-a451-4ed435d3604a</id>
-              <title>todo_1871</title>
-              <description>Description: todo_1871</description>
+              <id>${todoId}</id>
+              <title>${todoName}</title>
+              <description>${todoDescription}</description>
             </todoEntry>
         </getTodoResponse>
         ]]>
@@ -67,9 +67,9 @@ adapters.
         <getTodoListResponse xmlns="http://citrusframework.org/samples/todolist">
             <list>
                 <todoEntry>
-                  <id>702c4a4e-5c8a-4ce2-a451-4ed435d3604a</id>
-                  <title>todo_1871</title>
-                  <description>Description: todo_1871</description>
+                  <id>${todoId}</id>
+                  <title>${todoName}</title>
+                  <description>${todoDescription}</description>
                 </todoEntry>
             </list>
         </getTodoListResponse>

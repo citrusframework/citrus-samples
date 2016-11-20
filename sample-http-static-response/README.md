@@ -52,9 +52,9 @@ adapters.
 <citrus:static-response-adapter id="todoResponseAdapter">
     <citrus:payload>
         {
-          "id": "702c4a4e-5c8a-4ce2-a451-4ed435d3604a",
-          "title": "todo_1871",
-          "description": "Description: todo_1871"
+          "id": "${todoId}",
+          "title": "${todoName}",
+          "description": "${todoDescription}"
         }
     </citrus:payload>
 </citrus:static-response-adapter>
@@ -62,11 +62,11 @@ adapters.
 <citrus:static-response-adapter id="todoListResponseAdapter">
     <citrus:payload>
         [
-            {
-                "id": "702c4a4e-5c8a-4ce2-a451-4ed435d3604a",
-                "title": "todo_1871",
-                "description": "Description: todo_1871"
-            }
+          {
+            "id": "${todoId}",
+            "title": "${todoName}",
+            "description": "${todoDescription}"
+          }
         ]
     </citrus:payload>
 </citrus:static-response-adapter>
