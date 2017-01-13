@@ -49,6 +49,7 @@ public class ProcessOrdersIT extends TestNGCitrusTestDesigner {
             .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>");
 
         http().server(reportingServer)
+            .receive()
             .put("/report/services/reporting")
                 .header("id", "${orderId}")
                 .header("name", "chocolate")

@@ -69,6 +69,7 @@ public class EmployeeMailTest {
         citrus.variable("employee.email", "rajesh@example.com");
 
         citrus.http().client(serviceUri)
+                .send()
                 .post()
                 .fork(true)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -84,13 +85,16 @@ public class EmployeeMailTest {
                 .payload(new ClassPathResource("templates/welcome-mail-response.xml"));
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.NO_CONTENT);
 
         citrus.http().client(serviceUri)
+                .send()
                 .get()
                 .accept(MediaType.APPLICATION_XML);
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.OK)
                 .payload("<employees>" +
                             "<employee>" +

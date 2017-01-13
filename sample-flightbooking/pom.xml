@@ -5,20 +5,20 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-flightbooking</artifactId>
   <name>citrus-sample-flightbooking</name>
-  <version>2.6.3-SNAPSHOT</version>
+  <version>2.7-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>4.2.7.RELEASE</spring.version>
-    <spring.ws.version>2.2.4.RELEASE</spring.ws.version>
-    <spring.integration.version>4.2.9.RELEASE</spring.integration.version>
-    <activemq.version>5.12.3</activemq.version>
-    <slf4j.version>1.7.21</slf4j.version>
-    <testng.version>6.9.10</testng.version>
-    <citrus.version>2.6.3-SNAPSHOT</citrus.version>
-    <jetty.version>9.2.15.v20160210</jetty.version>
+    <spring.version>4.3.5.RELEASE</spring.version>
+    <spring.ws.version>2.4.0.RELEASE</spring.ws.version>
+    <spring.integration.version>4.3.6.RELEASE</spring.integration.version>
+    <activemq.version>5.14.3</activemq.version>
+    <slf4j.version>1.7.22</slf4j.version>
+    <testng.version>6.10</testng.version>
+    <citrus.version>2.7-SNAPSHOT</citrus.version>
+    <jetty.version>9.4.0.v20161208</jetty.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>
   </properties>
@@ -30,8 +30,8 @@
         <version>3.5.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 
@@ -193,7 +193,7 @@
     <dependency>
       <groupId>org.springframework.webflow</groupId>
       <artifactId>spring-js</artifactId>
-      <version>2.4.2.RELEASE</version>
+      <version>2.4.4.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -270,7 +270,7 @@
     <dependency>
       <groupId>org.apache.xbean</groupId>
       <artifactId>xbean-spring</artifactId>
-      <version>4.4</version>
+      <version>4.5</version>
     </dependency>
 
     <dependency>
@@ -287,7 +287,7 @@
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>2.3.3</version>
+      <version>2.3.4</version>
     </dependency>
     <dependency>
       <groupId>commons-dbcp</groupId>

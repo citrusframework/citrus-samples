@@ -90,7 +90,7 @@ The arquillian tests are configured with a **arquillian.xml** configuration file
 
   <extension qualifier="citrus">
     <property name="autoPackage">false</property>
-    <property name="citrusVersion">2.6.3-SNAPSHOT</property>
+    <property name="citrusVersion">2.7-SNAPSHOT</property>
   </extension>
 </arquillian>
 ```

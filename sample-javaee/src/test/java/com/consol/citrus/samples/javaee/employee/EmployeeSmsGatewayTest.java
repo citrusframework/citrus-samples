@@ -69,6 +69,7 @@ public class EmployeeSmsGatewayTest {
         citrus.variable("employee.mobile", "4915199999999");
 
         citrus.http().client(serviceUri)
+                .send()
                 .post()
                 .fork(true)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -81,13 +82,16 @@ public class EmployeeSmsGatewayTest {
                 .payload(new ClassPathResource("templates/send-sms-response.xml"));
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.NO_CONTENT);
 
         citrus.http().client(serviceUri)
+                .send()
                 .get()
                 .accept(MediaType.APPLICATION_XML);
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.OK)
                 .payload("<employees>" +
                             "<employee>" +

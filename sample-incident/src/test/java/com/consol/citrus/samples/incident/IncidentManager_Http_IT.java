@@ -105,11 +105,11 @@ public class IncidentManager_Http_IT extends TestNGCitrusTestDesigner {
         incident.getIncident().setState(StateType.NEW);
         incident.getIncident().setDescription("Something missing!");
 
-        assertSoapFault(
-            send(incidentHttpClient)
-                    .payloadModel(incident)
-                    .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident")
-        ).faultCode("{http://schemas.xmlsoap.org/soap/envelope/}Client").faultString("@startsWith('Unmarshalling Error')@");
+        assertSoapFault()
+                .faultCode("{http://schemas.xmlsoap.org/soap/envelope/}Client").faultString("@startsWith('Unmarshalling Error')@")
+                .when(send(incidentHttpClient)
+                        .payloadModel(incident)
+                        .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident"));
     }
 
     private OpenIncident createOpenIncidentTestRequest() {

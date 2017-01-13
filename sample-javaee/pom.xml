@@ -5,18 +5,18 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-javaee</artifactId>
   <name>citrus-sample-javaee</name>
-  <version>2.6.3-SNAPSHOT</version>
+  <version>2.7-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <apache.cxf.version>3.1.7</apache.cxf.version>
-    <slf4j.version>1.7.21</slf4j.version>
-    <testng.version>6.9.10</testng.version>
-    <citrus.version>2.6.3-SNAPSHOT</citrus.version>
+    <apache.cxf.version>3.1.9</apache.cxf.version>
+    <slf4j.version>1.7.22</slf4j.version>
+    <testng.version>6.10</testng.version>
+    <citrus.version>2.7-SNAPSHOT</citrus.version>
     <jee.api.version>7.0</jee.api.version>
-    <arquillian.version>1.1.11.Final</arquillian.version>
+    <arquillian.version>1.1.12.Final</arquillian.version>
     <wildfly.version>10.0.0.Final</wildfly.version>
   </properties>
 
@@ -27,8 +27,8 @@
         <version>3.5.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 

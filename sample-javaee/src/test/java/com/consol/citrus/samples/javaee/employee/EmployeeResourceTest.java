@@ -63,34 +63,42 @@ public class EmployeeResourceTest {
     @CitrusTest
     public void testPostAndGet(@CitrusResource TestDesigner citrus) {
         citrus.http().client(serviceUri)
+                .send()
                 .post()
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .payload("name=Penny&age=20");
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.NO_CONTENT);
 
         citrus.http().client(serviceUri)
+                .send()
                 .post()
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .payload("name=Leonard&age=21");
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.NO_CONTENT);
 
         citrus.http().client(serviceUri)
+                .send()
                 .post()
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .payload("name=Sheldon&age=22");
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.NO_CONTENT);
 
         citrus.http().client(serviceUri)
+                .send()
                 .get()
                 .accept(MediaType.APPLICATION_XML);
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.OK)
                 .payload("<employees>" +
                             "<employee>" +
@@ -115,10 +123,12 @@ public class EmployeeResourceTest {
     @CitrusTest
     public void testGetSingle(@CitrusResource TestDesigner citrus) {
         citrus.http().client(serviceUri)
+                .send()
                 .get("/1")
                 .accept(MediaType.APPLICATION_XML);
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.OK)
                 .payload("<employee>" +
                             "<age>21</age>" +
@@ -133,19 +143,23 @@ public class EmployeeResourceTest {
     @CitrusTest
     public void testPut(@CitrusResource TestDesigner citrus) {
         citrus.http().client(serviceUri)
+                .send()
                 .put()
                 .fork(true)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .payload("name=Howard&age=21&email=howard@example.com");
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.NO_CONTENT);
 
         citrus.http().client(serviceUri)
+                .send()
                 .get()
                 .accept(MediaType.APPLICATION_XML);
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.OK)
                 .payload("<employees>" +
                             "<employee>" +
@@ -175,16 +189,20 @@ public class EmployeeResourceTest {
     @CitrusTest
     public void testDelete(@CitrusResource TestDesigner citrus) {
         citrus.http().client(serviceUri)
+                .send()
                 .delete("/Leonard");
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.NO_CONTENT);
 
         citrus.http().client(serviceUri)
+                .send()
                 .get()
                 .accept(MediaType.APPLICATION_XML);
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.OK)
                 .payload("<employees>" +
                             "<employee>" +
@@ -210,10 +228,12 @@ public class EmployeeResourceTest {
     @CitrusTest
     public void testClientSideNegotiation(@CitrusResource TestDesigner citrus) {
         citrus.http().client(serviceUri)
+                .send()
                 .get()
                 .accept(MediaType.APPLICATION_JSON);
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.JSON)
                 .payload("{\"employee\":[" +
@@ -230,16 +250,20 @@ public class EmployeeResourceTest {
     @CitrusTest
     public void testDeleteAll(@CitrusResource TestDesigner citrus) {
         citrus.http().client(serviceUri)
+                .send()
                 .delete();
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.NO_CONTENT);
 
         citrus.http().client(serviceUri)
+                .send()
                 .get()
                 .accept(MediaType.APPLICATION_XML);
 
         citrus.http().client(serviceUri)
+                .receive()
                 .response(HttpStatus.OK)
                 .payload("<employees></employees>");
 
