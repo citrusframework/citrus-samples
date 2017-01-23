@@ -38,6 +38,7 @@
     <module>sample-binary</module>
     <module>sample-soap</module>
     <module>sample-soap-wssecurity</module>
+    <module>sample-soap-wsaddressing</module>
     <module>sample-soap-ssl</module>
     <module>sample-soap-static-response</module>
     <module>sample-jdbc</module>

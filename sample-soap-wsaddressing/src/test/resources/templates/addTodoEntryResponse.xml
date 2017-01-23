@@ -1,0 +1,3 @@
+<todo:addTodoEntryResponse xmlns:todo="http://citrusframework.org/samples/todolist">
+  <todo:success>true</todo:success>
+</todo:addTodoEntryResponse>
