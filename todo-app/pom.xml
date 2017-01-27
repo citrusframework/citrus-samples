@@ -115,6 +115,62 @@
           </dependency>
         </dependencies>
       </plugin>
+
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>fabric8-maven-plugin</artifactId>
+        <version>3.2.15</version>
+        <configuration>
+          <mode>kubernetes</mode>
+          <resources>
+            <labels>
+              <all>
+                <property>
+                  <name>app</name>
+                  <value>todo</value>
+                </property>
+              </all>
+            </labels>
+            <services>
+              <service>
+                <name>citrus-sample-todo-service</name>
+                <ports>
+                  <port>
+                    <protocol>tcp</protocol>
+                    <port>8080</port>
+                    <targetPort>8080</targetPort>
+                  </port>
+                </ports>
+                <type>NodePort</type>
+              </service>
+            </services>
+          </resources>
+          <verbose>true</verbose>
+          <images>
+            <image>
+              <alias>todo-app</alias>
+              <name>citrus/todo-app:${project.version}</name>
+              <build>
+                <from>fabric8/tomcat-8:latest</from>
+                <tags>
+                  <tag>latest</tag>
+                </tags>
+                <assembly>
+                  <inline>
+                    <files>
+                      <file>
+                        <source>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</source>
+                        <destName>ROOT.war</destName>
+                        <outputDirectory>.</outputDirectory>
+                      </file>
+                    </files>
+                  </inline>
+                </assembly>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
