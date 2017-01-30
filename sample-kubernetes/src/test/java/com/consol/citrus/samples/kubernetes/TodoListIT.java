@@ -53,7 +53,7 @@ public class TodoListIT extends AbstractKubernetesIT {
         kubernetes()
             .client(k8sClient)
             .services()
-            .get("todo-app")
+            .get("citrus-sample-todo-service")
             .validate((service, context) -> {
                 Assert.assertNotNull(service.getResult());
             });
