@@ -10,7 +10,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>4.3.5.RELEASE</spring.version>
+    <spring.version>4.3.6.RELEASE</spring.version>
     <spring.ws.version>2.4.0.RELEASE</spring.ws.version>
     <apache.camel.version>2.18.1</apache.camel.version>
     <activemq.version>5.14.3</activemq.version>
