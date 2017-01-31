@@ -19,7 +19,9 @@ package com.consol.citrus.samples.kubernetes;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.kubernetes.client.KubernetesClient;
+import com.consol.citrus.kubernetes.command.WatchEventResult;
 import com.consol.citrus.message.MessageType;
+import io.fabric8.kubernetes.client.Watcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -131,14 +133,23 @@ public class TodoListIT extends AbstractKubernetesIT {
             .validate((pods, context) -> {
                 Assert.assertNotNull(pods.getResult());
                 Assert.assertEquals(pods.getResult().getItems().size(), 1L);
-
                 context.setVariable("todoPod", pods.getResult().getItems().get(0).getMetadata().getName());
             });
 
-        kubernetes()
-            .pods()
-            .delete("${todoPod}")
-            .validate((result, context) -> Assert.assertTrue(result.getResult().getSuccess()));
+        parallel()
+            .actions(
+                kubernetes()
+                    .pods()
+                    .watch()
+                    .name("${todoPod}")
+                    .namespace("default")
+                    .validate((result, context) -> Assert.assertEquals(((WatchEventResult) result).getAction(), Watcher.Action.MODIFIED)),
+                kubernetes()
+                    .pods()
+                    .delete("${todoPod}")
+                    .namespace("default")
+                    .validate((result, context) -> Assert.assertTrue(result.getResult().getSuccess()))
+            );
 
         sleep(2000L);
 
