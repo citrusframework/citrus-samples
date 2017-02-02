@@ -93,7 +93,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
-            .xpath("(//xh:li[@class='list-group-item'])[last()]", "${todoName}");
+            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
 
         query(todoDataSource)
             .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")

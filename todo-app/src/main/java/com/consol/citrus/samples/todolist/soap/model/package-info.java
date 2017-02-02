@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.11 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2017.01.23 um 04:48:49 PM CET 
+// Generiert: 2017.02.02 um 08:35:59 PM CET 
 //
 
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://citrusframework.org/samples/todolist", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)

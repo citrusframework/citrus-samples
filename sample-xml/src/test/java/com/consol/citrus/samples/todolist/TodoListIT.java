@@ -72,6 +72,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                         "<id>${todoId}</id>" +
                         "<title>${todoName}</title>" +
                         "<description>${todoDescription}</description>" +
+                        "<done>false</done>" +
                     "</todo>");
     }
 
@@ -146,7 +147,8 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .response(HttpStatus.OK)
             .validate("/t:todo/t:id", "${todoId}")
             .validate("/t:todo/t:title", "${todoName}")
-            .validate("/t:todo/t:description", "${todoDescription}");
+            .validate("/t:todo/t:description", "${todoDescription}")
+            .validate("/t:todo/t:done", "false");
     }
 
 }

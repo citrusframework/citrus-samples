@@ -2,13 +2,16 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.11 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2017.01.23 um 04:48:49 PM CET 
+// Generiert: 2017.02.02 um 08:35:59 PM CET 
 //
 
 
 package com.consol.citrus.samples.todolist.soap.model;
 
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -28,6 +31,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _GetTodoListRequest_QNAME = new QName("http://citrusframework.org/samples/todolist", "getTodoListRequest");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.consol.citrus.samples.todolist.soap.model
@@ -69,19 +73,20 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetTodoListRequest }
-     * 
-     */
-    public GetTodoListRequest createGetTodoListRequest() {
-        return new GetTodoListRequest();
-    }
-
-    /**
      * Create an instance of {@link GetTodoListResponse.List.TodoEntry }
      * 
      */
     public GetTodoListResponse.List.TodoEntry createGetTodoListResponseListTodoEntry() {
         return new GetTodoListResponse.List.TodoEntry();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Object }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://citrusframework.org/samples/todolist", name = "getTodoListRequest")
+    public JAXBElement<Object> createGetTodoListRequest(Object value) {
+        return new JAXBElement<Object>(_GetTodoListRequest_QNAME, Object.class, null, value);
     }
 
 }

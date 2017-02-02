@@ -15,9 +15,9 @@ The data provider is defined in the test case.
     @DataProvider(name = "todoDataProvider")
     public Object[][] todoDataProvider() {
         return new Object[][] {
-            new Object[] { "todo1", "Description: todo1" },
-            new Object[] { "todo2", "Description: todo2" },
-            new Object[] { "todo3", "Description: todo3" }
+            new Object[] { "todo1", "Description: todo1", false },
+            new Object[] { "todo2", "Description: todo2", true },
+            new Object[] { "todo3", "Description: todo3", false }
         };
     }
     
@@ -26,8 +26,8 @@ in the Citrus test with some annotation magic.
     
     @Test(dataProvider = "todoDataProvider")
     @CitrusTest
-    @CitrusParameters( { "todoName", "todoDescription" })
-    public void testProvider(String todoName, String todoDescription) {
+    @CitrusParameters( { "todoName", "todoDescription", "done" })
+    public void testProvider(String todoName, String todoDescription, boolean done) {
         variable("todoId", "citrus:randomUUID()");
 
         http()
@@ -36,7 +36,7 @@ in the Citrus test with some annotation magic.
             .post("/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
         
         [...]    
     }            
@@ -45,9 +45,9 @@ As you can see we are able to use the name and description values provided by th
 multiple times with respective values:
 
     CITRUS TEST RESULTS
-    TodoListIT.testPost([todo1, Description: todo1]) ............... SUCCESS
-    TodoListIT.testPost([todo2, Description: todo2]) ............... SUCCESS
-    TodoListIT.testPost([todo3, Description: todo3]) ............... SUCCESS    
+    TodoListIT.testPost([todo1, Description: todo1, false]) ............... SUCCESS
+    TodoListIT.testPost([todo2, Description: todo2, true]) ............... SUCCESS
+    TodoListIT.testPost([todo3, Description: todo3, false]) ............... SUCCESS    
         
 Run
 ---------

@@ -48,6 +48,7 @@
                   <id>${todoId}</id>
                   <title>${todoName}</title>
                   <description>${todoDescription}</description>
+                  <done>false</done>
                 </todoEntry>
             </getTodoResponse>
             ]]>
@@ -63,6 +64,7 @@
                       <id>${todoId}</id>
                       <title>${todoName}</title>
                       <description>${todoDescription}</description>
+                      <done>false</done>
                     </todoEntry>
                 </list>
             </getTodoListResponse>

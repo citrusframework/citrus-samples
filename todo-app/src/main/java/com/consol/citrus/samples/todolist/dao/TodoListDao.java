@@ -32,4 +32,6 @@ public interface TodoListDao {
     void delete(TodoEntry entry);
 
     void deleteAll();
+
+    void update(TodoEntry entry);
 }

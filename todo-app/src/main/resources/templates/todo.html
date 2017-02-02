@@ -7,8 +7,16 @@
   <script type="text/javascript" src="/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   <style>
+    body {
+      padding-top: 60px;
+    }
+
     .clickable {
       cursor: pointer;
+    }
+
+    input.complete {
+      margin-right: 10px;
     }
   </style>
 
@@ -19,11 +27,19 @@
                   method: "DELETE",
                   url: "todo/" + event.currentTarget.id
               }).done(function() {
-                  $( event.currentTarget ).parent('li').fadeOut().remove();
+                  $( event.currentTarget ).parent('li').fadeOut();
               });
 
               event.stopPropagation();
               return false;
+          });
+
+          $('input.complete').click(function(event) {
+              $.ajax({
+                  method: "PUT",
+                  url: "todo/" + event.currentTarget.id,
+                  data: "done=" + event.currentTarget.checked
+              });
           });
       });
   </script>
@@ -38,7 +54,10 @@
 
       <ul class="list-group">
         {{#todos}}
-        <li class="list-group-item">{{title}}<a class="remove clickable pull-right" id="{{id}}" title="Remove todo"><span style="color: #A50000;">x</span></a></li>
+        <li class="list-group-item"><input id="{{id}}" class="complete" type="checkbox" name="complete" {{#done}}checked="checked"{{/done}}/><span>{{title}}</span><a class="remove clickable pull-right" id="{{id}}" title="Remove todo"><span style="color: #A50000;">x</span></a></li>
+        {{/todos}}
+        {{^todos}}
+        <li class="list-group-item">No todos found</li>
         {{/todos}}
       </ul>
 

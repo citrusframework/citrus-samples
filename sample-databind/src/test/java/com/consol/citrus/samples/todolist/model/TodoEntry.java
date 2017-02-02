@@ -26,6 +26,7 @@ public class TodoEntry {
     private UUID id;
     private String title;
     private String description;
+    private boolean done;
 
     public TodoEntry() {
     }
@@ -62,5 +63,13 @@ public class TodoEntry {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }

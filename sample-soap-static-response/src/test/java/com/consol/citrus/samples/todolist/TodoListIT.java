@@ -47,6 +47,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                             "<id>${todoId}</id>" +
                             "<title>${todoName}</title>" +
                             "<description>${todoDescription}</description>" +
+                            "<done>false</done>" +
                         "</todoEntry>" +
                     "</getTodoResponse>");
     }
@@ -69,6 +70,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                                 "<id>${todoId}</id>" +
                                 "<title>${todoName}</title>" +
                                 "<description>${todoDescription}</description>" +
+                                "<done>false</done>" +
                             "</todoEntry>" +
                         "</list>" +
                     "</getTodoListResponse>");

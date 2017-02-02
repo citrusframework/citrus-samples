@@ -23,7 +23,7 @@ No we can add a new todo entry by sending a JSON message to the JMS queue destin
     
     send(todoJmsEndpoint)
         .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-        .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+        .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
         
 We have to add a special message header **_type** which is required by the system under test for message conversion. The message payload
 is the JSON representation of a todo entry model object.

@@ -35,6 +35,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoId", "citrus:randomUUID()");
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
+        variable("done", "false");
 
         http()
             .client("http://localhost:8080")
@@ -42,7 +43,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .post("/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
         http()
             .client("http://localhost:8080")
@@ -62,7 +63,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
     }
 
     @Test
@@ -71,10 +72,11 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoId", "citrus:randomUUID()");
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
+        variable("done", "false");
 
         send("jms:queue:jms.todo.inbound?connectionFactory=activeMqConnectionFactory")
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
         http()
             .client("http://localhost:8080")
@@ -87,7 +89,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
     }
 
 }

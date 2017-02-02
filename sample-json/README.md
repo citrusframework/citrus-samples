@@ -18,7 +18,7 @@ We can use Json as message payloads directly in the test cases.
         .post("/todolist")
         .messageType(MessageType.JSON)
         .contentType("application/json")
-        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
         
 As you can see we are able to send the Json data as payload. You can add test variables in message payloads. In a receive 
 action we are able to use an expected Json message payload. Citrus performs a Json object comparison where each element is checked to meet
@@ -29,7 +29,7 @@ the expected values.
         .receive()
         .response(HttpStatus.OK)
         .messageType(MessageType.JSON)
-        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
 The Json message payload can be difficult to read when used as String concatenation. Fortunately we can also use file resources as message
 payloads.

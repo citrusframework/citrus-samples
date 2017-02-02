@@ -24,7 +24,7 @@ Now we can use the XHTML validation feature in the Citrus test.
         .client(todoClient)
         .response(HttpStatus.OK)
         .messageType(MessageType.XHTML)
-        .xpath("(//xh:li[@class='list-group-item'])[last()]", "${todoName}");
+        .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
         
 In a Http client response we can set the message type to XHTML. Citrus automatically converts the HTML response to
 XHTML so we can use XPath to validation the HTML content.

@@ -73,4 +73,10 @@ public class TodoListService {
 
         throw new RuntimeException(String.format("Unable to find entry with uuid '%s'", uuid));
     }
+
+    public void setStatus(UUID uuid, boolean done) {
+        TodoEntry entry = getEntry(uuid);
+        entry.setDone(done);
+        todoListDao.update(entry);
+    }
 }

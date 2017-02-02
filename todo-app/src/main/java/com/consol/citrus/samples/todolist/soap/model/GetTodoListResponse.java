@@ -2,18 +2,14 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.11 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2017.01.23 um 04:48:49 PM CET 
+// Generiert: 2017.02.02 um 08:35:59 PM CET 
 //
 
 
 package com.consol.citrus.samples.todolist.soap.model;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -39,6 +35,7 @@ import javax.xml.bind.annotation.XmlType;
  *                             &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *                             &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *                             &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *                             &lt;element name="done" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
  *                           &lt;/sequence&gt;
  *                         &lt;/restriction&gt;
  *                       &lt;/complexContent&gt;
@@ -110,6 +107,7 @@ public class GetTodoListResponse {
      *                   &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
      *                   &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
      *                   &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+     *                   &lt;element name="done" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
      *                 &lt;/sequence&gt;
      *               &lt;/restriction&gt;
      *             &lt;/complexContent&gt;
@@ -174,6 +172,7 @@ public class GetTodoListResponse {
          *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
          *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
          *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+         *         &lt;element name="done" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
          *       &lt;/sequence&gt;
          *     &lt;/restriction&gt;
          *   &lt;/complexContent&gt;
@@ -186,7 +185,8 @@ public class GetTodoListResponse {
         @XmlType(name = "", propOrder = {
             "id",
             "title",
-            "description"
+            "description",
+            "done"
         })
         public static class TodoEntry {
 
@@ -195,6 +195,7 @@ public class GetTodoListResponse {
             @XmlElement(required = true)
             protected String title;
             protected String description;
+            protected Boolean done;
 
             /**
              * Ruft den Wert der id-Eigenschaft ab.
@@ -266,6 +267,30 @@ public class GetTodoListResponse {
              */
             public void setDescription(String value) {
                 this.description = value;
+            }
+
+            /**
+             * Ruft den Wert der done-Eigenschaft ab.
+             * 
+             * @return
+             *     possible object is
+             *     {@link Boolean }
+             *     
+             */
+            public Boolean isDone() {
+                return done;
+            }
+
+            /**
+             * Legt den Wert der done-Eigenschaft fest.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link Boolean }
+             *     
+             */
+            public void setDone(Boolean value) {
+                this.done = value;
             }
 
         }

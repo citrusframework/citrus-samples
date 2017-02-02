@@ -7,6 +7,7 @@
         <xs:element name="id" type="xs:string"/>
         <xs:element name="title" type="xs:string"/>
         <xs:element name="description" type="xs:string" minOccurs="0"/>
+        <xs:element name="done" type="xs:boolean" minOccurs="0"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

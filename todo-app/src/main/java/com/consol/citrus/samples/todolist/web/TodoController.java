@@ -41,6 +41,14 @@ public class TodoController {
         return todoListService.getEntry(UUID.fromString(id));
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "content-type=application/x-www-form-urlencoded")
+    @ResponseBody
+    public ResponseEntity setEntryStatus(@PathVariable(value = "id") String id,
+                                   @RequestParam(value = "done") boolean done) {
+        todoListService.setStatus(UUID.fromString(id), done);
+        return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteEntryByTitle(@RequestParam(value = "title") String title) {
         todoListService.deleteEntry(title);

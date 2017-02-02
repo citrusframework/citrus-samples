@@ -67,6 +67,7 @@ public class TodoListIT extends AbstractKubernetesIT {
         variable("todoId", "citrus:randomUUID()");
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
+        variable("done", "false");
 
         http()
             .client(todoClient)
@@ -74,7 +75,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .post("/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
         http()
             .client(todoClient)
@@ -94,7 +95,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
     }
 
     @Test
@@ -110,13 +111,14 @@ public class TodoListIT extends AbstractKubernetesIT {
                 createVariable("todoId", "citrus:randomUUID()"),
                 createVariable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))"),
                 createVariable("todoDescription", "Description: ${todoName}"),
+                createVariable("done", "false"),
                 http()
                     .client(todoClient)
                     .send()
                     .post("/todolist")
                     .messageType(MessageType.JSON)
                     .contentType("application/json")
-                    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"),
+                    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"),
 
                 http()
                     .client(todoClient)
@@ -158,6 +160,7 @@ public class TodoListIT extends AbstractKubernetesIT {
         createVariable("todoId", "citrus:randomUUID()");
         createVariable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         createVariable("todoDescription", "Description: ${todoName}");
+        createVariable("done", "false");
 
         http()
             .client(todoClient)
@@ -165,7 +168,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .post("/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}");
 
         http()
             .client(todoClient)
@@ -185,6 +188,6 @@ public class TodoListIT extends AbstractKubernetesIT {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
     }
 }

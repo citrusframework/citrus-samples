@@ -36,8 +36,8 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
     @Test(dataProvider = "todoDataProvider")
     @CitrusTest
-    @CitrusParameters( { "todoName", "todoDescription" })
-    public void testProvider(String todoName, String todoDescription) {
+    @CitrusParameters( { "todoName", "todoDescription", "done" })
+    public void testProvider(String todoName, String todoDescription, boolean done) {
         variable("todoId", "citrus:randomUUID()");
 
         http()
@@ -46,7 +46,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .post("/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
         http()
             .client(todoClient)
@@ -66,15 +66,15 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
     }
 
     @DataProvider(name = "todoDataProvider")
     public Object[][] todoDataProvider() {
         return new Object[][] {
-            new Object[] { "todo1", "Description: todo1" },
-            new Object[] { "todo2", "Description: todo2" },
-            new Object[] { "todo3", "Description: todo3" }
+            new Object[] { "todo1", "Description: todo1", false },
+            new Object[] { "todo2", "Description: todo2", true },
+            new Object[] { "todo3", "Description: todo3", false }
         };
     }
 

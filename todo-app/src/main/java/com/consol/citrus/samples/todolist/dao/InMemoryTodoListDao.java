@@ -50,4 +50,19 @@ public class InMemoryTodoListDao implements TodoListDao {
     public void deleteAll() {
         storage.clear();
     }
+
+    @Override
+    public void update(TodoEntry entry) {
+        Optional<TodoEntry> found = storage.stream()
+                .filter(current -> current.getId().equals(entry.getId()))
+                .findFirst();
+
+        if (!found.isPresent()) {
+            throw new RuntimeException(String.format("Unable to find entry with uuid '%s'", entry.getId()));
+        }
+
+        found.get().setTitle(entry.getTitle());
+        found.get().setDescription(entry.getDescription());
+        found.get().setDone(entry.isDone());
+    }
 }

@@ -50,11 +50,12 @@ public class JdbcTodoListDao implements TodoListDao {
             Connection connection = getConnection();
             try {
                 connection.setAutoCommit(true);
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO todo_entries (id, title, description) VALUES (?, ?, ?)");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)");
                 try {
                     statement.setString(1, getNextId());
                     statement.setString(2, entry.getTitle());
                     statement.setString(3, entry.getDescription());
+                    statement.setBoolean(4, entry.isDone());
                     statement.executeUpdate();
                 } finally {
                     statement.close();
@@ -139,6 +140,30 @@ public class JdbcTodoListDao implements TodoListDao {
             }
         } catch (SQLException e) {
             throw new DataAccessException("Could not delete entries", e);
+        }
+    }
+
+    @Override
+    public void update(TodoEntry entry) {
+        try {
+            Connection connection = getConnection();
+            try {
+                connection.setAutoCommit(true);
+                PreparedStatement statement = connection.prepareStatement("UPDATE todo_entries SET (title, description, done) VALUES (?, ?, ?) WHERE id = ?");
+                try {
+                    statement.setString(1, entry.getTitle());
+                    statement.setString(2, entry.getDescription());
+                    statement.setBoolean(3, entry.isDone());
+                    statement.setString(4, entry.getId().toString());
+                    statement.executeUpdate();
+                } finally {
+                    statement.close();
+                }
+            } finally {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Could not update entry " + entry, e);
         }
     }
 

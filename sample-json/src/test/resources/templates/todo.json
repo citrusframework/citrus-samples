@@ -1,5 +1,6 @@
 {
   "id": "${todoId}",
   "title": "${todoName}",
-  "description": "${todoDescription}"
+  "description": "${todoDescription}",
+  "done": false
 }

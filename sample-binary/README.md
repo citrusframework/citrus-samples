@@ -25,7 +25,7 @@ No we can send some content as binary message to the JMS queue destination.
 ```java
 send(todoJmsEndpoint)
     .messageType(MessageType.BINARY)
-    .message(new DefaultMessage("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }".getBytes()));
+    .message(new DefaultMessage("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}".getBytes()));
 ```
 
 The sample uses the **getBytes** method of Java String class in order to get binary content as byte array. Citrus will automatically
@@ -39,7 +39,7 @@ binary content to a String representation for comparison.
 receive(todoJmsEndpoint)
     .messageType(MessageType.BINARY)
     .validator(new BinaryMessageValidator())
-    .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+    .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 ```
         
 The binary message validator implementation is very simple and performs String equals for validation:

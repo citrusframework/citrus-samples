@@ -27,6 +27,7 @@ import java.util.UUID;
         "id",
         "title",
         "description",
+        "done"
 })
 @XmlRootElement(name = "todo")
 public class TodoEntry {
@@ -36,6 +37,8 @@ public class TodoEntry {
     private String title;
     @XmlElement
     private String description;
+    @XmlElement
+    private boolean done;
 
     public TodoEntry() {
         this.id = UUID.randomUUID();
@@ -73,5 +76,13 @@ public class TodoEntry {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    public boolean isDone() {
+        return done;
     }
 }

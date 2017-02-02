@@ -41,16 +41,17 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     public void testAddTodoEntryBinaryBase64() {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
+        variable("done", "false");
 
         send(todoJmsEndpoint)
                 .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
                 .messageType(MessageType.BINARY)
-                .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+                .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
         receive(todoJmsEndpoint)
                 .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
                 .messageType(MessageType.BINARY_BASE64)
-                .payload("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }')");
+                .payload("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}')");
     }
 
     @Test
@@ -58,17 +59,18 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     public void testAddTodoEntryBinary() {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
+        variable("done", "false");
 
         send(todoJmsEndpoint)
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
             .messageType(MessageType.BINARY)
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
         receive(todoJmsEndpoint)
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
             .messageType(MessageType.BINARY)
             .validator(new BinaryMessageValidator())
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
     }
 
     /**

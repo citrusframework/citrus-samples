@@ -46,7 +46,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}");
     }
 
     @Test
@@ -63,7 +63,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.JSON)
-            .payload("[ { \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"} ]");
+            .payload("[ { \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false} ]");
     }
 
 }
