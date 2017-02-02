@@ -18,8 +18,8 @@ package com.consol.citrus.samples.todolist.dao;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Christoph Deppisch
@@ -36,19 +36,14 @@ public class InMemoryTodoListDao implements TodoListDao {
 
     @Override
     public List<TodoEntry> list() {
-        return storage;
+        return storage.stream().collect(Collectors.toList());
     }
 
     @Override
-    public void deleteByTitle(String title) {
-        List<TodoEntry> filtered = new ArrayList<>();
-        for (TodoEntry entry: storage) {
-            if (!entry.getTitle().equals(title)) {
-                filtered.add(entry);
-            }
-        }
-
-        storage = filtered;
+    public void delete(TodoEntry entry) {
+        storage = storage.stream()
+                         .filter(current -> !current.equals(entry))
+                         .collect(Collectors.toList());
     }
 
     @Override

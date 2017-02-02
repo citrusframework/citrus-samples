@@ -41,11 +41,7 @@ public class TodoListService {
         return todoListDao.list();
     }
 
-    public void removeEntry(String title) {
-        todoListDao.deleteByTitle(title);
-    }
-
-    public void removeAll() {
+    public void clear() {
         todoListDao.deleteAll();
     }
 
@@ -53,6 +49,25 @@ public class TodoListService {
         for (TodoEntry entry : todoListDao.list()) {
             if (entry.getId().equals(uuid)) {
                 return entry;
+            }
+        }
+
+        throw new RuntimeException(String.format("Unable to find entry with uuid '%s'", uuid));
+    }
+
+    public void deleteEntry(String title) {
+        for (TodoEntry entry : todoListDao.list()) {
+            if (entry.getTitle().equals(title)) {
+                todoListDao.delete(entry);
+            }
+        }
+    }
+
+    public void deleteEntry(UUID uuid) {
+        for (TodoEntry entry : todoListDao.list()) {
+            if (entry.getId().equals(uuid)) {
+                todoListDao.delete(entry);
+                return;
             }
         }
 

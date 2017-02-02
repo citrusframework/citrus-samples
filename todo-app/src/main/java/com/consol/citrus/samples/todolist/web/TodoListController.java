@@ -64,7 +64,7 @@ public class TodoListController {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public String clear() {
-        todoListService.removeAll();
+        todoListService.clear();
         return "redirect:todolist";
     }
 

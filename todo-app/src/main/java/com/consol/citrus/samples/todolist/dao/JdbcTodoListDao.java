@@ -103,14 +103,14 @@ public class JdbcTodoListDao implements TodoListDao {
     }
 
     @Override
-    public void deleteByTitle(String title) {
+    public void delete(TodoEntry entry) {
         try {
             Connection connection = getConnection();
             try {
                 connection.setAutoCommit(true);
-                PreparedStatement statement = connection.prepareStatement("DELETE FROM todo_entries WHERE title = ?");
+                PreparedStatement statement = connection.prepareStatement("DELETE FROM todo_entries WHERE id = ?");
                 try {
-                    statement.setString(1, title);
+                    statement.setString(1, entry.getId().toString());
                     statement.executeUpdate();
                 } finally {
                     statement.close();
@@ -119,7 +119,7 @@ public class JdbcTodoListDao implements TodoListDao {
                 connection.close();
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Could not delete entries for title " + title, e);
+            throw new DataAccessException("Could not delete entries for title " + entry.getId().toString(), e);
         }
     }
 

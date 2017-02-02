@@ -19,6 +19,7 @@ package com.consol.citrus.samples.todolist.web;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +42,15 @@ public class TodoController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public String removeEntry(@RequestParam(value = "title") String title) {
-        todoListService.removeEntry(title);
-        return "redirect:todolist";
+    public ResponseEntity deleteEntryByTitle(@RequestParam(value = "title") String title) {
+        todoListService.deleteEntry(title);
+        return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteEntry(@PathVariable(value = "id") String id) {
+        todoListService.deleteEntry(UUID.fromString(id));
+
+        return ResponseEntity.ok().build();
     }
 }

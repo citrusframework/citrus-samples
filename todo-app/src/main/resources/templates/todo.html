@@ -5,6 +5,28 @@
   <link type="text/css" rel="stylesheet" media="screen" href="/webjars/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
   <script type="text/javascript" src="/webjars/jquery/2.1.4/jquery.min.js"></script>
   <script type="text/javascript" src="/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+  <style>
+    .clickable {
+      cursor: pointer;
+    }
+  </style>
+
+  <script type="application/javascript">
+      $(document).ready(function() {
+          $('a.remove').click(function(event) {
+              $.ajax({
+                  method: "DELETE",
+                  url: "todo/" + event.currentTarget.id
+              }).done(function() {
+                  $( event.currentTarget ).parent('li').fadeOut().remove();
+              });
+
+              event.stopPropagation();
+              return false;
+          });
+      });
+  </script>
 </head>
 <body>
 
@@ -16,7 +38,7 @@
 
       <ul class="list-group">
         {{#todos}}
-        <li class="list-group-item">{{title}}</li>
+        <li class="list-group-item">{{title}}<a class="remove clickable pull-right" id="{{id}}" title="Remove todo"><span style="color: #A50000;">x</span></a></li>
         {{/todos}}
       </ul>
 

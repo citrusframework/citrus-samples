@@ -29,7 +29,7 @@ public interface TodoListDao {
 
     List<TodoEntry> list();
 
-    void deleteByTitle(String title);
+    void delete(TodoEntry entry);
 
     void deleteAll();
 }
