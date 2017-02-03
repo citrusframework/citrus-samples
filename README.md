@@ -19,6 +19,7 @@ system under test. Please find following list of samples and their primary objec
 
 | Sample                                | Objective |
 |---------------------------------------|:---------:|
+| [sample-docker](sample-docker)| Shows how to use Citrus within Docker infrastructure |
 | [sample-gradle](sample-gradle)| Uses Gradle build to execute tests |
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
@@ -37,6 +38,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-https](sample-https)| Shows how to use SSL connectivity as a client and server |
 | [sample-soap](sample-soap)| Shows SOAP web service support |
 | [sample-soap-wssecurity](sample-soap-wssecurity)| Shows how to configure SOAP web service client and server with WSSecurity enabled |
+| [sample-soap-wsaddressing](sample-soap-wsaddressing)| Shows how to configure SOAP web service client and server with WSAddressing enabled |
 | [sample-soap-ssl](sample-soap-ssl)| Shows how to configure SOAP web service with SSL secure connectivity |
 | [sample-soap-static-response](sample-soap-static-response)| Shows how to setup a static response generating SOAP web service server component |
 | [sample-rmi](sample-rmi)| Shows how to use RMI with Citrus as a client and server |
