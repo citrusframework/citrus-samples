@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-kubernetes</artifactId>
-  <name>citrus-sample-kubernetes</name>
+  <artifactId>citrus-sample-docker</artifactId>
+  <name>citrus-sample-docker</name>
   <version>2.7</version>
 
   <properties>
@@ -77,6 +77,49 @@
           <verbose>true</verbose>
           <images>
             <image>
+              <alias>todo-app</alias>
+              <name>citrus/todo-app:${project.version}</name>
+              <build>
+                <from>fabric8/tomcat-8:latest</from>
+                <tags>
+                  <tag>latest</tag>
+                </tags>
+                <assembly>
+                  <inline>
+                    <files>
+                      <file>
+                        <source>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</source>
+                        <destName>ROOT.war</destName>
+                        <outputDirectory>.</outputDirectory>
+                      </file>
+                    </files>
+                  </inline>
+                </assembly>
+              </build>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <env>
+                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                </env>
+                <ports>
+                  <port>8080:8080</port>
+                </ports>
+                <wait>
+                  <http>
+                    <url>http://localhost:8080/todolist</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>green</color>
+                </log>
+              </run>
+            </image>
+            <image>
               <alias>todo-app-tests</alias>
               <name>citrus/todo-app-tests:${project.version}</name>
               <build>
@@ -88,18 +131,31 @@
                   <descriptorRef>project</descriptorRef>
                 </assembly>
               </build>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <volumes>
+                  <bind>
+                    <volume>/var/run/docker.sock:/var/run/dockerhost/docker.sock</volume>
+                  </bind>
+                </volumes>
+                <links>
+                  <link>todo-app</link>
+                </links>
+                <dependsOn>
+                  <dependsOn>todo-app</dependsOn>
+                </dependsOn>
+                <wait>
+                  <log>BUILD SUCCESS</log>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>green</color>
+                </log>
+              </run>
             </image>
           </images>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>fabric8-maven-plugin</artifactId>
-        <version>3.2.15</version>
-        <configuration>
-          <mode>kubernetes</mode>
-          <verbose>true</verbose>
         </configuration>
       </plugin>
     </plugins>
@@ -152,7 +208,7 @@
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-kubernetes</artifactId>
+      <artifactId>citrus-docker</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
@@ -160,7 +216,7 @@
 
   <profiles>
     <profile>
-      <id>minikube</id>
+      <id>docker</id>
       <properties>
         <test>skip</test>
         <it.test>skip</it.test>
@@ -172,25 +228,18 @@
             <artifactId>docker-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>docker-build</id>
-                <phase>install</phase>
+                <id>start</id>
+                <phase>pre-integration-test</phase>
                 <goals>
                   <goal>build</goal>
+                  <goal>start</goal>
                 </goals>
               </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>fabric8-maven-plugin</artifactId>
-            <executions>
               <execution>
-                <id>fabric8-deploy</id>
-                <phase>install</phase>
+                <id>stop</id>
+                <phase>post-integration-test</phase>
                 <goals>
-                  <goal>resource</goal>
-                  <goal>undeploy</goal>
-                  <goal>resource-apply</goal>
+                  <goal>stop</goal>
                 </goals>
               </execution>
             </executions>
