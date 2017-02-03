@@ -74,7 +74,7 @@ The sample uses the Fabric8 Docker Maven plugin building and running the Docker 
         <alias>todo-app-tests</alias>
         <name>citrus/todo-app-tests:${project.version}</name>
         <build>
-          <from>consol/citrus-2.7:latest</from>
+          <from>consol/citrus:2.7</from>
           <tags>
             <tag>latest</tag>
           </tags>
@@ -144,7 +144,7 @@ Now let us move on to the Citrus tests. We want to also run the tests as Docker 
 
 ```xml
 <build>
-  <from>consol/citrus-2.7:latest</from>
+  <from>consol/citrus:2.7</from>
   <tags>
     <tag>latest</tag>
   </tags>
@@ -154,7 +154,7 @@ Now let us move on to the Citrus tests. We want to also run the tests as Docker 
 </build>
 ```
 
-This time we extend from *consol/citrus-2.7:latest* Docker image which is ready to execute a Citrus Maven build at container runtime. The image also works with the Docker Maven plugin assembly
+This time we extend from *consol/citrus:2.7* Docker image which is ready to execute a Citrus Maven build at container runtime. The image also works with the Docker Maven plugin assembly
 mechanism. This time the add the complete project assembly.
 
 We can build the Docker images by calling:
