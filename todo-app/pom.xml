@@ -121,31 +121,8 @@
         <artifactId>fabric8-maven-plugin</artifactId>
         <version>3.2.15</version>
         <configuration>
-          <mode>kubernetes</mode>
-          <resources>
-            <labels>
-              <all>
-                <property>
-                  <name>app</name>
-                  <value>todo</value>
-                </property>
-              </all>
-            </labels>
-            <services>
-              <service>
-                <name>citrus-sample-todo-service</name>
-                <ports>
-                  <port>
-                    <protocol>tcp</protocol>
-                    <port>8080</port>
-                    <targetPort>8080</targetPort>
-                  </port>
-                </ports>
-                <type>NodePort</type>
-              </service>
-            </services>
-          </resources>
           <verbose>true</verbose>
+          <mode>kubernetes</mode>
           <images>
             <image>
               <alias>todo-app</alias>
@@ -169,6 +146,29 @@
               </build>
             </image>
           </images>
+          <resources>
+            <labels>
+              <all>
+                <property>
+                  <name>app</name>
+                  <value>todo</value>
+                </property>
+              </all>
+            </labels>
+            <services>
+              <service>
+                <name>citrus-sample-todo-service</name>
+                <ports>
+                  <port>
+                    <protocol>tcp</protocol>
+                    <port>8080</port>
+                    <targetPort>8080</targetPort>
+                  </port>
+                </ports>
+                <type>NodePort</type>
+              </service>
+            </services>
+          </resources>
         </configuration>
       </plugin>
     </plugins>

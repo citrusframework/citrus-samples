@@ -1,9 +1,9 @@
 Docker sample ![Logo][1]
 ==============
 
-This sample uses [Docker](https://www.docker.com/) for containerized application infrastructure. Both the system under test [todo-list](../todo-app/README.md) application and 
-the Citrus integration tests are run as Docker container. The Citrus tests are then able to use Docker networking and DNS features in order to access the exposed services on the
-todo-list container. This way Citrus is able to participate on the Docker infrastructure for in-container testing.
+This sample uses [Docker](https://www.docker.com/) for containerized application infrastructure. Both the [todo-list](../todo-app/README.md) system under test and 
+the Citrus integration tests are built and run as Docker container. The Citrus tests are then able to use Docker networking and DNS features 
+in order to access the exposed services on the todo-list container. This way Citrus is able to participate on the Docker infrastructure for in-container testing.
 
 The sample uses the [Fabric8 Docker Maven plugin](https://maven.fabric8.io/) for smooth Docker integration into the Maven build lifecylce.
 
