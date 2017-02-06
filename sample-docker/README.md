@@ -155,7 +155,7 @@ Now let us move on to the Citrus tests. We want to also run the tests as Docker 
 ```
 
 This time we extend from *consol/citrus:2.7* Docker image which is ready to execute a Citrus Maven build at container runtime. The image also works with the Docker Maven plugin assembly
-mechanism. This time the add the complete project assembly.
+mechanism. This time the assembly adds the complete project sources by using the *descriptorRef=project* which is a predefined assembly in the Fabric8 plugin.
 
 We can build the Docker images by calling:
 
