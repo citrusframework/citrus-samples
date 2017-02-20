@@ -36,7 +36,8 @@ system under test. Please find following list of samples and their primary objec
 | [sample-http-loadtest](sample-http-loadtest)| Calls REST API on Http server with multiple threads for load testing |
 | [sample-http-static-response](sample-http-static-response)| Shows how to setup a static response generating Http server component |
 | [sample-https](sample-https)| Shows how to use SSL connectivity as a client and server |
-| [sample-soap](sample-soap)| Shows SOAP web service support |
+| [sample-soap](sample-soap)| Shows basic SOAP web service support |
+| [sample-soap-attachment](sample-soap-attachment)| Shows how to send SOAP attachments to server |
 | [sample-soap-wssecurity](sample-soap-wssecurity)| Shows how to configure SOAP web service client and server with WSSecurity enabled |
 | [sample-soap-wsaddressing](sample-soap-wsaddressing)| Shows how to configure SOAP web service client and server with WSAddressing enabled |
 | [sample-soap-ssl](sample-soap-ssl)| Shows how to configure SOAP web service with SSL secure connectivity |

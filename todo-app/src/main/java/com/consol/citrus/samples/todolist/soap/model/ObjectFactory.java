@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.11 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2017.02.02 um 08:35:59 PM CET 
+// Generiert: 2017.02.02 um 08:35:59 PM CET
 //
 
 
@@ -57,6 +57,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link GetTodoListResponse.List.TodoEntry }
+     * 
+     */
+    public GetTodoListResponse.List.TodoEntry createGetTodoListResponseListTodoEntry() {
+        return new GetTodoListResponse.List.TodoEntry();
+    }
+
+    /**
      * Create an instance of {@link AddTodoEntryRequest }
      * 
      */
@@ -73,11 +81,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetTodoListResponse.List.TodoEntry }
+     * Create an instance of {@link GetTodoListResponse.List.TodoEntry.Attachment }
      * 
      */
-    public GetTodoListResponse.List.TodoEntry createGetTodoListResponseListTodoEntry() {
-        return new GetTodoListResponse.List.TodoEntry();
+    public GetTodoListResponse.List.TodoEntry.Attachment createGetTodoListResponseListTodoEntryAttachment() {
+        return new GetTodoListResponse.List.TodoEntry.Attachment();
     }
 
     /**

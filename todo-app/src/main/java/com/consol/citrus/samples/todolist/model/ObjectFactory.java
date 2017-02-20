@@ -52,4 +52,12 @@ public class ObjectFactory {
         return new TodoEntry();
     }
 
+    /**
+     * Create an instance of {@link Attachment }
+     *
+     */
+    public Attachment createAttachment() {
+        return new Attachment();
+    }
+
 }

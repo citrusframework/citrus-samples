@@ -16,18 +16,24 @@
 
 package com.consol.citrus.samples.todolist.soap;
 
+import com.consol.citrus.samples.todolist.model.Attachment;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
 import com.consol.citrus.samples.todolist.soap.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.server.endpoint.annotation.*;
+import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
 
-import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * @author Christoph Deppisch
@@ -42,8 +48,27 @@ public class TodoWebServiceEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addTodoEntryRequest")
     @ResponsePayload
-    public AddTodoEntryResponse addTodoEntry(@RequestPayload AddTodoEntryRequest request) {
-        todoListService.addEntry(new TodoEntry(request.getTitle(), request.getDescription()));
+    public AddTodoEntryResponse addTodoEntry(@RequestPayload AddTodoEntryRequest request, MessageContext messageContext) {
+        TodoEntry entry = new TodoEntry(request.getTitle(), request.getDescription());
+
+        Iterator<org.springframework.ws.mime.Attachment> it = ((SoapMessage)messageContext.getRequest()).getAttachments();
+        if (it.hasNext()) {
+            org.springframework.ws.mime.Attachment attachment = it.next();
+            Attachment todoAttachment = new Attachment();
+            todoAttachment.setCid(attachment.getContentId());
+            todoAttachment.setContentType(attachment.getContentType());
+
+            try {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                FileCopyUtils.copy(attachment.getInputStream(), out);
+                todoAttachment.setData(Base64.getEncoder().encodeToString(out.toByteArray()));
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to read attachment", e);
+            }
+            entry.setAttachment(todoAttachment);
+        }
+
+        todoListService.addEntry(entry);
 
         AddTodoEntryResponse response = new AddTodoEntryResponse();
         response.setSuccess(true);
@@ -63,6 +88,14 @@ public class TodoWebServiceEndpoint {
             entry.setId(todoEntry.getId().toString());
             entry.setTitle(todoEntry.getTitle());
             entry.setDescription(todoEntry.getDescription());
+
+            if (todoEntry.getAttachment() != null) {
+                GetTodoListResponse.List.TodoEntry.Attachment attachment = new GetTodoListResponse.List.TodoEntry.Attachment();
+                attachment.setCid(todoEntry.getAttachment().getCid());
+                attachment.setContentType(todoEntry.getAttachment().getContentType());
+                attachment.setData(todoEntry.getAttachment().getData());
+                entry.setAttachment(attachment);
+            }
             response.getList().getTodoEntry().add(entry);
         }
 

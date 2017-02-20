@@ -27,6 +27,7 @@ import java.util.UUID;
         "id",
         "title",
         "description",
+        "attachment",
         "done"
 })
 @XmlRootElement(name = "todo")
@@ -35,9 +36,8 @@ public class TodoEntry {
     private UUID id;
     @XmlElement(required = true)
     private String title;
-    @XmlElement
     private String description;
-    @XmlElement
+    private Attachment attachment;
     private boolean done;
 
     public TodoEntry() {
@@ -84,5 +84,13 @@ public class TodoEntry {
 
     public boolean isDone() {
         return done;
+    }
+
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
+    }
+
+    public Attachment getAttachment() {
+        return attachment;
     }
 }

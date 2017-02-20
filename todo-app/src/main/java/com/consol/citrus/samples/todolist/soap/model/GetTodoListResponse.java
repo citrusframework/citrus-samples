@@ -2,7 +2,7 @@
 // Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.11 generiert 
 // Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2017.02.02 um 08:35:59 PM CET 
+// Generiert: 2017.02.02 um 08:35:59 PM CET
 //
 
 
@@ -35,6 +35,19 @@ import java.util.ArrayList;
  *                             &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *                             &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *                             &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *                             &lt;element name="attachment" minOccurs="0"&gt;
+ *                               &lt;complexType&gt;
+ *                                 &lt;complexContent&gt;
+ *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *                                     &lt;sequence&gt;
+ *                                       &lt;element name="cid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *                                       &lt;element name="contentType" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *                                       &lt;element name="data" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *                                     &lt;/sequence&gt;
+ *                                   &lt;/restriction&gt;
+ *                                 &lt;/complexContent&gt;
+ *                               &lt;/complexType&gt;
+ *                             &lt;/element&gt;
  *                             &lt;element name="done" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
  *                           &lt;/sequence&gt;
  *                         &lt;/restriction&gt;
@@ -107,6 +120,19 @@ public class GetTodoListResponse {
      *                   &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
      *                   &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
      *                   &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+     *                   &lt;element name="attachment" minOccurs="0"&gt;
+     *                     &lt;complexType&gt;
+     *                       &lt;complexContent&gt;
+     *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+     *                           &lt;sequence&gt;
+     *                             &lt;element name="cid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+     *                             &lt;element name="contentType" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+     *                             &lt;element name="data" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+     *                           &lt;/sequence&gt;
+     *                         &lt;/restriction&gt;
+     *                       &lt;/complexContent&gt;
+     *                     &lt;/complexType&gt;
+     *                   &lt;/element&gt;
      *                   &lt;element name="done" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
      *                 &lt;/sequence&gt;
      *               &lt;/restriction&gt;
@@ -172,6 +198,19 @@ public class GetTodoListResponse {
          *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
          *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
          *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+         *         &lt;element name="attachment" minOccurs="0"&gt;
+         *           &lt;complexType&gt;
+         *             &lt;complexContent&gt;
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+         *                 &lt;sequence&gt;
+         *                   &lt;element name="cid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+         *                   &lt;element name="contentType" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+         *                   &lt;element name="data" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+         *                 &lt;/sequence&gt;
+         *               &lt;/restriction&gt;
+         *             &lt;/complexContent&gt;
+         *           &lt;/complexType&gt;
+         *         &lt;/element&gt;
          *         &lt;element name="done" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/&gt;
          *       &lt;/sequence&gt;
          *     &lt;/restriction&gt;
@@ -186,6 +225,7 @@ public class GetTodoListResponse {
             "id",
             "title",
             "description",
+            "attachment",
             "done"
         })
         public static class TodoEntry {
@@ -195,6 +235,7 @@ public class GetTodoListResponse {
             @XmlElement(required = true)
             protected String title;
             protected String description;
+            protected GetTodoListResponse.List.TodoEntry.Attachment attachment;
             protected Boolean done;
 
             /**
@@ -270,6 +311,30 @@ public class GetTodoListResponse {
             }
 
             /**
+             * Ruft den Wert der attachment-Eigenschaft ab.
+             * 
+             * @return
+             *     possible object is
+             *     {@link GetTodoListResponse.List.TodoEntry.Attachment }
+             *     
+             */
+            public GetTodoListResponse.List.TodoEntry.Attachment getAttachment() {
+                return attachment;
+            }
+
+            /**
+             * Legt den Wert der attachment-Eigenschaft fest.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link GetTodoListResponse.List.TodoEntry.Attachment }
+             *     
+             */
+            public void setAttachment(GetTodoListResponse.List.TodoEntry.Attachment value) {
+                this.attachment = value;
+            }
+
+            /**
              * Ruft den Wert der done-Eigenschaft ab.
              * 
              * @return
@@ -291,6 +356,117 @@ public class GetTodoListResponse {
              */
             public void setDone(Boolean value) {
                 this.done = value;
+            }
+
+
+            /**
+             * <p>Java-Klasse für anonymous complex type.
+             * 
+             * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
+             * 
+             * <pre>
+             * &lt;complexType&gt;
+             *   &lt;complexContent&gt;
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+             *       &lt;sequence&gt;
+             *         &lt;element name="cid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+             *         &lt;element name="contentType" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+             *         &lt;element name="data" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+             *       &lt;/sequence&gt;
+             *     &lt;/restriction&gt;
+             *   &lt;/complexContent&gt;
+             * &lt;/complexType&gt;
+             * </pre>
+             * 
+             * 
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "cid",
+                "contentType",
+                "data"
+            })
+            public static class Attachment {
+
+                @XmlElement(required = true)
+                protected String cid;
+                @XmlElement(required = true)
+                protected String contentType;
+                @XmlElement(required = true)
+                protected String data;
+
+                /**
+                 * Ruft den Wert der cid-Eigenschaft ab.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *     
+                 */
+                public String getCid() {
+                    return cid;
+                }
+
+                /**
+                 * Legt den Wert der cid-Eigenschaft fest.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *     
+                 */
+                public void setCid(String value) {
+                    this.cid = value;
+                }
+
+                /**
+                 * Ruft den Wert der contentType-Eigenschaft ab.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *     
+                 */
+                public String getContentType() {
+                    return contentType;
+                }
+
+                /**
+                 * Legt den Wert der contentType-Eigenschaft fest.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *     
+                 */
+                public void setContentType(String value) {
+                    this.contentType = value;
+                }
+
+                /**
+                 * Ruft den Wert der data-Eigenschaft ab.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *     
+                 */
+                public String getData() {
+                    return data;
+                }
+
+                /**
+                 * Legt den Wert der data-Eigenschaft fest.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *     
+                 */
+                public void setData(String value) {
+                    this.data = value;
+                }
+
             }
 
         }
