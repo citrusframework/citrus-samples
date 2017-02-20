@@ -12,7 +12,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jetty.version>9.4.1.v20170120</jetty.version>
     <slf4j.version>1.7.22</slf4j.version>
-    <testng.version>6.10</testng.version>
+    <junit.version>4.12</junit.version>
     <cucumber.version>1.2.5</cucumber.version>
     <citrus.version>2.7</citrus.version>
   </properties>
@@ -119,9 +119,9 @@
 
     <!-- Test scoped dependencies -->
     <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>${testng.version}</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
     </dependency>
 
     <!-- Citrus -->

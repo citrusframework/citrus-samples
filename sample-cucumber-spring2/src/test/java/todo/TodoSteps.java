@@ -74,7 +74,7 @@ public class TodoSteps {
         designer.http()
                 .client(todoListClient)
                 .receive()
-                .response(HttpStatus.FOUND)
+                .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT);
     }
 
