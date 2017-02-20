@@ -124,6 +124,20 @@
       <version>${junit.version}</version>
     </dependency>
 
+    <!-- Cucumber -->
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>info.cukes</groupId>
+      <artifactId>cucumber-spring</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Citrus -->
     <dependency>
       <groupId>com.consol.citrus</groupId>
@@ -154,20 +168,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- Cucumber -->
-    <dependency>
-      <groupId>info.cukes</groupId>
-      <artifactId>cucumber-junit</artifactId>
-      <version>${cucumber.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>info.cukes</groupId>
-      <artifactId>cucumber-spring</artifactId>
-      <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
