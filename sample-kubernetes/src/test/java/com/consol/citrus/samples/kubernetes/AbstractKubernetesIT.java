@@ -29,7 +29,6 @@ import java.util.concurrent.*;
 
 /**
  * @author Christoph Deppisch
- * @since 2.7
  */
 public class AbstractKubernetesIT extends TestNGCitrusTestDesigner {
 

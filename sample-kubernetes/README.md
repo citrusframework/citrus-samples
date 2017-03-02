@@ -183,13 +183,13 @@ spec:
   restartPolicy: Never
   containers:
   - name: citrus-sample-todo-tests
-    image: citrus/todo-app-tests:2.7
+    image: citrus/todo-app-tests:2.7.1-SNAPSHOT
     imagePullPolicy: Never
     securityContext:
       privileged: false
 ```
 
-The pod configuration tells Kubernetes to use the Docker image *citrus/todo-app-tests:2.7* that we have just built. Also the *restartPolicy* is set to *Never*. This makes sure
+The pod configuration tells Kubernetes to use the Docker image *citrus/todo-app-tests:2.7.1-SNAPSHOT* that we have just built. Also the *restartPolicy* is set to *Never*. This makes sure
 that Kubernetes will not try to endlessly restart the pod in case a test fails with error.
 
 Now lets put that all together with:

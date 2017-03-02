@@ -311,8 +311,8 @@ Once the build is finished the Citrus test container is automatically stopped bu
 docker ps -a
 
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                     PORTS                                        NAMES
-413b6c68076d        citrus/todo-app-tests:2.7   "/bin/sh -c 'mvn inst"   37 seconds ago      Exited (0) 7 seconds ago                                                todo-app-tests
-f26583516453        citrus/todo-app:2.7         "/bin/sh -c /opt/tomc"   52 seconds ago      Up 46 seconds              8778/tcp, 0.0.0.0:8080->8080/tcp, 9779/tcp   todo-app
+413b6c68076d        citrus/todo-app-tests:2.7.1-SNAPSHOT   "/bin/sh -c 'mvn inst"   37 seconds ago      Exited (0) 7 seconds ago                                                todo-app-tests
+f26583516453        citrus/todo-app:2.7.1-SNAPSHOT         "/bin/sh -c /opt/tomc"   52 seconds ago      Up 46 seconds              8778/tcp, 0.0.0.0:8080->8080/tcp, 9779/tcp   todo-app
 ```
 
 With `mvn docker:stop` we can stop and cleanup all containers.
