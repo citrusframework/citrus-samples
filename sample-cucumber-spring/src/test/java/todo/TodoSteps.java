@@ -53,7 +53,7 @@ public class TodoSteps {
                 .response(HttpStatus.FOUND);
     }
 
-    @When("^I add entry \"([^\"]*)\"$")
+    @When("^(?:I|user) adds? entry \"([^\"]*)\"$")
     public void add_entry(String todoName) {
         designer.http()
                 .client(todoListClient)
@@ -68,7 +68,7 @@ public class TodoSteps {
                 .response(HttpStatus.FOUND);
     }
 
-    @When("^I remove entry \"([^\"]*)\"$")
+    @When("^(?:I|user) removes? entry \"([^\"]*)\"$")
     public void remove_entry(String todoName) {
         designer.http()
                 .client(todoListClient)
@@ -82,7 +82,7 @@ public class TodoSteps {
                 .messageType(MessageType.PLAINTEXT);
     }
 
-    @Then("^the number of todo entries should be (\\d+)$")
+    @Then("^(?:the )?number of todo entries should be (\\d+)$")
     public void verify_todos(int todoCnt) {
         designer.http()
                 .client(todoListClient)
@@ -97,7 +97,7 @@ public class TodoSteps {
                 .payload(String.valueOf(todoCnt));
     }
 
-    @Then("^the todo list should be empty$")
+    @Then("^(?:the )?todo list should be empty$")
     public void verify_empty_todos() {
         verify_todos(0);
     }
