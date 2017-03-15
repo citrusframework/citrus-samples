@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-greeting</artifactId>
   <name>citrus-sample-greeting</name>
-  <version>2.7.1-SNAPSHOT</version>
+  <version>2.7.1</version>
   <packaging>war</packaging>
 
   <properties>
@@ -17,7 +17,7 @@
     <activemq.version>5.14.3</activemq.version>
     <slf4j.version>1.7.22</slf4j.version>
     <testng.version>6.10</testng.version>
-    <citrus.version>2.7.1-SNAPSHOT</citrus.version>
+    <citrus.version>2.7.1</citrus.version>
     <jetty.version>9.4.1.v20170120</jetty.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>

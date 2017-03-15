@@ -14,7 +14,7 @@ and the project version.
 
     rootProject.name = 'citrus-sample-gradle'
     group 'com.consol.citrus.samples'
-    version '2.7.1-SNAPSHOT'
+    version '2.7.1'
     
 Now as Citrus libraries are available on Maven central repository we add these repositories so Gradle knows how to download the required
 Citrus artifacts.    
@@ -30,8 +30,8 @@ Citrus stable release versions are available on Maven central. If you want to us
 to add the ConSol Labs snapshot repository which is optional. Now lets move on with adding the Citrus libraries to the project.
     
     dependencies {
-        testCompile group: 'com.consol.citrus', name: 'citrus-core', version: '2.7.1-SNAPSHOT'
-        testCompile group: 'com.consol.citrus', name: 'citrus-java-dsl', version: '2.7.1-SNAPSHOT'
+        testCompile group: 'com.consol.citrus', name: 'citrus-core', version: '2.7.1'
+        testCompile group: 'com.consol.citrus', name: 'citrus-java-dsl', version: '2.7.1'
         testCompile group: 'org.testng', name: 'testng', version: '6.9.10'
         [...]
     }
