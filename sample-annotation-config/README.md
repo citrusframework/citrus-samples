@@ -1,37 +1,25 @@
-Java config sample ![Logo][1]
+Annotation config sample ![Logo][1]
 ==============
 
-This sample uses pure Java POJOs as configuration.
+This sample uses on-the-fly Java annotation configuration for endpoints.
 
 Objectives
 ---------
 
-Citrus uses Spring Framework as glue for everything. Following from that Citrus components are
-defined as Spring beans in an application context. You can use XML
-configuration files and you can also use Java POJOs.
+Usually the Citrus endpoint components are configured in a central Spring application context. However there is another
+possibility to configure endpoint components per test case with annotations.
 
-This sample uses pure Java code for both Citrus configuration and tests. The
-Citrus TestNG test uses a context configuration annotation.
-
-    @ContextConfiguration(classes = { EndpointConfig.class })
+This sample uses Java annotations for adding Citrus endpoint configuration in tests. The test therefor uses a member
+variable that is annotated with `@CitrusEndpoint` annotation in combination with `@HttpClientConfig` annoation.
     
-This tells Spring to load the configuration from the Java class ***EndpointConfig***.
+This tells Citrus to create a new endpoint for this test class.
     
-    @Bean
-    public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                    .client()
-                    .requestUrl("http://localhost:8080")
-                    .build();
-    }
-    
-In the configuration class we are able to define Citrus components for usage in tests. As usual
-we can autowire the Http client component as Spring bean in the test cases.
-    
-    @Autowired
+    @CitrusEndpoint
+    @HttpClientConfig(requestUrl = "http://localhost:8080")
     private HttpClient todoClient;
     
-As usual we are able to reference this endpoint in any send and receive operation in Citrus Java fluent API.
+In contrast to adding the bean to the Spring application context we define the endpoint using annotation configurations. As usual we are
+able to reference this endpoint in any send and receive operation in Citrus Java fluent API.
 
     http()
         .client(todoClient)
@@ -39,8 +27,9 @@ As usual we are able to reference this endpoint in any send and receive operatio
         .get("/todolist")
         .accept("text/html");
         
-Citrus and Spring framework automatically injects the endpoint with respective configuration for `requestUrl = http://localhost:8080`.    
-     
+Citrus automatically injects the endpoint with respective configuration for `requestUrl = http://localhost:8080`. You can use this endpoint
+within all test methods in this class.       
+        
 Run
 ---------
 

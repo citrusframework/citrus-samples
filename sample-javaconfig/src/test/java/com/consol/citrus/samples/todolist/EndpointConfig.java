@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Bean;
 public class EndpointConfig {
 
     @Bean
-    public HttpClient todoListClient() {
+    public HttpClient todoClient() {
         return CitrusEndpoints.http()
                             .client()
                             .requestUrl("http://localhost:8080")

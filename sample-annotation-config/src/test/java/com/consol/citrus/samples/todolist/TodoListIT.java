@@ -16,22 +16,22 @@
 
 package com.consol.citrus.samples.todolist;
 
+import com.consol.citrus.annotations.CitrusEndpoint;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.http.config.annotation.HttpClientConfig;
 import com.consol.citrus.message.MessageType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
  */
-@ContextConfiguration(classes = { EndpointConfig.class })
 public class TodoListIT extends TestNGCitrusTestDesigner {
 
-    @Autowired
+    @CitrusEndpoint
+    @HttpClientConfig(requestUrl = "http://localhost:8080")
     private HttpClient todoClient;
 
     @Test
