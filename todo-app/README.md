@@ -1,4 +1,4 @@
-ToDo sample application ![Logo][1]
+Todo sample application ![Logo][1]
 ==============
 
 This is a very simple sample application that represents the system under test for the Citrus samples. This
