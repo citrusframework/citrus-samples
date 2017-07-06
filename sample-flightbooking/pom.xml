@@ -11,14 +11,14 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>4.3.6.RELEASE</spring.version>
+    <spring.version>4.3.9.RELEASE</spring.version>
     <spring.ws.version>2.4.0.RELEASE</spring.ws.version>
-    <spring.integration.version>4.3.7.RELEASE</spring.integration.version>
-    <activemq.version>5.14.3</activemq.version>
-    <slf4j.version>1.7.22</slf4j.version>
-    <testng.version>6.10</testng.version>
+    <spring.integration.version>4.3.10.RELEASE</spring.integration.version>
+    <activemq.version>5.15.0</activemq.version>
+    <slf4j.version>1.7.25</slf4j.version>
+    <testng.version>6.11</testng.version>
     <citrus.version>2.7.2-SNAPSHOT</citrus.version>
-    <jetty.version>9.4.1.v20170120</jetty.version>
+    <jetty.version>9.4.6.v20170531</jetty.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>
   </properties>
@@ -27,7 +27,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.6.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
           <source>1.8</source>
@@ -54,7 +54,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19.1</version>
+        <version>2.20</version>
         <configuration>
           <systemProperties>
             <property>
@@ -79,7 +79,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.19.1</version>
+        <version>2.20</version>
         <executions>
           <execution>
             <id>integration-tests</id>

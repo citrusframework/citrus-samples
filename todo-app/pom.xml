@@ -11,10 +11,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>4.3.6.RELEASE</spring.version>
-    <spring.boot.version>1.5.0.RELEASE</spring.boot.version>
-    <activemq.version>5.14.3</activemq.version>
-    <slf4j.version>1.7.22</slf4j.version>
+    <spring.version>4.3.9.RELEASE</spring.version>
+    <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
+    <activemq.version>5.15.0</activemq.version>
+    <slf4j.version>1.7.25</slf4j.version>
+    <skipJaxb>true</skipJaxb>
   </properties>
 
   <build>
@@ -30,7 +31,7 @@
 
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.6.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
           <source>1.8</source>
@@ -60,7 +61,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19.1</version>
+        <version>2.20</version>
         <configuration>
           <systemProperties>
             <property>
@@ -101,6 +102,7 @@
           <xjbSources>
             <xjbSource>src/main/resources/schema/binding.xjb</xjbSource>
           </xjbSources>
+          <skipXjc>${skipJaxb}</skipXjc>
         </configuration>
         <dependencies>
           <dependency>
