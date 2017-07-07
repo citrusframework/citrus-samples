@@ -62,16 +62,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.20</version>
         <configuration>
-          <systemProperties>
-            <property>
-              <name>javax.xml.parsers.SAXParserFactory</name>
-              <value>org.apache.xerces.jaxp.SAXParserFactoryImpl</value>
-            </property>
-            <property>
-              <name>user.language</name>
-              <value>en</value>
-            </property>
-          </systemProperties>
           <forkMode>once</forkMode>
           <failIfNoTests>false</failIfNoTests>
           <excludes>
