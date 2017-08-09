@@ -71,7 +71,7 @@ The complete Docker sample infrastructure has been started. This includes the sa
 message broker. Now we are ready to execute some Citrus integration tests.
 
 ```
-mvn -pl integration integration-test
+mvn -pl integration verify
 ```
 
 You will see some action on the containers log output. You can also access the web UI by opening your browser pointing to
@@ -125,11 +125,11 @@ Open a separate command line terminal and navigate to the test folder.
 
 Execute all Citrus tests by calling
 
-     mvn integration-test
+     mvn verify
 
 You can also pick a single test by calling
 
-     mvn integration-test -Ptest=TestName
+     mvn verify -Dit.test=<testname>
 
 You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
 and Citrus test client). And of course green tests at the very end of the build.

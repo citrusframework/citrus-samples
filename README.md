@@ -105,11 +105,11 @@ Execute this command in the respective sample folders and you will get a running
 Once the sample application is deployed and running you can execute the Citrus test cases in that sample folder.
 Open a separate command line terminal in that folder and execute the following command.
 
-     mvn integration-test
+     mvn verify
 
 This executes all Citrus tests in that sample. You can also pick a single test by calling 
 
-     mvn integration-test -Dit.test=<testname>
+     mvn verify -Dit.test=<testname>
     
 You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
 and Citrus test client). And of course green tests at the very end of the build.

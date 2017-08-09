@@ -92,11 +92,11 @@ Citrus test
 
 Execute all Citrus tests by calling
 
-     mvn integration-test
+     mvn verify
 
 You can also pick a single test by calling
 
-     mvn integration-test -Ptest=TodoListIT
+     mvn verify -Dit.test=<testname>
 
 You should see Citrus performing several tests with lots of debugging output in your terminal. 
 And of course green tests at the very end of the build.
