@@ -102,7 +102,7 @@ The sample provides an embedded Jetty option for those of you that are not havin
 the embedded Jetty infrastructure by calling:
 
 ```
-mvn clean install -Dembedded
+mvn clean verify -Dembedded
 ```
 
 This will automatically start embedded Jetty web containers in preparation of the Maven integration-test phase. The sample application is

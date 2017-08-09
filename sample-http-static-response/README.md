@@ -81,7 +81,7 @@ Run
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
  
-     mvn clean install -Dembedded
+     mvn clean verify -Dembedded
     
 This executes the complete Maven build lifecycle.
 
