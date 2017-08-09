@@ -62,6 +62,8 @@ some other code and message in order to simulate mail server problems.
 Run
 ---------
 
+**NOTE:** This test depends on the [todo-app](../todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
  
