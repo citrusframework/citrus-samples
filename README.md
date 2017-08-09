@@ -90,7 +90,7 @@ Many samples reuse the [todo-list](todo-app) application which is a simple web a
 
 You can auto start and deploy the todo-list application within the Maven build by using the following command:
 
-     mvn clean install -Dembedded=true
+     mvn clean install -Dembedded
     
 The embedded option automatically starts an embedded Jetty Web Server Container before the integration test phase in Maven. After that
 the Citrus tests will be able to perform its actions in integration-test phase in Maven. After the tests are finished the embedded Jetty 

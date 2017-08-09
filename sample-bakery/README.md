@@ -102,7 +102,7 @@ The sample provides an embedded Jetty option for those of you that are not havin
 the embedded Jetty infrastructure by calling:
 
 ```
-mvn clean install -Dembedded=true
+mvn clean install -Dembedded
 ```
 
 This will automatically start embedded Jetty web containers in preparation of the Maven integration-test phase. The sample application is
@@ -111,8 +111,8 @@ automatically deployed before the Citrus tests start to perform its actions.
 You can also start the embedded infrastructure manually. Execute these commands in separate command line terminals:
 
 ```
-mvn -pl integration activemq:run -Dembedded=true
-mvn -pl integration jetty:run -Dembedded=true
+mvn -pl integration activemq:run -Dembedded
+mvn -pl integration jetty:run -Dembedded
 ```
 
 Now the bakery sample application is started and you can execute the Citrus tests manually.
