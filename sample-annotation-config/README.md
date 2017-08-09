@@ -10,22 +10,26 @@ Usually the Citrus endpoint components are configured in a central Spring applic
 possibility to configure endpoint components per test case with annotations.
 
 This sample uses Java annotations for adding Citrus endpoint configuration in tests. The test therefor uses a member
-variable that is annotated with `@CitrusEndpoint` annotation in combination with `@HttpClientConfig` annoation.
+variable that is annotated with `@CitrusEndpoint` annotation in combination with `@HttpClientConfig` annotation.
     
 This tells Citrus to create a new endpoint for this test class.
-    
-    @CitrusEndpoint
-    @HttpClientConfig(requestUrl = "http://localhost:8080")
-    private HttpClient todoClient;
+
+```java
+@CitrusEndpoint
+@HttpClientConfig(requestUrl = "http://localhost:8080")
+private HttpClient todoClient;
+```
     
 In contrast to adding the bean to the Spring application context we define the endpoint using annotation configurations. As usual we are
 able to reference this endpoint in any send and receive operation in Citrus Java fluent API.
 
-    http()
-        .client(todoClient)
-        .send()
-        .get("/todolist")
-        .accept("text/html");
+```java
+http()
+    .client(todoClient)
+    .send()
+    .get("/todolist")
+    .accept("text/html");
+```
         
 Citrus automatically injects the endpoint with respective configuration for `requestUrl = http://localhost:8080`. You can use this endpoint
 within all test methods in this class.       
@@ -33,8 +37,7 @@ within all test methods in this class.
 Run
 ---------
 
-The sample application uses Maven as build tool. So you can compile, package and test the
-sample with Maven.
+The sample application uses Maven as build tool. So you can compile, package and test the sample with Maven.
  
      mvn clean install -Dembedded
     
