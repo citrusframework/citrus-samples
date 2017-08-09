@@ -69,8 +69,7 @@ Preconditions
 
 See the preconditions for using the Citrus sample applications:
 
-* Java 1.7 or higher
-Installed JDK 1.7 or higher plus JAVA_HOME environment variable set
+* Installed JDK 1.8 or higher plus `JAVA_HOME` environment variable set
 up and pointing to your Java installation directory
 
 * Apache Maven 3.0.x or higher
