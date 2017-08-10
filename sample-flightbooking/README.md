@@ -15,7 +15,7 @@ The sample application uses Maven as build tool. So you can compile, package and
  
 ```
 mvn clean verify -Dembedded
-``` 
+```
 
 This executes the Maven build lifecycle until phase `verify` which includes the `integration-test` and its `pre-` and `post-` phases. The `embedded` option automatically starts an in-memory Jetty web container and an ActiveMQ message broker during the `pre-integration-test` phase. The flight booking system under test is automatically deployed in this phase. After that the Citrus test cases are able to interact with the application during the `integration-test` phase.
 

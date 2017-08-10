@@ -242,7 +242,7 @@ Run
 
 You can run the tests by calling 
 
-     mvn integration-test
+     mvn verify
 
 You should see Citrus performing several tests with lots of debugging output in the terminal. And of course green tests 
 at the very end of the build.

@@ -10,22 +10,26 @@ Usually the Citrus endpoint components are configured in a central Spring applic
 possibility to configure endpoint components per test case with annotations.
 
 This sample uses Java annotations for adding Citrus endpoint configuration in tests. The test therefor uses a member
-variable that is annotated with `@CitrusEndpoint` annotation in combination with `@HttpClientConfig` annoation.
+variable that is annotated with `@CitrusEndpoint` annotation in combination with `@HttpClientConfig` annotation.
     
 This tells Citrus to create a new endpoint for this test class.
-    
-    @CitrusEndpoint
-    @HttpClientConfig(requestUrl = "http://localhost:8080")
-    private HttpClient todoClient;
+
+```java
+@CitrusEndpoint
+@HttpClientConfig(requestUrl = "http://localhost:8080")
+private HttpClient todoClient;
+```
     
 In contrast to adding the bean to the Spring application context we define the endpoint using annotation configurations. As usual we are
 able to reference this endpoint in any send and receive operation in Citrus Java fluent API.
 
-    http()
-        .client(todoClient)
-        .send()
-        .get("/todolist")
-        .accept("text/html");
+```java
+http()
+    .client(todoClient)
+    .send()
+    .get("/todolist")
+    .accept("text/html");
+```
         
 Citrus automatically injects the endpoint with respective configuration for `requestUrl = http://localhost:8080`. You can use this endpoint
 within all test methods in this class.       
@@ -33,10 +37,11 @@ within all test methods in this class.
 Run
 ---------
 
-The sample application uses Maven as build tool. So you can compile, package and test the
-sample with Maven.
+**NOTE:** This test depends on the [todo-app](../todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+
+The sample application uses Maven as build tool. So you can compile, package and test the sample with Maven.
  
-     mvn clean install -Dembedded=true
+     mvn clean verify -Dembedded
     
 This executes the complete Maven build lifecycle. The embedded option automatically starts a Jetty web
 container before the integration test phase. The todo-list system under test is automatically deployed in this phase.
@@ -76,11 +81,11 @@ Open a separate command line terminal and navigate to the sample folder.
 
 Execute all Citrus tests by calling
 
-     mvn integration-test
+     mvn verify
 
 You can also pick a single test by calling
 
-     mvn integration-test -Ptest=TodoListIT
+     mvn verify -Dit.test=<testname>
 
 You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
 and Citrus test client). And of course green tests at the very end of the build.
