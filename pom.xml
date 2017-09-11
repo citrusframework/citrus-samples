@@ -31,6 +31,7 @@
     <module>sample-https</module>
     <module>sample-rmi</module>
     <module>sample-dataprovider</module>
+    <module>sample-reporting</module>
     <module>sample-xhtml</module>
     <module>sample-xml</module>
     <module>sample-json</module>
