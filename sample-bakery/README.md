@@ -71,7 +71,7 @@ The complete Docker sample infrastructure has been started. This includes the sa
 message broker. Now we are ready to execute some Citrus integration tests.
 
 ```
-mvn -pl integration integration-test
+mvn -pl integration verify
 ```
 
 You will see some action on the containers log output. You can also access the web UI by opening your browser pointing to
@@ -102,7 +102,7 @@ The sample provides an embedded Jetty option for those of you that are not havin
 the embedded Jetty infrastructure by calling:
 
 ```
-mvn clean install -Dembedded=true
+mvn clean verify -Dembedded
 ```
 
 This will automatically start embedded Jetty web containers in preparation of the Maven integration-test phase. The sample application is
@@ -111,8 +111,8 @@ automatically deployed before the Citrus tests start to perform its actions.
 You can also start the embedded infrastructure manually. Execute these commands in separate command line terminals:
 
 ```
-mvn -pl integration activemq:run -Dembedded=true
-mvn -pl integration jetty:run -Dembedded=true
+mvn -pl integration activemq:run -Dembedded
+mvn -pl integration jetty:run -Dembedded
 ```
 
 Now the bakery sample application is started and you can execute the Citrus tests manually.
@@ -125,11 +125,11 @@ Open a separate command line terminal and navigate to the test folder.
 
 Execute all Citrus tests by calling
 
-     mvn integration-test
+     mvn verify
 
 You can also pick a single test by calling
 
-     mvn integration-test -Ptest=TestName
+     mvn verify -Dit.test=<testname>
 
 You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
 and Citrus test client). And of course green tests at the very end of the build.

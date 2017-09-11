@@ -118,10 +118,12 @@ REST API on the [todo-list](../todo-app/README.md) application.
 Run
 ---------
 
+**NOTE:** This test depends on the [todo-app](../todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
  
-     mvn clean install -Dembedded=true
+     mvn clean verify -Dembedded
     
 This executes the complete Maven build lifecycle. The embedded option automatically starts a Jetty web
 container before the integration test phase. The todo-list system under test is automatically deployed in this phase.
@@ -161,11 +163,11 @@ Open a separate command line terminal and navigate to the sample folder.
 
 Execute all Citrus tests by calling
 
-     mvn integration-test
+     mvn verify
 
 You can also pick a single test by calling
 
-     mvn integration-test -Ptest=TodoListIT
+     mvn verify -Dit.test=<testname>
 
 You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
 and Citrus test client). And of course green tests at the very end of the build.
