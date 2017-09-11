@@ -10,42 +10,44 @@ Objectives
 Citrus as a framework gives us extension points to add customized test reporting. The framework provides listener and reporting interfaces for that.
 We want to write custom Html reports using the [Extent](http://extentreports.com/) reporting framework. We simply implement a custom reporting class that generates the Extent reports.
 
-    public class ExtentReporter extends AbstractTestListener implements TestReporter, InitializingBean {
-    
-        private ExtentHtmlReporter extentHtmlReporter;
-        private ExtentReports extentReports;
-    
-        @Override
-        public void onTestSuccess(TestCase test) {
-            ExtentTest extentTest = extentReports.createTest(test.getName());
-            extentTest.pass(getTestDetails(test.getMetaInfo()));
-        }
-    
-        @Override
-        public void onTestSkipped(TestCase test) {
-            ExtentTest extentTest = extentReports.createTest(test.getName());
-            extentTest.skip(getTestDetails(test.getMetaInfo()));
-        }
-    
-        @Override
-        public void onTestFailure(TestCase test, Throwable cause) {
-            ExtentTest extentTest = extentReports.createTest(test.getName());
-            extentTest.fail(cause);
-        }
-    
-        @Override
-        public void generateTestResults() {
-            extentReports.flush();
-        }
-        
-        ...
+```java
+public class ExtentReporter extends AbstractTestListener implements TestReporter {
+
+    private ExtentHtmlReporter extentHtmlReporter;
+    private ExtentReports extentReports;
+
+    @Override
+    public void onTestSuccess(TestCase test) {
+        ExtentTest extentTest = extentReports.createTest(test.getName());
+        extentTest.pass(getTestDetails(test.getMetaInfo()));
     }
+
+    @Override
+    public void onTestSkipped(TestCase test) {
+        ExtentTest extentTest = extentReports.createTest(test.getName());
+        extentTest.skip(getTestDetails(test.getMetaInfo()));
+    }
+
+    @Override
+    public void onTestFailure(TestCase test, Throwable cause) {
+        ExtentTest extentTest = extentReports.createTest(test.getName());
+        extentTest.fail(cause);
+    }
+
+    @Override
+    public void generateTestResults() {
+        extentReports.flush();
+    }
+}
+```
         
 You can review the complete custom reporter on this sample's [github repository](src/test/java/com/consol/citrus/samples/todolist/reporting/ExtentReporter.java).       
 
 We add the new reporter implementation as Spring bean to the application context.
     
-    <bean class="com.consol.citrus.samples.todolist.reporting.ExtentReporter"/>
+```xml    
+<bean class="com.consol.citrus.samples.todolist.reporting.ExtentReporter"/>
+```
         
 That completes the reporting extension. Citrus will automatically see the new bean and add it to the list of reporters. The reporter is called when tests pass and fail. 
 As a result the reporter writes Extent styled Html reports to the folder `test-output/extent-reports.html` when Citrus tests are executed.
