@@ -19,7 +19,9 @@ system under test. Please find following list of samples and their primary objec
 
 | Sample                                | Objective |
 |---------------------------------------|:---------:|
+| [sample-reporting](sample-reporting)| Shows how to add a custom reporter |
 | [sample-docker](sample-docker)| Shows how to use Citrus within Docker infrastructure |
+| [sample-kubernetes](sample-kubernetes)| Shows how to use Citrus within Kubernetes infrastructure |
 | [sample-gradle](sample-gradle)| Uses Gradle build to execute tests |
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
@@ -35,6 +37,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-http](sample-http)| Shows Http REST API calls as a client |
 | [sample-http-loadtest](sample-http-loadtest)| Calls REST API on Http server with multiple threads for load testing |
 | [sample-http-static-response](sample-http-static-response)| Shows how to setup a static response generating Http server component |
+| [sample-http-basic-auth](sample-http-basic-auth)| Shows how to use basic authentication on client and server components |
 | [sample-https](sample-https)| Shows how to use SSL connectivity as a client and server |
 | [sample-soap](sample-soap)| Shows basic SOAP web service support |
 | [sample-soap-attachment](sample-soap-attachment)| Shows how to send SOAP attachments to server |
