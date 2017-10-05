@@ -5,15 +5,15 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-todo</artifactId>
   <name>citrus-sample-todo</name>
-  <version>2.7.2</version>
+  <version>2.7.3-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>4.3.9.RELEASE</spring.version>
-    <spring.boot.version>1.5.4.RELEASE</spring.boot.version>
-    <activemq.version>5.15.0</activemq.version>
+    <spring.version>4.3.11.RELEASE</spring.version>
+    <spring.boot.version>1.5.7.RELEASE</spring.boot.version>
+    <activemq.version>5.15.1</activemq.version>
     <slf4j.version>1.7.25</slf4j.version>
     <skipJaxb>true</skipJaxb>
   </properties>
@@ -31,7 +31,7 @@
 
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>3.7.0</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
           <source>1.8</source>
@@ -53,7 +53,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.1.0</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
@@ -61,7 +61,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.20</version>
+        <version>2.20.1</version>
         <configuration>
           <forkMode>once</forkMode>
           <failIfNoTests>false</failIfNoTests>
@@ -111,7 +111,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>fabric8-maven-plugin</artifactId>
-        <version>3.2.15</version>
+        <version>3.5.31</version>
         <configuration>
           <verbose>true</verbose>
           <mode>kubernetes</mode>
@@ -275,7 +275,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.1.9</version>
+      <version>1.2.3</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
