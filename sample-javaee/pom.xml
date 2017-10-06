@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-javaee</artifactId>
   <name>citrus-sample-javaee</name>
-  <version>2.7.2</version>
+  <version>2.7.3-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <properties>
@@ -14,7 +14,7 @@
     <apache.cxf.version>3.1.9</apache.cxf.version>
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.11</testng.version>
-    <citrus.version>2.7.2</citrus.version>
+    <citrus.version>2.7.3-SNAPSHOT</citrus.version>
     <jee.api.version>7.0</jee.api.version>
     <arquillian.version>1.1.13.Final</arquillian.version>
     <wildfly.version>10.0.0.Final</wildfly.version>
@@ -24,7 +24,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>3.7.0</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
           <source>1.8</source>
@@ -46,7 +46,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.2</version>
       </plugin>
 
       <plugin>
@@ -60,7 +60,7 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.20</version>
+        <version>2.20.1</version>
         <configuration>
           <forkMode>once</forkMode>
           <failIfNoTests>false</failIfNoTests>
@@ -75,7 +75,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.20</version>
+        <version>2.20.1</version>
         <executions>
           <execution>
             <id>integration-tests</id>
