@@ -16,6 +16,7 @@
     <testng.version>6.11</testng.version>
     <citrus.version>2.7.3-SNAPSHOT</citrus.version>
     <jee.api.version>7.0</jee.api.version>
+    <junit.version>4.12</junit.version>
     <arquillian.version>1.1.13.Final</arquillian.version>
     <wildfly.version>10.0.0.Final</wildfly.version>
   </properties>
@@ -175,7 +176,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
 
