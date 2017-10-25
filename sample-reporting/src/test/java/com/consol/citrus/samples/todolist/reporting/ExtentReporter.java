@@ -71,7 +71,7 @@ public class ExtentReporter extends AbstractTestListener implements TestReporter
      * Initialize reports.
      */
     private void initializeExtentReports() {
-        extentHtmlReporter = new ExtentHtmlReporter("test-output/extent-reports.html");
+        extentHtmlReporter = new ExtentHtmlReporter("target/citrus-reports/extent-reports.html");
         extentHtmlReporter.config().setDocumentTitle("ExtentReports - Created by Citrus TestListener");
         extentHtmlReporter.config().setReportName("ExtentReports - Created by Citrus TestListener");
         extentHtmlReporter.config().setTheme(Theme.STANDARD);
