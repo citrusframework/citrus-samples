@@ -34,9 +34,6 @@ The sample uses the Fabric8 Docker Maven plugin building and running the Docker 
         <name>citrus/todo-app:${project.version}</name>
         <build>
           <from>fabric8/tomcat-8:latest</from>
-          <tags>
-            <tag>latest</tag>
-          </tags>
           <assembly>
             <inline>
               <files>
@@ -76,10 +73,7 @@ The sample uses the Fabric8 Docker Maven plugin building and running the Docker 
         <alias>todo-app-tests</alias>
         <name>citrus/todo-app-tests:${project.version}</name>
         <build>
-          <from>consol/citrus:2.7</from>
-          <tags>
-            <tag>latest</tag>
-          </tags>
+          <from>maven:3.5.0-jdk-8</from>
           <assembly>
             <descriptorRef>project</descriptorRef>
           </assembly>
@@ -89,8 +83,11 @@ The sample uses the Fabric8 Docker Maven plugin building and running the Docker 
           <volumes>
             <bind>
               <volume>/var/run/docker.sock:/var/run/dockerhost/docker.sock</volume>
+              <volume>${settings.localRepository}:/root/.m2/repository</volume>
             </bind>
           </volumes>
+          <workingDir>/maven</workingDir>
+          <cmd>mvn install</cmd>
           <links>
             <link>todo-app</link>
           </links>
@@ -104,7 +101,7 @@ The sample uses the Fabric8 Docker Maven plugin building and running the Docker 
           </wait>
           <log>
             <enabled>true</enabled>
-            <color>green</color>
+            <color>cyan</color>
           </log>
         </run>
       </image>
@@ -118,9 +115,6 @@ Wow that is lots of configuration. Let us understand this step by step. First of
 ```xml
 <build>
   <from>fabric8/tomcat-8:latest</from>
-  <tags>
-    <tag>latest</tag>
-  </tags>
   <assembly>
     <inline>
       <files>
@@ -146,17 +140,14 @@ Now let us move on to the Citrus tests. We want to also run the tests as Docker 
 
 ```xml
 <build>
-  <from>consol/citrus:2.7</from>
-  <tags>
-    <tag>latest</tag>
-  </tags>
+  <from>maven:3.5.0-jdk-8</from>
   <assembly>
     <descriptorRef>project</descriptorRef>
   </assembly>
 </build>
 ```
 
-This time we extend from *consol/citrus:2.7* Docker image which is ready to execute a Citrus Maven build at container runtime. The image also works with the Docker Maven plugin assembly
+This time we extend from *maven:3.5.0-jdk-8* Docker image which is ready to execute a Citrus Maven build at container runtime. The image also works with the Docker Maven plugin assembly
 mechanism. This time the assembly adds the complete project sources by using the *descriptorRef=project* which is a predefined assembly in the Fabric8 plugin.
 
 We can build the Docker images by calling:
@@ -211,33 +202,41 @@ started and Tomcat is ready we can start the Citrus test container.
 
 ```xml
 <image>
-    <alias>todo-app-tests</alias>
-    <name>citrus/todo-app-tests:${project.version}</name>
-    <run>
-      <namingStrategy>alias</namingStrategy>
-      <volumes>
-        <bind>
-          <volume>/var/run/docker.sock:/var/run/dockerhost/docker.sock</volume>
-        </bind>
-      </volumes>
-      <links>
-        <link>todo-app</link>
-      </links>
-      <dependsOn>
-        <dependsOn>todo-app</dependsOn>
-      </dependsOn>
-      <wait>
-        <log>BUILD SUCCESS</log>
-        <time>60000</time>
-        <shutdown>500</shutdown>
-      </wait>
-      <log>
-        <enabled>true</enabled>
-        <color>green</color>
-      </log>
-    </run>
- </image>
+  <alias>todo-app-tests</alias>
+  <name>citrus/todo-app-tests:${project.version}</name>
+  <run>
+    <namingStrategy>alias</namingStrategy>
+    <volumes>
+      <bind>
+        <volume>/var/run/docker.sock:/var/run/dockerhost/docker.sock</volume>
+        <volume>${settings.localRepository}:/root/.m2/repository</volume>
+      </bind>
+    </volumes>
+    <workingDir>/maven</workingDir>
+    <cmd>mvn install</cmd>
+    <links>
+      <link>todo-app</link>
+    </links>
+    <dependsOn>
+      <dependsOn>todo-app</dependsOn>
+    </dependsOn>
+    <wait>
+      <log>BUILD SUCCESS</log>
+      <time>60000</time>
+      <shutdown>500</shutdown>
+    </wait>
+    <log>
+      <enabled>true</enabled>
+      <color>cyan</color>
+    </log>
+  </run>
+</image>
 ```
+
+The test container configuration is using volumes to mount local directories to the container. We mount the local m2 repository so the container will not have to download
+all Maven artifacts from scratch. Also we define the `mvn install` command to execute in working directory `/maven` which is the default directory where the Fabric8 Docker Maven plugin
+will mount the project sources to during assembly.
+
 This time the configuration links the container to the *todo-app* container. This enabled the Docker networking feature where DNS host resolving will
 be available for the Citrus test container. Exposed ports (8080) in the *todo-app* container are then accessible. The Citrus http client uses the following endpoint url
 for accessing the REST API:

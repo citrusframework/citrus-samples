@@ -62,18 +62,19 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>0.21.0</version>
+        <version>0.22.1</version>
         <configuration>
           <verbose>true</verbose>
+          <watchInterval>1000</watchInterval>
           <images>
             <image>
               <alias>todo-app</alias>
               <name>citrus/todo-app:${project.version}</name>
+              <watch>
+                <mode>none</mode>
+              </watch>
               <build>
                 <from>fabric8/tomcat-8:latest</from>
-                <tags>
-                  <tag>latest</tag>
-                </tags>
                 <assembly>
                   <inline>
                     <files>
@@ -113,10 +114,7 @@
               <alias>todo-app-tests</alias>
               <name>citrus/todo-app-tests:${project.version}</name>
               <build>
-                <from>consol/citrus:2.7</from>
-                <tags>
-                  <tag>latest</tag>
-                </tags>
+                <from>maven:3.5.0-jdk-8</from>
                 <assembly>
                   <descriptorRef>project</descriptorRef>
                 </assembly>
@@ -126,8 +124,11 @@
                 <volumes>
                   <bind>
                     <volume>/var/run/docker.sock:/var/run/dockerhost/docker.sock</volume>
+                    <volume>${settings.localRepository}:/root/.m2/repository</volume>
                   </bind>
                 </volumes>
+                <workingDir>/maven</workingDir>
+                <cmd>mvn install</cmd>
                 <links>
                   <link>todo-app</link>
                 </links>
@@ -141,7 +142,7 @@
                 </wait>
                 <log>
                   <enabled>true</enabled>
-                  <color>green</color>
+                  <color>cyan</color>
                 </log>
               </run>
             </image>
