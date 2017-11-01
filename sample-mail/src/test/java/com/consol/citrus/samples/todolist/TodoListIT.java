@@ -20,6 +20,7 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
+import com.consol.citrus.mail.message.MailMessage;
 import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,60 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoId", "citrus:randomUUID()");
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
+
+        clearTodoList();
+
+        http()
+            .client(todoClient)
+            .send()
+            .post("/todolist")
+            .messageType(MessageType.JSON)
+            .contentType("application/json")
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.PLAINTEXT)
+            .payload("${todoId}");
+
+        http()
+            .client(todoClient)
+            .send()
+            .get("/reporting/mail");
+
+        echo("Receive reporting mail");
+
+        receive(mailServer)
+            .message(MailMessage.request()
+                    .from("todo-report@example.org")
+                    .to("users@example.org")
+                    .cc("")
+                    .bcc("")
+                    .subject("ToDo report")
+                    .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
+            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report");
+
+        send(mailServer)
+            .message(MailMessage.response(250, "OK"));
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK);
+    }
+
+    @Test
+    @CitrusTest
+    public void testMailReportXml() {
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        mailServer.getMarshaller().setType(MessageType.XML.name());
+
+        clearTodoList();
 
         http()
             .client(todoClient)
@@ -81,4 +136,69 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .receive()
             .response(HttpStatus.OK);
     }
+
+    @Test
+    @CitrusTest
+    public void testMailReportJson() {
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        mailServer.getMarshaller().setType(MessageType.JSON.name());
+
+        clearTodoList();
+
+        http()
+            .client(todoClient)
+            .send()
+            .post("/todolist")
+            .messageType(MessageType.JSON)
+            .contentType("application/json")
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.PLAINTEXT)
+            .payload("${todoId}");
+
+        variable("entryCount", "1");
+
+        http()
+            .client(todoClient)
+            .send()
+            .get("/reporting/mail");
+
+        echo("Receive reporting mail");
+
+        receive(mailServer)
+            .messageType(MessageType.JSON)
+            .payload(new ClassPathResource("templates/mail.json"))
+            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report");
+
+        send(mailServer)
+            .payload(new ClassPathResource("templates/mail-response.json"));
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK);
+    }
+
+    /**
+     * Remove all entries from todolist.
+     */
+    private void clearTodoList() {
+        http()
+            .client(todoClient)
+            .send()
+            .delete("/todolist");
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.FOUND);
+    }
+
 }
