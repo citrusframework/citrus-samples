@@ -6,7 +6,7 @@ spec:
   restartPolicy: Never
   containers:
   - name: citrus-sample-todo-tests
-    image: citrus/todo-app-tests:2.7.1
+    image: citrus/todo-app-tests:2.7.2
     imagePullPolicy: Never
     securityContext:
       privileged: false

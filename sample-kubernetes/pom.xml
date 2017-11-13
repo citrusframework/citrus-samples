@@ -62,7 +62,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>0.21.0</version>
+        <version>0.22.1</version>
         <configuration>
           <verbose>true</verbose>
           <images>
@@ -70,7 +70,7 @@
               <alias>todo-app-tests</alias>
               <name>citrus/todo-app-tests:${project.version}</name>
               <build>
-                <from>consol/citrus:2.7</from>
+                <from>consol/citrus:2.7.2</from>
                 <tags>
                   <tag>latest</tag>
                 </tags>
