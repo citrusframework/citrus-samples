@@ -88,4 +88,4 @@ a complete [reference manual][3].
  [1]: https://www.citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://www.citrusframework.org
  [3]: https://www.citrusframework.org/reference/html/
- [4]: https://www.citrusframework.org/reference/html/index.html#reporting-and-test-results
+ [4]: https://www.citrusframework.org/reference/html#reporting-and-test-results
