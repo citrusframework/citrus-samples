@@ -23,6 +23,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-docker](sample-docker)| Shows how to use Citrus within Docker infrastructure |
 | [sample-kubernetes](sample-kubernetes)| Shows how to use Citrus within Kubernetes infrastructure |
 | [sample-gradle](sample-gradle)| Uses Gradle build to execute tests |
+| [sample-annotation-config](sample-annotation-config)| Uses annotation based endpoint configuration |
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
 | [sample-binary](sample-binary)| Shows binary message content handling in Citrus |
