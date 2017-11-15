@@ -97,7 +97,7 @@ Further information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
- [1]: http://www.citrusframework.org/img/brand-logo.png "Citrus"
- [2]: http://www.citrusframework.org
- [3]: http://www.citrusframework.org/reference/html/
- [4]: http://www.citrusframework.org/reference/html/http.html
+ [1]: https://www.citrusframework.org/img/brand-logo.png "Citrus"
+ [2]: https://www.citrusframework.org
+ [3]: https://www.citrusframework.org/reference/html/
+ [4]: https://www.citrusframework.org/reference/html/http.html
