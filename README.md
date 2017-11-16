@@ -25,6 +25,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-gradle](sample-gradle)| Uses Gradle build to execute tests |
 | [sample-annotation-config](sample-annotation-config)| Uses annotation based endpoint configuration |
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
+| [sample-behaviors](sample-behaviors)| Shows how to reuse test actions in test behaviors |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
 | [sample-binary](sample-binary)| Shows binary message content handling in Citrus |
 | [sample-json](sample-json)| Shows Json payload validation feature with JsonPath validation |
