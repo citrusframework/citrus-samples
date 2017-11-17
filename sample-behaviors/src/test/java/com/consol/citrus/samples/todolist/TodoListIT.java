@@ -52,7 +52,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         applyBehavior(new AddTodoBehavior()
                             .withPayloadData("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-        applyBehavior(new GetTodoBehavior()
+        applyBehavior(new GetTodoBehavior("${todoId}")
                             .validate("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }
 
@@ -66,7 +66,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         applyBehavior(new AddTodoBehavior()
                             .withResource(new ClassPathResource("templates/todo.json")));
 
-        applyBehavior(new GetTodoBehavior()
+        applyBehavior(new GetTodoBehavior("${todoId}")
                             .validate(new ClassPathResource("templates/todo.json")));
     }
 
@@ -80,7 +80,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         applyBehavior(new AddTodoBehavior()
                             .withPayloadData("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
 
-        applyBehavior(new GetTodoBehavior()
+        applyBehavior(new GetTodoBehavior("${todoId}")
                             .validate("$.id", "${todoId}")
                             .validate("$.title", "${todoName}")
                             .validate("$.description", "${todoDescription}")
@@ -134,17 +134,22 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
      */
     private class GetTodoBehavior extends AbstractTestBehavior {
 
+        private String todoId;
         private String payloadData;
         private Resource resource;
 
         private Map<String, Object> validateExpressions = new LinkedHashMap<>();
+
+        public GetTodoBehavior(String todoId) {
+            this.todoId = todoId;
+        }
 
         @Override
         public void apply() {
             http()
                 .client(todoClient)
                 .send()
-                .get("/todo/${todoId}")
+                .get("/todo/" + todoId)
                 .accept("application/json");
 
             HttpClientResponseActionBuilder response = http()
