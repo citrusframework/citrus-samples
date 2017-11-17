@@ -19,6 +19,7 @@
     <module>sample-camel-context</module>
     <module>sample-behaviors</module>
     <module>sample-dictionaries</module>
+    <module>sample-message-store</module>
     <module>sample-docker</module>
     <module>sample-kubernetes</module>
     <module>sample-cucumber</module>

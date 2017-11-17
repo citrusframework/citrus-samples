@@ -27,6 +27,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-javaconfig](sample-javaconfig)| Uses pure Java POJOs for configuration |
 | [sample-behaviors](sample-behaviors)| Shows how to reuse test actions in test behaviors |
 | [sample-dictionaries](sample-dictionaries)| Shows how to incorporate message manipulation using data dictionaries |
+| [sample-message-store](sample-message-store)| Shows how to access internal message store |
 | [sample-jdbc](sample-jdbc)| Validates stored data in relational database |
 | [sample-binary](sample-binary)| Shows binary message content handling in Citrus |
 | [sample-json](sample-json)| Shows Json payload validation feature with JsonPath validation |
