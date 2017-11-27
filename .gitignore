@@ -17,3 +17,5 @@ logs
 .gradle
 build
 sun-jaxb.episode
+test-output/
+logs/
