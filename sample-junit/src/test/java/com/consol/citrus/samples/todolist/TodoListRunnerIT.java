@@ -16,36 +16,31 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.*;
-import com.consol.citrus.dsl.design.TestDesigner;
-import com.consol.citrus.dsl.junit.jupiter.CitrusExtension;
-import com.consol.citrus.dsl.runner.TestRunner;
+import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.junit.JUnit4CitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 /**
  * @author Christoph Deppisch
  */
-@ExtendWith(CitrusExtension.class)
-public class TodoListIT {
+public class TodoListRunnerIT extends JUnit4CitrusTestRunner {
 
-    @CitrusEndpoint
+    @Autowired
     private HttpClient todoClient;
 
     @Test
     @CitrusTest
-    void testGet(@CitrusResource TestDesigner designer) {
-        designer.http()
-            .client(todoClient)
+    public void testGet() {
+        http(action -> action.client(todoClient)
             .send()
             .get("/todolist")
-            .accept("text/html");
+            .accept("text/html"));
 
-        designer.http()
-            .client(todoClient)
+        http(action -> action.client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
@@ -55,31 +50,24 @@ public class TodoListIT {
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                         "<head>@ignore@</head>" +
                         "<body>@ignore@</body>" +
-                    "</html>");
+                    "</html>"));
     }
 
     @Test
     @CitrusTest
-    void testPost(@CitrusResource TestRunner runner) {
-        runner.variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
-        runner.variable("todoDescription", "Description: ${todoName}");
+    public void testPost() {
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
 
-        runner.http(action -> action
-            .client(todoClient)
+        http(action -> action.client(todoClient)
             .send()
             .post("/todolist")
             .contentType("application/x-www-form-urlencoded")
             .payload("title=${todoName}&description=${todoDescription}"));
 
-        runner.http(action -> action
-            .client(todoClient)
+        http(action -> action.client(todoClient)
             .receive()
             .response(HttpStatus.FOUND));
-    }
-
-    @Test
-    @CitrusXmlTest(name = "TodoListIT")
-    void testXmlDsl() {
     }
 
 }

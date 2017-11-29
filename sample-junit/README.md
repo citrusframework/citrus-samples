@@ -1,7 +1,7 @@
-JUnit5 sample ![Logo][1]
+JUnit sample ![Logo][1]
 ==============
 
-This sample demonstrates the JUnit5 support in Citrus. We write some JUnit5 Citrus test cases that test the REST API of the todo sample application. The JUnit5 support is
+This sample demonstrates the JUnit support in Citrus. We write some JUnit Citrus test cases that test the REST API of the todo sample application. The JUnit support is
 also described in detail in [reference guide][4]
 
 Objectives
@@ -15,68 +15,72 @@ We need a Http client component in the configuration:
     <citrus-http:client id="todoClient"
                         request-url="http://localhost:8080"/>
     
-In test cases we can reference this client component in order to send REST calls to the server. In JUnit5 we can use the `@ExtendsWith` annotation that loads the
-`CitrusExtension` in JUnit5.
+In test cases we can reference this client component in order to send REST calls to the server. Citrus is able to integrate with JUnit as test execution framework. You can use
+the `JUnit4CitrusTestRunner` implementation as base for your test.
     
-    @ExtendWith(CitrusExtension.class)
-    public class TodoListIT {
+    public class TodoListIT extends JUnit4CitrusTestRunner {
     
-        @CitrusEndpoint
+        @Autowired
         private HttpClient todoClient;
     
         @Test
         @CitrusTest
-        void testPost(@CitrusResource TestRunner runner) {
+        public void testPost() {
+            variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+            variable("todoDescription", "Description: ${todoName}");
+    
             http(action -> action.client(todoClient)
                 .send()
                 .post("/todolist")
                 .contentType("application/x-www-form-urlencoded")
                 .payload("title=${todoName}&description=${todoDescription}"));
-                
+    
             http(action -> action.client(todoClient)
                 .receive()
-                .response(HttpStatus.OK));  
+                .response(HttpStatus.FOUND));
         }
-    }  
+    }      
         
-The `CitrusExtension` makes sure that Citrus framework is loaded at startup and all configuration is done properly. Then we can inject method parameters such as `@CitrusResource` annotated `TestRunner` that is
-our entrance to the Citrus Java fluent API. The runner is then able to use the `httpClient` which is automatically injected via `@CitrusEndpoint` annotation as a class field member.
+The `JUnit4CitrusTestRunner` makes sure that Citrus framework is loaded at startup and all configuration is done properly. Also we need to set the annotation `@CitrusTest` on our test methods in
+addition to the normal JUnit `@Test` annotation. This way we can inject Citrus endpoints such as the `todoClient` and we can use the runner Java fluent API in Citrus to send and receive messages using that client component. 
 
-We can use the Citrus Java DSL fluent API in the JUnit5 test in order to exchange messages with the todo application system under test. The test is a normal JUnit5 test that is executable via Java IDE or command line using Maven or Gradle.
+As an alternative to that you can also use the test designer fluent API. You need to extend from `JUnit4CitrusTestDesigner` base class then. The other concepts and configuration stays the same.
 
-In order to setup Maven for JUnit5 we need to configure the `maven-failsafe-plugin` with the JUnit platform.
+Last not least we can also use resource injection to the test methods using `@CitrusResource` method parameter annotations.
 
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.19.1</version>
-        <configuration>
-          <forkCount>1</forkCount>
-        </configuration>
-        <executions>
-          <execution>
-            <id>integration-tests</id>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>${junit.platform.version}</version>
-          </dependency>
-        </dependencies>
-    </plugin>
+    public class TodoListInjectIT extends JUnit4CitrusTest {
     
-In addition to that we need the JUnit dependency in test scope in our project:
+        @Autowired
+        private HttpClient todoClient;
+    
+        @Test
+        @CitrusTest
+        public void testPost(@CitrusResource TestRunner runner) {
+            runner.variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+            runner.variable("todoDescription", "Description: ${todoName}");
+    
+            runner.http(action -> action.client(todoClient)
+                .send()
+                .post("/todolist")
+                .contentType("application/x-www-form-urlencoded")
+                .payload("title=${todoName}&description=${todoDescription}"));
+    
+            runner.http(action -> action.client(todoClient)
+                .receive()
+                .response(HttpStatus.FOUND));
+        }
+    
+    }  
+  
+We can inject method parameters such as `@CitrusResource` annotated `TestRunner` that is our entrance to the Citrus Java fluent API.
 
-    <!-- Test scoped dependencies -->
+We can use the Citrus Java DSL fluent API in the JUnit test in order to exchange messages with the todo application system under test. The test is a normal JUnit test that is executable via Java IDE or command line using Maven or Gradle.
+
+In order to setup Maven for JUnit we need to add the dependency to the project POM file.
+
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>    
@@ -152,4 +156,4 @@ a complete [reference manual][3].
  [1]: https://www.citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://www.citrusframework.org
  [3]: https://www.citrusframework.org/reference/html/
- [4]: https://www.citrusframework.org/reference/html#run-with-junit5
+ [4]: https://www.citrusframework.org/reference/html#run-with-junit

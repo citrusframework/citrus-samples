@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2016 the original author or authors.
+ * Copyright 2006-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,32 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.*;
-import com.consol.citrus.dsl.design.TestDesigner;
-import com.consol.citrus.dsl.junit.jupiter.CitrusExtension;
-import com.consol.citrus.dsl.runner.TestRunner;
+import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.junit.JUnit4CitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 /**
  * @author Christoph Deppisch
  */
-@ExtendWith(CitrusExtension.class)
-public class TodoListIT {
+public class TodoListDesignerIT extends JUnit4CitrusTestDesigner {
 
-    @CitrusEndpoint
+    @Autowired
     private HttpClient todoClient;
 
     @Test
     @CitrusTest
-    void testGet(@CitrusResource TestDesigner designer) {
-        designer.http()
+    public void testGet() {
+        http()
             .client(todoClient)
             .send()
             .get("/todolist")
             .accept("text/html");
 
-        designer.http()
+        http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
@@ -60,26 +57,21 @@ public class TodoListIT {
 
     @Test
     @CitrusTest
-    void testPost(@CitrusResource TestRunner runner) {
-        runner.variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
-        runner.variable("todoDescription", "Description: ${todoName}");
+    public void testPost() {
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
 
-        runner.http(action -> action
+        http()
             .client(todoClient)
             .send()
             .post("/todolist")
             .contentType("application/x-www-form-urlencoded")
-            .payload("title=${todoName}&description=${todoDescription}"));
+            .payload("title=${todoName}&description=${todoDescription}");
 
-        runner.http(action -> action
+        http()
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
-    }
-
-    @Test
-    @CitrusXmlTest(name = "TodoListIT")
-    void testXmlDsl() {
+            .response(HttpStatus.FOUND);
     }
 
 }
