@@ -38,6 +38,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-databind](sample-databind)| Shows JSON object mapping feature when sending and receiving messages |
 | [sample-dataprovider](sample-dataprovider)| Shows TestNG data provider usage in Citrus |
 | [sample-dynamic-endpoints](sample-dynamic-endpoints)| Shows dynamic endpoint component usage |
+| [sample-testng](sample-testng)| Shows TestNG framework support |
 | [sample-junit](sample-junit)| Shows JUnit4 framework support |
 | [sample-junit5](sample-junit5)| Shows JUnit5 framework support |
 | [sample-jms](sample-jms)| Shows JMS queue connectivity |
