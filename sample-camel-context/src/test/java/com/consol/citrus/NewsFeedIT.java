@@ -18,7 +18,11 @@ package com.consol.citrus;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.jms.endpoint.JmsEndpoint;
+import com.consol.citrus.ws.message.SoapMessage;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
+import com.consol.citrus.ws.server.WebServiceServer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 /**
@@ -28,21 +32,52 @@ import org.testng.annotations.Test;
 @Test
 public class NewsFeedIT extends TestNGCitrusTestDesigner {
 
-    @CitrusTest(name = "NewsFeed_Ok_IT")
-    public void newsFeed_Ok_Test() {
-        send("newsJmsEndpoint")
+    @Autowired
+    private JmsEndpoint newsJmsEndpoint;
+
+    @Autowired
+    private WebServiceServer newsServer;
+
+    @CitrusTest(name = "NewsFeed_Ok_1_IT")
+    public void newsFeed_Ok_1_Test() {
+        send(newsJmsEndpoint)
                 .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
                             "<nf:Message>Citrus rocks!</nf:Message>" +
                         "</nf:News>");
 
-        receive("newsSoapServer")
+        receive(newsServer)
                 .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
                             "<nf:Message>Citrus rocks!</nf:Message>" +
                         "</nf:News>")
                 .header(SoapMessageHeaders.SOAP_ACTION, "newsFeed");
 
-        send("newsSoapServer")
+        send(newsServer)
                 .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200");
+    }
+
+    @CitrusTest(name = "NewsFeed_Ok_2_IT")
+    public void newsFeed_Ok_2_Test() {
+        echo("Send JMS request message to queue destination");
+
+        send("newsJmsEndpoint")
+                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                            "<nf:Message>Citrus rocks!</nf:Message>" +
+                        "</nf:News>")
+                .header("Operation", "HelloService/sayHello");
+
+        echo("Receive JMS message on queue destination");
+
+        soap().server(newsServer)
+                .receive()
+                .soapAction( "newsFeed")
+                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                            "<nf:Message>Citrus rocks!</nf:Message>" +
+                        "</nf:News>");
+
+        soap().server(newsServer)
+                .send()
+                .message(new SoapMessage()
+                        .setHeader(SoapMessageHeaders.HTTP_STATUS_CODE, "200"));
     }
 
 }

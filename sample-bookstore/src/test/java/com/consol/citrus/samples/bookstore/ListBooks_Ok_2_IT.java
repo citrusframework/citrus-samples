@@ -16,18 +16,58 @@
 
 package com.consol.citrus.samples.bookstore;
 
-import com.consol.citrus.annotations.CitrusXmlTest;
-import com.consol.citrus.testng.AbstractTestNGCitrusTest;
+import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.ws.client.WebServiceClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
- * @since 2010-12-07
  */
-public class ListBooks_Ok_2_IT extends AbstractTestNGCitrusTest {
-    
+public class ListBooks_Ok_2_IT extends TestNGCitrusTestDesigner {
+
+    @Autowired
+    private WebServiceClient bookStoreClient;
+
     @Test
-    @CitrusXmlTest
-    public void ListBooks_Ok_2_IT() {}
+    @CitrusTest(name = "ListBooks_Ok_2_IT")
+    public void listBooks_Ok_2_IT() {
+        description("In this test we get the list of all available books. This time we validate the existence of a newly added book via Groovy script.");
+
+        variable("isbn", "citrus:concat('978-', citrus:randomNumber(9, true))");
+        variable("year", "citrus:currentDate('yyyy')");
+
+        soap()
+            .client(bookStoreClient)
+            .send()
+            .soapAction("addBook")
+            .payload("<bkr:AddBookRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        "<bkr:book>" +
+                            "<bkr:title>Random Book</bkr:title>\n" +
+                            "<bkr:author>Random Author</bkr:author>\n" +
+                            "<bkr:isbn>${isbn}</bkr:isbn>\n" +
+                            "<bkr:year>${year}</bkr:year>" +
+                        "</bkr:book>" +
+                    "</bkr:AddBookRequestMessage>");
+
+        soap()
+            .client(bookStoreClient)
+            .receive()
+            .payload("<bkr:AddBookResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        "<bkr:success>true</bkr:success>" +
+                    "</bkr:AddBookResponseMessage>");
+
+        soap()
+            .client(bookStoreClient)
+            .send()
+            .soapAction("listBooks")
+            .payload("<bkr:ListBooksRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\"/>");
+
+        soap()
+            .client(bookStoreClient)
+            .receive()
+            .validateScript("org.testng.Assert.assertTrue(root.books.book.findAll{ it.isbn == '${isbn}' }.size() == 1, \"Missing book with isbn: '${isbn}' in book list!\")");
+    }
 
 }

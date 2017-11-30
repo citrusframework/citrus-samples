@@ -16,18 +16,74 @@
 
 package com.consol.citrus.samples.bookstore;
 
-import com.consol.citrus.annotations.CitrusXmlTest;
-import com.consol.citrus.testng.AbstractTestNGCitrusTest;
+import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.ws.client.WebServiceClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
- * @since 2010-02-24
  */
 @Test
-public class GetBookAbstract_Ok_1_IT extends AbstractTestNGCitrusTest {
-    
-    @CitrusXmlTest
-    public void GetBookAbstract_Ok_1_IT() {}
+public class GetBookAbstract_Ok_1_IT extends TestNGCitrusTestDesigner {
+
+    @Autowired
+    private WebServiceClient bookStoreClient;
+
+    @CitrusTest(name = "GetBookAbstract_Ok_1_IT")
+    public void getBookAbstract_Ok_1_IT() {
+        description("This test shows basic SOAP WebService client server communication. " +
+                "Citrus first of all adds a book to the registry in order to request for the book " +
+                "details right after book was added. This time the book abstract is also returned " +
+                "as SOAP attachment.");
+
+        variable("isbn", "978-1933988999");
+
+        soap()
+            .client(bookStoreClient)
+            .send()
+            .soapAction("addBook")
+            .payload("<bkr:AddBookRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        "<bkr:book>" +
+                            "<bkr:title>Spring in Action</bkr:title>" +
+                            "<bkr:author>Craig Walls, Ryan Breidenbach</bkr:author>" +
+                            "<bkr:isbn>${isbn}</bkr:isbn>" +
+                            "<bkr:year>2007</bkr:year>" +
+                        "</bkr:book>" +
+                    "</bkr:AddBookRequestMessage>");
+
+        soap()
+            .client(bookStoreClient)
+            .receive()
+            .payload("<bkr:AddBookResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        "<bkr:success>true</bkr:success>" +
+                    "</bkr:AddBookResponseMessage>");
+
+        soap()
+            .client(bookStoreClient)
+            .send()
+            .soapAction("getBookAbstract")
+            .payload("<bkr:GetBookAbstractRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        "<bkr:isbn>${isbn}</bkr:isbn>" +
+                    "</bkr:GetBookAbstractRequestMessage>");
+
+        soap()
+            .client(bookStoreClient)
+            .receive()
+            .payload("<bkr:GetBookAbstractResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        "<bkr:book>" +
+                            "<bkr:id>@ignore@</bkr:id>" +
+                            "<bkr:title>Spring in Action</bkr:title>" +
+                            "<bkr:author>Craig Walls, Ryan Breidenbach</bkr:author>" +
+                            "<bkr:isbn>${isbn}</bkr:isbn>" +
+                            "<bkr:year>2007</bkr:year>" +
+                            "<bkr:registration-date>@ignore@</bkr:registration-date>" +
+                        "</bkr:book>" +
+                    "</bkr:GetBookAbstractResponseMessage>")
+            .attachment("book-abstract", "text/plain", new ClassPathResource("book-abstract.txt", CitrusEndpointConfig.class))
+            .extractFromPayload("/bkr:GetBookAbstractResponseMessage/bkr:book/bkr:id", "bookId");
+    }
 
 }

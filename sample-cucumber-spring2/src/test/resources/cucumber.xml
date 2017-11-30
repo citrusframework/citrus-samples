@@ -17,6 +17,4 @@
   <!-- Citrus Java config -->
   <bean id="citrusSpringConfig" class="com.consol.citrus.config.CitrusSpringConfig"/>
 
-  <citrus-http:client id="todoListClient"
-                      request-url="http://localhost:8080"/>
 </beans>

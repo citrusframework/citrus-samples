@@ -1,0 +1,13 @@
+<fbs:FlightBookingConfirmationMessage xmlns:fbs="http://www.consol.com/schemas/flightbooking">
+  <fbs:correlationId>${correlationId}</fbs:correlationId>
+  <fbs:bookingId>${royalAirlineBookingId}</fbs:bookingId>
+  <fbs:success>true</fbs:success>
+  <fbs:flight>
+    <fbs:flightId>RA 1780</fbs:flightId>
+    <fbs:airline>RoyalAirline</fbs:airline>
+    <fbs:fromAirport>FRA</fbs:fromAirport>
+    <fbs:toAirport>HAM</fbs:toAirport>
+    <fbs:scheduledDeparture>2009-04-15T16:00:00+02:00</fbs:scheduledDeparture>
+    <fbs:scheduledArrival>2009-04-15T17:10:00+02:00</fbs:scheduledArrival>
+  </fbs:flight>
+</fbs:FlightBookingConfirmationMessage>

@@ -13,6 +13,8 @@
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.11</testng.version>
     <citrus.version>2.7.3-SNAPSHOT</citrus.version>
+    <todo.server.host>localhost</todo.server.host>
+    <todo.server.port>8080</todo.server.port>
   </properties>
 
   <build>
@@ -47,6 +49,10 @@
         <version>2.20.1</version>
         <configuration>
           <failIfNoTests>false</failIfNoTests>
+          <systemProperties>
+            <todo.server.host>${todo.server.host}</todo.server.host>
+            <todo.server.port>${todo.server.port}</todo.server.port>
+          </systemProperties>
         </configuration>
         <executions>
           <execution>
@@ -128,7 +134,7 @@
                   </bind>
                 </volumes>
                 <workingDir>/maven</workingDir>
-                <cmd>mvn install</cmd>
+                <cmd>mvn install -Dtodo.server.host=todo-app</cmd>
                 <links>
                   <link>todo-app</link>
                 </links>

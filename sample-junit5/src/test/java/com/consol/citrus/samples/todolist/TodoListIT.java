@@ -76,10 +76,4 @@ public class TodoListIT {
             .receive()
             .response(HttpStatus.FOUND));
     }
-
-    @Test
-    @CitrusXmlTest(name = "TodoListIT")
-    void testXmlDsl() {
-    }
-
 }

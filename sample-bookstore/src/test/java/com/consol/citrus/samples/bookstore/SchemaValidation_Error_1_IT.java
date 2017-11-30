@@ -16,18 +16,46 @@
 
 package com.consol.citrus.samples.bookstore;
 
-import com.consol.citrus.annotations.CitrusXmlTest;
-import com.consol.citrus.testng.AbstractTestNGCitrusTest;
+import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.ws.client.WebServiceClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
- * @since 2010-02-24
  */
-public class SchemaValidation_Error_1_IT extends AbstractTestNGCitrusTest {
-    
+public class SchemaValidation_Error_1_IT extends TestNGCitrusTestDesigner {
+
+    @Autowired
+    private WebServiceClient bookStoreClient;
+
     @Test
-    @CitrusXmlTest
-    public void SchemaValidation_Error_1_IT() {}
+    @CitrusTest(name = "SchemaValidation_Error_1_IT")
+    public void schemaValidation_Error_1_IT() {
+        description("This test gets schema validation errors in SOAP fault response from server as the request is not " +
+                "valid ('year'=>'03.Okt.2008' not a valid number).");
+
+        variable("isbn", "978-0596517335");
+        variable("faultCode", "{http://www.consol.com/citrus/samples/errorcodes}CITRUS:999");
+
+        assertSoapFault()
+                .faultCode("${faultCode}")
+                .faultString("Client sent invalid request!")
+                .when(
+                    soap()
+                        .client(bookStoreClient)
+                        .send()
+                        .soapAction("addBook")
+                        .payload("<bkr:AddBookRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                                    "<bkr:book>" +
+                                        "<bkr:title>Maven: The Definitive Guide</bkr:title>" +
+                                        "<bkr:author>Mike Loukides, Sonatype</bkr:author>" +
+                                        "<bkr:isbn>${isbn}</bkr:isbn>" +
+                                        "<bkr:year>03.Okt.2008</bkr:year>" +
+                                    "</bkr:book>" +
+                                "</bkr:AddBookRequestMessage>")
+                );
+    }
     
 }

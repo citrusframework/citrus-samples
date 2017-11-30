@@ -17,7 +17,6 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.annotations.CitrusXmlTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
@@ -104,10 +103,4 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                     .payload("${todoId}")
         );
     }
-
-    @Test
-    @CitrusXmlTest(name = "TodoListIT")
-    void testXmlHamcrestSupport() {
-    }
-
 }

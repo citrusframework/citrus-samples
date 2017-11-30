@@ -16,18 +16,61 @@
 
 package com.consol.citrus.samples.bookstore;
 
-import com.consol.citrus.annotations.CitrusXmlTest;
-import com.consol.citrus.testng.AbstractTestNGCitrusTest;
+import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.ws.client.WebServiceClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
- * @since 2010-02-24
  */
-public class ListBooks_Ok_1_IT extends AbstractTestNGCitrusTest {
-    
+public class ListBooks_Ok_1_IT extends TestNGCitrusTestDesigner {
+
+    @Autowired
+    private WebServiceClient bookStoreClient;
+
     @Test
-    @CitrusXmlTest
-    public void ListBooks_Ok_1_IT() {}
+    @CitrusTest(name = "ListBooks_Ok_1_IT")
+    public void listBooks_Ok_1_IT() {
+        description("In this test we add a book first to the registry and afterwards try to get the list of all available books. " +
+                "The newly added book has to be present in this list. As we do not know exactly what other books might be in the " +
+                "complete list of books we have to validate with XPath magic.");
+
+        variable("isbn", "978-0321200686");
+
+
+        soap()
+            .client(bookStoreClient)
+            .send()
+            .soapAction("addBook")
+            .payload("<bkr:AddBookRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        "<bkr:book>" +
+                            "<bkr:title>Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions</bkr:title>" +
+                            "<bkr:author>Gregor Hohpe, Bobby Wolf</bkr:author>" +
+                            "<bkr:isbn>${isbn}</bkr:isbn>" +
+                            "<bkr:year>2003</bkr:year>" +
+                        "</bkr:book>" +
+                    "</bkr:AddBookRequestMessage>");
+
+        soap()
+            .client(bookStoreClient)
+            .receive()
+            .payload("<bkr:AddBookResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        "<bkr:success>true</bkr:success>" +
+                    "</bkr:AddBookResponseMessage>");
+
+        soap()
+            .client(bookStoreClient)
+            .send()
+            .soapAction("listBooks")
+            .payload("<bkr:ListBooksRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\"/>");
+
+        soap()
+            .client(bookStoreClient)
+            .receive()
+            .validate("boolean:count(/bkr:ListBooksResponseMessage/bkr:books/bkr:book) > 0", true)
+            .validate("boolean:/bkr:ListBooksResponseMessage/bkr:books/bkr:book/bkr:isbn[.='${isbn}']", true);
+    }
 
 }

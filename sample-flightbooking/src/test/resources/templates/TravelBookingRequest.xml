@@ -1,0 +1,26 @@
+<fbs:TravelBookingRequestMessage xmlns:fbs="http://www.consol.com/schemas/flightbooking">
+  <fbs:correlationId>${correlationId}</fbs:correlationId>
+  <fbs:customer>
+    <fbs:id>${customerId}</fbs:id>
+    <fbs:firstname>John</fbs:firstname>
+    <fbs:lastname>Doe</fbs:lastname>
+  </fbs:customer>
+  <fbs:flights>
+    <fbs:flight>
+      <fbs:flightId>SM 1269</fbs:flightId>
+      <fbs:airline>SmartAirline</fbs:airline>
+      <fbs:fromAirport>MUC</fbs:fromAirport>
+      <fbs:toAirport>FRA</fbs:toAirport>
+      <fbs:scheduledDeparture>2009-04-15T11:55:00+02:00</fbs:scheduledDeparture>
+      <fbs:scheduledArrival>2009-04-15T13:00:00+02:00</fbs:scheduledArrival>
+    </fbs:flight>
+    <fbs:flight>
+      <fbs:flightId>RA 1780</fbs:flightId>
+      <fbs:airline>RoyalAirline</fbs:airline>
+      <fbs:fromAirport>FRA</fbs:fromAirport>
+      <fbs:toAirport>HAM</fbs:toAirport>
+      <fbs:scheduledDeparture>2009-04-15T16:00:00+02:00</fbs:scheduledDeparture>
+      <fbs:scheduledArrival>2009-04-15T17:10:00+02:00</fbs:scheduledArrival>
+    </fbs:flight>
+  </fbs:flights>
+</fbs:TravelBookingRequestMessage>

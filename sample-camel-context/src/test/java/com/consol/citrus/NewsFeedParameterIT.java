@@ -37,7 +37,7 @@ public class NewsFeedParameterIT extends TestNGCitrusTestDesigner {
     private JmsEndpoint newsJmsEndpoint;
 
     @Autowired
-    private WebServiceServer newsSoapServer;
+    private WebServiceServer newsServer;
 
     @CitrusTest(name = "NewsFeed_DataProvider_Ok_IT")
     @CitrusParameters({ "message" })
@@ -48,13 +48,15 @@ public class NewsFeedParameterIT extends TestNGCitrusTestDesigner {
                             "<nf:Message>${message}</nf:Message>" +
                         "</nf:News>");
 
-        receive(newsSoapServer)
+        soap().server(newsServer)
+                .receive()
+                .soapAction("newsFeed")
                 .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
                             "<nf:Message>" + message + "</nf:Message>" +
-                        "</nf:News>")
-                .header(SoapMessageHeaders.SOAP_ACTION, "newsFeed");
+                        "</nf:News>");
 
-        send(newsSoapServer)
+        soap().server(newsServer)
+                .send()
                 .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200");
     }
 

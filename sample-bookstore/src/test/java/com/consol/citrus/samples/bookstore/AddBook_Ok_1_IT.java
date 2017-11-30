@@ -16,18 +16,48 @@
 
 package com.consol.citrus.samples.bookstore;
 
-import com.consol.citrus.annotations.CitrusXmlTest;
-import com.consol.citrus.testng.AbstractTestNGCitrusTest;
+import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.ws.client.WebServiceClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
- * @since 2010-02-24
  */
 @Test
-public class AddBook_Ok_1_IT extends AbstractTestNGCitrusTest {
-    
-    @CitrusXmlTest(name = "AddBook_Ok_1_IT")
-    public void addBook_OK_1_Test() {}
+public class AddBook_Ok_1_IT extends TestNGCitrusTestDesigner {
+
+    @Autowired
+    private WebServiceClient bookStoreClient;
+
+    @CitrusTest(name = "AddBook_Ok_1_IT")
+    public void addBook_OK_1_Test() {
+        description("This test shows basic SOAP WebService client server communication. " +
+                "Citrus sends a SOAP request in order to add a book to the registry. As client Citrus receives the SOAP " +
+                "response and validates the message content.");
+
+        variable("isbn", "978-0596517335");
+
+        soap()
+           .client(bookStoreClient)
+           .send()
+           .soapAction("addBook")
+           .payload("<bkr:AddBookRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                       "<bkr:book>" +
+                           "<bkr:title>Maven: The Definitive Guide</bkr:title>" +
+                           "<bkr:author>Mike Loukides, Sonatype</bkr:author>" +
+                           "<bkr:isbn>${isbn}</bkr:isbn>" +
+                           "<bkr:year>2008</bkr:year>" +
+                       "</bkr:book>" +
+                   "</bkr:AddBookRequestMessage>");
+
+        soap()
+            .client(bookStoreClient)
+            .receive()
+            .payload("<bkr:AddBookResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        "<bkr:success>true</bkr:success>" +
+                    "</bkr:AddBookResponseMessage>");
+    }
     
 }

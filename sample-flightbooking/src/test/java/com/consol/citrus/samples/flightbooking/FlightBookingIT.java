@@ -16,19 +16,80 @@
 
 package com.consol.citrus.samples.flightbooking;
 
-import com.consol.citrus.annotations.CitrusXmlTest;
-import com.consol.citrus.testng.AbstractTestNGCitrusTest;
+import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.http.server.HttpServer;
+import com.consol.citrus.jms.endpoint.JmsEndpoint;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
- * @since 2010
  */
 @Test
-public class FlightBookingIT extends AbstractTestNGCitrusTest {
-    
-    @CitrusXmlTest
-    public void FlightBookingIT() {
+public class FlightBookingIT extends TestNGCitrusTestDesigner {
+
+    @Autowired
+    @Qualifier("travelAgencyBookingRequestEndpoint")
+    private JmsEndpoint travelAgencyBookingRequestEndpoint;
+
+    @Autowired
+    @Qualifier("travelAgencyBookingResponseEndpoint")
+    private JmsEndpoint travelAgencyBookingResponseEndpoint;
+
+    @Autowired
+    @Qualifier("smartAirlineBookingRequestEndpoint")
+    private JmsEndpoint smartAirlineBookingRequestEndpoint;
+
+    @Autowired
+    @Qualifier("smartAirlineBookingResponseEndpoint")
+    private JmsEndpoint smartAirlineBookingResponseEndpoint;
+
+    @Autowired
+    private HttpServer royalAirlineServer;
+
+    @CitrusTest(name = "FlightBookingIT")
+    public void flightBookingIT() {
+        variable("correlationId", "citrus:concat('Lx1x', 'citrus:randomNumber(10)')");
+        variable("customerId", "citrus:concat('Mx1x', citrus:randomNumber(10))");
+
+        send(travelAgencyBookingRequestEndpoint)
+            .payload(new ClassPathResource("templates/TravelBookingRequest.xml"))
+                .header("bookingCorrelationId", "${correlationId}");
+
+        receive(royalAirlineServer)
+            .payload(new ClassPathResource("templates/RoyalAirlineBookingRequest.xml"))
+            .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId")
+            .header("bookingCorrelationId", "${correlationId}")
+            .extractFromHeader("X-sequenceNumber", "${sequenceNumber}")
+            .extractFromHeader("X-sequenceSize", "${sequenceSize}")
+            .extractFromPayload("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${royalAirlineBookingId}");
+
+        send(royalAirlineServer)
+            .payload(new ClassPathResource("templates/RoyalAirlineBookingResponse.xml"))
+            .header("X-sequenceNumber", "${sequenceNumber}")
+            .header("X-sequenceSize", "${sequenceSize}")
+            .header("bookingCorrelationId", "${correlationId}");
+
+        receive(smartAirlineBookingRequestEndpoint)
+            .payload(new ClassPathResource("templates/SmartAirlineBookingRequest.xml"))
+            .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId")
+            .header("bookingCorrelationId", "${correlationId}")
+            .extractFromHeader("sequenceNumber", "${sequenceNumber}")
+            .extractFromHeader("sequenceSize", "${sequenceSize}")
+            .extractFromPayload("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${smartAirlineBookingId}");
+
+        send(smartAirlineBookingResponseEndpoint)
+            .payload(new ClassPathResource("templates/SmartAirlineBookingResponse.xml"))
+            .header("sequenceNumber", "${sequenceNumber}")
+            .header("sequenceSize", "${sequenceSize}")
+            .header("bookingCorrelationId", "${correlationId}");
+
+        receive(travelAgencyBookingResponseEndpoint)
+            .payload(new ClassPathResource("templates/TravelBookingResponse.xml"))
+            .header("bookingCorrelationId", "${correlationId}");
     }
 
 }
