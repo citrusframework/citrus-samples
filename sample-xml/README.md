@@ -13,11 +13,17 @@ We call this API and receive XML message structures for validation in our test c
 As we want to deal with XML data it is a good idea to enable schema validation for incoming messages. Just put your
 known schemas to the schema repository and Citrus will automatically validate incoming messages with the available schema rules.
 
-    <citrus:schema-repository id="schemaRepository">
-        <citrus:schemas>
-            <citrus:schema id="todo" location="classpath:schema/Todo.xsd"/>
-        </citrus:schemas>
-    </citrus:schema-repository>
+    @Bean
+    public SimpleXsdSchema todoListSchema() {
+        return new SimpleXsdSchema(new ClassPathResource("schema/Todo.xsd"));
+    }
+
+    @Bean
+    public XsdSchemaRepository schemaRepository() {
+        XsdSchemaRepository schemaRepository = new XsdSchemaRepository();
+        schemaRepository.getSchemas().add(todoListSchema());
+        return schemaRepository;
+    }
 
 That is all for configuration, now we can use XML as message payload in the test cases.
     
@@ -68,9 +74,12 @@ An alternative approach would be to use Xpath expressions when validating incomi
 Each expression is evaluated and checked for expected values. XPath is namespace sensitive. So we need to use the correct namespaces
 in the expressions. Here we have used a namespace prefix ***t:***. This prefix is defined in a central namespace context in the configuration.
        
-    <citrus:namespace-context>
-        <citrus:namespace prefix="t" uri="http://citrusframework.org/samples/todolist"/>
-    </citrus:namespace-context>
+    @Bean
+    public NamespaceContextBuilder namespaceContextBuilder() {
+        NamespaceContextBuilder namespaceContextBuilder = new NamespaceContextBuilder();
+        namespaceContextBuilder.setNamespaceMappings(Collections.singletonMap("t", "http://citrusframework.org/samples/todolist"));
+        return namespaceContextBuilder;
+    }
        
 This makes sure that the Xpath expressions are able to find the elements with correct namespaces. Of course you can also specify the 
 namespace context for each receive action individually.       

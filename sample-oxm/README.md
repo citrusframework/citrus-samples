@@ -22,16 +22,15 @@ We need to include the Spring oxm module in the dependencies:
     
 Also we need to provide a marshaller component in our Spring configuration:
     
-    <oxm:jaxb2-marshaller id="marshaller" context-path="com.consol.citrus.samples.todolist.model"/>
+    @Bean
+    public Marshaller marshaller() {
+        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        marshaller.setContextPath("com.consol.citrus.samples.todolist.model");
+        return marshaller;
+    }
     
-Please note that the marshaller supports model object classes in package **com.consol.citrus.samples.todolist.model**. Also
-we need a special **oxm** namespace that we add to the Spring application context root element:
+Please note that the marshaller supports model object classes in package **com.consol.citrus.samples.todolist.model**. 
 
-    <beans xmlns="http://www.springframework.org/schema/beans"
-           [...]
-           xmlns:oxm="http://www.springframework.org/schema/oxm"
-           xsi:schemaLocation="http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd">
-    
 That is all for configuration, now we can use model objects as message payload in the test cases.
     
     http()

@@ -12,8 +12,13 @@ Citrus is able to call the API methods as a client in order to validate the Http
 
 We need a Http client component in the configuration:
 
-    <citrus-http:client id="todoClient"
-                        request-url="http://localhost:8080"/>
+    @Bean
+    public HttpClient todoClient() {
+        return CitrusEndpoints.http()
+                            .client()
+                            .requestUrl("http://localhost:8080")
+                            .build();
+    }
     
 In test cases we can reference this client component in order to send REST calls to the server. Citrus is able to integrate with TestNG as test execution framework. You can use
 the `TestNGCitrusTestRunner` implementation as base for your test.

@@ -13,8 +13,13 @@ system under test.
 
 We need a Http client component in the configuration:
 
-    <citrus-http:client id="todoClient"
-                        request-url="http://localhost:8080"/>
+    @Bean
+    public HttpClient todoClient() {
+        return CitrusEndpoints.http()
+                            .client()
+                            .requestUrl("http://localhost:8080")
+                            .build();
+    }
         
 We want to call the REST API on the todolist server with that client using multiple threads in order to create 
 some load on that server. We can do so by adding a TestNG parameter to the annotation of the test.

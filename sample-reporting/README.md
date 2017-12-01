@@ -45,8 +45,11 @@ You can review the complete custom reporter on this sample's [github repository]
 
 We add the new reporter implementation as Spring bean to the application context.
     
-```xml    
-<bean class="com.consol.citrus.samples.todolist.reporting.ExtentReporter"/>
+```java
+@Bean
+public ExtentReporter extentReporter() {
+    return new ExtentReporter();
+}    
 ```
         
 That completes the reporting extension. Citrus will automatically see the new bean and add it to the list of reporters. The reporter is called when tests pass and fail. 

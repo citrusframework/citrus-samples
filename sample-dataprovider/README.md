@@ -46,7 +46,7 @@ multiple times with respective values:
 
     CITRUS TEST RESULTS
     TodoListIT.testPost([todo1, Description: todo1, false]) ............... SUCCESS
-    TodoListIT.testPost([todo2, Description: todo2, true]) ............... SUCCESS
+    TodoListIT.testPost([todo2, Description: todo2, true])  ............... SUCCESS
     TodoListIT.testPost([todo3, Description: todo3, false]) ............... SUCCESS    
         
 Run

@@ -12,9 +12,10 @@ We can send JSON messages in order to create new todo entries that are stored to
 
 The Citrus project needs a JMS connection factory that is defined in the Spring application context as bean:
 
-    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-      <property name="brokerURL" value="tcp://localhost:61616" />
-    </bean>
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        return new ActiveMQConnectionFactory("tcp://localhost:61616");
+    }
     
 We use ActiveMQ as message broker so we use the respective connection factory implementation here. The message broker is automatically
 started with the Maven build lifecycle.

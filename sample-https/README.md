@@ -11,42 +11,41 @@ supported certificates. The sample uses the keystore in **src/test/resources/key
 
 We need a special Http client configuration:
 
-    <bean class="com.consol.citrus.samples.todolist.config.HttpClientSslConfig"/>
-
-    <citrus-http:client id="todoClient"
-                        request-factory="sslRequestFactory"
-                        request-url="https://localhost:8443"/>
+    @Bean
+    public HttpClient todoClient() {
+        return CitrusEndpoints.http()
+                            .client()
+                            .requestUrl("https://localhost:" + securePort)
+                            .requestFactory(sslRequestFactory())
+                            .build();
+    }
     
 The client component references a special request factory and uses the transport scheme **https** on port **8443**. The SSL request factory is defined in a
 Java Spring configuration class simply because it is way more comfortable to do this in Java than in XML.
     
-    @Configuration
-    public class HttpClientSslConfig {
-    
-        @Bean
-        public HttpClient httpClient() {
-            try {
-                SSLContext sslcontext = SSLContexts.custom()
-                        .loadTrustMaterial(new ClassPathResource("keys/citrus.jks").getFile(), "secret".toCharArray(),
-                                new TrustSelfSignedStrategy())
-                        .build();
-    
-                SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
-                        sslcontext, NoopHostnameVerifier.INSTANCE);
-    
-                return HttpClients.custom()
-                        .setSSLSocketFactory(sslSocketFactory)
-                        .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                        .build();
-            } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-                throw new BeanCreationException("Failed to create http client for ssl connection", e);
-            }
+    @Bean
+    public HttpClient httpClient() {
+        try {
+            SSLContext sslcontext = SSLContexts.custom()
+                    .loadTrustMaterial(new ClassPathResource("keys/citrus.jks").getFile(), "secret".toCharArray(),
+                            new TrustSelfSignedStrategy())
+                    .build();
+
+            SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
+                    sslcontext, NoopHostnameVerifier.INSTANCE);
+
+            return HttpClients.custom()
+                    .setSSLSocketFactory(sslSocketFactory)
+                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
+                    .build();
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+            throw new BeanCreationException("Failed to create http client for ssl connection", e);
         }
-    
-        @Bean
-        public HttpComponentsClientHttpRequestFactory sslRequestFactory() {
-            return new HttpComponentsClientHttpRequestFactory(httpClient());
-        }
+    }
+
+    @Bean
+    public HttpComponentsClientHttpRequestFactory sslRequestFactory() {
+        return new HttpComponentsClientHttpRequestFactory(httpClient());
     }
         
 As you can see we load the keystore file **keys/citrus.jks** in order to setup the http client ssl context. In the Citrus test case you can use the client component as usual for 
@@ -65,64 +64,61 @@ sending messages to the server.
         
 On the server side the configuration looks like follows:
         
-    <citrus-http:server id="todoSslServer"
-                        connector="sslConnector"
-                        endpoint-adapter="staticResponseAdapter"
-                        auto-start="true"/>
+    @Bean
+    public HttpServer todoSslServer() throws Exception {
+        return CitrusEndpoints.http()
+                .server()
+                .port(8080)
+                .endpointAdapter(staticEndpointAdapter())
+                .connector(sslConnector())
+                .autoStart(true)
+                .build();
+    }
 
-    <bean id="sslConnector" class="org.eclipse.jetty.server.ServerConnector">
-      <constructor-arg>
-        <bean class="org.eclipse.jetty.server.Server"></bean>
-      </constructor-arg>
-      <constructor-arg>
-        <list>
-          <bean class="org.eclipse.jetty.server.SslConnectionFactory">
-            <constructor-arg>
-              <bean class="org.eclipse.jetty.util.ssl.SslContextFactory">
-                <property name="keyStorePath" value="${project.basedir}/src/test/resources/keys/citrus.jks"/>
-                <property name="keyStorePassword" value="secret"/>
-              </bean>
-            </constructor-arg>
-            <constructor-arg value="http/1.1"/>
-          </bean>
-          <bean class="org.eclipse.jetty.server.HttpConnectionFactory">
-            <constructor-arg>
-              <bean class="org.eclipse.jetty.server.HttpConfiguration">
-                <constructor-arg>
-                  <bean class="org.eclipse.jetty.server.HttpConfiguration">
-                    <property name="secureScheme" value="https"/>
-                    <property name="securePort" value="8443"/>
-                  </bean>
-                </constructor-arg>
-                <property name="customizers">
-                  <list>
-                    <bean class="org.eclipse.jetty.server.SecureRequestCustomizer"/>
-                  </list>
-                </property>
-              </bean>
-            </constructor-arg>
-          </bean>
-        </list>
-      </constructor-arg>
-      <property name="port" value="8443" />
-    </bean>        
+    @Bean
+    public ServerConnector sslConnector() {
+        ServerConnector connector = new ServerConnector(new Server(),
+                new SslConnectionFactory(sslContextFactory(), "http/1.1"),
+                new HttpConnectionFactory(httpConfiguration()));
+        connector.setPort(securePort);
+        return connector;
+    }
+
+    private HttpConfiguration httpConfiguration() {
+        HttpConfiguration parent = new HttpConfiguration();
+        parent.setSecureScheme("https");
+        parent.setSecurePort(securePort);
+        HttpConfiguration configuration = new HttpConfiguration(parent);
+        configuration.setCustomizers(Collections.singletonList(new SecureRequestCustomizer()));
+        return configuration;
+    }
+
+    private SslContextFactory sslContextFactory() {
+        SslContextFactory contextFactory = new SslContextFactory();
+        contextFactory.setKeyStorePath(sslKeyStorePath);
+        contextFactory.setKeyStorePassword("secret");
+        return contextFactory;
+    }        
         
 That is a lot of Spring bean configuration, but it works! The server component references a special **sslConnector** bean
 that defines the certificates and on the secure port **8443**. Client now have to use the certificate in order to connect.
        
 The server component has a static endpoint adapter always sending back a Http 200 Ok response when clients connect.
 
-    <citrus:static-response-adapter id="staticResponseAdapter">
-      <citrus:payload>
-        <![CDATA[
-        <todo xmlns="http://citrusframework.org/samples/todolist">
-          <id>100</id>
-          <title>todoName</title>
-          <description>todoDescription</description>
-        </todo>
-        ]]>
-      </citrus:payload>
-    </citrus:static-response-adapter>
+    @Bean
+    public StaticEndpointAdapter staticEndpointAdapter() {
+        return new StaticEndpointAdapter() {
+            @Override
+            protected Message handleMessageInternal(Message message) {
+                return new HttpMessage("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
+                            "<id>100</id>" +
+                            "<title>todoName</title>" +
+                            "<description>todoDescription</description>" +
+                        "</todo>")
+                        .status(HttpStatus.OK);
+            }
+        };
+    }
        
 Run
 ---------

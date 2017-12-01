@@ -209,19 +209,29 @@ Access Kubernetes resources in test
 
 Have a look at the Citrus endpoint configuration that shows the service discovery via Kubernetes:
 
-```xml
-<citrus-http:client id="todoListClient"
-            request-url="http://citrus-sample-todo-service:8080"/>
+```java
+@Bean
+public HttpClient todoClient() {
+    return CitrusEndpoints.http()
+                        .client()
+                        .requestUrl("http://citrus-sample-todo-service:8080")
+                        .build();
+}
 ```
 
 The client component in Citrus uses the Kubernetes service name *citrus-sample-todo-service* as host. The host and port are automatically resolved as the Citrus tests run as pod in Kubernetes. Also
 we can add a Citrus Kubernetes client to access the Kubernetes API within a test:
 
-```xml
-<citrus-k8s:client id="k8sClient"
-               username="minikube"
-               namespace="default"
-               url="https://kubernetes:443/"/>
+```java
+@Bean
+public KubernetesClient k8sClient() {
+    return CitrusEndpoints.kubernetes()
+            .client()
+            .username("minikube")
+            .namespace("default")
+            .url("https://kubernetes:443")
+            .build();
+}
 ```
 
 The client also uses the Kubernetes internal host and port for Kubernetes exposed services. With this client we can access the running pods and services from within a Citrus test:

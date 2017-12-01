@@ -20,76 +20,82 @@ before the request is processed. This is an easy way to add basic authentication
 
 Fortunately we can also add the basic authentication to the client component. So all requests with this client will automatically add the proper authentication header. We need a special Http client configuration for that:
 
-    <citrus-http:client id="todoBasicAuthClient"
-                          request-url="http://localhost:8090"
-                          request-factory="basicAuthFactory"/>
+    @Bean
+    public HttpClient todoBasicAuthClient() throws Exception {
+        return CitrusEndpoints.http()
+                            .client()
+                            .requestUrl("http://localhost:" + port)
+                            .requestFactory(basicAuthRequestFactory())
+                            .build();
+    }
+
+    @Bean
+    public BasicAuthClientHttpRequestFactory basicAuthRequestFactoryBean() {
+        BasicAuthClientHttpRequestFactory requestFactory = new BasicAuthClientHttpRequestFactory();
+
+        AuthScope authScope = new AuthScope("localhost", port, "", "basic");
+        requestFactory.setAuthScope(authScope);
+
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("citrus", "secr3t");
+        requestFactory.setCredentials(credentials);
+        return requestFactory;
+    }
     
-    <bean id="basicAuthFactory"
-          class="com.consol.citrus.http.client.BasicAuthClientHttpRequestFactory">
-      <property name="authScope">
-        <bean class="org.apache.http.auth.AuthScope">
-          <constructor-arg value="localhost"/>
-          <constructor-arg value="8090"/>
-          <constructor-arg value=""/>
-          <constructor-arg value="basic"/>
-        </bean>
-      </property>
-      <property name="credentials">
-        <bean class="org.apache.http.auth.UsernamePasswordCredentials">
-          <constructor-arg value="citrus"/>
-          <constructor-arg value="secr3t"/>
-        </bean>
-      </property>
-    </bean>
+    @Bean
+    public HttpComponentsClientHttpRequestFactory basicAuthRequestFactory() throws Exception {
+        return basicAuthRequestFactoryBean().getObject();
+    }
     
 The client component references a special request factory of type `BasicAuthClientHttpRequestFactory`. The request factory receives the username password credentials and is defined as bean in the
 Spring configuration. Now all send operations that reference this client component will automatically use basic authentication. 
     
 On the server side the configuration looks like follows:
         
-    <citrus-http:server id="basicAuthHttpServer"
-                            port="8090"
-                            endpoint-adapter="staticResponseAdapter"
-                            security-handler="basicAuthSecurityHandler"
-                            auto-start="true"/>
+    @Bean
+    public HttpServer basicAuthHttpServer() throws Exception {
+        return CitrusEndpoints.http()
+                .server()
+                .port(port)
+                .endpointAdapter(staticEndpointAdapter())
+                .securityHandler(basicAuthSecurityHandler())
+                .autoStart(true)
+                .build();
+    }        
     
-    <bean id="basicAuthSecurityHandler" class="com.consol.citrus.http.security.SecurityHandlerFactory">
-      <property name="users">
-        <list>
-          <bean class="com.consol.citrus.http.security.User">
-            <property name="name" value="citrus"/>
-            <property name="password" value="secr3t"/>
-            <property name="roles" value="CitrusRole"/>
-          </bean>
-        </list>
-      </property>
-      <property name="constraints">
-        <map>
-          <entry key="/todo/*">
-            <bean class="com.consol.citrus.http.security.BasicAuthConstraint">
-              <constructor-arg value="CitrusRole"/>
-            </bean>
-          </entry>
-        </map>
-      </property>
-    </bean>        
+    @Bean
+    public SecurityHandlerFactory basicAuthSecurityHandlerFactoryBean() {
+        SecurityHandlerFactory securityHandlerFactory = new SecurityHandlerFactory();
+        securityHandlerFactory.setUsers(users());
+        securityHandlerFactory.setLoginService(basicAuthLoginService(basicAuthUserStore()));
+        securityHandlerFactory.setConstraints(Collections.singletonMap("/todo/*", new BasicAuthConstraint(USER_ROLES)));
+
+        return securityHandlerFactory;
+    }
+
+    @Bean
+    public SecurityHandler basicAuthSecurityHandler() throws Exception {
+        return basicAuthSecurityHandlerFactoryBean().getObject();
+    }
         
 The server component references a special **security-handler** bean of type `SecurityHandlerFactory`. The security handler also uses a user definition with username password credentials as well as a `BasicAuthConstraint`. 
 Clients now have to use the basic authentication in order to connect with this server. Unauthorized requests will be answered with `401 Unauthorized`.
        
 The server component has a static endpoint adapter always sending back a Http 200 Ok response when clients connect.
 
-    <citrus:static-response-adapter id="staticResponseAdapter">
-      <citrus:payload>
-        <![CDATA[
-        <todo xmlns="http://citrusframework.org/samples/todolist">
-          <id>100</id>
-          <title>todoName</title>
-          <description>todoDescription</description>
-        </todo>
-        ]]>
-      </citrus:payload>
-    </citrus:static-response-adapter>
+    @Bean
+    public StaticEndpointAdapter staticEndpointAdapter() {
+        return new StaticEndpointAdapter() {
+            @Override
+            protected Message handleMessageInternal(Message message) {
+                return new HttpMessage("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
+                            "<id>100</id>" +
+                            "<title>todoName</title>" +
+                            "<description>todoDescription</description>" +
+                        "</todo>")
+                        .status(HttpStatus.OK);
+            }
+        };
+    }
        
 Run
 ---------

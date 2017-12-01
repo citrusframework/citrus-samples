@@ -11,13 +11,21 @@ The [todo-list](../todo-app/README.md) sample application provides a REST API fo
 We call this API and receive Json message structures for validation in our test cases. The Json message content is manipulated before
 exchanging with the system under test via data dictionaries. The dictionary is added as component to the Spring bean application context.
 
-    <citrus:json-path-data-dictionary id="inboundDictionary" global-scope="false">
-        <citrus:mapping-file path="dictionary/inbound.properties"/>
-    </citrus:json-path-data-dictionary>
+    @Bean
+    public JsonPathMappingDataDictionary inboundDictionary() {
+        JsonPathMappingDataDictionary dataDictionary = new JsonPathMappingDataDictionary();
+        dataDictionary.setGlobalScope(false);
+        dataDictionary.setMappingFile(new ClassPathResource("dictionary/inbound.properties"));
+        return dataDictionary;
+    }
 
-    <citrus:json-path-data-dictionary id="outboundDictionary" global-scope="false">
-        <citrus:mapping-file path="dictionary/outbound.properties"/>
-    </citrus:json-path-data-dictionary>
+    @Bean
+    public JsonPathMappingDataDictionary outboundDictionary() {
+        JsonPathMappingDataDictionary dataDictionary = new JsonPathMappingDataDictionary();
+        dataDictionary.setGlobalScope(false);
+        dataDictionary.setMappingFile(new ClassPathResource("dictionary/outbound.properties"));
+        return dataDictionary;
+    }
                 
 We define two dictionaries, one for inbound messages and another for outbound messages. In the dictionary mapping files we can provide several JsonPath
 expressions that should be applied to the messages before exchange.

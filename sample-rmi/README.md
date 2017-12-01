@@ -18,13 +18,18 @@ In this sample project a remote interface is exposed to clients via RMI. The rem
 There are two operations available. The **addTodo** operation and the **getTodos** operation. The remote interface has to be registered in
 a lookup registry. Citrus can do this with the server component:
 
-    <citrus-rmi:server id="rmiServer"
-                     host="localhost"
-                     port="1099"
-                     interface="com.consol.citrus.samples.todolist.remote.TodoListService"
-                     binding="todoService"
-                     create-registry="true"
-                     auto-start="true"/>
+    @Bean
+    public RmiServer rmiServer() {
+        return CitrusEndpoints.rmi()
+                .server()
+                .autoStart(true)
+                .host("localhost")
+                .port(1099)
+                .remoteInterfaces(TodoListService.class)
+                .binding("todoService")
+                .createRegistry(true)
+                .build();
+    }
                      
 The server has its property **create-registry** set to true. So we create a new lookup registry on port **1099** on the **localhost**. The
 remote interface is automatically registered. In addition to that the server creates a service binding with the name **todoService**.
@@ -35,8 +40,13 @@ After that clients can lookup and access the service with:
     
 Lets create a client component that uses this service url:
     
-    <citrus-rmi:client id="rmiClient"
-                         server-url="rmi://localhost:1099/todoService"/>
+    @Bean
+    public RmiClient rmiClient() {
+        return CitrusEndpoints.rmi()
+                .client()
+                .serverUrl("rmi://localhost:1099/todoService")
+                .build();
+    }
     
 Now there is both client and server configured in the Citrus Spring application context. Of course in a real world scenario we would act as 
 client or server and the system under test is the respective partner on the other side. You can use the RMI client and server component in 

@@ -12,29 +12,32 @@ wait for the incoming mail in a single test.
 
 First we need the mail server component in Citrus. Lets add this to the configuration:
 
-    <citrus-mail:server id="mailServer"
-                port="2222"
-                auto-accept="true"
-                auto-start="true"/>
+    @Bean
+    public MailServer mailServer() {
+        return CitrusEndpoints.mail()
+                .server()
+                .port(2222)
+                .autoAccept(true)
+                .autoStart(true)
+                .build();
+    }
                 
-The mail server component needs a special XML namespace in the configuration root element.
-                
-    <beans xmlns="http://www.springframework.org/schema/beans"
-           xmlns:citrus-mail="http://www.citrusframework.org/schema/mail/config"
-           xsi:schemaLocation="
-           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-           http://www.citrusframework.org/schema/mail/config http://www.citrusframework.org/schema/mail/config/citrus-mail-config.xsd">            
-    
 Now we can receive the mail in the test case.
     
     receive(mailServer)
-        .payload(new ClassPathResource("templates/mail.xml"))
-        .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report");
+        .message(MailMessage.request()
+                    .from("todo-report@example.org")
+                    .to("users@example.org")
+                    .cc("")
+                    .bcc("")
+                    .subject("ToDo report")
+                    .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
+            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report");
 
     send(mailServer)
         .payload(new ClassPathResource("templates/mail-response.xml"));            
         
-The mail content is loaded from external file resource. Here is the mail content that we expect to arrive in the test.
+The mail content is marshalled to an expected XML representation that we expect to arrive in the test.
 
     <mail-message xmlns="http://www.citrusframework.org/schema/mail/message">
       <from>todo-report@example.org</from>
