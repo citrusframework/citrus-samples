@@ -56,7 +56,7 @@ public class AddBook_Ok_2_IT extends TestNGCitrusTestDesigner {
             .validationCallback(new XmlMarshallingValidationCallback<AddBookResponseMessage>() {
                 @Override
                 public void validate(AddBookResponseMessage response, Map<String, Object> headers, TestContext context) {
-                    Assert.isTrue(response.isSuccess());
+                    Assert.isTrue(response.isSuccess(), "Unexpected add book response");
                 }
             });
     }

@@ -38,7 +38,7 @@ public class NewsFeedIT extends TestNGCitrusTestDesigner {
     @Autowired
     private WebServiceServer newsServer;
 
-    @CitrusTest(name = "NewsFeed_Ok_1_IT")
+    @CitrusTest(name = "NewsFeed_Ok_IT")
     public void newsFeed_Ok_1_Test() {
         send(newsJmsEndpoint)
                 .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
