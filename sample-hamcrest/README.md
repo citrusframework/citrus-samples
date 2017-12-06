@@ -11,47 +11,51 @@ We call this API and receive Json message structures for validation in our test 
 
 This time the validation is done using Hamcrest matcher implementations in combination with JsonPath expression evaluation.
 
-    http()
-        .client(todoClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .messageType(MessageType.JSON)
-        .validate("$.keySet()", hasItems("id", "title", "description", "done"))
-        .validate("$.id", equalTo(todoId))
-        .validate("$.title", allOf(startsWith("todo_"), endsWith(todoId)))
-        .validate("$.description", anyOf(startsWith("Description:"), nullValue()))
-        .validate("$.done", not(true));
+```java
+http()
+    .client(todoClient)
+    .receive()
+    .response(HttpStatus.OK)
+    .messageType(MessageType.JSON)
+    .validate("$.keySet()", hasItems("id", "title", "description", "done"))
+    .validate("$.id", equalTo(todoId))
+    .validate("$.title", allOf(startsWith("todo_"), endsWith(todoId)))
+    .validate("$.description", anyOf(startsWith("Description:"), nullValue()))
+    .validate("$.done", not(true));
+```
 
 As you can see we are able to provide Hamcrest matcher instances as expected JsonPath value. The hamcrest matcher is evaluated with the
 JsonPath expression result. This way we can construct more complex validations on JsonPath expressions.
 
 Also we can use Hamcrest matcher as condition evaluation when using iterable containers in Citrus:
 
-    @Test
-    @CitrusTest
-    public void testHamcrestCondition() {
-        iterate()
-            .condition(lessThanOrEqualTo(5))
-            .actions(
-                createVariable("todoId", "citrus:randomUUID()"),
-                createVariable("todoName", "todo_${i}"),
-                createVariable("todoDescription", "Description: ${todoName}"),
-                http()
-                    .client(todoClient)
-                    .send()
-                    .post("/todolist")
-                    .messageType(MessageType.JSON)
-                    .contentType("application/json")
-                    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"),
+```java
+@Test
+@CitrusTest
+public void testHamcrestCondition() {
+    iterate()
+        .condition(lessThanOrEqualTo(5))
+        .actions(
+            createVariable("todoId", "citrus:randomUUID()"),
+            createVariable("todoName", "todo_${i}"),
+            createVariable("todoDescription", "Description: ${todoName}"),
+            http()
+                .client(todoClient)
+                .send()
+                .post("/todolist")
+                .messageType(MessageType.JSON)
+                .contentType("application/json")
+                .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"),
 
-                http()
-                    .client(todoClient)
-                    .receive()
-                    .response(HttpStatus.OK)
-                    .messageType(MessageType.PLAINTEXT)
-                    .payload("${todoId}")
-        );
-    }
+            http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.OK)
+                .messageType(MessageType.PLAINTEXT)
+                .payload("${todoId}")
+    );
+}
+```
    
 The iteration condition uses the `lessThanOrEqualTo` Hamcrest matcher in order to evaluate the end of the iteration loop. This time we choose to execute the nested test 
 action sequence five times.

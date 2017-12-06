@@ -22,69 +22,75 @@ Get started
 
 We start with a feature test using JUnit and Cucumber runner.
 
-    @RunWith(Cucumber.class)
-    @CucumberOptions(
-            plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
-    public class TodoFeatureIT {
-    }
+```java
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
+public class TodoFeatureIT {
+}
+```
 
 The test feature is described in a story using Gherkin syntax.
 
-    Feature: Todo app
-    
-      Scenario: Add todo entry
-        Given Todo list is empty
-        When I add entry "Code something"
-        Then the number of todo entries should be 1
-    
-      Scenario: Remove todo entry
-        Given Todo list is empty
-        When I add entry "Remove me"
-        Then the number of todo entries should be 1
-        When I remove entry "Remove me"
-        Then the todo list should be empty
+```
+Feature: Todo app
+
+  Scenario: Add todo entry
+    Given Todo list is empty
+    When I add entry "Code something"
+    Then the number of todo entries should be 1
+
+  Scenario: Remove todo entry
+    Given Todo list is empty
+    When I add entry "Remove me"
+    Then the number of todo entries should be 1
+    When I remove entry "Remove me"
+    Then the todo list should be empty
+```
         
 The steps executed are defined in a separate class where a Citrus test designer is used to build integration test logic.
 
-    @ContextConfiguration(classes = CitrusSpringConfig.class)
-    public class TodoSteps {
+```java
+@ContextConfiguration(classes = CitrusSpringConfig.class)
+public class TodoSteps {
+
+    @CitrusResource
+    private TestDesigner designer;
+
+    @Autowired
+    private HttpClient todoListClient;
+
+    @Given("^Todo list is empty$")
+    public void empty_todos() {
+        designer.http()
+                .client(todoListClient)
+                .send()
+                .delete("/todolist");
+
+        designer.http()
+                .client(todoListClient)
+                .receive()
+                .response(HttpStatus.FOUND);
+    }
+
+    @When("^I add entry \"([^\"]*)\"$")
+    public void add_entry(String todoName) {
+        designer.http()
+                .client(todoListClient)
+                .send()
+                .post("/todolist")
+                .contentType("application/x-www-form-urlencoded")
+                .payload("title=" + todoName);
+
+        designer.http()
+                .client(todoListClient)
+                .receive()
+                .response(HttpStatus.FOUND);
+    }
     
-        @CitrusResource
-        private TestDesigner designer;
-    
-        @Autowired
-        private HttpClient todoListClient;
-    
-        @Given("^Todo list is empty$")
-        public void empty_todos() {
-            designer.http()
-                    .client(todoListClient)
-                    .send()
-                    .delete("/todolist");
-    
-            designer.http()
-                    .client(todoListClient)
-                    .receive()
-                    .response(HttpStatus.FOUND);
-        }
-    
-        @When("^I add entry \"([^\"]*)\"$")
-        public void add_entry(String todoName) {
-            designer.http()
-                    .client(todoListClient)
-                    .send()
-                    .post("/todolist")
-                    .contentType("application/x-www-form-urlencoded")
-                    .payload("title=" + todoName);
-    
-            designer.http()
-                    .client(todoListClient)
-                    .receive()
-                    .response(HttpStatus.FOUND);
-        }
-        
-        [...]
-    }    
+    [...]
+}    
+```
     
 As you can see we are now able to use Spring **@Autowired** annotations in order to enable dependency injection. The **CitrusSpringConfig**
 class is also loaded as Spring context configuration in order to load the Citrus default Spring application context.   
@@ -95,14 +101,18 @@ Configuration
 There are some configuration aspects that should be highlighted in particular. The sample uses Cucumber Spring support. Therefore
 we have included the respective Maven dependency to the project:
 
-    <dependency>
-      <groupId>info.cukes</groupId>
-      <artifactId>cucumber-spring</artifactId>
-    </dependency>
+```xml
+<dependency>
+  <groupId>info.cukes</groupId>
+  <artifactId>cucumber-spring</artifactId>
+</dependency>
+```
     
 Secondly we choose Citrus Spring object factory in *cucumber.properties* in order to enable Cucumber Spring support in all tests.
     
-    cucumber.api.java.ObjectFactory=cucumber.runtime.java.spring.CitrusSpringObjectFactory
+```
+cucumber.api.java.ObjectFactory=cucumber.runtime.java.spring.CitrusSpringObjectFactory
+```
     
 These two steps are required to make Citrus work with Cucumber Spring features.
 

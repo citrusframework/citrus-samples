@@ -12,35 +12,43 @@ project. As the Citrus tests are nothing but normal JUnit or TestNG tests the in
 The Gradle build configuration is done in the **build.gradle** and **settings.gradle** files. Here we define the project name 
 and the project version.
 
-    rootProject.name = 'citrus-sample-gradle'
-    group 'com.consol.citrus.samples'
-    version '2.7.1'
+```groovy
+rootProject.name = 'citrus-sample-gradle'
+group 'com.consol.citrus.samples'
+version '2.7.1'
+```
     
 Now as Citrus libraries are available on Maven central repository we add these repositories so Gradle knows how to download the required
 Citrus artifacts.    
     
-    repositories {
-        mavenCentral()
-        maven {
-            url 'http://labs.consol.de/maven/snapshots-repository/'
-        }
+```groovy
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://labs.consol.de/maven/snapshots-repository/'
     }
+}
+```
     
 Citrus stable release versions are available on Maven central. If you want to use the very latest next version as snapshot preview you need
 to add the ConSol Labs snapshot repository which is optional. Now lets move on with adding the Citrus libraries to the project.
     
-    dependencies {
-        testCompile group: 'com.consol.citrus', name: 'citrus-core', version: '2.7.3-SNAPSHOT'
-        testCompile group: 'com.consol.citrus', name: 'citrus-java-dsl', version: '2.7.3-SNAPSHOT'
-        testCompile group: 'org.testng', name: 'testng', version: '6.11'
-        [...]
-    }
+```groovy
+dependencies {
+    testCompile group: 'com.consol.citrus', name: 'citrus-core', version: '2.7.3-SNAPSHOT'
+    testCompile group: 'com.consol.citrus', name: 'citrus-java-dsl', version: '2.7.3-SNAPSHOT'
+    testCompile group: 'org.testng', name: 'testng', version: '6.11'
+    [...]
+}
+```
     
 This enables the Citrus support for the project so we can use the Citrus classes and APIs. We decided to use TestNG unit test library.
     
-    test {
-        useTestNG()
-    }
+```groovy
+test {
+    useTestNG()
+}
+```
     
 Of course JUnit is also supported. This is all for build configuration settings. We can move on to writing some Citrus integration tests. You can
 find those tests in **src/test/java** directory.
@@ -48,29 +56,35 @@ find those tests in **src/test/java** directory.
 This sample uses pure Java code for both Citrus configuration and tests. The
 Citrus TestNG test uses a context configuration annotation.
 
-    @ContextConfiguration(classes = { EndpointConfig.class })
+```java
+@ContextConfiguration(classes = { EndpointConfig.class })
+```
     
 This tells Spring to load the configuration from the Java class ***EndpointConfig***.
     
-    public class EndpointConfig {
-        @Bean
-        public ChannelEndpoint testChannelEndpoint() {
-            ChannelEndpointConfiguration endpointConfiguration = new ChannelEndpointConfiguration();
-            endpointConfiguration.setChannel(testChannel());
-            return new ChannelEndpoint(endpointConfiguration);
-        }
-    
-        @Bean
-        private MessageChannel testChannel() {
-            return new MessageSelectingQueueChannel();
-        }
+```java
+public class EndpointConfig {
+    @Bean
+    public ChannelEndpoint testChannelEndpoint() {
+        ChannelEndpointConfiguration endpointConfiguration = new ChannelEndpointConfiguration();
+        endpointConfiguration.setChannel(testChannel());
+        return new ChannelEndpoint(endpointConfiguration);
     }
+
+    @Bean
+    private MessageChannel testChannel() {
+        return new MessageSelectingQueueChannel();
+    }
+}
+```
     
 In the configuration class we are able to define Citrus components for usage in tests. As usual
 we can autowire the endpoint components as Spring beans in the test cases.
     
-    @Autowired
-    private ChannelEndpoint testChannelEndpoint;
+```java
+@Autowired
+private ChannelEndpoint testChannelEndpoint;
+```
         
 Run
 ---------

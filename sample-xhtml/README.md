@@ -14,20 +14,24 @@ XHTML so XPath expressions can be evaluated accordingly.
 The sample tests show how to use this feature. First we define a global namespace for XHTML in
 configuration.
 
-    @Bean
-    public NamespaceContextBuilder namespaceContextBuilder() {
-        NamespaceContextBuilder namespaceContextBuilder = new NamespaceContextBuilder();
-        namespaceContextBuilder.setNamespaceMappings(Collections.singletonMap("xh", "http://www.w3.org/1999/xhtml"));
-        return namespaceContextBuilder;
-    }
+```java
+@Bean
+public NamespaceContextBuilder namespaceContextBuilder() {
+    NamespaceContextBuilder namespaceContextBuilder = new NamespaceContextBuilder();
+    namespaceContextBuilder.setNamespaceMappings(Collections.singletonMap("xh", "http://www.w3.org/1999/xhtml"));
+    return namespaceContextBuilder;
+}
+```
     
 Now we can use the XHTML validation feature in the Citrus test.
     
-    http()
-        .client(todoClient)
-        .response(HttpStatus.OK)
-        .messageType(MessageType.XHTML)
-        .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+```java
+http()
+    .client(todoClient)
+    .response(HttpStatus.OK)
+    .messageType(MessageType.XHTML)
+    .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+```
         
 In a Http client response we can set the message type to XHTML. Citrus automatically converts the HTML response to
 XHTML so we can use XPath to validation the HTML content.

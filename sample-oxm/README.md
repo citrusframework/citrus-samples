@@ -13,47 +13,58 @@ structures but use the model objects directly in our test cases.
 
 We need to include the Spring oxm module in the dependencies:
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-oxm</artifactId>
-      <version>${spring.version}</version>
-      <scope>test</scope>
-    </dependency>
+```xml
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-oxm</artifactId>
+  <version>${spring.version}</version>
+  <scope>test</scope>
+</dependency>
+```
     
 Also we need to provide a marshaller component in our Spring configuration:
     
-    @Bean
-    public Marshaller marshaller() {
-        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setContextPath("com.consol.citrus.samples.todolist.model");
-        return marshaller;
-    }
+```java
+@Bean
+public Marshaller marshaller() {
+    Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+    marshaller.setContextPath("com.consol.citrus.samples.todolist.model");
+    return marshaller;
+}
+```
     
 Please note that the marshaller supports model object classes in package **com.consol.citrus.samples.todolist.model**. 
 
 That is all for configuration, now we can use model objects as message payload in the test cases.
     
-    http()
-        .client(todoClient)
-        .send()
-        .post("/todolist")
-        .contentType("application/json")
-        .payload(new TodoEntry("${todoName}", "${todoDescription}"), objectMapper);
+```java
+@Autowired
+private Jaxb2Marshaller marshaller;
+    
+http()
+    .client(todoClient)
+    .send()
+    .post("/todolist")
+    .contentType("application/json")
+    .payload(new TodoEntry("${todoName}", "${todoDescription}"), marshaller);
+```
         
 As you can see we are able to send the model object as payload. The test variable support is also given. Citrus will automatically marshall the object to a **application/json** message content 
 as **POST** request. In a receive action we are able to use a mapping validation callback in order to get access to the model objects of an incoming message payload.
 
-    http()
-        .client(todoClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .validationCallback(new JsonMappingValidationCallback<TodoEntry>(TodoEntry.class, objectMapper) {
-            @Override
-            public void validate(TodoEntry todoEntry, Map<String, Object> headers, TestContext context) {
-                Assert.assertNotNull(todoEntry);
-                Assert.assertEquals(todoEntry.getId(), uuid);    
-            }
-        });
+```java
+http()
+    .client(todoClient)
+    .receive()
+    .response(HttpStatus.OK)
+    .validationCallback(new XmlMarshallingValidationCallback<TodoEntry>(marshaller) {
+        @Override
+        public void validate(TodoEntry todoEntry, Map<String, Object> headers, TestContext context) {
+            Assert.assertNotNull(todoEntry);
+            Assert.assertEquals(todoEntry.getId(), uuid);
+        }
+    });
+```
         
 The validation callback gets the model object as first method parameter. You can now add some validation logic with assertions on the model object.        
         

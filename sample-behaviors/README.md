@@ -13,144 +13,156 @@ We call this API and receive Json message structures for validation in our test 
 This time we want to reuse specific message exchange logic by using test behaviors in our tests. The test behavior is a
 class that provides a set of test actions for reuse in other test cases. A typical test behavior looks like this:
 
-    public class HelloBehavior extends AbstractTestBehavior {
-        private final String name;
-    
-        public HelloBehavior(String name) {
-            this.name = name;
-        }
-    
-        @Override
-        public void apply() {
-            echo("Hello " + name);
-        }
+```java
+public class HelloBehavior extends AbstractTestBehavior {
+    private final String name;
+
+    public HelloBehavior(String name) {
+        this.name = name;
     }
+
+    @Override
+    public void apply() {
+        echo("Hello " + name);
+    }
+}
+```
     
 The behavior extends `AbstractTestBehavior` and defines its logic in the apply method where you can use all Citrus Java fluent API methods as you would do in a normal test.
 The behavior is then applied in your test as follows:
 
-    @Test
-    @CitrusTest
-    public void testHelloBehavior() {
-        applyBehavior(new HelloBehavior("Howard"));
-        applyBehavior(new HelloBehavior("Leonard"));
-        applyBehavior(new HelloBehavior("Penny"));
-    }   
+```java
+@Test
+@CitrusTest
+public void testHelloBehavior() {
+    applyBehavior(new HelloBehavior("Howard"));
+    applyBehavior(new HelloBehavior("Leonard"));
+    applyBehavior(new HelloBehavior("Penny"));
+}   
+```
     
 The sample above applies the behavior in the test multiple times with different names. The result will be multiple echo test actions that print out the messages to the console logging.
 Now we can use behaviors in order to add new todo entries via Http POST request.             
     
-    public class AddTodoBehavior extends AbstractTestBehavior {
+```java
+public class AddTodoBehavior extends AbstractTestBehavior {
+
+    private String payloadData;
+    private Resource resource;
     
-        private String payloadData;
-        private Resource resource;
-        
-        @Override
-        public void apply() {
-            HttpClientRequestActionBuilder request = http()
-                .client(todoClient)
-                .send()
-                .post("/todolist")
-                .messageType(MessageType.JSON)
-                .contentType("application/json");
+    @Override
+    public void apply() {
+        HttpClientRequestActionBuilder request = http()
+            .client(todoClient)
+            .send()
+            .post("/todolist")
+            .messageType(MessageType.JSON)
+            .contentType("application/json");
 
-            if (StringUtils.hasText(payloadData)) {
-                request.payload(payloadData);
-            } else if (resource != null) {
-                request.payload(resource);
-            }
-
-            http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT)
-                .payload("${todoId}");
+        if (StringUtils.hasText(payloadData)) {
+            request.payload(payloadData);
+        } else if (resource != null) {
+            request.payload(resource);
         }
 
-        AddTodoBehavior withPayloadData(String payload) {
-            this.payloadData = payload;
-            return this;
-        }
-
-        AddTodoBehavior withResource(Resource resource) {
-            this.resource = resource;
-            return this;
-        }
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.PLAINTEXT)
+            .payload("${todoId}");
     }
+
+    AddTodoBehavior withPayloadData(String payload) {
+        this.payloadData = payload;
+        return this;
+    }
+
+    AddTodoBehavior withResource(Resource resource) {
+        this.resource = resource;
+        return this;
+    }
+}
+```
     
 As you can see the behavior provides support for Json payload inline data as well as file resource payloads. You can use the behavior in test then as follows:
 
-    @Test
-    @CitrusTest
-    public void testJsonPayloadValidation() {
-        variable("todoId", "citrus:randomUUID()");
-        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
-        variable("todoDescription", "Description: ${todoName}");
-        variable("done", "false");
-        
-        applyBehavior(new AddTodoBehavior()
-                            .withPayloadData("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
-        
-        applyBehavior(new AddTodoBehavior()
-                            .withResource(new ClassPathResource("templates/todo.json")));
-    }
+```java
+@Test
+@CitrusTest
+public void testJsonPayloadValidation() {
+    variable("todoId", "citrus:randomUUID()");
+    variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+    variable("todoDescription", "Description: ${todoName}");
+    variable("done", "false");
+    
+    applyBehavior(new AddTodoBehavior()
+                        .withPayloadData("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+    
+    applyBehavior(new AddTodoBehavior()
+                        .withResource(new ClassPathResource("templates/todo.json")));
+}
+```
 
 The behavior is reused multiple times with different payload input. Now we can add more behaviors for getting todo entries via Http GET requests.
 
-    public class GetTodoBehavior extends AbstractTestBehavior {
-    
-        private String payloadData;
-        private Resource resource;
+```java
+public class GetTodoBehavior extends AbstractTestBehavior {
 
-        private Map<String, Object> validateExpressions = new LinkedHashMap<>();
+    private String payloadData;
+    private Resource resource;
 
-        @Override
-        public void apply() {
-            http()
-                .client(todoClient)
-                .send()
-                .get("/todo/${todoId}")
-                .accept("application/json");
+    private Map<String, Object> validateExpressions = new LinkedHashMap<>();
 
-            HttpClientResponseActionBuilder response = http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.OK)
-                .messageType(MessageType.JSON);
+    @Override
+    public void apply() {
+        http()
+            .client(todoClient)
+            .send()
+            .get("/todo/${todoId}")
+            .accept("application/json");
 
-            if (StringUtils.hasText(payloadData)) {
-                response.payload(payloadData);
-            } else if (resource != null) {
-                response.payload(resource);
-            }
+        HttpClientResponseActionBuilder response = http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.JSON);
 
-            validateExpressions.forEach(response::validate);
+        if (StringUtils.hasText(payloadData)) {
+            response.payload(payloadData);
+        } else if (resource != null) {
+            response.payload(resource);
         }
 
-        GetTodoBehavior validate(String payload) {
-            this.payloadData = payload;
-            return this;
-        }
-
-        GetTodoBehavior validate(Resource resource) {
-            this.resource = resource;
-            return this;
-        }
-
-        GetTodoBehavior validate(String expression, Object expected) {
-            validateExpressions.put(expression, expected);
-            return this;
-        }
+        validateExpressions.forEach(response::validate);
     }
+
+    GetTodoBehavior validate(String payload) {
+        this.payloadData = payload;
+        return this;
+    }
+
+    GetTodoBehavior validate(Resource resource) {
+        this.resource = resource;
+        return this;
+    }
+
+    GetTodoBehavior validate(String expression, Object expected) {
+        validateExpressions.put(expression, expected);
+        return this;
+    }
+}
+```
     
 This time the behavior provides different approaches how to validate the todo entry that was sent as a Json response payload. We can use payload inline data, file resource and JsonPath expressions:
 
-    applyBehavior(new GetTodoBehavior()
-                        .validate("$.id", "${todoId}")
-                        .validate("$.title", "${todoName}")
-                        .validate("$.description", "${todoDescription}")
-                        .validate("$.done", false));   
+```java
+applyBehavior(new GetTodoBehavior()
+                    .validate("$.id", "${todoId}")
+                    .validate("$.title", "${todoName}")
+                    .validate("$.description", "${todoDescription}")
+                    .validate("$.done", false));   
+```
                         
 This completes the usage of test behaviors in Citrus. This is a great way to centralize common tasks in your project to reusable pieces of Citrus Java DSL code.
                          

@@ -12,45 +12,53 @@ We call this API and receive Json message structures for validation in our test 
 
 We can use Json as message payloads directly in the test cases.
     
-    http()
-        .client(todoClient)
-        .send()
-        .post("/todolist")
-        .messageType(MessageType.JSON)
-        .contentType("application/json")
-        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+```java
+http()
+    .client(todoClient)
+    .send()
+    .post("/todolist")
+    .messageType(MessageType.JSON)
+    .contentType("application/json")
+    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+```
         
 As you can see we are able to send the Json data as payload. You can add test variables in message payloads. In a receive 
 action we are able to use an expected Json message payload. Citrus performs a Json object comparison where each element is checked to meet
 the expected values.
 
-    http()
-        .client(todoClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .messageType(MessageType.JSON)
-        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+```java
+http()
+    .client(todoClient)
+    .receive()
+    .response(HttpStatus.OK)
+    .messageType(MessageType.JSON)
+    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+```
 
 The Json message payload can be difficult to read when used as String concatenation. Fortunately we can also use file resources as message
 payloads.
 
-    http()
-        .client(todoClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .messageType(MessageType.JSON)
-        .payload(new ClassPathResource("templates/todo.json"));    
+```java
+http()
+    .client(todoClient)
+    .receive()
+    .response(HttpStatus.OK)
+    .messageType(MessageType.JSON)
+    .payload(new ClassPathResource("templates/todo.json"));    
+```
         
 An alternative approach would be to use JsonPath expressions when validating incoming Json messages.
 
-    http()
-        .client(todoClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .messageType(MessageType.JSON)
-        .validate("$.id", "${todoId}")
-        .validate("$.title", "${todoName}")
-        .validate("$.description", "${todoDescription}");
+```java
+http()
+    .client(todoClient)
+    .receive()
+    .response(HttpStatus.OK)
+    .messageType(MessageType.JSON)
+    .validate("$.id", "${todoId}")
+    .validate("$.title", "${todoName}")
+    .validate("$.description", "${todoDescription}");
+```
         
 Each expression is evaluated and checked for expected values. In case a JsonPath expression can not be evaluated or 
 does not meet the expected value the test ends with failure.

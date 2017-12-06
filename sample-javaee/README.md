@@ -22,7 +22,7 @@ framework gives access to container managed resources such as JNDI resources and
 
 The Maven project POM includes the Arquillian dependencies in combination with an managed Wildfly container.
 
-```
+```xml
 <dependencyManagement>
     <dependencies>
       <dependency>
@@ -63,7 +63,7 @@ The Maven project POM includes the Arquillian dependencies in combination with a
 The dependencies include the **javaee-api**, **shrinkwrap** and **arquillian-junit-container**. In addition to that we need 
 the managed Wildfly container configuration.
  
-```
+```xml
 <dependency>
   <groupId>org.wildfly</groupId>
   <artifactId>wildfly-arquillian-container-managed</artifactId>
@@ -74,7 +74,7 @@ the managed Wildfly container configuration.
 
 The arquillian tests are configured with a **arquillian.xml** configuration file:
 
-```
+```xml
 <arquillian xmlns="http://jboss.org/schema/arquillian" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
@@ -97,7 +97,7 @@ The arquillian tests are configured with a **arquillian.xml** configuration file
 
 In **citrus-context.xml** we define the Citrus client and server components that are used during the tests.
 
-```
+```xml
 <!-- Mail server mock -->
 <citrus-mail:server id="mailServer"
                   auto-start="true"
@@ -113,7 +113,7 @@ In **citrus-context.xml** we define the Citrus client and server components that
 These components are used during the tests. The EJB JavaEE application connects to those services as client during the test. 
 Now lets have a look at a first sample arquillian test with its Shrinkwrap JavaEE deployments.
 
-```
+```java
 public class Deployments {
 
     private static final String CXF_VERSION = "3.1.4";
@@ -158,7 +158,7 @@ public class Deployments {
 The tests use the Arquillian and Citrus resources with annotation based injection. All resources are automatically injected to the
 test before it is executed.
 
-```
+```java
 @RunWith(Arquillian.class)
 @RunAsClient
 public class EmployeeResourceTest {
@@ -242,7 +242,7 @@ Run
 
 You can run the tests by calling 
 
-     mvn verify
+    mvn verify
 
 You should see Citrus performing several tests with lots of debugging output in the terminal. And of course green tests 
 at the very end of the build.

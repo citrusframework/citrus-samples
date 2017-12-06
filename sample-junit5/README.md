@@ -12,37 +12,41 @@ Citrus is able to call the API methods as a client in order to validate the Http
 
 We need a Http client component in the configuration:
 
-    @Bean
-    public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://localhost:8080")
-                            .build();
-    }
+```java
+@Bean
+public HttpClient todoClient() {
+    return CitrusEndpoints.http()
+                        .client()
+                        .requestUrl("http://localhost:8080")
+                        .build();
+}
+```
     
 In test cases we can reference this client component in order to send REST calls to the server. In JUnit5 we can use the `@ExtendsWith` annotation that loads the
 `CitrusExtension` in JUnit5.
     
-    @ExtendWith(CitrusExtension.class)
-    public class TodoListIT {
-    
-        @CitrusEndpoint
-        private HttpClient todoClient;
-    
-        @Test
-        @CitrusTest
-        void testPost(@CitrusResource TestRunner runner) {
-            http(action -> action.client(todoClient)
-                .send()
-                .post("/todolist")
-                .contentType("application/x-www-form-urlencoded")
-                .payload("title=${todoName}&description=${todoDescription}"));
-                
-            http(action -> action.client(todoClient)
-                .receive()
-                .response(HttpStatus.OK));  
-        }
-    }  
+```java
+@ExtendWith(CitrusExtension.class)
+public class TodoListIT {
+
+    @CitrusEndpoint
+    private HttpClient todoClient;
+
+    @Test
+    @CitrusTest
+    void testPost(@CitrusResource TestRunner runner) {
+        http(action -> action.client(todoClient)
+            .send()
+            .post("/todolist")
+            .contentType("application/x-www-form-urlencoded")
+            .payload("title=${todoName}&description=${todoDescription}"));
+            
+        http(action -> action.client(todoClient)
+            .receive()
+            .response(HttpStatus.OK));  
+    }
+}  
+```
         
 The `CitrusExtension` makes sure that Citrus framework is loaded at startup and all configuration is done properly. Then we can inject method parameters such as `@CitrusResource` annotated `TestRunner` that is
 our entrance to the Citrus Java fluent API. The runner is then able to use the `httpClient` which is automatically injected via `@CitrusEndpoint` annotation as a class field member.
@@ -51,40 +55,44 @@ We can use the Citrus Java DSL fluent API in the JUnit5 test in order to exchang
 
 In order to setup Maven for JUnit5 we need to configure the `maven-failsafe-plugin` with the JUnit platform.
 
-    <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.19.1</version>
-        <configuration>
-          <forkCount>1</forkCount>
-        </configuration>
-        <executions>
-          <execution>
-            <id>integration-tests</id>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>${junit.platform.version}</version>
-          </dependency>
-        </dependencies>
-    </plugin>
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-failsafe-plugin</artifactId>
+    <version>2.19.1</version>
+    <configuration>
+      <forkCount>1</forkCount>
+    </configuration>
+    <executions>
+      <execution>
+        <id>integration-tests</id>
+        <goals>
+          <goal>integration-test</goal>
+          <goal>verify</goal>
+        </goals>
+      </execution>
+    </executions>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-surefire-provider</artifactId>
+        <version>${junit.platform.version}</version>
+      </dependency>
+    </dependencies>
+</plugin>
+```
     
 In addition to that we need the JUnit dependency in test scope in our project:
 
-    <!-- Test scoped dependencies -->
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>    
+```xml
+<!-- Test scoped dependencies -->
+<dependency>
+  <groupId>org.junit.jupiter</groupId>
+  <artifactId>junit-jupiter-engine</artifactId>
+  <version>${junit.version}</version>
+  <scope>test</scope>
+</dependency>    
+```
        
 That completes the project setup. We are now ready to execute the tests.
        

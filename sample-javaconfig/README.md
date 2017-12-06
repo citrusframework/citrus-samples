@@ -13,31 +13,39 @@ configuration files and you can also use Java POJOs.
 This sample uses pure Java code for both Citrus configuration and tests. The
 Citrus TestNG test uses a context configuration annotation.
 
-    @ContextConfiguration(classes = { EndpointConfig.class })
+```java
+@ContextConfiguration(classes = { EndpointConfig.class })
+```
     
 This tells Spring to load the configuration from the Java class ***EndpointConfig***.
     
-    @Bean
-    public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                    .client()
-                    .requestUrl("http://localhost:8080")
-                    .build();
-    }
+```java
+@Bean
+public HttpClient todoClient() {
+    return CitrusEndpoints.http()
+                .client()
+                .requestUrl("http://localhost:8080")
+                .build();
+}
+```
     
 In the configuration class we are able to define Citrus components for usage in tests. As usual
 we can autowire the Http client component as Spring bean in the test cases.
     
-    @Autowired
-    private HttpClient todoClient;
+```java
+@Autowired
+private HttpClient todoClient;
+```
     
 As usual we are able to reference this endpoint in any send and receive operation in Citrus Java fluent API.
 
-    http()
-        .client(todoClient)
-        .send()
-        .get("/todolist")
-        .accept("text/html");
+```java
+http()
+    .client(todoClient)
+    .send()
+    .get("/todolist")
+    .accept("text/html");
+```
         
 Citrus and Spring framework automatically injects the endpoint with respective configuration for `requestUrl = http://localhost:8080`.    
      

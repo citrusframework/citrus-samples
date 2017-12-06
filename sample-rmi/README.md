@@ -10,68 +10,78 @@ Objectives
 
 In this sample project a remote interface is exposed to clients via RMI. The remote interface follows the Java RMI specification.
 
-    public interface TodoListService extends Remote {
-        void addTodo(String id, String description) throws RemoteException;
-        Map<String, String> getTodos() throws RemoteException;
-    }
+```java
+public interface TodoListService extends Remote {
+    void addTodo(String id, String description) throws RemoteException;
+    Map<String, String> getTodos() throws RemoteException;
+}
+```
 
 There are two operations available. The **addTodo** operation and the **getTodos** operation. The remote interface has to be registered in
 a lookup registry. Citrus can do this with the server component:
 
-    @Bean
-    public RmiServer rmiServer() {
-        return CitrusEndpoints.rmi()
-                .server()
-                .autoStart(true)
-                .host("localhost")
-                .port(1099)
-                .remoteInterfaces(TodoListService.class)
-                .binding("todoService")
-                .createRegistry(true)
-                .build();
-    }
+```java
+@Bean
+public RmiServer rmiServer() {
+    return CitrusEndpoints.rmi()
+            .server()
+            .autoStart(true)
+            .host("localhost")
+            .port(1099)
+            .remoteInterfaces(TodoListService.class)
+            .binding("todoService")
+            .createRegistry(true)
+            .build();
+}
+```
                      
 The server has its property **create-registry** set to true. So we create a new lookup registry on port **1099** on the **localhost**. The
 remote interface is automatically registered. In addition to that the server creates a service binding with the name **todoService**.
 
 After that clients can lookup and access the service with:
  
-    rmi://localhost:1099/todoService
+```
+rmi://localhost:1099/todoService
+```
     
 Lets create a client component that uses this service url:
     
-    @Bean
-    public RmiClient rmiClient() {
-        return CitrusEndpoints.rmi()
-                .client()
-                .serverUrl("rmi://localhost:1099/todoService")
-                .build();
-    }
+```java
+@Bean
+public RmiClient rmiClient() {
+    return CitrusEndpoints.rmi()
+            .client()
+            .serverUrl("rmi://localhost:1099/todoService")
+            .build();
+}
+```
     
 Now there is both client and server configured in the Citrus Spring application context. Of course in a real world scenario we would act as 
 client or server and the system under test is the respective partner on the other side. You can use the RMI client and server component in 
 tests as usual with the Citrus Java DSL.
     
-    @Test
-    @CitrusTest
-    public void testAddTodo() {
-        send(todoRmiClient)
-            .fork(true)
-            .message(RmiMessage.invocation(TodoListService.class, "addTodo")
-                    .argument("todo-star")
-                    .argument("Star me on github"));
+```java
+@Test
+@CitrusTest
+public void testAddTodo() {
+    send(todoRmiClient)
+        .fork(true)
+        .message(RmiMessage.invocation(TodoListService.class, "addTodo")
+                .argument("todo-star")
+                .argument("Star me on github"));
 
-        receive(todoRmiServer)
-            .message(RmiMessage.invocation(TodoListService.class, "addTodo")
-                    .argument("todo-star")
-                    .argument("Star me on github"));
+    receive(todoRmiServer)
+        .message(RmiMessage.invocation(TodoListService.class, "addTodo")
+                .argument("todo-star")
+                .argument("Star me on github"));
 
-        send(todoRmiServer)
-            .message(RmiMessage.result());
+    send(todoRmiServer)
+        .message(RmiMessage.result());
 
-        receive(todoRmiClient)
-            .message(RmiMessage.result());
-    }    
+    receive(todoRmiClient)
+        .message(RmiMessage.result());
+}    
+```
     
 The test method above calls the **addTodo** operation on the remote service. The operation defines arguments that
 get set in the service invocation. The client automatically performs the service lookup using the service registry on port
@@ -83,26 +93,28 @@ Even the method arguments are validated with respective values as expected.
         
 Lets also test the second operation in this remote interface **getTodos**.
         
-    @Test
-    @CitrusTest
-    public void testGetTodos() {
-        send(todoRmiClient)
-                .fork(true)
-                .message(RmiMessage.invocation(TodoListService.class, "getTodos"));
+```java
+@Test
+@CitrusTest
+public void testGetTodos() {
+    send(todoRmiClient)
+            .fork(true)
+            .message(RmiMessage.invocation(TodoListService.class, "getTodos"));
 
-        receive(todoRmiServer)
-                .message(RmiMessage.invocation(TodoListService.class, "getTodos"));
+    receive(todoRmiServer)
+            .message(RmiMessage.invocation(TodoListService.class, "getTodos"));
 
-        send(todoRmiServer)
-                .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
-                            "<object type=\"java.util.Map\" value=\"{todo-follow=Follow us on github}\"/>" +
-                        "</service-result>");
+    send(todoRmiServer)
+            .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+                        "<object type=\"java.util.Map\" value=\"{todo-follow=Follow us on github}\"/>" +
+                    "</service-result>");
 
-        receive(todoRmiClient)
-                .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
-                            "<object type=\"java.util.LinkedHashMap\" value=\"{todo-follow=Follow us on github}\"/>" +
-                        "</service-result>");
-    }    
+    receive(todoRmiClient)
+            .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+                        "<object type=\"java.util.LinkedHashMap\" value=\"{todo-follow=Follow us on github}\"/>" +
+                    "</service-result>");
+}    
+```
     
 In this sample test we see that Citrus is finding a way to generify the service invocation as well as the service result.
 Citrus is able to use any remote interface that you like. The operations are not implemented but do forward incoming calls to the

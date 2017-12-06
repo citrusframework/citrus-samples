@@ -60,9 +60,11 @@ property file to the sample sources in [resources/citrus-application.properties]
 
 The file contains some property settings that customize the default Citrus Html reporting.
 
-    citrus.html.report.directory=target/citrus-reports
-    citrus.html.report.file=citrus-reports.html
-    citrus.html.report.logo:classpath:logo/reporting-logo.png
+```properties
+citrus.html.report.directory=target/citrus-reports
+citrus.html.report.file=citrus-reports.html
+citrus.html.report.logo:classpath:logo/reporting-logo.png
+```
     
 The tests now write default Html reports to the file `target/citrus-reports/citrus-reports.html`. Also we use a custom reporting logo that is automatically added to the reporting page header. 
 You can now execute the tests in this sample and review the reports.    

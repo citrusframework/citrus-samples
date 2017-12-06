@@ -12,29 +12,35 @@ Citrus is able to call the API methods as a client in order to validate the Http
 
 We need a Http client component in the configuration:
 
-    @Bean
-    public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://localhost:8080")
-                            .build();
-    }
+```java
+@Bean
+public HttpClient todoClient() {
+    return CitrusEndpoints.http()
+                        .client()
+                        .requestUrl("http://localhost:8080")
+                        .build();
+}
+```
     
 In test cases we can reference this client component in order to send REST calls to the server.
     
-    http()
-        .client(todoClient)
-        .send()
-        .post("/todolist")
-        .contentType("application/x-www-form-urlencoded")
-        .payload("title=${todoName}&description=${todoDescription}");
+```java
+http()
+    .client(todoClient)
+    .send()
+    .post("/todolist")
+    .contentType("application/x-www-form-urlencoded")
+    .payload("title=${todoName}&description=${todoDescription}");
+```
         
 As you can see we are able to send **x-www-form-urlencoded** message content as **POST** request. The response is then validated as **Http 200 OK**.
 
-    http()
-        .client(todoClient)
-        .receive()
-        .response(HttpStatus.OK);
+```java
+http()
+    .client(todoClient)
+    .receive()
+    .response(HttpStatus.OK);
+```
         
 Run
 ---------

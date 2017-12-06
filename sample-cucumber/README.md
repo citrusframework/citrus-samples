@@ -18,72 +18,80 @@ Get started
 
 We start with a feature test using JUnit and Cucumber runner.
 
-    @RunWith(Cucumber.class)
-    @CucumberOptions(
-            plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
-    public class TodoFeatureIT {
-    }
+```java
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
+public class TodoFeatureIT {
+}
+```
 
 The test feature is described in a story using Gherkin syntax.
 
-    Feature: Todo app
-    
-      Scenario: Add todo entry
-        Given Todo list is empty
-        When I add entry "Code something"
-        Then the number of todo entries should be 1
-    
-      Scenario: Remove todo entry
-        Given Todo list is empty
-        When I add entry "Remove me"
-        Then the number of todo entries should be 1
-        When I remove entry "Remove me"
-        Then the todo list should be empty
+```
+Feature: Todo app
+
+  Scenario: Add todo entry
+    Given Todo list is empty
+    When I add entry "Code something"
+    Then the number of todo entries should be 1
+
+  Scenario: Remove todo entry
+    Given Todo list is empty
+    When I add entry "Remove me"
+    Then the number of todo entries should be 1
+    When I remove entry "Remove me"
+    Then the todo list should be empty
+```
         
 The steps executed are defined in a separate class where a Citrus test designer is used to build integration test logic.
 
-    public class TodoSteps {
+```java
+public class TodoSteps {
+
+    @CitrusResource
+    private TestDesigner designer;
+
+    @Given("^Todo list is empty$")
+    public void empty_todos() {
+        designer.http()
+            .client("todoListClient")
+            .send()
+            .delete("/todolist");
+
+        designer.http()
+            .client("todoListClient")
+            .receive()
+            .response(HttpStatus.FOUND);
+    }
+
+    @When("^I add entry \"([^\"]*)\"$")
+    public void add_entry(String todoName) {
+        designer.http()
+            .client("todoListClient")
+            .send()
+            .post("/todolist")
+            .contentType("application/x-www-form-urlencoded")
+            .payload("title=" + todoName);
+
+        designer.http()
+            .client("todoListClient")
+            .receive()
+            .response(HttpStatus.FOUND);
+    }
     
-        @CitrusResource
-        private TestDesigner designer;
-    
-        @Given("^Todo list is empty$")
-        public void empty_todos() {
-            designer.http()
-                .client("todoListClient")
-                .send()
-                .delete("/todolist");
-    
-            designer.http()
-                .client("todoListClient")
-                .receive()
-                .response(HttpStatus.FOUND);
-        }
-    
-        @When("^I add entry \"([^\"]*)\"$")
-        public void add_entry(String todoName) {
-            designer.http()
-                .client("todoListClient")
-                .send()
-                .post("/todolist")
-                .contentType("application/x-www-form-urlencoded")
-                .payload("title=" + todoName);
-    
-            designer.http()
-                .client("todoListClient")
-                .receive()
-                .response(HttpStatus.FOUND);
-        }
-        
-        [...]
-    }    
+    [...]
+}    
+```
 
 Configuration
 ---------
 
 In order to enable Citrus Cucumber support we need to specify a special object factory in *cucumber.properties*.
     
-    cucumber.api.java.ObjectFactory=cucumber.runtime.java.CitrusObjectFactory
+```
+cucumber.api.java.ObjectFactory=cucumber.runtime.java.CitrusObjectFactory
+```
     
 The object factory takes care on creating all step definition instances. The object factory is able to inject *@CitrusResource*
 annotated fields in step classes.

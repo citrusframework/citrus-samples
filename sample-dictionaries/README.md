@@ -11,42 +11,48 @@ The [todo-list](../todo-app/README.md) sample application provides a REST API fo
 We call this API and receive Json message structures for validation in our test cases. The Json message content is manipulated before
 exchanging with the system under test via data dictionaries. The dictionary is added as component to the Spring bean application context.
 
-    @Bean
-    public JsonPathMappingDataDictionary inboundDictionary() {
-        JsonPathMappingDataDictionary dataDictionary = new JsonPathMappingDataDictionary();
-        dataDictionary.setGlobalScope(false);
-        dataDictionary.setMappingFile(new ClassPathResource("dictionary/inbound.properties"));
-        return dataDictionary;
-    }
+```java
+@Bean
+public JsonPathMappingDataDictionary inboundDictionary() {
+    JsonPathMappingDataDictionary dataDictionary = new JsonPathMappingDataDictionary();
+    dataDictionary.setGlobalScope(false);
+    dataDictionary.setMappingFile(new ClassPathResource("dictionary/inbound.properties"));
+    return dataDictionary;
+}
 
-    @Bean
-    public JsonPathMappingDataDictionary outboundDictionary() {
-        JsonPathMappingDataDictionary dataDictionary = new JsonPathMappingDataDictionary();
-        dataDictionary.setGlobalScope(false);
-        dataDictionary.setMappingFile(new ClassPathResource("dictionary/outbound.properties"));
-        return dataDictionary;
-    }
+@Bean
+public JsonPathMappingDataDictionary outboundDictionary() {
+    JsonPathMappingDataDictionary dataDictionary = new JsonPathMappingDataDictionary();
+    dataDictionary.setGlobalScope(false);
+    dataDictionary.setMappingFile(new ClassPathResource("dictionary/outbound.properties"));
+    return dataDictionary;
+}
+```
                 
 We define two dictionaries, one for inbound messages and another for outbound messages. In the dictionary mapping files we can provide several JsonPath
 expressions that should be applied to the messages before exchange.
 
-    $.title=citrus:concat('todo_', citrus:randomNumber(4))
-    $.description=Description: todo_${todoId}
-    $.done=false
+```
+$.title=citrus:concat('todo_', citrus:randomNumber(4))
+$.description=Description: todo_${todoId}
+$.done=false
+```
 
 The outbound mappings above generate dynamic test data for message element on the todo Json payloads. The todo title is automatically set to a random string using the `citrus:randomNumber()` function.
 Also the _description_ and _done_ field is set to a proper value.
 
 The dictionary can be applied to each send operation in Citrus.
 
-    http()
-        .client(todoClient)
-        .send()
-        .post("/todolist")
-        .messageType(MessageType.JSON)
-        .dictionary("outboundDictionary")
-        .contentType("application/json")
-        .payload("{ \"id\": \"${todoId}\", \"title\": null, \"description\": null, \"done\": null}"); 
+```java
+http()
+    .client(todoClient)
+    .send()
+    .post("/todolist")
+    .messageType(MessageType.JSON)
+    .dictionary("outboundDictionary")
+    .contentType("application/json")
+    .payload("{ \"id\": \"${todoId}\", \"title\": null, \"description\": null, \"done\": null}"); 
+```
         
 As you can see the outbound dictionary overwrites message content before the actual message is sent out. The message payload in the send operation
 does not need to set proper values for _title_, _description_ and _done_. These values can be _null_. The dictionary makes sure that the message content is manipulated before
@@ -54,9 +60,11 @@ exchanging with the foreign service.
 
 Same mechanism applies for inbound dictionaries. Here we define assertions on message elements that are automatically applied to the receive operation.
 
-    $.title=todo_${todoId}
-    $.description=@startsWith('Description: ')@
-    $.done=false
+```
+$.title=todo_${todoId}
+$.description=@startsWith('Description: ')@
+$.done=false
+```
     
 The JsonPath expression mappings above make sure that the message validation is manipulated before taking action. This way we are able to set common validation and manipulation steps in
 multiple data dictionaries. Multiple send and receive operations can use the dictionary mappings and we are able to manage those mappings on a very central point of

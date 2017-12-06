@@ -1,7 +1,7 @@
 Message store sample ![Logo][1]
 ==============
 
-When Citrus exchanges messages with foreign services the messages are stored internally in a message store. This is an in memeory
+When Citrus exchanges messages with foreign services the messages are stored internally in a message store. This is an in memory
 cache that is filled with messages as they are sent and received within the test case. Read about this feature in [reference guide][4]
 
 Objectives
@@ -13,16 +13,18 @@ the todo application Citrus saves all messages to a local message store.
 
 You can access the message store at any time in the test case using message store functions.
 
-    http()
-        .client(todoClient)
-        .send()
-        .post("/todolist")
-        .name("todoRequest")
-        .messageType(MessageType.JSON)
-        .contentType("application/json")
-        .payload("{\"id\": \"citrus:randomUUID()\", \"title\": \"citrus:concat('todo_', citrus:randomNumber(4))\", \"description\": \"ToDo Description\", \"done\": false}");
+```java
+http()
+    .client(todoClient)
+    .send()
+    .post("/todolist")
+    .name("todoRequest")
+    .messageType(MessageType.JSON)
+    .contentType("application/json")
+    .payload("{\"id\": \"citrus:randomUUID()\", \"title\": \"citrus:concat('todo_', citrus:randomNumber(4))\", \"description\": \"ToDo Description\", \"done\": false}");
 
-    echo("citrus:message(todoRequest)");
+echo("citrus:message(todoRequest)");
+```
 
 The send operation above create a new todo entry as Json message payload and sends it to the todo application via Http POST request. The message
 receives a name `todoRequest`. This is the name that is used to store the message right before it is sent out. As soon as the message processing is complete the
@@ -33,17 +35,21 @@ todo application.
 
 We are also able to apply some JsonPath expression on the stored message:
 
-    echo("citrus:jsonPath(citrus:message(todoRequest.payload()), '$.title')");
+```java
+echo("citrus:jsonPath(citrus:message(todoRequest.payload()), '$.title')");
+```
 
 The echo expression above makes access to the local store reading the message named `todoRequest`. The content is then passed to a JsonPath function that is evaluating the todo title with
 `$.title` path expression. The result is the title of the todo entry that has been sent before.
 
-    http()
-        .client(todoClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .messageType(MessageType.PLAINTEXT)
-        .payload("citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')");
+```java
+http()
+    .client(todoClient)
+    .receive()
+    .response(HttpStatus.OK)
+    .messageType(MessageType.PLAINTEXT)
+    .payload("citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')");
+```
         
 The receive operation has a special message payload which accesses the message store during validation and reads the dynamic todo entry id   that was created in the `todoRequest` message.
 
