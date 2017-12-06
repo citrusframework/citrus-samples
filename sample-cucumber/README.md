@@ -28,7 +28,7 @@ public class TodoFeatureIT {
 
 The test feature is described in a story using Gherkin syntax.
 
-```
+```gherkin
 Feature: Todo app
 
   Scenario: Add todo entry
@@ -89,7 +89,7 @@ Configuration
 
 In order to enable Citrus Cucumber support we need to specify a special object factory in *cucumber.properties*.
     
-```
+```properties
 cucumber.api.java.ObjectFactory=cucumber.runtime.java.CitrusObjectFactory
 ```
     
