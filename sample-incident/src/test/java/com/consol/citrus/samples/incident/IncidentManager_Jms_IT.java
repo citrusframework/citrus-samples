@@ -17,7 +17,6 @@
 package com.consol.citrus.samples.incident;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.annotations.CitrusXmlTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
@@ -48,8 +47,76 @@ public class IncidentManager_Jms_IT extends TestNGCitrusTestDesigner {
     @Qualifier("networkBackendHttpServer")
     private HttpServer networkHttpServer;
 
-    @CitrusXmlTest(name = "IncidentManager_Jms_Ok_1_IT")
+    @CitrusTest(name = "IncidentManager_Jms_Ok_1_IT")
     public void testIncidentManager_Jms_Ok_1() {
+        description("Calls IncidentManager application via JMS message transport using SOAP request message. Opens a new incident and verifies" +
+                " proper interface calls on NetworkService as well as final incident response");
+
+        variable("ticketId","citrus:randomUUID()");
+        variable("customerId", "citrus:randomNumber(6)");
+
+        echo("Step 1: Send OpenIncident request message to IncidentManager via Http SOAP interface");
+
+        send(incidentJmsEndpoint)
+                .fork(true)
+                .payload("<im:OpenIncident xmlns:im=\"http://www.citrusframework.org/schema/samples/IncidentManager/v1\">" +
+                            "<im:incident>" +
+                                "<im:ticketId>${ticketId}</im:ticketId>" +
+                                "<im:captured>citrus:currentDate('yyyy-MM-dd'T'00:00:00')</im:captured>" +
+                                "<im:state>NEW</im:state>" +
+                                "<im:component>SOFTWARE</im:component>" +
+                                "<im:description>Something went wrong with the software!</im:description>" +
+                            "</im:incident>" +
+                            "<im:customer>" +
+                                "<im:id>${customerId}</im:id>" +
+                                "<im:firstname>Christoph</im:firstname>" +
+                                "<im:lastname>Deppisch</im:lastname>" +
+                                "<im:address>Franziskanerstr. 38, 80995 München</im:address>" +
+                            "</im:customer>" +
+                        "</im:OpenIncident>")
+                .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident");
+
+        echo("Step 2: Receive AnalyseIncident request message as NetworkService application via Http SOAP interface");
+
+        receive(networkHttpServer)
+                .payload("<net:AnalyseIncident xmlns:net=\"http://www.citrusframework.org/schema/samples/NetworkService/v1\">" +
+                            "<net:incident>" +
+                                "<net:ticketId>${ticketId}</net:ticketId>" +
+                                "<net:description>Something went wrong with the software!</net:description>" +
+                            "</net:incident>" +
+                            "<net:network>" +
+                                "<net:lineId>@ignore@</net:lineId>" +
+                                "<net:type>SOFTWARE</net:type>" +
+                                "<net:connection>@ignore@</net:connection>" +
+                            "</net:network>" +
+                        "</net:AnalyseIncident>")
+                .extractFromPayload("net:AnalyseIncident/net:network/net:lineId", "lineId")
+                .extractFromPayload("net:AnalyseIncident/net:network/net:connection" ,"connectionId");
+
+        echo("Step:3 Send AnalyseIncidentResponse message as result of the NetworkService call");
+
+        send(networkHttpServer)
+                .payload("<net:AnalyseIncidentResponse xmlns:net=\"http://www.citrusframework.org/schema/samples/NetworkService/v1\">" +
+                            "<net:ticketId>${ticketId}</net:ticketId>" +
+                            "<net:result>" +
+                                "<net:lineId>${lineId}</net:lineId>" +
+                                "<net:resultCode>CODE_citrus:randomNumber(4)</net:resultCode>" +
+                                "<net:solved>true</net:solved>" +
+                                "<net:bandwidth>12000</net:bandwidth>" +
+                                "<net:lineCheck>OK</net:lineCheck>" +
+                                "<net:connectionCheck>OK</net:connectionCheck>" +
+                                "<net:fieldForceRequired>false</net:fieldForceRequired>" +
+                            "</net:result>" +
+                        "</net:AnalyseIncidentResponse>")
+                .header("Content-Type", "application/xml");
+
+        echo("Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application");
+
+        receive(incidentJmsEndpoint)
+                .payload("<im:OpenIncidentResponse xmlns:im=\"http://www.citrusframework.org/schema/samples/IncidentManager/v1\">" +
+                            "<im:ticketId>${ticketId}</im:ticketId>" +
+                            "<im:scheduled>@ignore@</im:scheduled>" +
+                        "</im:OpenIncidentResponse>");
     }
 
     @CitrusTest(name = "IncidentManager_Jms_Ok_2_IT")
