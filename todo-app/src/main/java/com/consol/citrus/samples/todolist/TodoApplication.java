@@ -17,11 +17,15 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.samples.todolist.dao.*;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+
+import javax.sql.DataSource;
 
 /**
  * @author Christoph Deppisch
@@ -35,12 +39,27 @@ public class TodoApplication extends SpringBootServletInitializer {
     }
 
     @Bean
-    public TodoListDao todoListDao() {
-        if (System.getProperty("todo.persistence.type", "in_memory").equals("jdbc")) {
-            return new JdbcTodoListDao();
-        } else {
-            return new InMemoryTodoListDao();
-        }
+    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "in_memory", matchIfMissing = true)
+    public TodoListDao todoListInMemoryDao() {
+        return new InMemoryTodoListDao();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
+    public TodoListDao todoListJdbcDao() {
+        return new JdbcTodoListDao();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
+        dataSource.setUrl("jdbc:hsqldb:hsql://localhost/testdb");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("");
+
+        return dataSource;
     }
 
     public static void main(String[] args) {
