@@ -10,9 +10,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <jetty.version>9.4.6.v20170531</jetty.version>
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.11</testng.version>
     <citrus.version>2.7.3</citrus.version>
+    <citrus.db.version>0.1-SNAPSHOT</citrus.db.version>
   </properties>
 
   <build>
@@ -60,6 +62,47 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.consol.citrus</groupId>
+            <artifactId>citrus-db-driver</artifactId>
+            <version>${citrus.db.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <war>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</war>
+          <httpConnector>
+            <port>8080</port>
+            <idleTimeout>60000</idleTimeout>
+          </httpConnector>
+          <stopKey>stopMe</stopKey>
+          <stopPort>8088</stopPort>
+          <stopWait>10</stopWait>
+          <systemProperties>
+            <systemProperty>
+              <name>todo.persistence.type</name>
+              <value>jdbc</value>
+            </systemProperty>
+            <systemProperty>
+              <name>todo.jdbc.driverClassName</name>
+              <value>com.consol.citrus.db.driver.JdbcDriver</value>
+            </systemProperty>
+            <systemProperty>
+              <name>todo.jdbc.url</name>
+              <value>jdbc:citrus:http://localhost:3306/testdb</value>
+            </systemProperty>
+            <systemProperty>
+              <name>file.encoding</name>
+              <value>UTF-8</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -116,6 +159,12 @@
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-http</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <repositories>
@@ -128,4 +177,47 @@
       </snapshots>
     </repository>
   </repositories>
+
+  <profiles>
+    <profile>
+      <id>jetty-embedded</id>
+      <activation>
+        <property>
+          <name>embedded</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>start-server</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>deploy-war</goal>
+                </goals>
+                <configuration>
+                  <daemon>true</daemon>
+                </configuration>
+              </execution>
+              <execution>
+                <id>stop-server</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+                <configuration>
+                  <stopPort>8088</stopPort>
+                  <stopKey>stopMe</stopKey>
+                  <stopWait>10</stopWait>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

@@ -54,8 +54,8 @@
     <module>sample-soap-wsaddressing</module>
     <module>sample-soap-ssl</module>
     <module>sample-soap-static-response</module>
-    <module>sample-jdbc</module>
     <module>sample-sql</module>
+    <module>sample-jdbc</module>
   </modules>
   
   <repositories>

@@ -21,6 +21,7 @@ import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.jdbc.model.*;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
@@ -29,7 +30,7 @@ import javax.sql.DataSource;
 /**
  * @author Christoph Deppisch
  */
-public class JdbcServerIT extends TestNGCitrusTestDesigner {
+public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     private JdbcServer jdbcServer;
@@ -38,21 +39,19 @@ public class JdbcServerIT extends TestNGCitrusTestDesigner {
     private DataSource dataSource;
 
     /** Jdbc database operation marshaller */
-    private JdbcMarshaller jdbcMarshaller = new JdbcMarshaller();
+    private ObjectMapper jdbcMarshaller = new JdbcMarshaller();
 
     @Test
     @CitrusTest
     public void testCreateTable() {
-        String sql = "CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)";
-
         parallel().actions(
             sql(dataSource)
-                .statement(sql),
+                .statement("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"),
 
             sequential().actions(
                 receive(jdbcServer)
-                    .messageType(MessageType.XML)
-                    .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
+                    .messageType(MessageType.JSON)
+                    .payload(new Operation(new Execute(new Execute.Statement("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"))), jdbcMarshaller),
 
                 send(jdbcServer)
                     .payload(new OperationResult(true), jdbcMarshaller)
@@ -63,32 +62,36 @@ public class JdbcServerIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testSelect() {
-        String sql = "SELECT count(*) AS cnt FROM todo_entries WHERE title = 'foo'";
-        
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
         parallel().actions(
             query(dataSource)
-                .statement(sql)
-                .validate("cnt", "0"),
+                .statement("SELECT id, title, description FROM todo_entries")
+                .validate("id", "${todoId}")
+                .validate("title", "${todoName}")
+                .validate("description", "${todoDescription}"),
 
             sequential().actions(
                 receive(jdbcServer)
-                    .messageType(MessageType.XML)
-                    .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
+                    .messageType(MessageType.JSON)
+                    .payload(new Operation(new Execute(new Execute.Statement("SELECT id, title, description FROM todo_entries"))), jdbcMarshaller),
 
                 send(jdbcServer)
-                    .payload(createResultSet(), jdbcMarshaller)
+                    .payload(createTodoListResultSet(), jdbcMarshaller)
             ));
     }
 
     /**
-     * Creates sample result set.
+     * Creates sample result set with mocked todolist entries.
      * @return
      */
-    private OperationResult createResultSet() {
+    private OperationResult createTodoListResultSet() {
         OperationResult result = new OperationResult(true);
         ResultSet resultSet = new ResultSet(1)
-                .columns(new ResultSet.Column("cnt"))
-                .rows(new ResultSet.Row("0"));
+                .columns(new ResultSet.Column("id"), new ResultSet.Column("title"), new ResultSet.Column("description"), new ResultSet.Column("done"))
+                .rows(new ResultSet.Row("${todoId}", "${todoName}", "${todoDescription}", "false"));
         result.setResultSet(resultSet);
         return result;
     }
@@ -104,7 +107,7 @@ public class JdbcServerIT extends TestNGCitrusTestDesigner {
 
             sequential().actions(
                 receive(jdbcServer)
-                    .messageType(MessageType.XML)
+                    .messageType(MessageType.JSON)
                     .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
 
                 send(jdbcServer)
@@ -124,7 +127,7 @@ public class JdbcServerIT extends TestNGCitrusTestDesigner {
 
             sequential().actions(
                 receive(jdbcServer)
-                    .messageType(MessageType.XML)
+                    .messageType(MessageType.JSON)
                     .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
 
                 send(jdbcServer)
