@@ -22,6 +22,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
@@ -31,6 +32,7 @@ import javax.sql.DataSource;
  * @author Christoph Deppisch
  */
 @SpringBootApplication
+@EnableConfigurationProperties(JdbcConfigurationProperties.class)
 public class TodoApplication extends SpringBootServletInitializer {
 
     @Override
@@ -52,12 +54,12 @@ public class TodoApplication extends SpringBootServletInitializer {
 
     @Bean
     @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
-    public DataSource dataSource() {
+    public DataSource dataSource(JdbcConfigurationProperties configurationProperties) {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-        dataSource.setUrl("jdbc:hsqldb:hsql://localhost/testdb");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
+        dataSource.setDriverClassName(configurationProperties.getDriverClassName());
+        dataSource.setUrl(configurationProperties.getUrl());
+        dataSource.setUsername(configurationProperties.getUsername());
+        dataSource.setPassword(configurationProperties.getPassword());
 
         return dataSource;
     }

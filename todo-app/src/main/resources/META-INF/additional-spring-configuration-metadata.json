@@ -1,0 +1,25 @@
+{
+  "properties": [
+    {
+      "name": "todo.jdbc.driverClassName",
+      "type": "java.lang.String",
+      "description": "Full qualified class name for JDBC driver.",
+      "defaultValue": "org.hsqldb.jdbcDriver"
+    },{
+      "name": "todo.jdbc.url",
+      "type": "java.lang.String",
+      "description": "JDBC connection url.",
+      "defaultValue": "jdbc:hsqldb:hsql://localhost/testdb"
+    },{
+      "name": "todo.jdbc.username",
+      "type": "java.lang.String",
+      "description": "JDBC user name.",
+      "defaultValue": "sa"
+    },{
+      "name": "todo.jdbc.password",
+      "type": "java.lang.String",
+      "description": "JDBC user password.",
+      "defaultValue": ""
+    }
+  ]
+}
