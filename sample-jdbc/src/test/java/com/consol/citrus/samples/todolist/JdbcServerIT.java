@@ -19,7 +19,7 @@ package com.consol.citrus.samples.todolist;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.jdbc.model.*;
-import com.consol.citrus.jdbc.server.JdbcDbServer;
+import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
@@ -29,10 +29,10 @@ import javax.sql.DataSource;
 /**
  * @author Christoph Deppisch
  */
-public class DbServerIT extends TestNGCitrusTestDesigner {
+public class JdbcServerIT extends TestNGCitrusTestDesigner {
 
     @Autowired
-    private JdbcDbServer jdbcDbServer;
+    private JdbcServer jdbcServer;
 
     @Autowired
     private DataSource dataSource;
@@ -50,11 +50,11 @@ public class DbServerIT extends TestNGCitrusTestDesigner {
                 .statement(sql),
 
             sequential().actions(
-                receive(jdbcDbServer)
+                receive(jdbcServer)
                     .messageType(MessageType.XML)
                     .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
 
-                send(jdbcDbServer)
+                send(jdbcServer)
                     .payload(new OperationResult(true), jdbcMarshaller)
             )
         );
@@ -71,11 +71,11 @@ public class DbServerIT extends TestNGCitrusTestDesigner {
                 .validate("cnt", "0"),
 
             sequential().actions(
-                receive(jdbcDbServer)
+                receive(jdbcServer)
                     .messageType(MessageType.XML)
                     .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
 
-                send(jdbcDbServer)
+                send(jdbcServer)
                     .payload(createResultSet(), jdbcMarshaller)
             ));
     }
@@ -100,14 +100,14 @@ public class DbServerIT extends TestNGCitrusTestDesigner {
 
         parallel().actions(
             sql(dataSource)
-                    .statement(sql),
+                .statement(sql),
 
             sequential().actions(
-                receive(jdbcDbServer)
+                receive(jdbcServer)
                     .messageType(MessageType.XML)
                     .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
 
-                send(jdbcDbServer)
+                send(jdbcServer)
                     .payload(new OperationResult(true), jdbcMarshaller)
             )
         );
@@ -123,11 +123,11 @@ public class DbServerIT extends TestNGCitrusTestDesigner {
                 .statement(sql),
 
             sequential().actions(
-                receive(jdbcDbServer)
+                receive(jdbcServer)
                     .messageType(MessageType.XML)
                     .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
 
-                send(jdbcDbServer)
+                send(jdbcServer)
                     .payload(new OperationResult(true), jdbcMarshaller)
             )
         );
