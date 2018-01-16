@@ -116,7 +116,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         receive(jdbcServer)
             .messageType(MessageType.JSON)
-            .payload(new Operation(new Execute(new Execute.Statement("INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)"))), jdbcMarshaller);
+            .payload(new Operation(new Execute(new Execute.Statement("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"))), jdbcMarshaller);
 
         send(jdbcServer)
             .payload(new OperationResult(true), jdbcMarshaller);
