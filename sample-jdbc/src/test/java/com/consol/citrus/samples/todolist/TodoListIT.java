@@ -154,10 +154,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
      */
     private OperationResult createTodoListResultSet() {
         OperationResult result = new OperationResult(true);
-        ResultSet resultSet = new ResultSet(1)
-                .columns(new ResultSet.Column("id"), new ResultSet.Column("title"), new ResultSet.Column("description"), new ResultSet.Column("done"))
-                .rows(new ResultSet.Row(UUID.randomUUID().toString(), "${todoName}", "${todoDescription}", "false"));
-        result.setResultSet(resultSet);
+        result.setDataSet("[ {" +
+                    "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
+                    "\"title\": \"${todoName}\"," +
+                    "\"description\": \"${todoDescription}\"," +
+                    "\"done\": \"false\"" +
+                "} ]");
         return result;
     }
 

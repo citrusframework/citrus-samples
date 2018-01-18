@@ -18,14 +18,18 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.exceptions.CitrusRuntimeException;
 import com.consol.citrus.jdbc.model.*;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.util.FileUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 /**
  * @author Christoph Deppisch
@@ -89,10 +93,11 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
      */
     private OperationResult createTodoListResultSet() {
         OperationResult result = new OperationResult(true);
-        ResultSet resultSet = new ResultSet(1)
-                .columns(new ResultSet.Column("id"), new ResultSet.Column("title"), new ResultSet.Column("description"), new ResultSet.Column("done"))
-                .rows(new ResultSet.Row("${todoId}", "${todoName}", "${todoDescription}", "false"));
-        result.setResultSet(resultSet);
+        try {
+            result.setDataSet(FileUtils.readToString(new ClassPathResource("dataset.json")));
+        } catch (IOException e) {
+            throw new CitrusRuntimeException(e);
+        }
         return result;
     }
 
