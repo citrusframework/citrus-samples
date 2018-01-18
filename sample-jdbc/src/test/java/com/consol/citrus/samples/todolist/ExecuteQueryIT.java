@@ -18,18 +18,14 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
-import com.consol.citrus.exceptions.CitrusRuntimeException;
-import com.consol.citrus.jdbc.model.*;
+import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
-import com.consol.citrus.util.FileUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 
 /**
  * @author Christoph Deppisch
@@ -42,9 +38,6 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
     @Autowired
     private DataSource dataSource;
 
-    /** Jdbc database operation marshaller */
-    private ObjectMapper jdbcMarshaller = new JdbcMarshaller();
-
     @Test
     @CitrusTest
     public void testCreateTable() {
@@ -55,10 +48,11 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
             sequential().actions(
                 receive(jdbcServer)
                     .messageType(MessageType.JSON)
-                    .payload(new Operation(new Execute(new Execute.Statement("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"))), jdbcMarshaller),
+                    .message(JdbcMessage.execute("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)")),
 
                 send(jdbcServer)
-                    .payload(new OperationResult(true), jdbcMarshaller)
+                    .message(JdbcMessage.result()
+                                        .success())
             )
         );
     }
@@ -80,25 +74,12 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
             sequential().actions(
                 receive(jdbcServer)
                     .messageType(MessageType.JSON)
-                    .payload(new Operation(new Execute(new Execute.Statement("SELECT id, title, description FROM todo_entries"))), jdbcMarshaller),
+                    .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries")),
 
                 send(jdbcServer)
-                    .payload(createTodoListResultSet(), jdbcMarshaller)
+                    .message(JdbcMessage.result()
+                                        .dataSet(new ClassPathResource("dataset.json")))
             ));
-    }
-
-    /**
-     * Creates sample result set with mocked todolist entries.
-     * @return
-     */
-    private OperationResult createTodoListResultSet() {
-        OperationResult result = new OperationResult(true);
-        try {
-            result.setDataSet(FileUtils.readToString(new ClassPathResource("dataset.json")));
-        } catch (IOException e) {
-            throw new CitrusRuntimeException(e);
-        }
-        return result;
     }
 
     @Test
@@ -113,10 +94,10 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
             sequential().actions(
                 receive(jdbcServer)
                     .messageType(MessageType.JSON)
-                    .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
+                    .message(JdbcMessage.execute(sql)),
 
                 send(jdbcServer)
-                    .payload(new OperationResult(true), jdbcMarshaller)
+                    .message(JdbcMessage.result().rowsUpdated(10))
             )
         );
     }
@@ -133,10 +114,11 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
             sequential().actions(
                 receive(jdbcServer)
                     .messageType(MessageType.JSON)
-                    .payload(new Operation(new Execute(new Execute.Statement(sql))), jdbcMarshaller),
+                    .message(JdbcMessage.execute(sql)),
 
                 send(jdbcServer)
-                    .payload(new OperationResult(true), jdbcMarshaller)
+                    .message(JdbcMessage.result()
+                                        .success())
             )
         );
     }

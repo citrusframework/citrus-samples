@@ -19,10 +19,9 @@ package com.consol.citrus.samples.todolist;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.jdbc.model.*;
+import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
@@ -44,9 +43,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Autowired
     private DataSource todoDataSource;
 
-    /** Jdbc database operation marshaller */
-    private ObjectMapper jdbcMarshaller = new JdbcMarshaller();
-
     @Test
     @CitrusTest
     public void testIndexPage() {
@@ -62,10 +58,15 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         receive(jdbcServer)
                 .messageType(MessageType.JSON)
-                .payload(new Operation(new Execute(new Execute.Statement("SELECT id, title, description FROM todo_entries"))), jdbcMarshaller);
+                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
 
         send(jdbcServer)
-                .payload(createTodoListResultSet(), jdbcMarshaller);
+                .message(JdbcMessage.result().dataSet("[ {" +
+                            "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
+                            "\"title\": \"${todoName}\"," +
+                            "\"description\": \"${todoDescription}\"," +
+                            "\"done\": \"false\"" +
+                        "} ]"));
 
         http()
             .client(todoClient)
@@ -116,10 +117,10 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         receive(jdbcServer)
             .messageType(MessageType.JSON)
-            .payload(new Operation(new Execute(new Execute.Statement("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"))), jdbcMarshaller);
+            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
-            .payload(new OperationResult(true), jdbcMarshaller);
+            .message(JdbcMessage.result().rowsUpdated(1));
 
         http()
             .client(todoClient)
@@ -135,10 +136,15 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         receive(jdbcServer)
                 .messageType(MessageType.JSON)
-                .payload(new Operation(new Execute(new Execute.Statement("SELECT id, title, description FROM todo_entries"))), jdbcMarshaller);
+                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
 
         send(jdbcServer)
-                .payload(createTodoListResultSet(), jdbcMarshaller);
+                .message(JdbcMessage.result().dataSet("[ {" +
+                            "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
+                            "\"title\": \"${todoName}\"," +
+                            "\"description\": \"${todoDescription}\"," +
+                            "\"done\": \"false\"" +
+                        "} ]"));
 
         http()
             .client(todoClient)
@@ -146,21 +152,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
             .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
-    }
-
-    /**
-     * Creates sample result set with mocked todolist entries.
-     * @return
-     */
-    private OperationResult createTodoListResultSet() {
-        OperationResult result = new OperationResult(true);
-        result.setDataSet("[ {" +
-                    "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
-                    "\"title\": \"${todoName}\"," +
-                    "\"description\": \"${todoDescription}\"," +
-                    "\"done\": \"false\"" +
-                "} ]");
-        return result;
     }
 
 }
