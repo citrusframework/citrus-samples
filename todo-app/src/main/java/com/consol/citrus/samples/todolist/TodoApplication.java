@@ -26,8 +26,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
-import javax.sql.DataSource;
-
 /**
  * @author Christoph Deppisch
  */
@@ -52,9 +50,9 @@ public class TodoApplication extends SpringBootServletInitializer {
         return new JdbcTodoListDao();
     }
 
-    @Bean
+    @Bean(destroyMethod = "close")
     @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
-    public DataSource dataSource(JdbcConfigurationProperties configurationProperties) {
+    public BasicDataSource dataSource(JdbcConfigurationProperties configurationProperties) {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(configurationProperties.getDriverClassName());
         dataSource.setUrl(configurationProperties.getUrl());
