@@ -49,6 +49,7 @@
     <module>sample-dynamic-endpoints</module>
     <module>sample-binary</module>
     <module>sample-soap</module>
+    <module>sample-soap-mtom</module>
     <module>sample-soap-attachment</module>
     <module>sample-soap-wssecurity</module>
     <module>sample-soap-wsaddressing</module>
