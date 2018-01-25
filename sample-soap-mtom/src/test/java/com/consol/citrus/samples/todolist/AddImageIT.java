@@ -23,7 +23,6 @@ import com.consol.citrus.ws.message.SoapAttachment;
 import com.consol.citrus.ws.server.WebServiceServer;
 import com.consol.citrus.ws.validation.BinarySoapAttachmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
 /**
@@ -40,16 +39,25 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testAddImageMtom() {
+        SoapAttachment attachment = new SoapAttachment();
+        attachment.setContentId("IMAGE");
+        attachment.setContentType("image/png");
+        attachment.setCharsetName("utf-8");
+        attachment.setContentResourcePath("image/logo.png");
+
         soap()
             .client(imageClient)
             .send()
             .fork(true)
             .soapAction("addImage")
             .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
-                        "<image:image>cid:IMAGE</image:image>" +
+                    "<image:id>logo</image:id>" +
+                    "<image:image>cid:IMAGE</image:image>" +
                     "</image:addImage>")
-            .attachment("IMAGE", "application/octet-stream", new ClassPathResource("image/logo.png"))
+            .attachment(attachment)
             .mtomEnabled(true);
+
+
 
         soap()
             .server(imageServer)
@@ -57,12 +65,13 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
             .soapAction("addImage")
             .schemaValidation(false)
             .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+                        "<image:id>logo</image:id>" +
                         "<image:image>" +
                             "<xop:Include xmlns:xop=\"http://www.w3.org/2004/08/xop/include\" href=\"cid:IMAGE\"/>" +
                         "</image:image>" +
                     "</image:addImage>")
             .attachmentValidator(new BinarySoapAttachmentValidator())
-            .attachment("IMAGE", "application/octet-stream", new ClassPathResource("image/logo.png"));
+            .attachment(attachment);
 
         soap()
             .server(imageServer)
@@ -83,10 +92,11 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
     @CitrusTest
     public void testAddImageMtomInline() {
         SoapAttachment attachment = new SoapAttachment();
-        attachment.setContentType("application/octet-stream");
+        attachment.setContentId("IMAGE");
+        attachment.setContentType("image/png");
+        attachment.setCharsetName("utf-8");
         attachment.setContentResourcePath("image/logo.png");
         attachment.setMtomInline(true);
-        attachment.setContentId("IMAGE");
 
         soap()
             .client(imageClient)
@@ -94,6 +104,7 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
             .fork(true)
             .soapAction("addImage")
             .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+                        "<image:id>logo</image:id>" +
                         "<image:image>cid:IMAGE</image:image>" +
                     "</image:addImage>")
             .attachment(attachment)
@@ -104,6 +115,7 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
             .receive()
             .soapAction("addImage")
             .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+                        "<image:id>logo</image:id>" +
                         "<image:image>citrus:readFile(image/logo.base64)</image:image>" +
                     "</image:addImage>");
 

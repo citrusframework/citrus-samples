@@ -1,18 +1,13 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.citrusframework.org/imageService"
-           targetNamespace="http://www.citrusframework.org/imageService" elementFormDefault="qualified">
+           targetNamespace="http://www.citrusframework.org/imageService"
+           xmlns:xmime="http://www.w3.org/2005/05/xmlmime"
+           elementFormDefault="qualified">
 
   <xs:element name="addImage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="image" type="xs:string"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="getImage">
-    <xs:complexType>
-      <xs:sequence>
         <xs:element name="id" type="xs:string"/>
+        <xs:element name="image" type="xs:base64Binary" xmime:expectedContentTypes="image/png"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -25,10 +20,18 @@
     </xs:complexType>
   </xs:element>
 
+  <xs:element name="getImage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
   <xs:element name="getImageResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="image" type="xs:string"/>
+        <xs:element name="image" type="xs:base64Binary" xmime:expectedContentTypes="image/png"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -78,6 +78,7 @@ soap()
     .fork(true)
     .soapAction("addImage")
     .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+                "<image:id>logo</image:id>" +
                 "<image:image>cid:IMAGE</image:image>" +
             "</image:addImage>")
     .attachment("IMAGE", "application/octet-stream", new ClassPathResource("image/logo.png"))
@@ -89,6 +90,7 @@ soap()
     .soapAction("addImage")
     .schemaValidation(false)
     .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+                "<image:id>logo</image:id>" +
                 "<image:image>" +
                     "<xop:Include xmlns:xop=\"http://www.w3.org/2004/08/xop/include\" href=\"cid:IMAGE\"/>" +
                 "</image:image>" +
@@ -98,8 +100,17 @@ soap()
 ```
 
 The server is able to receive the MTOM enabled message. The image data is streamed as a SOAP attachment using MTOM. This means that the image element in the payload
-uses a `xop:Inlclude` placeholder with reference to the `cid:IMAGE` attachment. The receiving action in Citrus is able to validate the attachment with `BinarySoapAttachmentValidator` as we have a
-PNG image data.
+uses a `xop:Inlclude` placeholder element with reference to the `cid:IMAGE` attachment. The receiving action in Citrus is able to validate the attachment with `BinarySoapAttachmentValidator` as we have a
+PNG image content that should be compared as binary stream.
+
+Please note that the schema validation on the receive action is disabled. This is because the `xop:Include` placeholder element would break the schema validation with following error:
+
+```
+XML schema validation failed: cvc-type.3.1.2: Element 'image:image' is a simple type, so it must have no element information item [children]
+```
+
+So we have to skip the schema validation when receiving MTOM enabled SOAP messages. In case schema validation is a critical need for you you should be using
+MTOM inline messages.
 
 MTOM inline
 ---------
@@ -120,6 +131,7 @@ soap()
     .fork(true)
     .soapAction("addImage")
     .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+                "<image:id>logo</image:id>" +
                 "<image:image>cid:IMAGE</image:image>" +
             "</image:addImage>")
     .attachment(attachment)
@@ -130,6 +142,7 @@ soap()
     .receive()
     .soapAction("addImage")
     .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+                "<image:id>logo</image:id>" +
                 "<image:image>citrus:readFile(image/logo.base64)</image:image>" +
             "</image:addImage>");
 ``` 

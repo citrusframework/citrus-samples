@@ -23,7 +23,6 @@ import com.consol.citrus.ws.message.SoapAttachment;
 import com.consol.citrus.ws.server.WebServiceServer;
 import com.consol.citrus.ws.validation.BinarySoapAttachmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
 /**
@@ -37,9 +36,15 @@ public class GetImageIT extends TestNGCitrusTestDesigner {
     @Autowired
     private WebServiceServer imageServer;
 
-    @Test(enabled = false)
+    @Test
     @CitrusTest
     public void testGetImageMtom() {
+        SoapAttachment attachment = new SoapAttachment();
+        attachment.setContentId("IMAGE");
+        attachment.setContentType("image/png");
+        attachment.setCharsetName("utf-8");
+        attachment.setContentResourcePath("image/logo.png");
+
         soap()
             .client(imageClient)
             .send()
@@ -63,7 +68,7 @@ public class GetImageIT extends TestNGCitrusTestDesigner {
             .payload("<image:getImageResponse xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:image>cid:IMAGE</image:image>" +
                     "</image:getImageResponse>")
-            .attachment("IMAGE", "application/octet-stream", new ClassPathResource("image/logo.png"))
+            .attachment(attachment)
             .mtomEnabled(true);
 
         soap()
@@ -76,17 +81,18 @@ public class GetImageIT extends TestNGCitrusTestDesigner {
                         "</image:image>" +
                     "</image:getImageResponse>")
             .attachmentValidator(new BinarySoapAttachmentValidator())
-            .attachment("IMAGE", "application/octet-stream", new ClassPathResource("image/logo.png"));
+            .attachment(attachment);
     }
 
-    @Test(enabled = false)
+    @Test
     @CitrusTest
     public void testGetImageMtomInline() {
         SoapAttachment attachment = new SoapAttachment();
-        attachment.setContentType("application/octet-stream");
+        attachment.setContentId("IMAGE");
+        attachment.setContentType("image/png");
+        attachment.setCharsetName("utf-8");
         attachment.setContentResourcePath("image/logo.png");
         attachment.setMtomInline(true);
-        attachment.setContentId("IMAGE");
 
         soap()
             .client(imageClient)
