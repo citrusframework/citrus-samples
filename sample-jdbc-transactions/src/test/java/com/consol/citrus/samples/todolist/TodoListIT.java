@@ -19,6 +19,7 @@ package com.consol.citrus.samples.todolist;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.jdbc.command.JdbcCommand;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
@@ -26,12 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import javax.sql.DataSource;
-import java.util.UUID;
-
-/**
- * @author Christoph Deppisch
- */
 public class TodoListIT extends TestNGCitrusTestDesigner {
 
     @Autowired
@@ -40,70 +35,9 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Autowired
     private HttpClient todoClient;
 
-    @Autowired
-    private DataSource todoDataSource;
-
     @Test
     @CitrusTest
-    public void testIndexPage() {
-        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
-        variable("todoDescription", "Description: ${todoName}");
-
-        http()
-            .client(todoClient)
-            .send()
-            .get("/todolist")
-            .fork(true)
-            .accept("text/html");
-
-        receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
-
-        send(jdbcServer)
-                .message(JdbcMessage.result().dataSet("[ {" +
-                            "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
-                            "\"title\": \"${todoName}\"," +
-                            "\"description\": \"${todoDescription}\"," +
-                            "\"done\": \"false\"" +
-                        "} ]"));
-
-        http()
-            .client(todoClient)
-            .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("//xh:h1", "TODO list")
-            .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
-                    "\"org/w3/xhtml/xhtml1-transitional.dtd\">" +
-                    "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
-                      "<head>@ignore@</head>" +
-                      "<body>" +
-                        "<div class=\"container-fluid\">" +
-                          "<div class=\"row\">" +
-                            "<div class=\"@ignore@\">" +
-                              "<h1>TODO list</h1>" +
-                                "<ul class=\"list-group\">" +
-                                  "<li class=\"list-group-item\">" +
-                                    "<input class=\"complete\" id=\"@ignore@\" name=\"complete\" type=\"checkbox\" />" +
-                                    "<span>${todoName}</span>" +
-                                    "<a class=\"@ignore@\" id=\"@ignore@\" title=\"Remove todo\">" +
-                                        "<span style=\"color: #A50000;\">x</span>" +
-                                    "</a>" +
-                                  "</li>" +
-                                "</ul>" +
-                              "<h2>New TODO entry</h2>" +
-                              "<form method=\"post\">@ignore@</form>" +
-                            "</div>" +
-                          "</div>" +
-                        "</div>" +
-                      "</body>" +
-                    "</html>");
-    }
-
-    @Test
-    @CitrusTest
-    public void testAddTodoEntry() {
+    public void testTransaction() {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
@@ -115,9 +49,17 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .contentType("application/x-www-form-urlencoded")
             .payload("title=${todoName}&description=${todoDescription}");
 
+
+        receive(jdbcServer)
+            .message(JdbcCommand.TRANSACTION_STARTED);
+
+
         receive(jdbcServer)
             .messageType(MessageType.JSON)
             .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+
+        receive(jdbcServer)
+            .message(JdbcCommand.TRANSACTION_COMMITTED);
 
         send(jdbcServer)
             .message(JdbcMessage.result().rowsUpdated(1));
@@ -126,32 +68,23 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .receive()
             .response(HttpStatus.FOUND);
+    }
 
-        http()
-            .client(todoClient)
-            .send()
-            .get("/todolist")
-            .fork(true)
-            .accept("text/html");
+    @Test
+    @CitrusTest
+    public void testRollback() {
+
+        receive(jdbcServer)
+                .message(JdbcCommand.TRANSACTION_STARTED);
 
         receive(jdbcServer)
                 .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
+                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
-                .message(JdbcMessage.result().dataSet("[ {" +
-                            "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
-                            "\"title\": \"${todoName}\"," +
-                            "\"description\": \"${todoDescription}\"," +
-                            "\"done\": \"false\"" +
-                        "} ]"));
+                .message(JdbcMessage.result().exception("Could not execute something"));
 
-        http()
-            .client(todoClient)
-            .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+        receive(jdbcServer)
+                .message(JdbcCommand.TRANSACTION_ROLLBACK);
     }
-
 }
