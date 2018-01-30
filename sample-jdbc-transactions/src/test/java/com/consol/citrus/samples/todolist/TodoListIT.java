@@ -73,6 +73,16 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testRollback() {
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        http()
+            .client(todoClient)
+            .send()
+            .post("/todolist")
+            .fork(true)
+            .contentType("application/x-www-form-urlencoded")
+            .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
                 .message(JdbcCommand.TRANSACTION_STARTED);
@@ -86,5 +96,10 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         receive(jdbcServer)
                 .message(JdbcCommand.TRANSACTION_ROLLBACK);
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
