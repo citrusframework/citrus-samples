@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Bean;
 public class TodoApplication extends SpringBootServletInitializer {
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+    protected SpringApplicationBuilder configure(final SpringApplicationBuilder builder) {
         return builder.sources(TodoApplication.class);
     }
 
@@ -52,8 +52,24 @@ public class TodoApplication extends SpringBootServletInitializer {
 
     @Bean(destroyMethod = "close")
     @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
-    public BasicDataSource dataSource(JdbcConfigurationProperties configurationProperties) {
-        BasicDataSource dataSource = new BasicDataSource();
+    public BasicDataSource jdbcDataSource(final JdbcConfigurationProperties configurationProperties) {
+        return getBasicDataSource(configurationProperties);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbcTransactional")
+    public TodoListDao transactionalTodoListJdbcDao() {
+        return new JdbcTransactionToDoListDao();
+    }
+
+    @Bean(destroyMethod = "close")
+    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbcTransactional")
+    public BasicDataSource transactionalJdbcDataSource(final JdbcConfigurationProperties configurationProperties) {
+        return getBasicDataSource(configurationProperties);
+    }
+
+    private BasicDataSource getBasicDataSource(final JdbcConfigurationProperties configurationProperties) {
+        final BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(configurationProperties.getDriverClassName());
         dataSource.setUrl(configurationProperties.getUrl());
         dataSource.setUsername(configurationProperties.getUsername());
@@ -62,7 +78,8 @@ public class TodoApplication extends SpringBootServletInitializer {
         return dataSource;
     }
 
-    public static void main(String[] args) {
+
+    public static void main(final String[] args) {
         SpringApplication.run(TodoApplication.class, args);
     }
 }
