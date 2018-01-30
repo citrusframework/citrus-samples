@@ -1,4 +1,4 @@
-JDBC transaction sample ![Logo][1]
+JDBC sample ![Logo][1]
 ==============
 
 This sample uses JDBC database connection to verify stored data in SQL query results sets.
