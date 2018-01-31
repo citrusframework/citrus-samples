@@ -16,8 +16,37 @@
 
 package com.consol.citrus.samples.todolist.dao;
 
+import com.consol.citrus.samples.todolist.model.TodoEntry;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 public class JdbcTransactionToDoListDao extends JdbcTodoListDao{
+
+    @Override
+    public void save(final TodoEntry entry) {
+        super.save(entry);
+    }
+
+    @Override
+    public List<TodoEntry> list() {
+        return super.list();
+    }
+
+    @Override
+    public void delete(final TodoEntry entry) {
+        super.delete(entry);
+    }
+
+    @Override
+    public void deleteAll() {
+        super.deleteAll();
+    }
+
+    @Override
+    public void update(final TodoEntry entry) {
+        super.update(entry);
+    }
+
 }
