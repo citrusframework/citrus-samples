@@ -51,18 +51,18 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
 
         receive(jdbcServer)
-            .message(JdbcCommand.TRANSACTION_STARTED);
+            .message(JdbcCommand.startTransaction());
 
 
         receive(jdbcServer)
             .messageType(MessageType.JSON)
             .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
-        receive(jdbcServer)
-            .message(JdbcCommand.TRANSACTION_COMMITTED);
-
         send(jdbcServer)
-            .message(JdbcMessage.result().rowsUpdated(1));
+                .message(JdbcMessage.result().rowsUpdated(1));
+
+        receive(jdbcServer)
+            .message(JdbcCommand.commitTransaction());
 
         http()
             .client(todoClient)
@@ -85,17 +85,17 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
-                .message(JdbcCommand.TRANSACTION_STARTED);
+            .message(JdbcCommand.startTransaction());
 
         receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
-                .message(JdbcMessage.result().exception("Could not execute something"));
+            .message(JdbcMessage.result().exception("Could not execute something"));
 
         receive(jdbcServer)
-                .message(JdbcCommand.TRANSACTION_ROLLBACK);
+            .message(JdbcCommand.rollbackTransaction());
 
         http()
             .client(todoClient)
