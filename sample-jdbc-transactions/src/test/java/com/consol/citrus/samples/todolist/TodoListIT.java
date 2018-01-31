@@ -55,7 +55,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
 
         receive(jdbcServer)
-            .messageType(MessageType.JSON)
             .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
@@ -88,7 +87,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .message(JdbcCommand.startTransaction());
 
         receive(jdbcServer)
-            .messageType(MessageType.JSON)
             .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
