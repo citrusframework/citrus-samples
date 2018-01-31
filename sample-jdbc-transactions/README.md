@@ -1,71 +1,65 @@
-JDBC sample ![Logo][1]
+JDBC transaction sample ![Logo][1]
 ==============
 
-This sample uses JDBC database connection to verify stored data in SQL query results sets.
+This sample uses JDBC database connection to verify the transactional behavior of the application.
 
 Objectives
 ---------
 
 The [todo-list](../todo-app/README.md) sample application stores data to a relational database. This sample shows 
-the usage of database JDBC validation actions in Citrus. We are able to execute SQL statements on a database target. 
+the usage of database transaction validation actions in Citrus.
 See the [reference guide][4] database chapter for details.
 
-The database source is configured as Spring datasource in the application context ***citrus-context.xml***.
+The database server and its datasource are configured in the endpoint configuration context ***EndpointConfig.java***.
     
 ```java
-@Bean(destroyMethod = "close")
-public BasicDataSource todoListDataSource() {
-    BasicDataSource dataSource = new BasicDataSource();
-    dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-    dataSource.setUrl("jdbc:hsqldb:hsql://localhost/testdb");
+@Bean
+public JdbcServer jdbcServer() {
+    return CitrusEndpoints.jdbc()
+            .server()
+            .host("localhost")
+            .databaseName("testdb")
+            .port(3306)
+            .timeout(10000L)
+            .autoStart(true)
+            .build();
+}
+
+@Bean
+public SingleConnectionDataSource dataSource() {
+    SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
+    dataSource.setDriverClassName(JdbcDriver.class.getName());
+    dataSource.setUrl("jdbc:citrus:http://localhost:3306/testdb");
     dataSource.setUsername("sa");
     dataSource.setPassword("");
-    dataSource.setInitialSize(1);
-    dataSource.setMaxActive(5);
-    dataSource.setMaxIdle(2);
     return dataSource;
 }
 ```
     
-As you can see we are using a H2 in memory database here.    
+As you can see we are using a citrus database server here.    
 
-Before the test suite is started we create the relational database tables required.
-
-```java
-@Bean
-public SequenceBeforeSuite beforeSuite() {
-    return new TestDesignerBeforeSuiteSupport() {
-        @Override
-        public void beforeSuite(TestDesigner designer) {
-            designer.sql(todoListDataSource())
-                .statement("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)");
-        }
-    };
-}
-```
-
-After the test we delete all test data again.
+In the test case we can now verify the transactional behavior of our application if a client request hits our API. 
 
 ```java
-@Bean
-public SequenceAfterSuite afterSuite() {
-    return new TestDesignerAfterSuiteSupport() {
-        @Override
-        public void afterSuite(TestDesigner designer) {
-            designer.sql(todoListDataSource())
-                .statement("DELETE FROM todo_entries");
-        }
-    };
-}
-```
+http()
+    .client(todoClient)
+    .send()
+    .post("/todolist")
+    .fork(true)
+    .contentType("application/x-www-form-urlencoded")
+    .payload("title=${todoName}&description=${todoDescription}");
 
-In the test case we can reference the datasource in order to access the stored data and
-verify the result sets.
+receive(jdbcServer)
+    .message(JdbcCommand.startTransaction());
 
-```java
-query(todoDataSource)
-    .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")
-    .validate("cnt", "1");
+receive(jdbcServer)
+    .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+
+send(jdbcServer)
+        .message(JdbcMessage.result().rowsUpdated(1));
+
+receive(jdbcServer)
+    .message(JdbcCommand.commitTransaction());
 ```
 
 Run
