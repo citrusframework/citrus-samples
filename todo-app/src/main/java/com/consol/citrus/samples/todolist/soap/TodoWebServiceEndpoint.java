@@ -55,7 +55,13 @@ public class TodoWebServiceEndpoint {
         if (it.hasNext()) {
             org.springframework.ws.mime.Attachment attachment = it.next();
             Attachment todoAttachment = new Attachment();
-            todoAttachment.setCid(attachment.getContentId());
+
+            String contentId = attachment.getContentId();
+            if (contentId.startsWith("<") && contentId.endsWith(">")) {
+                contentId = contentId.substring(1, contentId.length() - 1);
+            }
+            
+            todoAttachment.setCid(contentId);
             todoAttachment.setContentType(attachment.getContentType());
 
             try {
