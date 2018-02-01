@@ -100,4 +100,30 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .receive()
             .response(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Test
+    @CitrusTest
+    public void testWithoutTransactionVerification() {
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        http()
+                .client(todoClient)
+                .send()
+                .post("/todolist")
+                .fork(true)
+                .contentType("application/x-www-form-urlencoded")
+                .payload("title=${todoName}&description=${todoDescription}");
+
+        receive(jdbcServer)
+                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+
+        send(jdbcServer)
+                .message(JdbcMessage.result().rowsUpdated(1));
+
+        http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.FOUND);
+    }
 }
