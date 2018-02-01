@@ -24,6 +24,7 @@ import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -31,6 +32,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     private JdbcServer jdbcServer;
+
 
     @Autowired
     private HttpClient todoClient;
@@ -107,6 +109,8 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
+        jdbcServer.getEndpointConfiguration().setAutoTransactions(true);
+
         http()
                 .client(todoClient)
                 .send()
@@ -125,5 +129,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .client(todoClient)
                 .receive()
                 .response(HttpStatus.FOUND);
+
+        jdbcServer.getEndpointConfiguration().setAutoTransactions(false);
     }
 }
