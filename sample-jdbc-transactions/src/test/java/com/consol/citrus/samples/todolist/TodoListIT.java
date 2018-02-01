@@ -42,31 +42,31 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoDescription", "Description: ${todoName}");
 
         http()
-            .client(todoClient)
-            .send()
-            .post("/todolist")
-            .fork(true)
-            .contentType("application/x-www-form-urlencoded")
-            .payload("title=${todoName}&description=${todoDescription}");
+                .client(todoClient)
+                .send()
+                .post("/todolist")
+                .fork(true)
+                .contentType("application/x-www-form-urlencoded")
+                .payload("title=${todoName}&description=${todoDescription}");
 
 
         receive(jdbcServer)
-            .message(JdbcCommand.startTransaction());
+                .message(JdbcCommand.startTransaction());
 
 
         receive(jdbcServer)
-            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
                 .message(JdbcMessage.result().rowsUpdated(1));
 
         receive(jdbcServer)
-            .message(JdbcCommand.commitTransaction());
+                .message(JdbcCommand.commitTransaction());
 
         http()
-            .client(todoClient)
-            .receive()
-            .response(HttpStatus.FOUND);
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.FOUND);
     }
 
     @Test
@@ -76,29 +76,29 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoDescription", "Description: ${todoName}");
 
         http()
-            .client(todoClient)
-            .send()
-            .post("/todolist")
-            .fork(true)
-            .contentType("application/x-www-form-urlencoded")
-            .payload("title=${todoName}&description=${todoDescription}");
+                .client(todoClient)
+                .send()
+                .post("/todolist")
+                .fork(true)
+                .contentType("application/x-www-form-urlencoded")
+                .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
-            .message(JdbcCommand.startTransaction());
+                .message(JdbcCommand.startTransaction());
 
         receive(jdbcServer)
-            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
-            .message(JdbcMessage.result().exception("Could not execute something"));
+                .message(JdbcMessage.result().exception("Could not execute something"));
 
         receive(jdbcServer)
-            .message(JdbcCommand.rollbackTransaction());
+                .message(JdbcCommand.rollbackTransaction());
 
         http()
-            .client(todoClient)
-            .receive()
-            .response(HttpStatus.INTERNAL_SERVER_ERROR);
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Test
