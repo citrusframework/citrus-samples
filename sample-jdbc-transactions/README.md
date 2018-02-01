@@ -22,6 +22,7 @@ public JdbcServer jdbcServer() {
             .port(3306)
             .timeout(10000L)
             .autoStart(true)
+            .autoTransactions(false)
             .build();
 }
 
@@ -36,7 +37,8 @@ public SingleConnectionDataSource dataSource() {
 }
 ```
     
-As you can see we are using a citrus database server here.    
+As you can see we are using a citrus database server here which is configured to validate transaction behavior
+by setting `.autoTransactions(false)`.    
 
 In the test case we can now verify the transactional behavior of our application if a client request hits our API. 
 
