@@ -22,10 +22,9 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.command.JdbcCommand;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
-import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
 public class TodoListIT extends TestNGCitrusTestDesigner {
@@ -129,7 +128,10 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .client(todoClient)
                 .receive()
                 .response(HttpStatus.FOUND);
+    }
 
+    @AfterTest
+    public void resetTransactionState(){
         jdbcServer.getEndpointConfiguration().setAutoTransactions(false);
     }
 }
