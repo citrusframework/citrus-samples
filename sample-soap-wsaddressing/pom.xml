@@ -11,8 +11,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.7.25</slf4j.version>
-    <spring.ws.version>2.4.0.RELEASE</spring.ws.version>
-    <testng.version>6.11</testng.version>
+    <spring.ws.version>2.4.2.RELEASE</spring.ws.version>
+    <testng.version>6.13.1</testng.version>
     <citrus.version>2.7.4-SNAPSHOT</citrus.version>
   </properties>
 

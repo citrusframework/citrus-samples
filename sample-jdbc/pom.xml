@@ -12,7 +12,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jetty.version>9.4.6.v20170531</jetty.version>
     <slf4j.version>1.7.25</slf4j.version>
-    <testng.version>6.11</testng.version>
+    <testng.version>6.13.1</testng.version>
     <citrus.version>2.7.4-SNAPSHOT</citrus.version>
     <citrus.db.version>0.1-SNAPSHOT</citrus.db.version>
   </properties>
