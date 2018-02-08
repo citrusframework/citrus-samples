@@ -47,7 +47,7 @@ The dictionary can be applied to each send operation in Citrus.
 http()
     .client(todoClient)
     .send()
-    .post("/todolist")
+    .post("/api/todolist")
     .messageType(MessageType.JSON)
     .dictionary("outboundDictionary")
     .contentType("application/json")

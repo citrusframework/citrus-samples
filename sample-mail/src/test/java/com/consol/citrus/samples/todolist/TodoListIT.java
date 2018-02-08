@@ -51,7 +51,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
             .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
@@ -66,7 +66,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/reporting/mail");
+            .get("/api/reporting/mail");
 
         echo("Receive reporting mail");
 
@@ -103,7 +103,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
             .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
@@ -120,7 +120,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/reporting/mail");
+            .get("/api/reporting/mail");
 
         echo("Receive reporting mail");
 
@@ -151,7 +151,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
             .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
@@ -168,7 +168,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/reporting/mail");
+            .get("/api/reporting/mail");
 
         echo("Receive reporting mail");
 

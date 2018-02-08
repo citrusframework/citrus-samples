@@ -44,7 +44,7 @@ private Jaxb2Marshaller marshaller;
 http()
     .client(todoClient)
     .send()
-    .post("/todolist")
+    .post("/api/todolist")
     .contentType("application/json")
     .payload(new TodoEntry("${todoName}", "${todoDescription}"), marshaller);
 ```

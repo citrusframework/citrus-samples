@@ -16,7 +16,7 @@ We can use Json as message payloads directly in the test cases.
 http()
     .client(todoClient)
     .send()
-    .post("/todolist")
+    .post("/api/todolist")
     .messageType(MessageType.JSON)
     .contentType("application/json")
     .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");

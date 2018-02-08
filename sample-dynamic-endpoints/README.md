@@ -16,7 +16,7 @@ In this sample we use dynamic endpoint uri instead.
 http()
     .client("http://localhost:8080")
     .send()
-    .post("/todolist")
+    .post("/api/todolist")
     .messageType(MessageType.JSON)
     .contentType("application/json")
     .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");

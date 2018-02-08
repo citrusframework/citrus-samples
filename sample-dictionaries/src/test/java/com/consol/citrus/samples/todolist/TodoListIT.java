@@ -51,7 +51,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .dictionary(outboundDictionary)
             .contentType("application/json")
@@ -67,7 +67,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/json");
 
         http()
@@ -87,7 +87,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .dictionary(outboundDictionary)
             .contentType("application/json")
@@ -103,7 +103,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/json");
 
         http()
@@ -123,7 +123,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .dictionary(outboundDictionary)
             .contentType("application/json")
@@ -139,7 +139,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/json");
 
         http()

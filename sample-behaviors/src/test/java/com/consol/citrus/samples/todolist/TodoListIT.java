@@ -100,7 +100,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             HttpClientRequestActionBuilder request = http()
                 .client(todoClient)
                 .send()
-                .post("/todolist")
+                .post("/api/todolist")
                 .messageType(MessageType.JSON)
                 .contentType("application/json");
 
@@ -149,7 +149,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             http()
                 .client(todoClient)
                 .send()
-                .get("/todo/" + todoId)
+                .get("/api/todo/" + todoId)
                 .accept("application/json");
 
             HttpClientResponseActionBuilder response = http()

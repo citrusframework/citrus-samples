@@ -54,7 +54,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .contentType("application/json")
             .payload(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), objectMapper);
 
@@ -68,7 +68,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/json");
 
         http()

@@ -43,7 +43,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .contentType("application/xml")
             .payload("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
                         "<id>${todoId}</id>" +
@@ -61,7 +61,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/xml");
 
         http()
@@ -86,7 +86,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .contentType("application/xml")
             .payload(new ClassPathResource("templates/todo.xml"));
 
@@ -100,7 +100,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/xml");
 
         http()
@@ -120,7 +120,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .contentType("application/xml")
             .payload("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
                         "<id>${todoId}</id>" +
@@ -138,7 +138,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/xml");
 
         http()

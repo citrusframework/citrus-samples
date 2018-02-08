@@ -17,8 +17,9 @@
 package com.consol.citrus.samples.todolist.web;
 
 import com.consol.citrus.samples.todolist.service.ReportingService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,16 +27,19 @@ import org.springframework.web.bind.annotation.*;
  * @author Christoph Deppisch
  */
 @Controller
-@RequestMapping("/reporting")
+@RequestMapping("/api/reporting")
 public class ReportingController {
 
     @Autowired
     private ReportingService reportingService;
 
+    @ApiOperation(notes = "Send mail reporting.", value = "Send mail reporting", nickname = "sendMailReport" )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
     @RequestMapping(value = "/mail", method = RequestMethod.GET)
-    public ResponseEntity sendMailReport() {
+    @ResponseStatus(HttpStatus.OK)
+    public void sendMailReport() {
         reportingService.sendMailReport();
-
-        return ResponseEntity.ok().build();
     }
 }

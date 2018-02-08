@@ -52,8 +52,8 @@ public SimpleMappingStrategy mappingStrategy() {
 
     Map<String, EndpointAdapter> mappings = new HashMap<>();
 
-    mappings.put("/todo", todoResponseAdapter());
-    mappings.put("/todolist", todoListResponseAdapter());
+    mappings.put("/api/todo", todoResponseAdapter());
+    mappings.put("/api/todolist", todoListResponseAdapter());
 
     mappingStrategy.setAdapterMappings(mappings);
     return mappingStrategy;

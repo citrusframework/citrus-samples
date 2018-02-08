@@ -33,7 +33,7 @@ That is all for configuration, now we can use XML as message payload in the test
 http()
     .client(todoClient)
     .send()
-    .post("/todolist")
+    .post("/api/todolist")
     .contentType("application/xml")
     .payload("<todo>" +
                  "<id>${todoId}</id>" +

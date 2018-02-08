@@ -25,7 +25,7 @@
           $('a.remove').click(function(event) {
               $.ajax({
                   method: "DELETE",
-                  url: "todo/" + event.currentTarget.id
+                  url: "/api/todo/" + event.currentTarget.id
               }).done(function() {
                   $( event.currentTarget ).parent('li').fadeOut();
               });
@@ -37,7 +37,7 @@
           $('input.complete').click(function(event) {
               $.ajax({
                   method: "PUT",
-                  url: "todo/" + event.currentTarget.id,
+                  url: "/api/todo/" + event.currentTarget.id,
                   data: "done=" + event.currentTarget.checked
               });
           });

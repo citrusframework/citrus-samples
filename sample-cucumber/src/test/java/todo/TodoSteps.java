@@ -36,12 +36,12 @@ public class TodoSteps {
         designer.http()
             .client("todoListClient")
             .send()
-            .delete("/todolist");
+            .delete("/api/todolist");
 
         designer.http()
             .client("todoListClient")
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.OK);
     }
 
     @When("^(?:I|user) adds? entry \"([^\"]*)\"$")
@@ -64,7 +64,7 @@ public class TodoSteps {
         designer.http()
                 .client("todoListClient")
                 .send()
-                .delete("/todo?title=" + todoName);
+                .delete("/api/todo?title=" + todoName);
 
         designer.http()
                 .client("todoListClient")
@@ -78,7 +78,7 @@ public class TodoSteps {
         designer.http()
             .client("todoListClient")
             .send()
-            .get("/todolist/count");
+            .get("/api/todolist/count");
 
         designer.http()
             .client("todoListClient")

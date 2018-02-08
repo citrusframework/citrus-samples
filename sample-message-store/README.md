@@ -17,7 +17,7 @@ You can access the message store at any time in the test case using message stor
 http()
     .client(todoClient)
     .send()
-    .post("/todolist")
+    .post("/api/todolist")
     .name("todoRequest")
     .messageType(MessageType.JSON)
     .contentType("application/json")

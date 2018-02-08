@@ -65,12 +65,12 @@ public class TodoSteps {
         designer.http()
                 .client(todoListClient)
                 .send()
-                .delete("/todolist");
+                .delete("/api/todolist");
 
         designer.http()
                 .client(todoListClient)
                 .receive()
-                .response(HttpStatus.FOUND);
+                .response(HttpStatus.OK);
     }
 
     @When("^I add entry \"([^\"]*)\"$")

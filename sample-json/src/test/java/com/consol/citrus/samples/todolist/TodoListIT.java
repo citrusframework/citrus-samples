@@ -44,7 +44,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
             .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
@@ -59,7 +59,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/json");
 
         http()
@@ -80,7 +80,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
             .payload(new ClassPathResource("templates/todo.json"));
@@ -95,7 +95,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/json");
 
         http()
@@ -116,7 +116,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json")
             .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}");
@@ -131,7 +131,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/json");
 
         http()

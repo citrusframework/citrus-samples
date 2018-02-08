@@ -18,9 +18,10 @@ package com.consol.citrus.samples.todolist.web;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,45 +30,47 @@ import java.util.List;
  * @author Christoph Deppisch
  */
 @Controller
-@RequestMapping("/todolist")
+@RequestMapping("/api/todolist")
 public class TodoListController {
 
     @Autowired
     private TodoListService todoListService;
 
+    @ApiOperation(notes = "Returns all available todo entries.", value = "List todo entries", nickname = "listTodoEntries" )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = TodoEntry[].class)
+    })
     @RequestMapping(method = RequestMethod.GET)
-    public String listHtml(Model model) {
-        model.addAttribute("todos", todoListService.getAllEntries());
-
-        return "todo";
-    }
-
-    @RequestMapping(method = RequestMethod.GET, headers = "accept=application/*")
     @ResponseBody
     public List<TodoEntry> list() {
         return todoListService.getAllEntries();
     }
 
-    @RequestMapping(method = RequestMethod.POST, headers = "content-type=application/x-www-form-urlencoded")
-    public String addFormUrlencoded(@RequestParam(value = "title") String title,
-                      @RequestParam(value = "description", defaultValue = "N/A") String description) {
-        todoListService.addEntry(new TodoEntry(title, description));
-        return "redirect:todolist";
-    }
-
+    @ApiOperation(notes = "Adds new todo entry.", value = "Add todo entry", nickname = "addTodoEntry" )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = String.class)
+    })
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public String add(@RequestBody TodoEntry entry) {
+    public String add(@ApiParam(value = "Todo entry to be added", required = true) @RequestBody TodoEntry entry) {
         todoListService.addEntry(entry);
         return entry.getId().toString();
     }
 
+    @ApiOperation(notes = "Delete all todo entries.", value = "Delete all todo entries", nickname = "deleteTodoEntries" )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
     @RequestMapping(method = RequestMethod.DELETE)
-    public String clear() {
+    @ResponseStatus(HttpStatus.OK)
+    public void clear() {
         todoListService.clear();
-        return "redirect:todolist";
     }
 
+    @ApiOperation(notes = "Gets number of available todo entries.", value = "Gets number of todo entries", nickname = "getTodoEntryCount" )
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = Integer.class)
+    })
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     @ResponseBody
     public Integer getTodoCount() {

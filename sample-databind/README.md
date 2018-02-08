@@ -17,7 +17,7 @@ In test cases we can use the model objects directly as message payload.
 http()
     .client(todoClient)
     .send()
-    .post("/todolist")
+    .post("/api/todolist")
     .contentType("application/json")
     .payload(new TodoEntry("${todoName}", "${todoDescription}"), objectMapper);
 ```

@@ -55,7 +55,7 @@ public class AddTodoBehavior extends AbstractTestBehavior {
         HttpClientRequestActionBuilder request = http()
             .client(todoClient)
             .send()
-            .post("/todolist")
+            .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType("application/json");
 
@@ -119,7 +119,7 @@ public class GetTodoBehavior extends AbstractTestBehavior {
         http()
             .client(todoClient)
             .send()
-            .get("/todo/${todoId}")
+            .get("/api/todo/${todoId}")
             .accept("application/json");
 
         HttpClientResponseActionBuilder response = http()
