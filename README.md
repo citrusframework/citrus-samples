@@ -46,11 +46,13 @@ system under test. Please find following list of samples and their primary objec
 | [sample-junit](sample-junit)| Shows JUnit4 framework support |
 | [sample-junit5](sample-junit5)| Shows JUnit5 framework support |
 | [sample-jms](sample-jms)| Shows JMS queue connectivity |
+| [sample-swagger](sample-swagger)| Auto generate tests from Swagger Open API |
 | [sample-http](sample-http)| Shows Http REST API calls as a client |
 | [sample-http-loadtest](sample-http-loadtest)| Calls REST API on Http server with multiple threads for load testing |
 | [sample-http-static-response](sample-http-static-response)| Shows how to setup a static response generating Http server component |
 | [sample-http-basic-auth](sample-http-basic-auth)| Shows how to use basic authentication on client and server components |
 | [sample-https](sample-https)| Shows how to use SSL connectivity as a client and server |
+| [sample-wsdl](sample-wsdl)| Auto generate tests from WSDL |
 | [sample-soap](sample-soap)| Shows basic SOAP web service support |
 | [sample-soap-mtom](sample-soap-mtom)| Shows how to send and receive MTOM enabled SOAP attachments |
 | [sample-soap-attachment](sample-soap-attachment)| Shows how to send SOAP attachments to server |

@@ -44,8 +44,8 @@ public class TodoController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public TodoEntry getEntry(@ApiParam(value = "ID of todo entry that needs to be fetched", required = true) @PathVariable(value = "id") String id) {
-        return todoListService.getEntry(UUID.fromString(id));
+    public TodoEntry getEntry(@ApiParam(value = "ID of todo entry that needs to be fetched", required = true) @PathVariable(value = "id") UUID id) {
+        return todoListService.getEntry(id);
     }
 
     @ApiOperation(notes = "Sets todo entry status. Unknown todo id will simulate API error conditions", value = "Set todo entry status", nickname = "setEntryStatus" )
@@ -55,9 +55,9 @@ public class TodoController {
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void setEntryStatus(@ApiParam(value = "ID of todo entry that needs to be updated", required = true) @PathVariable(value = "id") String id,
+    public void setEntryStatus(@ApiParam(value = "ID of todo entry that needs to be updated", required = true) @PathVariable(value = "id") UUID id,
                                @ApiParam(value = "Status to set", required = true) @RequestParam(value = "done") boolean done) {
-        todoListService.setStatus(UUID.fromString(id), done);
+        todoListService.setStatus(id, done);
     }
 
     @ApiOperation(notes = "Delete todo entries identified by its title", value = "Delete todo entries by title", nickname = "deleteEntryByTitle" )
@@ -77,7 +77,7 @@ public class TodoController {
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteEntry(@ApiParam(value = "ID of todo entry that needs to be deleted", required = true) @PathVariable(value = "id") String id) {
-        todoListService.deleteEntry(UUID.fromString(id));
+    public void deleteEntry(@ApiParam(value = "ID of todo entry that needs to be deleted", required = true) @PathVariable(value = "id") UUID id) {
+        todoListService.deleteEntry(id);
     }
 }

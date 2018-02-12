@@ -1,0 +1,329 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "REST API for todo application",
+    "version": "2.0",
+    "title": "TodoList API",
+    "license": {
+      "name": "Apache License Version 2.0"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "reporting-controller",
+      "description": "Reporting Controller"
+    },
+    {
+      "name": "todo-controller",
+      "description": "Todo Controller"
+    },
+    {
+      "name": "todo-list-controller",
+      "description": "Todo List Controller"
+    }
+  ],
+  "paths": {
+    "/api/reporting/mail": {
+      "get": {
+        "tags": [
+          "reporting-controller"
+        ],
+        "summary": "Send mail reporting",
+        "description": "Send mail reporting.",
+        "operationId": "sendMailReport",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/todo": {
+      "delete": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "Delete todo entries by title",
+        "description": "Delete todo entries identified by its title",
+        "operationId": "deleteEntryByTitle",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Title to identify entries that should be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/todo/{id}": {
+      "get": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "Find todo entry by ID",
+        "description": "Returns a todo entry. Unknown todo id will simulate API error conditions",
+        "operationId": "getEntryById",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of todo entry that needs to be fetched",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TodoEntry"
+            }
+          },
+          "404": {
+            "description": "Todo entry not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "Set todo entry status",
+        "description": "Sets todo entry status. Unknown todo id will simulate API error conditions",
+        "operationId": "setEntryStatus",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of todo entry that needs to be updated",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "name": "done",
+            "in": "query",
+            "description": "Status to set",
+            "required": true,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Todo entry not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "Delete todo entry by id",
+        "description": "Delete todo entry identified by given id. Unknown todo id will simulate API error conditions",
+        "operationId": "deleteEntryById",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of todo entry that needs to be deleted",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Todo entry not found"
+          }
+        }
+      }
+    },
+    "/api/todolist": {
+      "get": {
+        "tags": [
+          "todo-list-controller"
+        ],
+        "summary": "List todo entries",
+        "description": "Returns all available todo entries.",
+        "operationId": "listTodoEntries",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TodoEntry"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "todo-list-controller"
+        ],
+        "summary": "Add todo entry",
+        "description": "Adds new todo entry.",
+        "operationId": "addTodoEntry",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "entry",
+            "description": "Todo entry to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TodoEntry"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "todo-list-controller"
+        ],
+        "summary": "Delete all todo entries",
+        "description": "Delete all todo entries.",
+        "operationId": "deleteTodoEntries",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/todolist/count": {
+      "get": {
+        "tags": [
+          "todo-list-controller"
+        ],
+        "summary": "Gets number of todo entries",
+        "description": "Gets number of available todo entries.",
+        "operationId": "getTodoEntryCount",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Attachment": {
+      "type": "object",
+      "properties": {
+        "cid": {
+          "type": "string"
+        },
+        "contentType": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string"
+        }
+      }
+    },
+    "TodoEntry": {
+      "type": "object",
+      "properties": {
+        "attachment": {
+          "$ref": "#/definitions/Attachment"
+        },
+        "description": {
+          "type": "string"
+        },
+        "done": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
