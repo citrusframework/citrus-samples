@@ -29,8 +29,8 @@ import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.server.EndpointInterceptor;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
-import org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor;
-import org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler;
+import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
+import org.springframework.ws.soap.security.wss4j2.callback.SimplePasswordValidationCallbackHandler;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 
 import java.util.*;
