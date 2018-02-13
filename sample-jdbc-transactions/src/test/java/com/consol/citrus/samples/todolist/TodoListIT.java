@@ -19,7 +19,6 @@ package com.consol.citrus.samples.todolist;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.jdbc.command.JdbcCommand;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
 
         receive(jdbcServer)
-                .message(JdbcCommand.startTransaction());
+                .message(JdbcMessage.startTransaction());
 
 
         receive(jdbcServer)
@@ -62,7 +61,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.result().rowsUpdated(1));
 
         receive(jdbcServer)
-                .message(JdbcCommand.commitTransaction());
+                .message(JdbcMessage.commitTransaction());
 
         http()
                 .client(todoClient)
@@ -85,7 +84,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
-                .message(JdbcCommand.startTransaction());
+                .message(JdbcMessage.startTransaction());
 
         receive(jdbcServer)
                 .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
@@ -94,7 +93,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.result().exception("Could not execute something"));
 
         receive(jdbcServer)
-                .message(JdbcCommand.rollbackTransaction());
+                .message(JdbcMessage.rollbackTransaction());
 
         http()
                 .client(todoClient)
