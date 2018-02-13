@@ -23,6 +23,7 @@ system under test. Please find following list of samples and their primary objec
 | Sample                                | Objective |
 |---------------------------------------|:---------:|
 | [sample-reporting](sample-reporting)| Shows how to add a custom reporter |
+| [sample-test-jar](sample-test-jar)| Creates an executable test jar to run all integration tests |
 | [sample-docker](sample-docker)| Shows how to use Citrus within Docker infrastructure |
 | [sample-kubernetes](sample-kubernetes)| Shows how to use Citrus within Kubernetes infrastructure |
 | [sample-gradle](sample-gradle)| Uses Gradle build to execute tests |
