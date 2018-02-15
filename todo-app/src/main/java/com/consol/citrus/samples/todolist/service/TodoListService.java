@@ -33,7 +33,7 @@ public class TodoListService {
     @Autowired
     private TodoListDao todoListDao;
 
-    public void addEntry(TodoEntry entry) {
+    public void addEntry(final TodoEntry entry) {
         todoListDao.save(entry);
     }
 
@@ -41,12 +41,16 @@ public class TodoListService {
         return todoListDao.list();
     }
 
+    public List<TodoEntry> getAllEntries(final int limit) {
+        return todoListDao.list(limit);
+    }
+
     public void clear() {
         todoListDao.deleteAll();
     }
 
-    public TodoEntry getEntry(UUID uuid) {
-        for (TodoEntry entry : todoListDao.list()) {
+    public TodoEntry getEntry(final UUID uuid) {
+        for (final TodoEntry entry : todoListDao.list()) {
             if (entry.getId().equals(uuid)) {
                 return entry;
             }
@@ -55,16 +59,16 @@ public class TodoListService {
         throw new RuntimeException(String.format("Unable to find entry with uuid '%s'", uuid));
     }
 
-    public void deleteEntry(String title) {
-        for (TodoEntry entry : todoListDao.list()) {
+    public void deleteEntry(final String title) {
+        for (final TodoEntry entry : todoListDao.list()) {
             if (entry.getTitle().equals(title)) {
                 todoListDao.delete(entry);
             }
         }
     }
 
-    public void deleteEntry(UUID uuid) {
-        for (TodoEntry entry : todoListDao.list()) {
+    public void deleteEntry(final UUID uuid) {
+        for (final TodoEntry entry : todoListDao.list()) {
             if (entry.getId().equals(uuid)) {
                 todoListDao.delete(entry);
                 return;
@@ -74,8 +78,8 @@ public class TodoListService {
         throw new RuntimeException(String.format("Unable to find entry with uuid '%s'", uuid));
     }
 
-    public void setStatus(UUID uuid, boolean done) {
-        TodoEntry entry = getEntry(uuid);
+    public void setStatus(final UUID uuid, final boolean done) {
+        final TodoEntry entry = getEntry(uuid);
         entry.setDone(done);
         todoListDao.update(entry);
     }

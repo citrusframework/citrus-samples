@@ -18,11 +18,19 @@ package com.consol.citrus.samples.todolist.web;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -44,6 +52,12 @@ public class TodoListController {
     @ResponseBody
     public List<TodoEntry> list() {
         return todoListService.getAllEntries();
+    }
+
+    @RequestMapping(value = "/{limit}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<TodoEntry> listWithLimit(@PathVariable(value = "limit") final int limit) {
+        return todoListService.getAllEntries(limit);
     }
 
     @ApiOperation(notes = "Adds new todo entry.", value = "Add todo entry", nickname = "addTodoEntry" )
