@@ -21,11 +21,9 @@ import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
+import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
-
-import java.util.UUID;
 
 public class TodoListIT extends TestNGCitrusTestDesigner {
 
@@ -39,31 +37,35 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testStoredProcedureCall() {
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
         http()
                 .client(todoClient)
                 .send()
-                .get("/todolist/1")
+                .get("api/todolist/1")
                 .fork(true);
 
 
 
         receive(jdbcServer)
-                .message(JdbcMessage.prepareCallableStatement("{CALL limitedToDoList(?)}"));
+                .messageType(MessageType.JSON)
+                .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.callableStatementExecuted());
+//        receive(jdbcServer)
+//                .message(JdbcMessage.executeCallableStatement());
 
-        send(jdbcServer)
-                .message(JdbcMessage.result().dataSet("[ {" +
-                        "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
-                        "\"title\": \"${todoName}\"," +
-                        "\"description\": \"${todoDescription}\"," +
-                        "\"done\": \"false\"" +
-                        "} ]"));
-
-        http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.FOUND);
+//        send(jdbcServer)
+//                .message(JdbcMessage.result().dataSet("[ {" +
+//                        "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
+//                        "\"title\": \"${todoName}\"," +
+//                        "\"description\": \"${todoDescription}\"," +
+//                        "\"done\": \"false\"" +
+//                        "} ]"));
+//
+//        http()
+//                .client(todoClient)
+//                .receive()
+//                .response(HttpStatus.FOUND);
     }
 }
