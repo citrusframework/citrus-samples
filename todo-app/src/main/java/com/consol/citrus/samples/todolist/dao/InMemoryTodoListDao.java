@@ -18,7 +18,9 @@ package com.consol.citrus.samples.todolist.dao;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -30,17 +32,22 @@ public class InMemoryTodoListDao implements TodoListDao {
     private List<TodoEntry> storage = new ArrayList<>();
 
     @Override
-    public void save(TodoEntry entry) {
+    public void save(final TodoEntry entry) {
         storage.add(entry);
     }
 
     @Override
     public List<TodoEntry> list() {
-        return storage.stream().collect(Collectors.toList());
+        return new ArrayList<>(storage);
     }
 
     @Override
-    public void delete(TodoEntry entry) {
+    public List<TodoEntry> list(final int limit) {
+        return storage.stream().limit(limit).collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(final TodoEntry entry) {
         storage = storage.stream()
                          .filter(current -> !current.equals(entry))
                          .collect(Collectors.toList());
@@ -52,8 +59,8 @@ public class InMemoryTodoListDao implements TodoListDao {
     }
 
     @Override
-    public void update(TodoEntry entry) {
-        Optional<TodoEntry> found = storage.stream()
+    public void update(final TodoEntry entry) {
+        final Optional<TodoEntry> found = storage.stream()
                 .filter(current -> current.getId().equals(entry.getId()))
                 .findFirst();
 
