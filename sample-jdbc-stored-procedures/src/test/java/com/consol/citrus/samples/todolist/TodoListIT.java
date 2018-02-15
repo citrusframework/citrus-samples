@@ -16,10 +16,16 @@
 
 package com.consol.citrus.samples.todolist;
 
+import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.testng.annotations.Test;
+
+import java.util.UUID;
 
 public class TodoListIT extends TestNGCitrusTestDesigner {
 
@@ -30,5 +36,34 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Autowired
     private HttpClient todoClient;
 
+    @Test
+    @CitrusTest
+    public void testStoredProcedureCall() {
+        http()
+                .client(todoClient)
+                .send()
+                .get("/todolist/1")
+                .fork(true);
 
+
+
+        receive(jdbcServer)
+                .message(JdbcMessage.prepareCallableStatement("{CALL limitedToDoList(?)}"));
+
+        receive(jdbcServer)
+                .message(JdbcMessage.callableStatementExecuted());
+
+        send(jdbcServer)
+                .message(JdbcMessage.result().dataSet("[ {" +
+                        "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
+                        "\"title\": \"${todoName}\"," +
+                        "\"description\": \"${todoDescription}\"," +
+                        "\"done\": \"false\"" +
+                        "} ]"));
+
+        http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.FOUND);
+    }
 }
