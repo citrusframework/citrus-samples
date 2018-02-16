@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-test-jar</artifactId>
-  <name>citrus-sample-test-jar</name>
+  <artifactId>citrus-sample-test-war</artifactId>
+  <name>citrus-sample-test-war</name>
   <version>2.7.4-SNAPSHOT</version>
 
   <properties>
@@ -44,8 +44,25 @@
         <executions>
           <execution>
             <goals>
-              <goal>test-jar</goal>
+              <goal>test-war</goal>
             </goals>
+          </execution>
+          <execution>
+            <id>run-remote-tests</id>
+            <phase>integration-test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <server>
+                <url>http://localhost:8080/tests</url>
+              </server>
+              <run>
+                <packages>
+                  <package>com.consol.citrus.samples.todolist</package>
+                </packages>
+              </run>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -68,46 +85,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.6.0</version>
-        <executions>
-          <execution>
-            <id>grant-start-permissions</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>chmod</executable>
-              <arguments>
-                <argument>u+x</argument>
-                <argument>${project.build.directory}/citrus-sample-test-jar-${project.version}-tests-app.jar</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>run-integration-tests</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>java</executable>
-          <arguments>
-            <argument>-jar</argument>
-            <argument>${project.build.directory}/citrus-sample-test-jar-${project.version}-tests-app.jar</argument>
-            <argument>-package</argument>
-            <argument>com.consol.citrus.samples.*</argument>
-            <argument>-exit</argument>
-            <argument>true</argument>
-          </arguments>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jetty.version}</version>
@@ -117,6 +94,13 @@
             <port>8080</port>
             <idleTimeout>60000</idleTimeout>
           </httpConnector>
+          <contextHandlers>
+            <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
+              <war>${project.build.directory}/citrus-sample-test-war-${project.version}-tests-webapp.war</war>
+              <contextPath>/tests</contextPath>
+              <tempDirectory>${project.build.directory}/tmp/tests</tempDirectory>
+            </contextHandler>
+          </contextHandlers>
           <stopKey>stopMe</stopKey>
           <stopPort>8088</stopPort>
           <stopWait>10</stopWait>

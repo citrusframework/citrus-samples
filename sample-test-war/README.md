@@ -1,8 +1,8 @@
-Executable test JAR sample ![Logo][1]
+Deployable test WAR sample ![Logo][1]
 ==============
 
-This sample shows how to create an executable test jar with all Citrus tests. The test jar is executable via `java -jar` and
-executes all packaged integration tests. This is extremely useful when the tests should be used as a deployable artifact for execution on another
+This sample shows how to create an executable test webapp with all Citrus tests. The test war is deployable in any application server and
+executes all packaged integration tests at container startup. This is extremely useful when the tests should be used as a deployable artifact for execution on another
 server and/or at a later time.
 
 Objectives
@@ -12,29 +12,19 @@ The [todo-list](../todo-app/README.md) sample application provides a REST API fo
 We call this API and receive Json message structures for validation in our test cases.
 
 This time we do not use Maven surefire and failsafe plugin for executing the Citrus integration tests immediately. Instead we build an executable 
-test jar with all dependencies that is able to execute all tests as a standalone application.
+test webapp WAR with all dependencies that is able to execute all tests as part of a normal web application deployment. First of all we add a dependency to the `citrus-remote-server`
+library that is able to execute Citrus tests as part of a web application deployment.
     
-First of all we tell Maven to create a test-jar file that hold all test sources in out project. You could do so by adding a special maven-jar-plugin configuration. The jar file contains all test scoped sources and 
-uses a classifier `-tests.jar`.
-
 ```xml
-<plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-jar-plugin</artifactId>
-  <version>3.0.2</version>
-  <executions>
-    <execution>
-      <goals>
-        <goal>test-jar</goal>
-      </goals>
-    </execution>
-  </executions>
-</plugin>
+<dependency>
+  <groupId>com.consol.citrus</groupId>
+  <artifactId>citrus-remote-server</artifactId>
+  <version>${citrus.version}</version>
+  <scope>test</scope>
+</dependency>
 ```
 
-The goal above creates the test-jar for us. You will find it after the build in the Maven output directory `target` as build artifact. The test-jar is not executable and is also not having any dependencies packaged in it.
-
-In order to make the test-jar executable we use a spacial Citrus maven plugin:
+After that we tell Maven to also create a WAR web archive during the build. The test-war artifact will hold all test sources and all test scoped dependencies of the current Maven project.
 
 ```xml
 <plugin>
@@ -44,53 +34,87 @@ In order to make the test-jar executable we use a spacial Citrus maven plugin:
   <executions>
     <execution>
       <goals>
-        <goal>test-jar</goal>
+        <goal>test-war</goal>
       </goals>
     </execution>
   </executions>
 </plugin>
 ```
 
-This test-jar plugin will also package all test scoped dependencies to the artifact. In addition to that the plugin will extend the jar file with proper Manifest main class configuration for later execution via `java -jar`.
-You should now find a new test-jar file with classifier `-tests-app.jar` in the Maven `target` output folder. This jar is executable via command line with:
-
-```bash
-java -jar citrus-sample-test-jar-${project-version}-tests-app.jar
-```      
-
-This will execute all Citrus test cases that are packaged within the executable test-jar. For demonstration purpose we have added a `exec-maven-plugin` configuration to the sample that executes the test-jar within your Maven process:
+After that you should find a new WAR file with classifier `-tests-webapp.war` in the Maven `target` build output folder. This WAR is deployable to any web application server such as Jetty.
 
 ```xml
 <plugin>
-  <groupId>org.codehaus.mojo</groupId>
-  <artifactId>exec-maven-plugin</artifactId>
-  <version>1.6.0</version>
+  <groupId>org.eclipse.jetty</groupId>
+  <artifactId>jetty-maven-plugin</artifactId>
+  <version>${jetty.version}</version>
+  <configuration>
+    <war>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</war>
+    <httpConnector>
+      <port>8080</port>
+      <idleTimeout>60000</idleTimeout>
+    </httpConnector>
+    <contextHandlers>
+      <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
+        <war>${project.build.directory}/citrus-sample-test-war-${project.version}-tests-webapp.war</war>
+        <contextPath>/tests</contextPath>
+        <tempDirectory>${project.build.directory}/tmp/tests</tempDirectory>
+      </contextHandler>
+    </contextHandlers>
+    <stopKey>stopMe</stopKey>
+    <stopPort>8088</stopPort>
+    <stopWait>10</stopWait>
+    <systemProperties>
+      <systemProperty>
+        <name>file.encoding</name>
+        <value>UTF-8</value>
+      </systemProperty>
+    </systemProperties>
+  </configuration>
+</plugin>
+```      
+
+The jetty-maven-plugin above will deploy both system under test `todo.war` and the Citrus `test-webapp.war` in a web application container. The test-war is using the context path `/tests`. After the deployment we can trigger the Citrus test execution on that server
+with
+
+```bash
+http://localhost:8080/tests/run
+```
+  
+This test execution can be bound to the Maven lifecycle via citrus-remote-maven-plugin:
+
+```xml
+<plugin>
+  <groupId>com.consol.citrus</groupId>
+  <artifactId>citrus-remote-maven-plugin</artifactId>
+  <version>${citrus.version}</version>
   <executions>
     <execution>
-      <id>run-integration-tests</id>
+      <id>run-remote-tests</id>
       <phase>integration-test</phase>
       <goals>
-        <goal>exec</goal>
+        <goal>run</goal>
       </goals>
+      <configuration>
+        <server>
+          <url>http://localhost:8080/tests</url>
+        </server>
+        <run>
+          <packages>
+            <package>com.consol.citrus.samples.todolist</package>
+          </packages>
+        </run>
+      </configuration>
     </execution>
   </executions>
-  <configuration>
-    <executable>java</executable>
-    <arguments>
-      <argument>-jar</argument>
-      <argument>${project.build.directory}/citrus-sample-test-jar-${project.version}-tests-app.jar</argument>
-      <argument>-package</argument>
-      <argument>com.consol.citrus.samples.*</argument>
-    </arguments>
-  </configuration>
 </plugin>
 ```
 
-The exec plugin is bound to the `integration-test` phase and calls the `java -jar` executable. This will execute all tests in the `-tests-app.jar` package.
-
+The `run` goal is bound to the `integration-test` lifecycle phase in out Maven build. All deployed Citrus test cases will execute in the WAR deplyoment.   
+        
 Now why do you want to do such kind of test packaging? The Citrus integration tests in the project may interact with a system under test which is deployed on a foreign test server. Due to infrastructure limitations the tests may need to execute on that
 very same foreign server instance. So you can create the executable test-jar and deploy that artifact to the foreign server, too. Then test execution and system under test are located on the very same machine which implies are much more simple
-configuration and less test infrastructure requirements.   
+configuration and less test infrastructure requirements.
                 
 Run
 ---------

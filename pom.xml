@@ -21,6 +21,7 @@
     <module>sample-dictionaries</module>
     <module>sample-message-store</module>
     <module>sample-test-jar</module>
+    <module>sample-test-war</module>
     <module>sample-docker</module>
     <module>sample-kubernetes</module>
     <module>sample-cucumber</module>
