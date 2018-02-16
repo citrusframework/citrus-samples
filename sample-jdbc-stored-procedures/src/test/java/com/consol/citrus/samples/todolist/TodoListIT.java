@@ -49,11 +49,11 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
 
         receive(jdbcServer)
-                .messageType(MessageType.JSON)
                 .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
 
-//        receive(jdbcServer)
-//                .message(JdbcMessage.executeCallableStatement());
+        receive(jdbcServer)
+                .messageType(MessageType.JSON)
+                .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
 
 //        send(jdbcServer)
 //                .message(JdbcMessage.result().dataSet("[ {" +
