@@ -23,6 +23,7 @@ import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
 public class TodoListIT extends TestNGCitrusTestDesigner {
@@ -36,7 +37,8 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
     @Test
     @CitrusTest
-    public void testStoredProcedureCall() {
+    public void testStoredProcedureCallJson() {
+        variable("todoId", "citrus:randomUUID()");
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
@@ -46,26 +48,129 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .get("api/todolist/1")
                 .fork(true);
 
+        receive(jdbcServer)
+                .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
 
+        receive(jdbcServer)
+                .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
+
+        send(jdbcServer)
+                .messageType(MessageType.JSON)
+                .message(JdbcMessage.result().dataSet("[ {" +
+                        "\"id\": \"${todoId}\"," +
+                        "\"title\": \"${todoName}\"," +
+                        "\"description\": \"${todoDescription}\"," +
+                        "\"done\": \"false\"" +
+                        "} ]"));
+
+        receive(jdbcServer)
+                .message(JdbcMessage.closeStatement());
+
+        http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.OK)
+                .payload("[ {" +
+                            "\"id\": \"${todoId}\"," +
+                            "\"title\": \"${todoName}\"," +
+                            "\"description\": \"${todoDescription}\"," +
+                            "\"done\": false" +
+                        "} ]");
+    }
+
+    @Test
+    @CitrusTest
+    public void testStoredProcedureCallXml() {
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        http()
+                .client(todoClient)
+                .send()
+                .get("api/todolist/1")
+                .fork(true);
 
         receive(jdbcServer)
                 .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
 
         receive(jdbcServer)
-                .messageType(MessageType.JSON)
                 .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
 
-//        send(jdbcServer)
-//                .message(JdbcMessage.result().dataSet("[ {" +
-//                        "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
-//                        "\"title\": \"${todoName}\"," +
-//                        "\"description\": \"${todoDescription}\"," +
-//                        "\"done\": \"false\"" +
-//                        "} ]"));
-//
-//        http()
-//                .client(todoClient)
-//                .receive()
-//                .response(HttpStatus.FOUND);
+        send(jdbcServer)
+                .messageType(MessageType.XML)
+                .message(JdbcMessage.result().dataSet("" +
+                        "<dataset>" +
+                            "<row>" +
+                                "<id>${todoId}</id>"+
+                                "<title>${todoName}</title>"+
+                                "<description>${todoDescription}</description>" +
+                                "<done>false</done>" +
+                             "</row>" +
+                        "</dataset>"));
+
+        receive(jdbcServer)
+                .message(JdbcMessage.closeStatement());
+
+        http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.OK)
+                .payload("[ {" +
+                        "\"id\": \"${todoId}\"," +
+                        "\"title\": \"${todoName}\"," +
+                        "\"description\": \"${todoDescription}\"," +
+                        "\"done\": false" +
+                        "} ]");
+    }
+
+    @Test
+    @CitrusTest
+    public void testStoredProcedureCallFailed() {
+
+        http()
+                .client(todoClient)
+                .send()
+                .get("api/todolist/1")
+                .fork(true);
+
+        receive(jdbcServer)
+                .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
+
+        receive(jdbcServer)
+                .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
+
+        send(jdbcServer)
+                .message(JdbcMessage.result().exception("Error in called procedure"));
+
+        receive(jdbcServer)
+                .message(JdbcMessage.closeStatement());
+
+        http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
+    @CitrusTest
+    public void testStoredProcedureNotFound() {
+
+        http()
+                .client(todoClient)
+                .send()
+                .get("api/todolist/1")
+                .fork(true);
+
+        receive(jdbcServer)
+                .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
+
+        send(jdbcServer)
+                .message(JdbcMessage.result().exception("Could not find procedure 'limitedToDoList'"));
+
+        http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
