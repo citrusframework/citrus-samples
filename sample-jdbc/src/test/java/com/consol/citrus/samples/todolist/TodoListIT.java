@@ -61,6 +61,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
 
         send(jdbcServer)
+                .messageType(MessageType.JSON)
                 .message(JdbcMessage.result().dataSet("[ {" +
                             "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
                             "\"title\": \"${todoName}\"," +
@@ -139,6 +140,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
 
         send(jdbcServer)
+                .messageType(MessageType.JSON)
                 .message(JdbcMessage.result().dataSet("[ {" +
                             "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
                             "\"title\": \"${todoName}\"," +
