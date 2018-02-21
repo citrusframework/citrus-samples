@@ -103,7 +103,7 @@
           <systemProperties>
             <systemProperty>
               <name>todo.persistence.type</name>
-              <value>jdbcTransactional</value>
+              <value>jdbc</value>
             </systemProperty>
             <systemProperty>
               <name>todo.jdbc.driverClassName</name>
