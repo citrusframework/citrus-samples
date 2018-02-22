@@ -27,6 +27,9 @@
     <module>sample-cucumber-spring2</module>
     <module>sample-annotation-config</module>
     <module>sample-javaconfig</module>
+    <module>sample-jdbc</module>
+    <module>sample-jdbc-stored-procedures</module>
+    <module>sample-jdbc-transactions</module>
     <module>sample-mail</module>
     <module>sample-testng</module>
     <module>sample-junit</module>
