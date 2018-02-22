@@ -13,4 +13,5 @@ bin
 .pmd
 .gradle
 build
+test-output
 sun-jaxb.episode
