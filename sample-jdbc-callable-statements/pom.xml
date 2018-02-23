@@ -19,8 +19,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-jdbc-stored-procedures</artifactId>
-  <name>citrus-sample-jdbc-stored-procedures</name>
+  <artifactId>citrus-sample-jdbc-callable-statements</artifactId>
+  <name>citrus-sample-jdbc-callable-statements</name>
   <version>2.7.4-SNAPSHOT</version>
 
   <properties>
