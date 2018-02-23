@@ -1,7 +1,7 @@
 JDBC transaction sample ![Logo][1]
 ==============
 
-This sample uses JDBC database connection to verify the transactional behavior of the application.
+This sample uses a JDBC database connection to verify the transactional behavior of the application.
 
 Objectives
 ---------
