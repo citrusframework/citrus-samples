@@ -119,7 +119,7 @@ container is automatically stopped.
 
 You can also start the Jetty container manually by calling:
 
-     mvn jetty:run
+     mvn jetty:run-war
 
 Execute this command in the respective sample folders and you will get a running Jetty Web Server Container with the system under test deployed.
 
