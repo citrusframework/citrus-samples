@@ -34,6 +34,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-dictionaries](sample-dictionaries)| Shows how to incorporate message manipulation using data dictionaries |
 | [sample-message-store](sample-message-store)| Shows how to access internal message store |
 | [sample-jdbc](sample-jdbc)| Simulates database server with JDBC |
+| [sample-jdbc-transactions](sample-jdbc-transactions)| Simulates database server with transactional JDBC |
 | [sample-sql](sample-sql)| Validates stored data in relational database |
 | [sample-binary](sample-binary)| Shows binary message content handling in Citrus |
 | [sample-json](sample-json)| Shows Json payload validation feature with JsonPath validation |

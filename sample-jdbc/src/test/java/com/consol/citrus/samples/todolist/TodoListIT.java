@@ -154,4 +154,31 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
     }
 
+    @Test
+    @CitrusTest
+    public void testException() {
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        http()
+                .client(todoClient)
+                .send()
+                .post("/todolist")
+                .fork(true)
+                .contentType("application/x-www-form-urlencoded")
+                .payload("title=${todoName}&description=${todoDescription}");
+
+        receive(jdbcServer)
+                .messageType(MessageType.JSON)
+                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+
+        send(jdbcServer)
+                .message(JdbcMessage.result().exception("Something went wrong"));
+
+        http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
