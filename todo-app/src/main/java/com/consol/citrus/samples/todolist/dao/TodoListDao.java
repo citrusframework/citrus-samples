@@ -29,6 +29,8 @@ public interface TodoListDao {
 
     List<TodoEntry> list();
 
+    List<TodoEntry> list(int limit);
+
     void delete(TodoEntry entry);
 
     void deleteAll();

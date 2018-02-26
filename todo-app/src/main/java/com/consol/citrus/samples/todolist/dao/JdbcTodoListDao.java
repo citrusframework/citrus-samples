@@ -20,19 +20,27 @@ import com.consol.citrus.samples.todolist.model.TodoEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
-import java.sql.*;
-import java.util.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Christoph Deppisch
  */
+@SuppressWarnings({"SqlNoDataSourceInspection", "SqlDialectInspection"})
 public class JdbcTodoListDao implements TodoListDao {
 
     @Autowired
     private DataSource dataSource;
 
     @Override
-    public void save(TodoEntry entry) {
+    public void save(final TodoEntry entry) {
         try {
             try (Connection connection = getConnection()) {
                 connection.setAutoCommit(true);
@@ -44,7 +52,7 @@ public class JdbcTodoListDao implements TodoListDao {
                     statement.executeUpdate();
                 }
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new DataAccessException("Could not save entry " + entry, e);
         }
     }
@@ -59,24 +67,43 @@ public class JdbcTodoListDao implements TodoListDao {
             try (Connection connection = getConnection()) {
                 try (Statement statement = connection.createStatement()) {
                     try (ResultSet resultSet = statement.executeQuery("SELECT id, title, description FROM todo_entries")) {
-                        List<TodoEntry> list = new ArrayList<>();
-                        while (resultSet.next()) {
-                            String id = resultSet.getString(1);
-                            String title = resultSet.getString(2);
-                            String description = resultSet.getString(3);
-                            list.add(new TodoEntry(UUID.fromString(id), title, description));
-                        }
-                        return list;
+                        return convertToTodoEntry(resultSet);
                     }
                 }
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new DataAccessException("Could not list entries", e);
         }
     }
 
     @Override
-    public void delete(TodoEntry entry) {
+    public List<TodoEntry> list(final int limit) {
+        try (Connection connection = getConnection()) {
+            try(final CallableStatement callableStatement = connection.prepareCall("{CALL limitedToDoList(?)}")){
+                callableStatement.setInt(1, limit);
+                callableStatement.execute();
+                try(ResultSet resultSet = callableStatement.getResultSet()){
+                    return convertToTodoEntry(resultSet);
+                }
+            }
+        } catch (final SQLException e) {
+            throw new DataAccessException("Could not list entries with limit", e);
+        }
+    }
+
+    private List<TodoEntry> convertToTodoEntry(final ResultSet resultSet) throws SQLException {
+        final List<TodoEntry> list = new ArrayList<>();
+        while (resultSet.next()) {
+            final String id = resultSet.getString(1);
+            final String title = resultSet.getString(2);
+            final String description = resultSet.getString(3);
+            list.add(new TodoEntry(UUID.fromString(id), title, description));
+        }
+        return list;
+    }
+
+    @Override
+    public void delete(final TodoEntry entry) {
         try {
             try (Connection connection = getConnection()) {
                 connection.setAutoCommit(true);
@@ -85,7 +112,7 @@ public class JdbcTodoListDao implements TodoListDao {
                     statement.executeUpdate();
                 }
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new DataAccessException("Could not delete entries for title " + entry.getId().toString(), e);
         }
     }
@@ -98,13 +125,13 @@ public class JdbcTodoListDao implements TodoListDao {
                     statement.executeQuery("DELETE FROM todo_entries");
                 }
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new DataAccessException("Could not delete entries", e);
         }
     }
 
     @Override
-    public void update(TodoEntry entry) {
+    public void update(final TodoEntry entry) {
         try {
             try (Connection connection = getConnection()) {
                 connection.setAutoCommit(true);
@@ -116,12 +143,12 @@ public class JdbcTodoListDao implements TodoListDao {
                     statement.executeUpdate();
                 }
             }
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new DataAccessException("Could not update entry " + entry, e);
         }
     }
 
-    public Connection getConnection() throws SQLException {
+    private Connection getConnection() throws SQLException {
         return getDataSource().getConnection();
     }
 

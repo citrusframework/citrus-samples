@@ -1,13 +1,13 @@
-JDBC transaction sample ![Logo][1]
+JDBC callable statements sample ![Logo][1]
 ==============
 
-This sample uses a JDBC database connection to verify the transactional behavior of the application.
+This sample uses a JDBC database connection to verify the management of callable statements by the todo application.
 
 Objectives
 ---------
 
 The [todo-list](../todo-app/README.md) sample application stores data to a relational database. This sample shows 
-the usage of database transaction validation actions in Citrus.
+the usage of callable statements validation actions in Citrus.
 See the [reference guide][4] database chapter for details.
 
 The database server and its datasource are configured in the endpoint configuration context ***EndpointConfig.java***.
@@ -22,7 +22,7 @@ public JdbcServer jdbcServer() {
             .port(3306)
             .timeout(10000L)
             .autoStart(true)
-            .autoTransactions(false)
+            .autoCreateStatement(false)
             .build();
 }
 
@@ -37,31 +37,50 @@ public SingleConnectionDataSource dataSource() {
 }
 ```
     
-As you can see we are using a citrus database server here which is configured to validate transaction behavior
-by setting `.autoTransactions(false)`.    
+As you can see we are using a citrus database server here which is configured to validate all statement related actions
+by setting `.autoCreateStatement(false)`.    
 
-In the test case we can now verify the transactional behavior of our application if a client request hits our API. 
+In the test case we can now verify the callable statement behavior of our application if a client request hits our API. 
 
 ```java
+variable("todoId", "citrus:randomUUID()");
+variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+variable("todoDescription", "Description: ${todoName}");
+
 http()
-    .client(todoClient)
-    .send()
-    .post("/todolist")
-    .fork(true)
-    .contentType("application/x-www-form-urlencoded")
-    .payload("title=${todoName}&description=${todoDescription}");
+        .client(todoClient)
+        .send()
+        .get("api/todolist/1")
+        .fork(true);
 
 receive(jdbcServer)
-    .message(JdbcCommand.startTransaction());
+        .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
 
 receive(jdbcServer)
-    .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+        .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
 
 send(jdbcServer)
-        .message(JdbcMessage.result().rowsUpdated(1));
+        .messageType(MessageType.JSON)
+        .message(JdbcMessage.result().dataSet("[ {" +
+                "\"id\": \"${todoId}\"," +
+                "\"title\": \"${todoName}\"," +
+                "\"description\": \"${todoDescription}\"," +
+                "\"done\": \"false\"" +
+                "} ]"));
 
 receive(jdbcServer)
-    .message(JdbcCommand.commitTransaction());
+        .message(JdbcMessage.closeStatement());
+
+http()
+        .client(todoClient)
+        .receive()
+        .response(HttpStatus.OK)
+        .payload("[ {" +
+                    "\"id\": \"${todoId}\"," +
+                    "\"title\": \"${todoName}\"," +
+                    "\"description\": \"${todoDescription}\"," +
+                    "\"done\": false" +
+                "} ]");
 ```
 
 Run
