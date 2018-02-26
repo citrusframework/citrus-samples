@@ -107,7 +107,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        jdbcServer.getEndpointConfiguration().setAutoTransactions(true);
+        jdbcServer.getEndpointConfiguration().setAutoTransactionHandling(true);
 
         http()
                 .client(todoClient)
@@ -131,6 +131,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
     @AfterTest
     public void resetTransactionState(){
-        jdbcServer.getEndpointConfiguration().setAutoTransactions(false);
+        jdbcServer.getEndpointConfiguration().setAutoTransactionHandling(false);
     }
 }

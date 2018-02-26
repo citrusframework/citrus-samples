@@ -57,7 +57,7 @@ public class EndpointConfig {
                 .port(3306)
                 .timeout(10000L)
                 .autoStart(true)
-                .autoTransactions(false)
+                .autoTransactionHandling(false)
                 .build();
     }
 
