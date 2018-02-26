@@ -31,7 +31,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Autowired
     private JdbcServer jdbcServer;
 
-
     @Autowired
     private HttpClient todoClient;
 

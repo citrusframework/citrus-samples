@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional
-public class JdbcTransactionToDoListDao extends JdbcTodoListDao{
+public class JdbcTransactionalTodoListDao extends JdbcTodoListDao {
 
     @Override
     public void save(final TodoEntry entry) {

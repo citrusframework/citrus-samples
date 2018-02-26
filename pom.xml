@@ -29,9 +29,6 @@
     <module>sample-cucumber-spring2</module>
     <module>sample-annotation-config</module>
     <module>sample-javaconfig</module>
-    <module>sample-jdbc</module>
-    <module>sample-jdbc-callable-statements</module>
-    <module>sample-jdbc-transactions</module>
     <module>sample-mail</module>
     <module>sample-testng</module>
     <module>sample-junit</module>
@@ -64,6 +61,8 @@
     <module>sample-soap-static-response</module>
     <module>sample-sql</module>
     <module>sample-jdbc</module>
+    <module>sample-jdbc-transactions</module>
+    <module>sample-jdbc-callable-statements</module>
   </modules>
   
   <repositories>

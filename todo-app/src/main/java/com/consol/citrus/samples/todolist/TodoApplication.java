@@ -21,10 +21,13 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertyResolver;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -61,31 +64,9 @@ public class TodoApplication extends SpringBootServletInitializer {
         return new InMemoryTodoListDao();
     }
 
-    @Bean
-    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
-    public TodoListDao todoListJdbcDao() {
-        return new JdbcTodoListDao();
-    }
-
     @Bean(destroyMethod = "close")
     @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
     public BasicDataSource jdbcDataSource(final JdbcConfigurationProperties configurationProperties) {
-        return getBasicDataSource(configurationProperties);
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbcTransactional")
-    public TodoListDao transactionalTodoListJdbcDao() {
-        return new JdbcTransactionToDoListDao();
-    }
-
-    @Bean(destroyMethod = "close")
-    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbcTransactional")
-    public BasicDataSource transactionalJdbcDataSource(final JdbcConfigurationProperties configurationProperties) {
-        return getBasicDataSource(configurationProperties);
-    }
-
-    private BasicDataSource getBasicDataSource(final JdbcConfigurationProperties configurationProperties) {
         final BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(configurationProperties.getDriverClassName());
         dataSource.setUrl(configurationProperties.getUrl());
@@ -93,6 +74,16 @@ public class TodoApplication extends SpringBootServletInitializer {
         dataSource.setPassword(configurationProperties.getPassword());
 
         return dataSource;
+    }
+    @Bean
+    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
+    public TodoListDao todoListJdbcDao(Environment environment) {
+        PropertyResolver propertyResolver = new RelaxedPropertyResolver(environment, "todo.persistence.");
+        if (!propertyResolver.getProperty("transactional", "false").equals("false")) {
+            return new JdbcTransactionalTodoListDao();
+        } else {
+            return new JdbcTodoListDao();
+        }
     }
 
     private ApiInfo apiInfo() {
