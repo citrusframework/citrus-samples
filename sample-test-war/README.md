@@ -93,7 +93,7 @@ This test execution can be bound to the Maven lifecycle via citrus-remote-maven-
       <id>run-remote-tests</id>
       <phase>integration-test</phase>
       <goals>
-        <goal>run</goal>
+        <goal>test</goal>
       </goals>
       <configuration>
         <server>
