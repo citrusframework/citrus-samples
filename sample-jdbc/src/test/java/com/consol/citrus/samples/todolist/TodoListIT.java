@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import javax.sql.DataSource;
 import java.util.UUID;
 
 /**
@@ -39,9 +38,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
     @Autowired
     private HttpClient todoClient;
-
-    @Autowired
-    private DataSource todoDataSource;
 
     @Test
     @CitrusTest
