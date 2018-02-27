@@ -49,16 +49,14 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .contentType("application/x-www-form-urlencoded")
                 .payload("title=${todoName}&description=${todoDescription}");
 
-
         receive(jdbcServer)
                 .message(JdbcMessage.startTransaction());
-
 
         receive(jdbcServer)
                 .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
-                .message(JdbcMessage.result().rowsUpdated(1));
+                .message(JdbcMessage.success().rowsUpdated(1));
 
         receive(jdbcServer)
                 .message(JdbcMessage.commitTransaction());
@@ -90,7 +88,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
-                .message(JdbcMessage.result().exception("Could not execute something"));
+                .message(JdbcMessage.error().exception("Could not execute something"));
 
         receive(jdbcServer)
                 .message(JdbcMessage.rollbackTransaction());
@@ -121,7 +119,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
-                .message(JdbcMessage.result().rowsUpdated(1));
+                .message(JdbcMessage.success().rowsUpdated(1));
 
         http()
                 .client(todoClient)

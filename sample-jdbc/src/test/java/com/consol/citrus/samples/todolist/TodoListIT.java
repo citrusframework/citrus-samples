@@ -62,7 +62,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         send(jdbcServer)
                 .messageType(MessageType.JSON)
-                .message(JdbcMessage.result().dataSet("[ {" +
+                .message(JdbcMessage.success().dataSet("[ {" +
                             "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
                             "\"title\": \"${todoName}\"," +
                             "\"description\": \"${todoDescription}\"," +
@@ -121,7 +121,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
-            .message(JdbcMessage.result().rowsUpdated(1));
+            .message(JdbcMessage.success().rowsUpdated(1));
 
         http()
             .client(todoClient)
@@ -141,7 +141,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         send(jdbcServer)
                 .messageType(MessageType.JSON)
-                .message(JdbcMessage.result().dataSet("[ {" +
+                .message(JdbcMessage.success().dataSet("[ {" +
                             "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
                             "\"title\": \"${todoName}\"," +
                             "\"description\": \"${todoDescription}\"," +
@@ -175,7 +175,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
-                .message(JdbcMessage.result().exception("Something went wrong"));
+                .message(JdbcMessage.error().exception("Something went wrong"));
 
         http()
                 .client(todoClient)

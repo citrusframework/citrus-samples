@@ -55,7 +55,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         send(jdbcServer)
                 .messageType(MessageType.JSON)
-                .message(JdbcMessage.result().dataSet("[ {" +
+                .message(JdbcMessage.success().dataSet("[ {" +
                         "\"id\": \"${todoId}\"," +
                         "\"title\": \"${todoName}\"," +
                         "\"description\": \"${todoDescription}\"," +
@@ -98,7 +98,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         send(jdbcServer)
                 .messageType(MessageType.XML)
-                .message(JdbcMessage.result().dataSet("" +
+                .message(JdbcMessage.success().dataSet("" +
                         "<dataset>" +
                             "<row>" +
                                 "<id>${todoId}</id>"+
@@ -140,7 +140,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
 
         send(jdbcServer)
-                .message(JdbcMessage.result().exception("Error in called procedure"));
+                .message(JdbcMessage.error().exception("Error in called procedure"));
 
         receive(jdbcServer)
                 .message(JdbcMessage.closeStatement());
@@ -165,7 +165,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
 
         send(jdbcServer)
-                .message(JdbcMessage.result().exception("Could not find procedure 'limitedToDoList'"));
+                .message(JdbcMessage.error().exception("Could not find procedure 'limitedToDoList'"));
 
         http()
                 .client(todoClient)
