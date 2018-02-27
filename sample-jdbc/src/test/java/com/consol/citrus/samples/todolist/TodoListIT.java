@@ -118,7 +118,11 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         receive(jdbcServer)
             .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+            .message(JdbcMessage.execute(
+                    "@assertThat(allOf(" +
+                            "startsWith(INSERT INTO todo_entries)," +
+                            "containsString(${todoName})," +
+                            "containsString(${todoDescription})))@"));
 
         send(jdbcServer)
             .message(JdbcMessage.result().rowsUpdated(1));
@@ -127,6 +131,13 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .receive()
             .response(HttpStatus.FOUND);
+    }
+
+    @Test
+    @CitrusTest
+    public void selectTodoEntry(){
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
 
         http()
             .client(todoClient)
@@ -136,17 +147,17 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .accept("text/html");
 
         receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
 
         send(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.result().dataSet("[ {" +
-                            "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
-                            "\"title\": \"${todoName}\"," +
-                            "\"description\": \"${todoDescription}\"," +
-                            "\"done\": \"false\"" +
-                        "} ]"));
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.result().dataSet("[ {" +
+                    "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
+                    "\"title\": \"${todoName}\"," +
+                    "\"description\": \"${todoDescription}\"," +
+                    "\"done\": \"false\"" +
+                    "} ]"));
 
         http()
             .client(todoClient)
