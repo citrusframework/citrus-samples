@@ -57,7 +57,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .accept("text/html");
 
         receive(jdbcServer)
-                .messageType(MessageType.JSON)
                 .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
 
         send(jdbcServer)
@@ -117,7 +116,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
-            .messageType(MessageType.JSON)
             .message(JdbcMessage.execute(
                     "@assertThat(allOf(" +
                             "startsWith(INSERT INTO todo_entries)," +
@@ -147,7 +145,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .accept("text/html");
 
         receive(jdbcServer)
-            .messageType(MessageType.JSON)
             .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
 
         send(jdbcServer)
@@ -182,7 +179,6 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
-                .messageType(MessageType.JSON)
                 .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
 
         send(jdbcServer)
