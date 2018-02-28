@@ -41,20 +41,16 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testCreateTable() {
-        parallel().actions(
-                sql(dataSource)
-                        .statement("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"),
+        async()
+            .actions(sql(dataSource)
+                    .statement("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
 
-                sequential().actions(
-                        receive(jdbcServer)
-                                .messageType(MessageType.JSON)
-                                .message(JdbcMessage.execute("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)")),
+        receive(jdbcServer)
+                .messageType(MessageType.JSON)
+                .message(JdbcMessage.execute("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
 
-                        send(jdbcServer)
-                                .message(JdbcMessage.result()
-                                        .success())
-                )
-        );
+        send(jdbcServer)
+                .message(JdbcMessage.success());
     }
 
     @Test
@@ -64,23 +60,21 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        parallel().actions(
-                query(dataSource)
-                        .statement("SELECT id, title, description FROM todo_entries")
-                        .validate("id", "${todoId}")
-                        .validate("title", "${todoName}")
-                        .validate("description", "${todoDescription}"),
+        async()
+            .actions(query(dataSource)
+                    .statement("SELECT id, title, description FROM todo_entries")
+                    .validate("id", "${todoId}")
+                    .validate("title", "${todoName}")
+                    .validate("description", "${todoDescription}"));
 
-                sequential().actions(
-                        receive(jdbcServer)
-                                .messageType(MessageType.JSON)
-                                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries")),
+        receive(jdbcServer)
+                .messageType(MessageType.JSON)
+                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
 
-                        send(jdbcServer)
-                                .messageType(MessageType.JSON)
-                                .message(JdbcMessage.result()
-                                        .dataSet(new ClassPathResource("dataset.json")))
-                ));
+        send(jdbcServer)
+                .messageType(MessageType.JSON)
+                .message(JdbcMessage.success()
+                                    .dataSet(new ClassPathResource("dataset.json")));
     }
 
     @Test
@@ -88,19 +82,15 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
     public void testDelete() {
         String sql = "DELETE FROM todo_entries";
 
-        parallel().actions(
-                sql(dataSource)
-                        .statement(sql),
+        async()
+            .actions(sql(dataSource).statement(sql));
 
-                sequential().actions(
-                        receive(jdbcServer)
-                                .messageType(MessageType.JSON)
-                                .message(JdbcMessage.execute(sql)),
+        receive(jdbcServer)
+                .messageType(MessageType.JSON)
+                .message(JdbcMessage.execute(sql));
 
-                        send(jdbcServer)
-                                .message(JdbcMessage.result().rowsUpdated(10))
-                )
-        );
+        send(jdbcServer)
+                .message(JdbcMessage.success().rowsUpdated(10));
     }
 
     @Test
@@ -108,20 +98,15 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
     public void testDropTable() {
         String sql = "DROP TABLE todo_entries";
 
-        parallel().actions(
-                sql(dataSource)
-                        .statement(sql),
+        async()
+            .actions(sql(dataSource).statement(sql));
 
-                sequential().actions(
-                        receive(jdbcServer)
-                                .messageType(MessageType.JSON)
-                                .message(JdbcMessage.execute(sql)),
+        receive(jdbcServer)
+                .messageType(MessageType.JSON)
+                .message(JdbcMessage.execute(sql));
 
-                        send(jdbcServer)
-                                .message(JdbcMessage.result()
-                                        .success())
-                )
-        );
+        send(jdbcServer)
+                .message(JdbcMessage.success());
     }
 
 
