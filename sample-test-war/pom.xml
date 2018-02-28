@@ -45,13 +45,8 @@
           <execution>
             <goals>
               <goal>test-war</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>run-remote-tests</id>
-            <phase>integration-test</phase>
-            <goals>
               <goal>test</goal>
+              <goal>verify</goal>
             </goals>
             <configuration>
               <server>
@@ -62,6 +57,30 @@
                   <package>com.consol.citrus.samples.todolist</package>
                 </packages>
               </run>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${project.build.directory}/${project.artifactId}-${project.version}-tests-webapp.war</file>
+                  <type>war</type>
+                  <classifier>tests</classifier>
+                </artifact>
+              </artifacts>
             </configuration>
           </execution>
         </executions>
@@ -96,7 +115,7 @@
           </httpConnector>
           <contextHandlers>
             <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
-              <war>${project.build.directory}/citrus-sample-test-war-${project.version}-tests-webapp.war</war>
+              <war>${project.build.directory}/${project.artifactId}-${project.version}-tests-webapp.war</war>
               <contextPath>/tests</contextPath>
               <tempDirectory>${project.build.directory}/tmp/tests</tempDirectory>
             </contextHandler>

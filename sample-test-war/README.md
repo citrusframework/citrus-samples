@@ -90,10 +90,10 @@ This test execution can be bound to the Maven lifecycle via citrus-remote-maven-
   <version>${citrus.version}</version>
   <executions>
     <execution>
-      <id>run-remote-tests</id>
-      <phase>integration-test</phase>
       <goals>
+        <goal>test-war</goal>
         <goal>test</goal>
+        <goal>verify</goal>
       </goals>
       <configuration>
         <server>
@@ -110,10 +110,12 @@ This test execution can be bound to the Maven lifecycle via citrus-remote-maven-
 </plugin>
 ```
 
-The `run` goal is bound to the `integration-test` lifecycle phase in out Maven build. All deployed Citrus test cases will execute in the WAR deplyoment.   
+The `test` goal is automatically bound to the `integration-test` lifecycle phase in our Maven build. All deployed Citrus test cases will execute within the WAR deployment. The `verify` goal will automatically bind to the `verify` lifecylce phase and eventually break the build when
+tests report failure state. This is useful when tests should not break the build in `integration-test` phase but later on in `verify` phase so cleanup tasks are able to perform in `post-integration-test` phase. This behavior is exactly the same as the default Maven failsafe-plugin for 
+integration test execution does provide.  
         
-Now why do you want to do such kind of test packaging? The Citrus integration tests in the project may interact with a system under test which is deployed on a foreign test server. Due to infrastructure limitations the tests may need to execute on that
-very same foreign server instance. So you can create the executable test-jar and deploy that artifact to the foreign server, too. Then test execution and system under test are located on the very same machine which implies are much more simple
+Now why do you want to do such kind of test packaging in a WAR file? The Citrus integration tests in the project may interact with a system under test which is deployed on a foreign test server. Due to infrastructure limitations the tests may need to execute on that
+very same foreign server instance. So you can create the executable test-war and deploy that artifact to the foreign server, too. Then test execution and system under test are located on the very same machine which implies a much more simple
 configuration and less test infrastructure requirements.
                 
 Run
