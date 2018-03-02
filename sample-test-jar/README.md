@@ -52,10 +52,10 @@ In order to make the test-jar executable we use a spacial Citrus maven plugin:
 ```
 
 This test-jar plugin will also package all test scoped dependencies to the artifact. In addition to that the plugin will extend the jar file with proper Manifest main class configuration for later execution via `java -jar`.
-You should now find a new test-jar file with classifier `-tests-app.jar` in the Maven `target` output folder. This jar is executable via command line with:
+You should now find a new test-jar file with classifier `-citrus-tests.jar` in the Maven `target` output folder. This jar is executable via command line with:
 
 ```bash
-java -jar citrus-sample-test-jar-${project-version}-tests-app.jar
+java -jar sample-app-1.0.0-citrus-tests.jar
 ```      
 
 This will execute all Citrus test cases that are packaged within the executable test-jar. For demonstration purpose we have added a `exec-maven-plugin` configuration to the sample that executes the test-jar within your Maven process:
@@ -78,7 +78,7 @@ This will execute all Citrus test cases that are packaged within the executable 
     <executable>java</executable>
     <arguments>
       <argument>-jar</argument>
-      <argument>${project.build.directory}/citrus-sample-test-jar-${project.version}-tests-app.jar</argument>
+      <argument>${project.build.directory}/${project.artifactId}-${project.version}-citrus-tests.jar</argument>
       <argument>-package</argument>
       <argument>com.consol.citrus.samples.*</argument>
     </arguments>
@@ -86,7 +86,7 @@ This will execute all Citrus test cases that are packaged within the executable 
 </plugin>
 ```
 
-The exec plugin is bound to the `integration-test` phase and calls the `java -jar` executable. This will execute all tests in the `-tests-app.jar` package.
+The exec plugin is bound to the `integration-test` phase and calls the `java -jar` executable. This will execute all tests in the `-citrus-tests.jar` package.
 
 Now why do you want to do such kind of test packaging? The Citrus integration tests in the project may interact with a system under test which is deployed on a foreign test server. Due to infrastructure limitations the tests may need to execute on that
 very same foreign server instance. So you can create the executable test-jar and deploy that artifact to the foreign server, too. Then test execution and system under test are located on the very same machine which implies are much more simple

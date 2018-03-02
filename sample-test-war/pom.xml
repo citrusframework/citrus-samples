@@ -76,7 +76,7 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>${project.build.directory}/${project.artifactId}-${project.version}-tests-webapp.war</file>
+                  <file>${project.build.directory}/${project.artifactId}-${project.version}-citrus-tests.war</file>
                   <type>war</type>
                   <classifier>tests</classifier>
                 </artifact>
@@ -115,7 +115,7 @@
           </httpConnector>
           <contextHandlers>
             <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
-              <war>${project.build.directory}/${project.artifactId}-${project.version}-tests-webapp.war</war>
+              <war>${project.build.directory}/${project.artifactId}-${project.version}-citrus-tests.war</war>
               <contextPath>/tests</contextPath>
               <tempDirectory>${project.build.directory}/tmp/tests</tempDirectory>
             </contextHandler>

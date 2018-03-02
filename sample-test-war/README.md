@@ -41,7 +41,7 @@ After that we tell Maven to also create a WAR web archive during the build. The 
 </plugin>
 ```
 
-After that you should find a new WAR file with classifier `-tests-webapp.war` in the Maven `target` build output folder. This WAR is deployable to any web application server such as Jetty.
+After that you should find a new WAR file with classifier `-citrus-tests.war` in the Maven `target` build output folder. This WAR is deployable to any web application server such as Jetty.
 
 ```xml
 <plugin>
@@ -56,7 +56,7 @@ After that you should find a new WAR file with classifier `-tests-webapp.war` in
     </httpConnector>
     <contextHandlers>
       <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
-        <war>${project.build.directory}/citrus-sample-test-war-${project.version}-tests-webapp.war</war>
+        <war>${project.build.directory}/${project.artifactId}-${project.version}-citrus-tests.war</war>
         <contextPath>/tests</contextPath>
         <tempDirectory>${project.build.directory}/tmp/tests</tempDirectory>
       </contextHandler>
@@ -74,7 +74,7 @@ After that you should find a new WAR file with classifier `-tests-webapp.war` in
 </plugin>
 ```      
 
-The jetty-maven-plugin above will deploy both system under test `todo.war` and the Citrus `test-webapp.war` in a web application container. The test-war is using the context path `/tests`. After the deployment we can trigger the Citrus test execution on that server
+The jetty-maven-plugin above will deploy both system under test `todo.war` and the Citrus `citrus-tests.war` in a web application container. The test-war is using the context path `/tests`. After the deployment we can trigger the Citrus test execution on that server
 with
 
 ```bash

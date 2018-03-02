@@ -82,7 +82,7 @@
               <executable>chmod</executable>
               <arguments>
                 <argument>u+x</argument>
-                <argument>${project.build.directory}/${project.artifactId}-${project.version}-tests-app.jar</argument>
+                <argument>${project.build.directory}/${project.artifactId}-${project.version}-citrus-tests.jar</argument>
               </arguments>
             </configuration>
           </execution>
@@ -98,10 +98,10 @@
           <executable>java</executable>
           <arguments>
             <argument>-jar</argument>
-            <argument>${project.build.directory}/${project.artifactId}-${project.version}-tests-app.jar</argument>
-            <argument>-package</argument>
-            <argument>com.consol.citrus.samples.*</argument>
-            <argument>-exit</argument>
+            <argument>${project.build.directory}/${project.artifactId}-${project.version}-citrus-tests.jar</argument>
+            <argument>--package</argument>
+            <argument>com.consol.citrus.samples</argument>
+            <argument>--exit</argument>
             <argument>true</argument>
           </arguments>
         </configuration>
