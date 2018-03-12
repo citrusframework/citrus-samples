@@ -24,6 +24,9 @@ import cucumber.api.java.en.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * @author Christoph Deppisch
  */
@@ -65,11 +68,11 @@ public class TodoSteps {
     }
 
     @When("^(?:I|user) removes? entry \"([^\"]*)\"$")
-    public void remove_entry(String todoName) {
+    public void remove_entry(String todoName) throws UnsupportedEncodingException {
         designer.http()
                 .client(todoListClient)
                 .send()
-                .delete("/api/todo?title=" + todoName);
+                .delete("/api/todo?title=" + URLEncoder.encode(todoName, "UTF-8"));
 
         designer.http()
                 .client(todoListClient)
