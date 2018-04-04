@@ -8,7 +8,7 @@ Objectives
 ---------
 
 The [todo-list](../todo-app/README.md) sample application manages todo entries. The application provides a REST web API 
-for adding new entries and listing all entries. This API is specified using Swagger ()
+for adding new entries and listing all entries. This API is specified using [Swagger](https://swagger.io/)
 
 The sample API specification looks like this.
 
@@ -180,7 +180,7 @@ The test code generation takes place in the Maven build lifecycle and uses the C
 </plugin>
 ```
         
-The plugin test generation binds to the `generate-test-sources` Maven lifecycle phase and generates the tests in a default output directory `target/generated/citrus`. The plugin needs the path to the Swagger Open PI specification file
+The plugin test generation binds to the `generate-test-sources` Maven lifecycle phase and generates the tests in a default output directory `target/generated/citrus`. The plugin needs the path to the Swagger Open API specification file
 which is usually a `.json` or `.yaml` file in your project.
  
 When executed the plugin generates the Citrus tests to the target output directory. You can add those generated files to the Maven sources/resources with another plugin called `build-helper-maven-plugin`.
