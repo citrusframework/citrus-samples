@@ -60,7 +60,7 @@ http()
     .client(todoClient)
     .send()
     .get("/todo")
-    .accept("application/xml");
+    .accept(ContentType.APPLICATION_XML.getMimeType());
     
 http()
     .client(todoClient)

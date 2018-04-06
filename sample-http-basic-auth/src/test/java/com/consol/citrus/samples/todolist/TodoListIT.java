@@ -19,6 +19,7 @@ package com.consol.citrus.samples.todolist;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
@@ -41,7 +42,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoBasicAuthClient)
             .send()
             .get("/todo/")
-            .accept("application/xml");
+            .accept(ContentType.APPLICATION_XML.getMimeType());
 
         http()
             .client(todoBasicAuthClient)
@@ -56,7 +57,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/todo/")
-            .accept("application/xml")
+            .accept(ContentType.APPLICATION_XML.getMimeType())
             .header("Authorization", "Basic citrus:encodeBase64('citrus:secr3t')");
 
         http()
@@ -72,7 +73,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/todo/")
-            .accept("application/xml");
+            .accept(ContentType.APPLICATION_XML.getMimeType());
 
         http()
             .client(todoClient)
@@ -87,7 +88,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/todo/")
-            .accept("application/xml")
+            .accept(ContentType.APPLICATION_XML.getMimeType())
             .header("Authorization", "Basic citrus:encodeBase64('wrong:wrong')");
 
         http()

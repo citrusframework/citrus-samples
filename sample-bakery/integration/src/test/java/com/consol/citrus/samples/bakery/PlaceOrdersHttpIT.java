@@ -23,6 +23,7 @@ import com.consol.citrus.dsl.functions.Functions;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -50,7 +51,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         http().client(bakeryClient)
                 .send()
                 .post("/order")
-                .contentType("application/json")
+                .contentType(ContentType.APPLICATION_JSON.getMimeType())
                 .payload("{ \"order\": { \"type\": \"chocolate\", \"id\": ${orderId}, \"amount\": 1}}");
 
         repeatOnError()
@@ -85,7 +86,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         http().client(bakeryClient)
                 .send()
                 .post("/order")
-                .contentType("application/json")
+                .contentType(ContentType.APPLICATION_JSON.getMimeType())
                 .payload("{ \"order\": { \"type\": \"caramel\", \"id\": ${orderId}, \"amount\": 1}}");
 
         repeatOnError()
@@ -120,7 +121,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
         http().client(bakeryClient)
                 .send()
                 .post("/order")
-                .contentType("application/json")
+                .contentType(ContentType.APPLICATION_JSON.getMimeType())
                 .payload("{ \"order\": { \"type\": \"blueberry\", \"id\": ${orderId}, \"amount\": 1}}");
 
         repeatOnError()

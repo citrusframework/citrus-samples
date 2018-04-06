@@ -22,6 +22,7 @@ import com.consol.citrus.kubernetes.client.KubernetesClient;
 import com.consol.citrus.kubernetes.command.WatchEventResult;
 import com.consol.citrus.message.MessageType;
 import io.fabric8.kubernetes.client.Watcher;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -74,7 +75,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .send()
             .post("/api/todolist")
             .messageType(MessageType.JSON)
-            .contentType("application/json")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
         http()
@@ -88,7 +89,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/json");
+            .accept(ContentType.APPLICATION_JSON.getMimeType());
 
         http()
             .client(todoClient)
@@ -117,7 +118,7 @@ public class TodoListIT extends AbstractKubernetesIT {
                     .send()
                     .post("/api/todolist")
                     .messageType(MessageType.JSON)
-                    .contentType("application/json")
+                    .contentType(ContentType.APPLICATION_JSON.getMimeType())
                     .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"),
 
                 http()
@@ -167,7 +168,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .send()
             .post("/api/todolist")
             .messageType(MessageType.JSON)
-            .contentType("application/json")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
         http()
@@ -181,7 +182,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/json");
+            .accept(ContentType.APPLICATION_JSON.getMimeType());
 
         http()
             .client(todoClient)

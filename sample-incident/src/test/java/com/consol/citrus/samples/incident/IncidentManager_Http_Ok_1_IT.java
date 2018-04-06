@@ -21,6 +21,7 @@ import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
@@ -101,7 +102,7 @@ public class IncidentManager_Http_Ok_1_IT extends TestNGCitrusTestDesigner {
                                 "<net:fieldForceRequired>false</net:fieldForceRequired>" +
                             "</net:result>" +
                         "</net:AnalyseIncidentResponse>")
-                .header("Content-Type", "application/xml");
+                .header("Content-Type", ContentType.APPLICATION_XML.getMimeType());
 
         echo("Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application");
 

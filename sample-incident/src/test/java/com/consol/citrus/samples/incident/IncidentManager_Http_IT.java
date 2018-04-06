@@ -9,6 +9,7 @@ import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
 import com.consol.citrus.ws.server.WebServiceServer;
+import org.apache.http.entity.ContentType;
 import org.citrusframework.schema.samples.incidentmanager.v1.*;
 import org.citrusframework.schema.samples.incidentmanager.v1.IncidentType;
 import org.citrusframework.schema.samples.incidentmanager.v1.StateType;
@@ -109,7 +110,7 @@ public class IncidentManager_Http_IT extends TestNGCitrusTestDesigner {
                                 "<net:fieldForceRequired>true</net:fieldForceRequired>" +
                             "</net:result>" +
                         "</net:AnalyseIncidentResponse>")
-                .header("Content-Type", "application/xml");
+                .header("Content-Type", ContentType.APPLICATION_XML.getMimeType());
 
         echo("Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application");
 
@@ -260,7 +261,7 @@ public class IncidentManager_Http_IT extends TestNGCitrusTestDesigner {
                                 "<net:fieldForceRequired>true</net:fieldForceRequired>" +
                             "</net:result>" +
                         "</net:AnalyseIncidentResponse>")
-                .header("Content-Type", "application/xml");
+                .header("Content-Type", ContentType.APPLICATION_XML.getMimeType());
 
         echo("Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application");
 
@@ -368,7 +369,7 @@ public class IncidentManager_Http_IT extends TestNGCitrusTestDesigner {
         AnalyseIncidentResponse analyseIncidentResponse = createAnalyseIncidentTestResponse(incident);
         send(networkHttpServer)
                 .payloadModel(analyseIncidentResponse)
-                .header("Content-Type", "application/xml");
+                .header("Content-Type", ContentType.APPLICATION_XML.getMimeType());
 
         OpenIncidentResponse response = createOpenIncidentTestResponse(incident);
         receive(incidentHttpClient)
@@ -397,7 +398,7 @@ public class IncidentManager_Http_IT extends TestNGCitrusTestDesigner {
 
         send(networkHttpServer)
                 .payload(analyseResponse)
-                .header("Content-Type", "application/xml");
+                .header("Content-Type", ContentType.APPLICATION_XML.getMimeType());
 
         receive(incidentHttpClient)
                 .payload(incidentResponse);

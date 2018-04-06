@@ -13,7 +13,7 @@ http()
     .client(todoClient)
     .send()
     .get("/todo")
-    .accept("application/xml")
+    .accept(ContentType.APPLICATION_XML.getMimeType())
     .header("Authorization", "Basic citrus:encodeBase64('citrus:secr3t')");
 ```
         

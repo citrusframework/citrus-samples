@@ -21,6 +21,7 @@ import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.variable.dictionary.DataDictionary;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
@@ -54,7 +55,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .dictionary(outboundDictionary)
-            .contentType("application/json")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload("{ \"id\": \"${todoId}\", \"title\": null, \"description\": null, \"done\": null}");
 
         http()
@@ -68,7 +69,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/json");
+            .accept(ContentType.APPLICATION_JSON.getMimeType());
 
         http()
             .client(todoClient)
@@ -90,7 +91,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .dictionary(outboundDictionary)
-            .contentType("application/json")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload(new ClassPathResource("templates/todo.json"));
 
         http()
@@ -104,7 +105,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/json");
+            .accept(ContentType.APPLICATION_JSON.getMimeType());
 
         http()
             .client(todoClient)
@@ -126,7 +127,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .dictionary(outboundDictionary)
-            .contentType("application/json")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload("{ \"id\": \"${todoId}\", \"title\": null, \"description\": null, \"done\": null}");
 
         http()
@@ -140,7 +141,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/json");
+            .accept(ContentType.APPLICATION_JSON.getMimeType());
 
         http()
             .client(todoClient)

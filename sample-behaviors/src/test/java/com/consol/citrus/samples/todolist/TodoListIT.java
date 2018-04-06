@@ -23,6 +23,7 @@ import com.consol.citrus.dsl.design.AbstractTestBehavior;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -102,7 +103,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .send()
                 .post("/api/todolist")
                 .messageType(MessageType.JSON)
-                .contentType("application/json");
+                .contentType(ContentType.APPLICATION_JSON.getMimeType());
 
             if (StringUtils.hasText(payloadData)) {
                 request.payload(payloadData);
@@ -150,7 +151,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .client(todoClient)
                 .send()
                 .get("/api/todo/" + todoId)
-                .accept("application/json");
+                .accept(ContentType.APPLICATION_JSON.getMimeType());
 
             HttpClientResponseActionBuilder response = http()
                 .client(todoClient)

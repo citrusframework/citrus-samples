@@ -45,7 +45,7 @@ http()
     .client(todoClient)
     .send()
     .post("/api/todolist")
-    .contentType("application/json")
+    .contentType(ContentType.APPLICATION_JSON.getMimeType())
     .payload(new TodoEntry("${todoName}", "${todoDescription}"), marshaller);
 ```
         

@@ -20,7 +20,7 @@ http()
     .post("/api/todolist")
     .name("todoRequest")
     .messageType(MessageType.JSON)
-    .contentType("application/json")
+    .contentType(ContentType.APPLICATION_JSON.getMimeType())
     .payload("{\"id\": \"citrus:randomUUID()\", \"title\": \"citrus:concat('todo_', citrus:randomNumber(4))\", \"description\": \"ToDo Description\", \"done\": false}");
 
 echo("citrus:message(todoRequest)");

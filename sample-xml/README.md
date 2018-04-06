@@ -34,7 +34,7 @@ http()
     .client(todoClient)
     .send()
     .post("/api/todolist")
-    .contentType("application/xml")
+    .contentType(ContentType.APPLICATION_XML.getMimeType())
     .payload("<todo>" +
                  "<id>${todoId}</id>" +
                  "<title>${todoName}</title>" +

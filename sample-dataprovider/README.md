@@ -38,7 +38,7 @@ public void testProvider(String todoName, String todoDescription, boolean done) 
         .send()
         .post("/api/todolist")
         .messageType(MessageType.JSON)
-        .contentType("application/json")
+        .contentType(ContentType.APPLICATION_JSON.getMimeType())
         .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
     
     [...]    

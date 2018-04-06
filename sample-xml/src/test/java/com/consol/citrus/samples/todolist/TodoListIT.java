@@ -20,6 +20,7 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .contentType("application/xml")
+            .contentType(ContentType.APPLICATION_XML.getMimeType())
             .payload("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
                         "<id>${todoId}</id>" +
                         "<title>${todoName}</title>" +
@@ -62,7 +63,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/xml");
+            .accept(ContentType.APPLICATION_XML.getMimeType());
 
         http()
             .client(todoClient)
@@ -87,7 +88,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .contentType("application/xml")
+            .contentType(ContentType.APPLICATION_XML.getMimeType())
             .payload(new ClassPathResource("templates/todo.xml"));
 
         http()
@@ -101,7 +102,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/xml");
+            .accept(ContentType.APPLICATION_XML.getMimeType());
 
         http()
             .client(todoClient)
@@ -121,7 +122,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .contentType("application/xml")
+            .contentType(ContentType.APPLICATION_XML.getMimeType())
             .payload("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
                         "<id>${todoId}</id>" +
                         "<title>${todoName}</title>" +
@@ -139,7 +140,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/xml");
+            .accept(ContentType.APPLICATION_XML.getMimeType());
 
         http()
             .client(todoClient)

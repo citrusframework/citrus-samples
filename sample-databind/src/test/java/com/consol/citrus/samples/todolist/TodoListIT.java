@@ -24,6 +24,7 @@ import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.validation.json.JsonMappingValidationCallback;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.Assert;
@@ -55,7 +56,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .contentType("application/json")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), objectMapper);
 
         http()
@@ -69,7 +70,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/json");
+            .accept(ContentType.APPLICATION_JSON.getMimeType());
 
         http()
             .client(todoClient)

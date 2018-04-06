@@ -21,6 +21,7 @@ import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.Message;
 import com.consol.citrus.message.MessageType;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.Assert;
@@ -43,7 +44,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .post("/api/todolist")
             .name("todoRequest")
             .messageType(MessageType.JSON)
-            .contentType("application/json")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload("{\"id\": \"citrus:randomUUID()\", \"title\": \"citrus:concat('todo_', citrus:randomNumber(4))\", \"description\": \"ToDo Description\", \"done\": false}");
 
         echo("citrus:message(todoRequest)");
@@ -59,7 +60,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')")
-            .accept("application/json");
+            .accept(ContentType.APPLICATION_JSON.getMimeType());
 
         http()
             .client(todoClient)
@@ -81,7 +82,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .post("/api/todolist")
             .name("todoRequest")
             .messageType(MessageType.JSON)
-            .contentType("application/json")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload("{\"id\":\"citrus:randomUUID()\",\"title\":\"citrus:concat('todo_',citrus:randomNumber(4))\",\"description\":\"ToDo Description\",\"done\":false}");
 
         echo("citrus:message(todoRequest)");
@@ -97,7 +98,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')")
-            .accept("application/json");
+            .accept(ContentType.APPLICATION_JSON.getMimeType());
 
         http()
             .client(todoClient)

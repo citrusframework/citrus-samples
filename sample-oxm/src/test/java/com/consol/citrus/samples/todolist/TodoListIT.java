@@ -23,6 +23,7 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.validation.xml.XmlMarshallingValidationCallback;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -55,7 +56,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .contentType("application/xml")
+            .contentType(ContentType.APPLICATION_XML.getMimeType())
             .payload(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), marshaller);
 
         http()
@@ -69,7 +70,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept("application/xml");
+            .accept(ContentType.APPLICATION_XML.getMimeType());
 
         http()
             .client(todoClient)

@@ -21,6 +21,7 @@ import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.message.MessageType;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
         http().client(bakeryClient)
                 .send()
                 .post("/order")
-                .contentType("application/json")
+                .contentType(ContentType.APPLICATION_JSON.getMimeType())
                 .payload("{ \"order\": { \"type\": \"chocolate\", \"id\": citrus:randomNumber(10), \"amount\": 1}}");
 
         http().client(bakeryClient)
@@ -68,7 +69,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
         http().client(bakeryClient)
                 .send()
                 .post("/order")
-                .contentType("application/json")
+                .contentType(ContentType.APPLICATION_JSON.getMimeType())
                 .payload("{ \"order\": { \"type\": \"caramel\", \"id\": citrus:randomNumber(10), \"amount\": 1}}");
 
         http().client(bakeryClient)
@@ -82,7 +83,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestDesigner {
         http().client(bakeryClient)
                 .send()
                 .post("/order")
-                .contentType("application/json")
+                .contentType(ContentType.APPLICATION_JSON.getMimeType())
                 .payload("{ \"order\": { \"type\": \"blueberry\", \"id\": citrus:randomNumber(10), \"amount\": 1}}");
 
         http().client(bakeryClient)

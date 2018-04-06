@@ -260,7 +260,7 @@ http()
     .send()
     .post("/api/todolist")
     .messageType(MessageType.JSON)
-    .contentType("application/json")
+    .contentType(ContentType.APPLICATION_JSON.getMimeType())
     .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 
 http()
