@@ -22,6 +22,8 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -34,7 +36,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     private HttpClient todoClient;
 
     @Autowired
+    @Qualifier("todoJmsEndpoint")
     private JmsEndpoint todoJmsEndpoint;
+
+    @Autowired
+    @Qualifier("todoJmsSyncEndpoint")
+    private JmsEndpoint todoJmsSyncEndpoint;
 
     @Test
     @CitrusTest
@@ -58,6 +65,33 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
             .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+    }
+
+    @Test
+    @CitrusTest
+    public void testSyncAddTodoEntry() {
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        send(todoJmsSyncEndpoint)
+                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+                .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+
+        receive(todoJmsSyncEndpoint)
+                .payload("\"Message received\"");
+
+        http()
+                .client(todoClient)
+                .send()
+                .get("/todolist")
+                .accept("text/html");
+
+        http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.OK)
+                .messageType(MessageType.XHTML)
+                .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
     }
 
 }

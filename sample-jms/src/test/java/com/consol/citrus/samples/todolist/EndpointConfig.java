@@ -52,12 +52,22 @@ public class EndpointConfig {
         return new ActiveMQConnectionFactory("tcp://localhost:61616");
     }
 
-    @Bean
-    public JmsEndpoint todoEndpoint() {
+    @Bean(name = "todoJmsEndpoint")
+    public JmsEndpoint todoJmsEndpoint() {
         return CitrusEndpoints.jms()
                 .asynchronous()
                 .connectionFactory(connectionFactory())
                 .destination("jms.todo.inbound")
+                .build();
+    }
+
+    @Bean(name = "todoJmsSyncEndpoint")
+    public JmsEndpoint todoJmsSyncEndpoint() {
+        return CitrusEndpoints.jms()
+                .synchronous()
+                .connectionFactory(connectionFactory())
+                .destination("jms.todo.inbound.sync")
+                .replyDestination("jms.todo.inbound.sync.reply")
                 .build();
     }
 }
