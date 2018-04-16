@@ -13,7 +13,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <apache.cxf.version>3.1.14</apache.cxf.version>
     <slf4j.version>1.7.25</slf4j.version>
-    <testng.version>6.13.1</testng.version>
+    <testng.version>6.14.3</testng.version>
     <citrus.version>2.7.5-SNAPSHOT</citrus.version>
     <jee.api.version>7.0</jee.api.version>
     <junit.version>4.12</junit.version>
