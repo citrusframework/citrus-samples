@@ -43,10 +43,6 @@
         <configuration>
           <forkCount>1</forkCount>
           <failIfNoTests>false</failIfNoTests>
-          <excludes>
-            <exclude>**/IT*.java</exclude>
-            <exclude>**/*IT.java</exclude>
-          </excludes>
           <workingDirectory>${project.build.directory}</workingDirectory>
         </configuration>
       </plugin>
