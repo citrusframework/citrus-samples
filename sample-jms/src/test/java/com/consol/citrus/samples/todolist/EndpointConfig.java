@@ -19,6 +19,7 @@ package com.consol.citrus.samples.todolist;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
+import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.*;
@@ -62,7 +63,7 @@ public class EndpointConfig {
     }
 
     @Bean(name = "todoJmsSyncEndpoint")
-    public JmsEndpoint todoJmsSyncEndpoint() {
+    public JmsSyncEndpoint todoJmsSyncEndpoint() {
         return CitrusEndpoints.jms()
                 .synchronous()
                 .connectionFactory(connectionFactory())
