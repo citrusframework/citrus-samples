@@ -10,7 +10,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <jetty.version>9.4.6.v20170531</jetty.version>
+    <spring.boot.version>1.5.10.RELEASE</spring.boot.version>
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.14.3</testng.version>
     <citrus.version>2.7.6-SNAPSHOT</citrus.version>
@@ -75,46 +75,28 @@
           </systemProperties>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty.version}</version>
-        <configuration>
-          <war>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</war>
-          <httpConnector>
-            <port>8080</port>
-            <idleTimeout>60000</idleTimeout>
-          </httpConnector>
-          <stopKey>stopMe</stopKey>
-          <stopPort>8088</stopPort>
-          <stopWait>10</stopWait>
-          <systemProperties>
-            <systemProperty>
-              <name>todo.jms.enabled</name>
-              <value>true</value>
-            </systemProperty>
-            <systemProperty>
-              <name>file.encoding</name>
-              <value>UTF-8</value>
-            </systemProperty>
-          </systemProperties>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
   <dependencies>
+    <dependency>
+      <groupId>com.consol.citrus.samples</groupId>
+      <artifactId>citrus-sample-todo</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>${slf4j.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -128,6 +110,7 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${testng.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -207,7 +190,7 @@
     </profile>
 
     <profile>
-      <id>jetty-embedded</id>
+      <id>todo-app-embedded</id>
       <activation>
         <property>
           <name>embedded</name>
@@ -216,30 +199,25 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-maven-plugin</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>${spring.boot.version}</version>
+            <configuration>
+              <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
+              <useTestClasspath>false</useTestClasspath>
+            </configuration>
             <executions>
               <execution>
-                <id>start-server</id>
-                <phase>pre-integration-test</phase>
+                <id>pre-integration-test</id>
                 <goals>
-                  <goal>deploy-war</goal>
+                  <goal>start</goal>
                 </goals>
-                <configuration>
-                  <daemon>true</daemon>
-                </configuration>
               </execution>
               <execution>
-                <id>stop-server</id>
-                <phase>post-integration-test</phase>
+                <id>post-integration-test</id>
                 <goals>
                   <goal>stop</goal>
                 </goals>
-                <configuration>
-                  <stopPort>8088</stopPort>
-                  <stopKey>stopMe</stopKey>
-                  <stopWait>10</stopWait>
-                </configuration>
               </execution>
             </executions>
           </plugin>

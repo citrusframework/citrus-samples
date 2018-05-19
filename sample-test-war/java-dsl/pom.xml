@@ -11,6 +11,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jetty.version>9.4.6.v20170531</jetty.version>
+    <spring.boot.version>1.5.10.RELEASE</spring.boot.version>
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.14.3</testng.version>
     <citrus.version>2.7.6-SNAPSHOT</citrus.version>
@@ -51,7 +52,7 @@
             </goals>
             <configuration>
               <server>
-                <url>http://localhost:8080/tests</url>
+                <url>http://localhost:8686/tests</url>
               </server>
               <run>
                 <async>true</async>
@@ -112,9 +113,8 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jetty.version}</version>
         <configuration>
-          <war>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</war>
           <httpConnector>
-            <port>8080</port>
+            <port>8686</port>
             <idleTimeout>60000</idleTimeout>
           </httpConnector>
           <contextHandlers>
@@ -139,6 +139,12 @@
   </build>
 
   <dependencies>
+    <dependency>
+      <groupId>com.consol.citrus.samples</groupId>
+      <artifactId>citrus-sample-todo</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -217,6 +223,42 @@
   </pluginRepositories>
 
   <profiles>
+    <profile>
+      <id>todo-app-embedded</id>
+      <activation>
+        <property>
+          <name>embedded</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>${spring.boot.version}</version>
+            <configuration>
+              <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
+              <useTestClasspath>false</useTestClasspath>
+            </configuration>
+            <executions>
+              <execution>
+                <id>pre-integration-test</id>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>post-integration-test</id>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
     <profile>
       <id>jetty-embedded</id>
       <activation>
