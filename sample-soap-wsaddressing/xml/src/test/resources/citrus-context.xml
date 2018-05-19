@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-ws="http://www.citrusframework.org/schema/ws/config"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/ws/config http://www.citrusframework.org/schema/ws/config/citrus-ws-config.xsd">
+
+    <citrus:schema-repository id="schemaRepository">
+      <citrus:schemas>
+        <citrus:schema id="todoList" location="classpath:schema/TodoList.xsd"/>
+      </citrus:schemas>
+    </citrus:schema-repository>
+
+    <!-- Default namespace mappings used in XPath expression evaluations -->
+    <citrus:namespace-context>
+      <citrus:namespace prefix="todo" uri="http://citrusframework.org/samples/todolist"/>
+    </citrus:namespace-context>
+
+    <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+
+    <!-- WSAddressing enabled SOAP client -->
+
+    <citrus-ws:client id="todoClient"
+                      request-url="http://localhost:8080/services/ws/todolist"
+                      message-converter="wsAddressingMessageConverter"/>
+
+    <bean id="wsAddressingMessageConverter" class="com.consol.citrus.ws.message.converter.WsAddressingMessageConverter">
+      <constructor-arg>
+        <bean id="wsAddressing200408" class="com.consol.citrus.ws.addressing.WsAddressingHeaders">
+          <property name="version" value="VERSION200408"/>
+          <property name="action" value="http://citrusframework.org/samples/todolist"/>
+          <property name="to" value="http://citrusframework.org/samples/todolist"/>
+          <property name="from">
+            <bean class="org.springframework.ws.soap.addressing.core.EndpointReference">
+              <constructor-arg value="http://citrusframework.org/samples/client"/>
+            </bean>
+          </property>
+          <property name="replyTo">
+            <bean class="org.springframework.ws.soap.addressing.core.EndpointReference">
+              <constructor-arg value="http://citrusframework.org/samples/client"/>
+            </bean>
+          </property>
+          <property name="faultTo">
+            <bean class="org.springframework.ws.soap.addressing.core.EndpointReference">
+              <constructor-arg value="http://citrusframework.org/samples/client/fault"/>
+            </bean>
+          </property>
+        </bean>
+      </constructor-arg>
+    </bean>
+
+    <!-- WSAddressing enabled SOAP server -->
+
+    <citrus-ws:server id="todoServer"
+                      port="8080"
+                      auto-start="true"
+                      interceptors="serverInterceptors"/>
+
+    <util:list id="serverInterceptors">
+      <bean class="com.consol.citrus.ws.interceptor.SoapMustUnderstandEndpointInterceptor">
+        <property name="acceptedHeaders">
+          <list>
+            <value>{http://schemas.xmlsoap.org/ws/2004/08/addressing}To</value>
+          </list>
+        </property>
+      </bean>
+      <bean class="com.consol.citrus.ws.interceptor.LoggingEndpointInterceptor"/>
+    </util:list>
+
+</beans>

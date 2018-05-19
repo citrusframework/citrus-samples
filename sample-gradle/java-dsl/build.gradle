@@ -1,4 +1,4 @@
-group 'com.consol.citrus.samples'
+group 'com.consol.citrus.samples.java'
 version '2.7.6-SNAPSHOT'
 
 apply plugin: 'java'

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Cookie Bakery Application</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Baker Web UI">
+    <meta name="author" content="ConSol Software GmbH">
+
+    <script src="javascript/jquery.js"></script>
+
+    <link type="text/css" href="styles/bootstrap.css" rel="stylesheet" />
+    <link type="text/css" href="styles/bootstrap-slider.css" rel="stylesheet" />
+    <link type="text/css" href="styles/custom.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+      $( document ).ready(function() {
+          $("#orderForm").submit(function( event ) {
+              event.preventDefault();
+
+              var orderId = Math.floor((Math.random() * 100000) + 1);
+
+              $.ajax({
+                  method: "POST",
+                  url: "services/order",
+                  contentType: "application/json; charset=utf-8",
+                  data: JSON.stringify({ order: {id: orderId, type: $("#type").val(), amount: $("#amount").val()}}),
+                  complete: function() {
+                      $( '<br/><span class="lead">' ).text( "Submitted '" + $("#type").val() + "' order: #" + orderId ).appendTo( "#content" );
+                  }
+              });
+          });
+
+          $("#amount").slider({ tooltip: 'always' });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="content" class="container">
+      <h1>Cookie Bakery Application</h1>
+
+      <p class="lead">Place new cookie orders:</p>
+      <br/>
+
+      <form id="orderForm" class="form-horizontal" action="/">
+        <div class="form-group">
+          <label for="amount" class="col-sm-1 control-label">Amount</label>
+          <div class="col-sm-3">
+            <input id="amount" class="form-control" type="text" data-slider-min="1" data-slider-max="40" data-slider-step="1" data-slider-value="5"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="type" class="col-sm-1 control-label">Type</label>
+          <div class="col-sm-3">
+            <select id="type" class="form-control" class="form-control">
+              <option>blueberry</option>
+              <option>caramel</option>
+              <option>chocolate</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-1 col-sm-3">
+            <button type="submit" class="btn btn-primary">Place order</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script type='text/javascript' src="javascript/bootstrap-slider.js"></script>
+  </body>
+</html>

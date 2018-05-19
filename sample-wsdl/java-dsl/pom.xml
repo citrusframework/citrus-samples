@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-wsdl</artifactId>
-  <name>citrus-sample-wsdl</name>
+  <artifactId>citrus-java-sample-wsdl</artifactId>
+  <name>Citrus Samples Java: WSDL</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:jms="http://www.citrusframework.org/schema/jms/testcase"
+              xmlns:ws="http://www.citrusframework.org/schema/ws/testcase"
+              xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"
+              xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1"
+              xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                  http://www.citrusframework.org/schema/jms/testcase http://www.citrusframework.org/schema/jms/testcase/citrus-jms-testcase.xsd
+                  http://www.citrusframework.org/schema/ws/testcase http://www.citrusframework.org/schema/ws/testcase/citrus-ws-testcase.xsd
+                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
+
+  <testcase name="IncidentManager_Http_Ok_4_IT">
+    <meta-info>
+      <author>Christoph Deppisch</author>
+      <creationdate>2014-09-28</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Christoph Deppisch</last-updated-by>
+      <last-updated-on>2014-09-28T00:00:00</last-updated-on>
+    </meta-info>
+
+    <description>Calls IncidentManager application via Http message transport using SOAP request message. Opens a new incident and verifies
+    proper interface calls on NetworkService as well as final incident response.</description>
+
+    <variables>
+      <variable name="ticketId" value="citrus:randomUUID()"/>
+      <variable name="customerId" value="citrus:randomNumber(6)"/>
+    </variables>
+
+    <actions>
+      <echo>
+        <message>Step 1: Send OpenIncident request message to IncidentManager via Http SOAP interface</message>
+      </echo>
+
+      <send endpoint="incidentHttpClient" fork="true">
+        <message>
+          <resource file="templates/IncidentRequest.xml"/>
+        </message>
+        <header>
+          <element name="citrus_soap_action" value="/IncidentManager/openIncident"/>
+        </header>
+      </send>
+
+      <echo>
+        <message>Step 2: Receive AnalyseIncident request message as NetworkService application via Http SOAP interface</message>
+      </echo>
+
+      <receive endpoint="networkBackendHttpServer">
+        <message>
+          <resource file="templates/AnalyseRequest.xml"/>
+        </message>
+        <extract>
+          <message path="net:AnalyseIncident/net:network/net:lineId" variable="lineId"/>
+          <message path="net:AnalyseIncident/net:network/net:connection" variable="connectionId"/>
+        </extract>
+      </receive>
+
+      <echo>
+        <message>Step:3 Send AnalyseIncidentResponse message as result of the NetworkService call</message>
+      </echo>
+
+      <send endpoint="networkBackendHttpServer">
+        <message>
+          <resource file="templates/AnalyseResponse.xml"/>
+        </message>
+        <header>
+          <element name="Content-Type" value="application/xml"/>
+        </header>
+      </send>
+
+      <echo>
+        <message>Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application</message>
+      </echo>
+
+      <receive endpoint="incidentHttpClient">
+        <message>
+          <resource file="templates/IncidentResponse.xml"/>
+        </message>
+      </receive>
+    </actions>
+  </testcase>
+</spring:beans>

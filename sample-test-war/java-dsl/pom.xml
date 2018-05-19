@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-test-war</artifactId>
-  <name>citrus-sample-test-war</name>
+  <artifactId>citrus-java-sample-test-war</artifactId>
+  <name>Citrus Samples Java: Test WAR</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>
@@ -54,6 +54,8 @@
                 <url>http://localhost:8080/tests</url>
               </server>
               <run>
+                <async>true</async>
+                <pollingInterval>5000</pollingInterval>
                 <packages>
                   <package>com.consol.citrus.samples.todolist</package>
                 </packages>

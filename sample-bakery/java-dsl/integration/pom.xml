@@ -3,14 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>citrus-sample-bakery</artifactId>
+    <artifactId>citrus-java-sample-bakery</artifactId>
     <groupId>com.consol.citrus.samples</groupId>
     <version>2.7.6-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>citrus-bakery-integration</artifactId>
-  <name>citrus-bakery-integration</name>
+  <artifactId>citrus-java-bakery-integration</artifactId>
+  <name>Citrus Samples Java: Bakery Integration</name>
 
   <properties>
     <jetty.embedded.disabled>false</jetty.embedded.disabled>

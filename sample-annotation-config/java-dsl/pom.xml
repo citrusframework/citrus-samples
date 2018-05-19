@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-annotation-config</artifactId>
-  <name>citrus-sample-annotation-config</name>
+  <artifactId>citrus-java-sample-annotation-config</artifactId>
+  <name>Citrus Samples Java: Annotation Config</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

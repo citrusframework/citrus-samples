@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.citrusframework.org/schema/samples/FieldForceService/v1"
+           xmlns:tns="http://www.citrusframework.org/schema/samples/FieldForceService/v1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.citrusframework.org/schema/samples/FieldForceService/v1"
+           version="1.0"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+  <xs:complexType name="NetworkType">
+    <xs:sequence>
+      <xs:element name="lineId" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CustomerType">
+    <xs:sequence>
+      <xs:element name="id" type="xs:int"/>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname" type="xs:string"/>
+      <xs:element name="address" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="IncidentType">
+    <xs:sequence>
+      <xs:element name="ticketId" type="xs:string"/>
+      <xs:element name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="StateType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NEW"/>
+      <xs:enumeration value="ON_SITE"/>
+      <xs:enumeration value="FIXED"/>
+      <xs:enumeration value="ABORTED"/>
+      <xs:enumeration value="CLOSED"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ReasonType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LOCATION_NOT_FOUND"/>
+      <xs:enumeration value="CUSTOMER_NOT_FOUND"/>
+      <xs:enumeration value="NOT_POSSIBLE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="OrderRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="incident" type="tns:IncidentType"/>
+        <xs:element name="customer" type="tns:CustomerType"/>
+        <xs:element name="network" type="tns:NetworkType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="OrderNotification">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ticketId" type="xs:string"/>
+        <xs:element name="customerId" type="xs:int"/>
+        <xs:element name="state" type="xs:string"/>
+        <xs:element name="reason" minOccurs="0" type="tns:ReasonType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="FieldForceFault">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ticketId" type="xs:string"/>
+        <xs:element name="errorCode" type="xs:string"/>
+        <xs:element name="errorMessage" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

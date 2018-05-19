@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<todo xmlns="http://citrusframework.org/samples/todolist">
+  <id>${todoId}</id>
+  <title>${todoName}</title>
+  <description>${todoDescription}</description>
+  <done>false</done>
+</todo>

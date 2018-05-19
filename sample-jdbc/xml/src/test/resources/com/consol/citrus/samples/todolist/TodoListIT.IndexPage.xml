@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:http="http://www.citrusframework.org/schema/http/testcase"
+              xmlns:jdbc="http://www.citrusframework.org/schema/jdbc/message"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd
+                                  http://www.citrusframework.org/schema/http/testcase http://www.citrusframework.org/schema/http/testcase/citrus-http-testcase.xsd
+                                  http://www.citrusframework.org/schema/jdbc/message http://www.citrusframework.org/schema/jdbc/message/citrus-jdbc-message.xsd">
+
+  <testcase name="TodoListIT.IndexPage">
+    <meta-info>
+      <author>Citrus</author>
+      <creationdate>2017-12-04</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Citrus</last-updated-by>
+      <last-updated-on>2017-12-04T00:00:00</last-updated-on>
+    </meta-info>
+
+    <variables>
+      <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+      <variable name="todoDescription" value="Description: ${todoName}"/>
+    </variables>
+
+    <actions>
+      <http:send-request client="todoClient" fork="true">
+        <http:GET path="/todolist">
+          <http:headers accept="text/html"/>
+        </http:GET>
+      </http:send-request>
+
+      <receive endpoint="jdbcServer">
+        <message>
+          <payload>
+            <jdbc:operation>
+              <jdbc:execute>
+                <jdbc:statement>
+                  <jdbc:sql>SELECT id, title, description FROM todo_entries</jdbc:sql>
+                </jdbc:statement>
+              </jdbc:execute>
+            </jdbc:operation>
+          </payload>
+        </message>
+      </receive>
+
+      <send endpoint="jdbcServer">
+        <message>
+          <payload>
+            <jdbc:operation-result>
+              <jdbc:success>true</jdbc:success>
+              <jdbc:data-set>
+                <![CDATA[
+                  <dataset>
+                    <row>
+                      <id>citrus:randomUUID()</id>
+                      <title>${todoName}</title>
+                      <description>${todoDescription}</description>
+                      <done>false</done>
+                    </row>
+                  </dataset>
+                ]]>
+              </jdbc:data-set>
+            </jdbc:operation-result>
+          </payload>
+        </message>
+      </send>
+
+      <http:receive-response client="todoClient">
+        <http:headers status="200" reason-phrase="OK"/>
+        <http:body type="xhtml">
+          <http:data>
+            <![CDATA[
+            <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "org/w3/xhtml/xhtml1-transitional.dtd">
+            <html xmlns="http://www.w3.org/1999/xhtml">
+              <head>@ignore@</head>
+              <body>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="@ignore@">
+                      <h1>TODO list</h1>
+                      <ul class="list-group">
+                        <li class="list-group-item">
+                          <input class="complete" id="@ignore@" name="complete" type="checkbox" />
+                          <span>${todoName}</span>
+                          <a class="@ignore@" id="@ignore@" title="Remove todo">
+                            <span style="color: #A50000;">x</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <h2>New TODO entry</h2>
+                      <form method="post">@ignore@</form>
+                    </div>
+                  </div>
+                </div>
+              </body>
+            </html>
+            ]]>
+          </http:data>
+          <http:validate>
+            <http:xpath expression="//xh:h1" value="TODO list"/>
+          </http:validate>
+        </http:body>
+      </http:receive-response>
+    </actions>
+  </testcase>
+</spring:beans>

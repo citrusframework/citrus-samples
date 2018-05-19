@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-hamcrest</artifactId>
-  <name>citrus-sample-hamcrest</name>
+  <artifactId>citrus-java-sample-hamcrest</artifactId>
+  <name>Citrus Samples Java: Hamcrest</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-test-jar</artifactId>
-  <name>citrus-sample-test-jar</name>
+  <artifactId>citrus-java-sample-test-jar</artifactId>
+  <name>Citrus Samples Java: Test JAR</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

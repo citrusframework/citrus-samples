@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:http="http://www.citrusframework.org/schema/http/testcase"
+              xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                  http://www.citrusframework.org/schema/http/testcase http://www.citrusframework.org/schema/http/testcase/citrus-http-testcase.xsd
+                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
+
+  <testcase name="ProcessOrdersIT">
+    <meta-info>
+      <author>Christoph Deppisch</author>
+      <creationdate>2010-02-24</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Christoph Deppisch</last-updated-by>
+      <last-updated-on>2010-02-24T23:34:23</last-updated-on>
+    </meta-info>
+
+    <variables>
+      <variable name="orderId" value="citrus:randomNumber(10)"/>
+    </variables>
+
+    <actions>
+      <send endpoint="factoryOrderEndpoint">
+        <message>
+          <data>
+            <![CDATA[
+              <order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>
+            ]]>
+          </data>
+        </message>
+      </send>
+
+      <http:receive-request server="reportingServer" timeout="10000">
+        <http:PUT path="/report/services/reporting">
+          <http:headers>
+            <http:header name="id" value="${orderId}"/>
+            <http:header name="name" value="chocolate"/>
+            <http:header name="amount" value="1"/>
+          </http:headers>
+        </http:PUT>
+      </http:receive-request>
+
+      <http:send-response server="reportingServer">
+        <http:headers status="200" reason-phrase="OK"/>
+      </http:send-response>
+    </actions>
+  </testcase>
+</spring:beans>

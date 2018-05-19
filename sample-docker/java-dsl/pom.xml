@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-docker</artifactId>
-  <name>citrus-sample-docker</name>
+  <artifactId>citrus-java-sample-docker</artifactId>
+  <name>Citrus Samples Java: Docker</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-ws="http://www.citrusframework.org/schema/ws/config"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/ws/config http://www.citrusframework.org/schema/ws/config/citrus-ws-config.xsd">
+
+    <context:property-placeholder location="classpath:citrus.properties"/>
+
+    <citrus:schema-repository id="schemaRepository">
+      <citrus:schemas>
+        <citrus:schema id="todoList" location="classpath:schema/TodoList.xsd"/>
+      </citrus:schemas>
+    </citrus:schema-repository>
+
+    <!-- Default namespace mappings used in XPath expression evaluations -->
+    <citrus:namespace-context>
+      <citrus:namespace prefix="todo" uri="http://citrusframework.org/samples/todolist"/>
+    </citrus:namespace-context>
+
+    <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+    <bean class="com.consol.citrus.samples.todolist.config.SoapClientSslConfig"/>
+
+    <citrus-ws:client id="todoClient"
+                        request-url="https://localhost:8443"
+                        message-sender="sslRequestMessageSender"/>
+
+    <citrus-ws:server id="todoSslServer"
+                        connector="sslConnector"
+                        auto-start="true"
+                        timeout="5000"/>
+
+    <bean id="sslConnector" class="org.eclipse.jetty.server.ServerConnector">
+      <constructor-arg>
+        <bean class="org.eclipse.jetty.server.Server"></bean>
+      </constructor-arg>
+      <constructor-arg>
+        <list>
+          <bean class="org.eclipse.jetty.server.SslConnectionFactory">
+            <constructor-arg>
+              <bean class="org.eclipse.jetty.util.ssl.SslContextFactory">
+                <property name="keyStorePath" value="${project.basedir}/src/test/resources/keys/citrus.jks"/>
+                <property name="keyStorePassword" value="secret"/>
+              </bean>
+            </constructor-arg>
+            <constructor-arg value="http/1.1"/>
+          </bean>
+          <bean class="org.eclipse.jetty.server.HttpConnectionFactory">
+            <constructor-arg>
+              <bean class="org.eclipse.jetty.server.HttpConfiguration">
+                <constructor-arg>
+                  <bean class="org.eclipse.jetty.server.HttpConfiguration">
+                    <property name="secureScheme" value="https"/>
+                    <property name="securePort" value="8443"/>
+                  </bean>
+                </constructor-arg>
+                <property name="customizers">
+                  <list>
+                    <bean class="org.eclipse.jetty.server.SecureRequestCustomizer"/>
+                  </list>
+                </property>
+              </bean>
+            </constructor-arg>
+          </bean>
+        </list>
+      </constructor-arg>
+      <property name="port" value="8443" />
+    </bean>
+</beans>

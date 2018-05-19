@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Cookie Bakery Reporting</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Baker Reporting UI">
+    <meta name="author" content="ConSol Software GmbH">
+
+    <script src="javascript/jquery.js"></script>
+
+    <link type="text/css" href="styles/bootstrap.css" rel="stylesheet" />
+
+    <style type="text/css">
+      .progress { margin-bottom: 0; }
+    </style>
+
+    <script type="text/javascript">
+        var intervalID;
+
+        $( document ).ready(function() {
+            $("#reset").click(function( event ) {
+                event.preventDefault();
+
+                $.ajax({
+                    method: "GET",
+                    url: "services/reporting/reset",
+                    contentType: "text/html; charset=utf-8",
+                    complete: function(response) {
+                        $("#reload").click();
+                    }
+                });
+            });
+
+            $("#reload").click(function( event ) {
+                event.preventDefault();
+
+                $.ajax({
+                    method: "GET",
+                    url: "services/reporting/json",
+                    contentType: "text/html; charset=utf-8",
+                    complete: function(response) {
+                        $( "#overview" ).html('');
+
+                        var items = JSON.parse(response.responseText);
+                        for (var item in items) {
+                          $( "#overview" ).append('<span class="lead">' + item + '</span><div class="progress" style="width:' + (items[item] + 10) + 'px;"><div class="progress-bar" style="width:100%;"><span>' + items[item] + '</span></div></div>');
+                        }
+                    }
+                });
+            });
+
+            $("#autoReload").change(function( event ) {
+                if ($("#autoReload:checked").size()) {
+                    intervalID = window.setInterval(function() { $("#reload").click(); }, 1000);
+                } else {
+                    window.clearInterval(intervalID);
+                }
+            });
+
+            $("#reload").click();
+        });
+      </script>
+  </head>
+
+  <body>
+    <div id="content" class="container">
+      <h1>Cookie Bakery Reporting</h1>
+
+      <p class="lead">Today we have produced following cookies:</p>
+      <div id="overview"></div>
+      <br/>
+
+      <from action="/">
+        <label for="autoReload">Auto reload</label>
+        <input type="checkbox" id="autoReload"/>
+      </from>
+
+      <p><a class="btn btn-default" id="reload" href="services/reporting">Reload</a> <a class="btn btn-default" id="reset" href="services/reset">Reset</a></p>
+    </div>
+  </body>
+</html>

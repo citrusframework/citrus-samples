@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-todo</artifactId>
-  <name>citrus-sample-todo</name>
+  <name>Citrus Samples: Todo App</name>
   <version>2.7.6-SNAPSHOT</version>
   <packaging>war</packaging>
 

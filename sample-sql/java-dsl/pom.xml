@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-sql</artifactId>
-  <name>citrus-sample-sql</name>
+  <artifactId>citrus-java-sample-sql</artifactId>
+  <name>Citrus Samples Java: SQL</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

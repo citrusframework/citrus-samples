@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-ws="http://www.citrusframework.org/schema/ws/config"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/ws/config http://www.citrusframework.org/schema/ws/config/citrus-ws-config.xsd">
+
+    <citrus:schema-repository id="schemaRepository">
+      <citrus:schemas>
+        <citrus:schema id="todoList" location="classpath:schema/TodoList.xsd"/>
+      </citrus:schemas>
+    </citrus:schema-repository>
+
+    <!-- Default namespace mappings used in XPath expression evaluations -->
+    <citrus:namespace-context>
+      <citrus:namespace prefix="todo" uri="http://citrusframework.org/samples/todolist"/>
+    </citrus:namespace-context>
+
+    <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+
+    <!-- WSSecurity enabled SOAP client -->
+
+    <citrus-ws:client id="todoClient"
+                      request-url="http://localhost:8080/services/ws/todolist"
+                      interceptors="clientInterceptors"/>
+
+    <util:list id="clientInterceptors">
+      <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+        <property name="securementActions" value="Timestamp UsernameToken"/>
+        <property name="securementUsername" value="admin"/>
+        <property name="securementPassword" value="secret"/>
+      </bean>
+      <bean class="com.consol.citrus.ws.interceptor.LoggingClientInterceptor"/>
+    </util:list>
+
+    <!-- WSSecurity enabled SOAP server -->
+
+    <citrus-ws:server id="todoServer"
+                      port="8080"
+                      auto-start="true"
+                      interceptors="serverInterceptors"/>
+
+    <util:list id="serverInterceptors">
+      <bean class="com.consol.citrus.ws.interceptor.SoapMustUnderstandEndpointInterceptor">
+        <property name="acceptedHeaders">
+          <list>
+            <value>{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}Security</value>
+          </list>
+        </property>
+      </bean>
+      <bean class="com.consol.citrus.ws.interceptor.LoggingEndpointInterceptor"/>
+      <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+        <property name="validationActions" value="Timestamp UsernameToken"/>
+        <property name="validationCallbackHandler">
+          <bean id="passwordCallbackHandler" class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
+            <property name="usersMap">
+              <map>
+                <entry key="admin" value="secret"/>
+              </map>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </util:list>
+
+</beans>

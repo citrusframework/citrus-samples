@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:docker="http://www.citrusframework.org/schema/docker/testcase"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd
+                                  http://www.citrusframework.org/schema/docker/testcase http://www.citrusframework.org/schema/docker/testcase/citrus-docker-testcase.xsd">
+
+  <testcase name="TodoList_Deployment_IT">
+    <meta-info>
+      <author>Christoph Deppisch</author>
+      <creationdate>2017-02-09</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Christoph Deppisch</last-updated-by>
+      <last-updated-on>2017-02-09T00:00:00</last-updated-on>
+    </meta-info>
+
+    <actions>
+      <docker:inspect container="todo-app">
+        <docker:expect>
+          <docker:result>
+            <![CDATA[
+            {
+              "Args":"@ignore@",
+              "Config":"@ignore@",
+              "Created":"@ignore@",
+              "Driver":"@ignore@",
+              "ExecDriver":"@ignore@",
+              "HostConfig":"@ignore@",
+              "HostnamePath":"@ignore@",
+              "HostsPath":"@ignore@",
+              "LogPath":"@ignore@",
+              "Id":"@ignore@",
+              "SizeRootFs":"@ignore@",
+              "Image":"@ignore@",
+              "MountLabel":"",
+              "Name":"/todo-app",
+              "RestartCount":0,
+              "NetworkSettings":"@ignore@",
+              "Path":"/bin/sh",
+              "ProcessLabel":"@ignore@",
+              "ResolvConfPath":"@ignore@",
+              "ExecIDs":null,
+              "State":
+              {
+                "Status": "running",
+                "Running":true,
+                "Paused":false,
+                "Restarting":false,
+                "Dead":false,
+                "oomkilled":false,
+                "OOMKilled":false,
+                "Pid": "@ignore@",
+                "ExitCode":0,
+                "Error":"",
+                "StartedAt":"@ignore@",
+                "FinishedAt":"@ignore@",
+                "Health":null
+              },
+              "Volumes": "@ignore@",
+              "VolumesRW": "@ignore@",
+              "Mounts":"@ignore@"
+            }
+            ]]>
+          </docker:result>
+        </docker:expect>
+      </docker:inspect>
+    </actions>
+  </testcase>
+</spring:beans>

@@ -18,13 +18,9 @@ package com.consol.citrus.samples.todolist.jms;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.JmsHeaders;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +28,7 @@ import org.springframework.stereotype.Component;
  * @author Christoph Deppisch
  */
 @Component
+@Conditional(JmsEnabledCondition.class)
 public class TodoJmsResource{
 
     @Autowired

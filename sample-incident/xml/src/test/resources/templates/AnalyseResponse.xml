@@ -1,0 +1,12 @@
+<net:AnalyseIncidentResponse xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1">
+  <net:ticketId>${ticketId}</net:ticketId>
+  <net:result>
+    <net:lineId>${lineId}</net:lineId>
+    <net:resultCode>CODE_citrus:randomNumber(4)</net:resultCode>
+    <net:solved>true</net:solved>
+    <net:bandwidth>12000</net:bandwidth>
+    <net:lineCheck>OK</net:lineCheck>
+    <net:connectionCheck>OK</net:connectionCheck>
+    <net:fieldForceRequired>false</net:fieldForceRequired>
+  </net:result>
+</net:AnalyseIncidentResponse>

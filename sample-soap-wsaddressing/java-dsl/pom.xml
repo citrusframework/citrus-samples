@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-soap-wssaddressing</artifactId>
-  <name>citrus-sample-soap-wsaddressing</name>
+  <artifactId>citrus-java-sample-soap-wsaddressing</artifactId>
+  <name>Citrus Samples Java: SOAP WsAddressing</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

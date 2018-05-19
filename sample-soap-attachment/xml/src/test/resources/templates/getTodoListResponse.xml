@@ -1,0 +1,14 @@
+<todo:getTodoListResponse xmlns:todo="http://citrusframework.org/samples/todolist">
+  <todo:list>
+    <todo:todoEntry>
+      <todo:id>@ignore@</todo:id>
+      <todo:title>${todoName}</todo:title>
+      <todo:description>${todoDescription}</todo:description>
+      <todo:attachment>
+        <todo:cid>myAttachment</todo:cid>
+        <todo:contentType>text/plain</todo:contentType>
+        <todo:data>citrus:encodeBase64('This is my attachment')</todo:data>
+      </todo:attachment>
+    </todo:todoEntry>
+  </todo:list>
+</todo:getTodoListResponse>

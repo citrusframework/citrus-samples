@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:http="http://www.citrusframework.org/schema/http/testcase"
+              xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                  http://www.citrusframework.org/schema/http/testcase http://www.citrusframework.org/schema/http/testcase/citrus-http-testcase.xsd
+                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
+
+  <testcase name="ReportSummaryJsonIT">
+    <meta-info>
+      <author>Christoph Deppisch</author>
+      <creationdate>2010-02-24</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Christoph Deppisch</last-updated-by>
+      <last-updated-on>2010-02-24T23:34:23</last-updated-on>
+    </meta-info>
+
+    <variables>
+      <variable name="orderType" value="chocolate"/>
+    </variables>
+
+    <actions>
+      <echo>
+        <message>Receive Json report</message>
+      </echo>
+
+      <http:send-request client="reportingClient">
+        <http:GET path="/reporting/json"/>
+      </http:send-request>
+
+      <http:receive-response client="reportingClient">
+        <http:headers status="200" reason-phrase="OK"/>
+        <http:body type="json">
+          <http:data>
+            {"caramel": "@isNumber()@","blueberry": "@isNumber()@","chocolate": "@isNumber()@"}
+          </http:data>
+        </http:body>
+      </http:receive-response>
+    </actions>
+  </testcase>
+</spring:beans>
+

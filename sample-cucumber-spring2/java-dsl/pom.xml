@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-cucumber-spring2</artifactId>
-  <name>citrus-sample-cucumber-spring2</name>
+  <artifactId>citrus-java-sample-cucumber-spring2</artifactId>
+  <name>Citrus Samples Java: Cucumber BDD Spring 2</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

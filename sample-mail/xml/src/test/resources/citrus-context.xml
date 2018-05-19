@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-http="http://www.citrusframework.org/schema/http/config"
+       xmlns:citrus-mail="http://www.citrusframework.org/schema/mail/config"
+       xmlns:citrus-http-test="http://www.citrusframework.org/schema/http/testcase"
+       xmlns:citrus-test="http://www.citrusframework.org/schema/testcase"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/http/config http://www.citrusframework.org/schema/http/config/citrus-http-config.xsd
+       http://www.citrusframework.org/schema/http/testcase http://www.citrusframework.org/schema/http/testcase/citrus-http-testcase.xsd
+       http://www.citrusframework.org/schema/mail/config http://www.citrusframework.org/schema/mail/config/citrus-mail-config.xsd
+       http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
+
+  <citrus-http:client id="todoClient"
+                      request-url="http://localhost:8080"/>
+
+  <citrus-mail:server id="mailServer"
+                      port="2222"
+                      auto-accept="true"
+                      auto-start="true"/>
+
+  <citrus-test:template name="clearTodoList">
+    <citrus-http-test:send-request client="todoClient">
+      <citrus-http-test:DELETE path="/api/todolist"/>
+    </citrus-http-test:send-request>
+
+    <citrus-http-test:receive-response client="todoClient">
+      <citrus-http-test:headers status="200" reason-phrase="OK"/>
+    </citrus-http-test:receive-response>
+  </citrus-test:template>
+</beans>

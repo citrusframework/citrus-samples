@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-jms="http://www.citrusframework.org/schema/jms/config"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/jms/config http://www.citrusframework.org/schema/jms/config/citrus-jms-config.xsd">
+
+    <citrus-jms:endpoint id="todoJmsEndpoint"
+                         destination-name="jms.todo.inbound"/>
+
+    <!-- JMS connection factory and message broker -->
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+      <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+
+    <bean id="binaryMessageValidator" class="com.consol.citrus.samples.todolist.BinaryMessageValidator"/>
+
+</beans>

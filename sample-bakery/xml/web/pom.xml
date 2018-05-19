@@ -1,0 +1,231 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>citrus-xml-sample-bakery</artifactId>
+    <groupId>com.consol.citrus.samples</groupId>
+    <version>2.7.6-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>citrus-xml-bakery-web</artifactId>
+  <name>Citrus Samples XML: Bakery Web</name>
+  <packaging>war</packaging>
+
+  <properties>
+    <jetty.embedded.disabled>false</jetty.embedded.disabled>
+    <activemq.embedded.disabled>false</activemq.embedded.disabled>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-spring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-servlet</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jms</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-camel</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-broker</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jolokia</groupId>
+      <artifactId>jolokia-core</artifactId>
+    </dependency>
+
+    <!-- Spring framework -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aop</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jms</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+
+    <!-- Citrus -->
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-ws</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-jms</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>bakery</finalName>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <activemq.server.host>${docker.host.name}</activemq.server.host>
+            <activemq.server.port>${activemq.server.port}</activemq.server.port>
+            <bakery.server.host>${docker.host.name}</bakery.server.host>
+            <bakery.server.port>${bakery.server.port}</bakery.server.port>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <war>${project.build.directory}/bakery.war</war>
+          <webAppConfig>
+            <contextPath>/bakery</contextPath>
+          </webAppConfig>
+          <httpConnector>
+            <port>${bakery.server.port}</port>
+            <idleTimeout>60000</idleTimeout>
+          </httpConnector>
+          <systemProperties>
+            <systemProperty>
+              <name>ACTIVEMQ_PORT_61616_TCP_ADDR</name>
+              <value>${docker.host.name}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>ACTIVEMQ_PORT_61616_TCP_PORT</name>
+              <value>${activemq.server.port}</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <configuration>
+          <watchInterval>500</watchInterval>
+          <logDate>default</logDate>
+          <verbose>true</verbose>
+          <images>
+            <image>
+              <alias>activemq-broker</alias>
+              <name>consol/${message.broker}:latest</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <ports>
+                  <port>${activemq.server.port}:61616</port>
+                  <port>${activemq.admin.port}:8161</port>
+                </ports>
+                <wait>
+                  <log>Broker startup</log>
+                  <http>
+                    <url>http://${docker.host.name}:${activemq.admin.port}</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>green</color>
+                </log>
+              </run>
+            </image>
+            <image>
+              <alias>bakery-web-server</alias>
+              <name>consol/${application.server}:latest</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <volumes>
+                  <from>
+                    <image>application</image>
+                  </from>
+                </volumes>
+                <links>
+                  <link>activemq-broker:activemq</link>
+                </links>
+                <env>
+                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                </env>
+                <ports>
+                  <port>${bakery.server.port}:8080</port>
+                </ports>
+                <wait>
+                  <log>Server startup</log>
+                  <http>
+                    <url>http://${docker.host.name}:${bakery.server.port}/bakery/jolokia</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>green</color>
+                </log>
+              </run>
+            </image>
+            <image>
+              <alias>application</alias>
+              <name>citrus/bakery-web:${project.version}</name>
+              <build>
+                <tags>
+                  <tag>latest</tag>
+                </tags>
+                <assembly>
+                  <descriptorRef>artifact</descriptorRef>
+                </assembly>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

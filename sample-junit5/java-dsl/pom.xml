@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-junit5</artifactId>
-  <name>citrus-sample-junit5</name>
+  <artifactId>citrus-java-sample-junit5</artifactId>
+  <name>Citrus Samples Java: JUnit5</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

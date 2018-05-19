@@ -1,0 +1,55 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://citrusframework.org/samples/todolist"
+           targetNamespace="http://citrusframework.org/samples/todolist" elementFormDefault="qualified">
+
+  <xs:element name="addTodoEntryRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="title" type="xs:string"/>
+        <xs:element name="description" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="addTodoEntryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="success" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getTodoListRequest"/>
+
+  <xs:element name="getTodoListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="list">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="todoEntry" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="id" type="xs:string"/>
+                    <xs:element name="title" type="xs:string"/>
+                    <xs:element name="description" type="xs:string" minOccurs="0"/>
+                    <xs:element name="attachment" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="cid" type="xs:string"/>
+                          <xs:element name="contentType" type="xs:string"/>
+                          <xs:element name="data" type="xs:string"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="done" type="xs:boolean" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

@@ -1,0 +1,188 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>citrus-xml-sample-bakery</artifactId>
+    <groupId>com.consol.citrus.samples</groupId>
+    <version>2.7.6-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>citrus-xml-bakery-report</artifactId>
+  <name>Citrus Samples XML: Bakery Report</name>
+  <packaging>war</packaging>
+
+  <properties>
+    <jetty.embedded.disabled>false</jetty.embedded.disabled>
+    <activemq.embedded.disabled>false</activemq.embedded.disabled>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-spring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-servlet</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jolokia</groupId>
+      <artifactId>jolokia-core</artifactId>
+    </dependency>
+
+    <!-- Spring framework -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+    </dependency>
+
+    <!-- Citrus -->
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-ws</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-jms</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-mail</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>report</finalName>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <report.server.host>${docker.host.name}</report.server.host>
+            <report.server.port>${report.server.port}</report.server.port>
+            <mail.server.port>${mail.server.port}</mail.server.port>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <war>${project.build.directory}/report.war</war>
+          <webAppConfig>
+            <contextPath>/report</contextPath>
+          </webAppConfig>
+          <httpConnector>
+            <port>${report.server.port}</port>
+            <idleTimeout>60000</idleTimeout>
+          </httpConnector>
+          <systemProperties>
+            <systemProperty>
+              <name>MAIL_PORT_2222_TCP_ADDR</name>
+              <value>${docker.host.name}</value>
+            </systemProperty>
+            <systemProperty>
+              <name>MAIL_PORT_2222_TCP_PORT</name>
+              <value>${mail.server.port}</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <configuration>
+          <watchInterval>500</watchInterval>
+          <logDate>default</logDate>
+          <verbose>true</verbose>
+          <images>
+            <image>
+              <alias>report-server</alias>
+              <name>consol/${application.server}:latest</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <volumes>
+                  <from>
+                    <image>application</image>
+                  </from>
+                </volumes>
+                <env>
+                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                  <MAIL_PORT_2222_TCP_ADDR>${docker.host.name}</MAIL_PORT_2222_TCP_ADDR>
+                  <MAIL_PORT_2222_TCP_PORT>${mail.server.port}</MAIL_PORT_2222_TCP_PORT>
+                </env>
+                <ports>
+                  <port>${report.server.port}:8080</port>
+                </ports>
+                <wait>
+                  <log>Server startup</log>
+                  <http>
+                    <url>http://${docker.host.name}:${report.server.port}/report/jolokia</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>green</color>
+                </log>
+              </run>
+            </image>
+            <image>
+              <alias>application</alias>
+              <name>citrus/bakery-report:${project.version}</name>
+              <build>
+                <tags>
+                  <tag>latest</tag>
+                </tags>
+                <assembly>
+                  <descriptorRef>artifact</descriptorRef>
+                </assembly>
+              </build>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

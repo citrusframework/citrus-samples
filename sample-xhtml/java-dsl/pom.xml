@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-xhtml</artifactId>
-  <name>citrus-sample-xhtml</name>
+  <artifactId>citrus-java-sample-xhtml</artifactId>
+  <name>Citrus Samples Java: XHTML</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-behaviors</artifactId>
-  <name>citrus-sample-behaviors</name>
+  <artifactId>citrus-java-sample-behaviors</artifactId>
+  <name>Citrus Samples Java: Behaviors</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

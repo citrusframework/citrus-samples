@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:http="http://www.citrusframework.org/schema/http/testcase"
+              xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                  http://www.citrusframework.org/schema/http/testcase http://www.citrusframework.org/schema/http/testcase/citrus-http-testcase.xsd
+                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
+
+  <testcase name="ReportSummaryHtmlIT">
+    <meta-info>
+      <author>Christoph Deppisch</author>
+      <creationdate>2010-02-24</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Christoph Deppisch</last-updated-by>
+      <last-updated-on>2010-02-24T23:34:23</last-updated-on>
+    </meta-info>
+
+    <variables>
+      <variable name="orderType" value="chocolate"/>
+    </variables>
+
+    <actions>
+      <echo>
+        <message>Receive Html report</message>
+      </echo>
+
+      <http:send-request client="reportingClient">
+        <http:GET path="/reporting"/>
+      </http:send-request>
+
+      <http:receive-response client="reportingClient">
+        <http:headers status="200" reason-phrase="OK"/>
+        <http:body type="xhtml">
+          <http:data>
+            <![CDATA[
+              <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "org/w3/xhtml/xhtml1-strict.dtd">
+              <html xmlns="http://www.w3.org/1999/xhtml">
+                <head>
+                  <title></title>
+                </head>
+                <body>
+                  <h1>Camel bakery reporting</h1>
+                  <p>Today we have produced following goods:</p>
+                  <ul>
+                    <li>@startsWith('chocolate:')@</li>
+                    <li>@startsWith('caramel:')@</li>
+                    <li>@startsWith('blueberry:')@</li>
+                  </ul>
+                  <p><a href="reporting/orders">Show orders</a></p>
+                </body>
+              </html>
+            ]]>
+          </http:data>
+        </http:body>
+      </http:receive-response>
+    </actions>
+  </testcase>
+</spring:beans>
+

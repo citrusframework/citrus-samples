@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:spring="http://www.springframework.org/schema/beans"
+              xmlns:http="http://www.citrusframework.org/schema/http/testcase"
+              xmlns:jdbc="http://www.citrusframework.org/schema/jdbc/message"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd
+                                  http://www.citrusframework.org/schema/http/testcase http://www.citrusframework.org/schema/http/testcase/citrus-http-testcase.xsd
+                                  http://www.citrusframework.org/schema/jdbc/message http://www.citrusframework.org/schema/jdbc/message/citrus-jdbc-message.xsd">
+
+  <testcase name="TodoListIT.StoredProcedureCallFailed">
+    <meta-info>
+      <author>Citrus</author>
+      <creationdate>2017-12-04</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Citrus</last-updated-by>
+      <last-updated-on>2017-12-04T00:00:00</last-updated-on>
+    </meta-info>
+
+    <actions>
+      <http:send-request client="todoClient" fork="true">
+        <http:GET path="/api/todolist/1"/>
+      </http:send-request>
+
+      <receive endpoint="jdbcServer">
+        <message>
+          <payload>
+            <jdbc:operation>
+              <jdbc:create-callable-statement>
+                <jdbc:sql>{CALL limitedToDoList(?)}</jdbc:sql>
+              </jdbc:create-callable-statement>
+            </jdbc:operation>
+          </payload>
+        </message>
+      </receive>
+
+      <send endpoint="jdbcServer">
+        <message>
+          <payload>
+            <jdbc:operation-result>
+              <jdbc:success>true</jdbc:success>
+            </jdbc:operation-result>
+          </payload>
+        </message>
+      </send>
+
+      <receive endpoint="jdbcServer">
+        <message>
+          <payload>
+            <jdbc:operation>
+              <jdbc:execute>
+                <jdbc:statement>
+                  <jdbc:sql>{CALL limitedToDoList(?)} - (1)</jdbc:sql>
+                </jdbc:statement>
+              </jdbc:execute>
+            </jdbc:operation>
+          </payload>
+        </message>
+      </receive>
+
+      <send endpoint="jdbcServer">
+        <message>
+          <payload>
+            <jdbc:operation-result>
+              <jdbc:success>false</jdbc:success>
+              <jdbc:exception>Error in called procedure</jdbc:exception>
+            </jdbc:operation-result>
+          </payload>
+        </message>
+      </send>
+
+      <receive endpoint="jdbcServer">
+        <message>
+          <payload>
+            <jdbc:operation>
+              <jdbc:close-statement/>
+            </jdbc:operation>
+          </payload>
+        </message>
+      </receive>
+
+      <send endpoint="jdbcServer">
+        <message>
+          <payload>
+            <jdbc:operation-result>
+              <jdbc:success>true</jdbc:success>
+            </jdbc:operation-result>
+          </payload>
+        </message>
+      </send>
+
+      <http:receive-response client="todoClient">
+        <http:headers status="500" reason-phrase="INTERNAL_SERVER_ERROR"/>
+      </http:receive-response>
+    </actions>
+  </testcase>
+</spring:beans>

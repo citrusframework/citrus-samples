@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-soap-wssecurity</artifactId>
-  <name>citrus-sample-soap-wssecurity</name>
+  <artifactId>citrus-java-sample-soap-wssecurity</artifactId>
+  <name>Citrus Samples Java: SOAP WsSecurity</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

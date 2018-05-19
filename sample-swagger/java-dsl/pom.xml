@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-swagger</artifactId>
-  <name>citrus-sample-swagger</name>
+  <artifactId>citrus-java-sample-swagger</artifactId>
+  <name>Citrus Samples Java: Swagger API</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

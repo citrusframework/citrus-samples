@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-kubernetes</artifactId>
-  <name>citrus-sample-kubernetes</name>
+  <artifactId>citrus-java-sample-kubernetes</artifactId>
+  <name>Citrus Samples Java: Kubernetes</name>
   <version>2.7.6-SNAPSHOT</version>
 
   <properties>

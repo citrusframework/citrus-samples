@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-http="http://www.citrusframework.org/schema/http/config"
+       xmlns:citrus-jdbc="http://www.citrusframework.org/schema/jdbc/config"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/http/config http://www.citrusframework.org/schema/http/config/citrus-http-config.xsd
+       http://www.citrusframework.org/schema/jdbc/config http://www.citrusframework.org/schema/jdbc/config/citrus-jdbc-config.xsd">
+
+  <!-- Default namespace mappings used in XPath expression evaluations -->
+  <citrus:namespace-context>
+    <citrus:namespace prefix="xh" uri="http://www.w3.org/1999/xhtml"/>
+  </citrus:namespace-context>
+
+  <citrus-http:client id="todoClient"
+                      request-url="http://localhost:8080"/>
+
+  <citrus-jdbc:server id="jdbcServer"
+                      port="3306"
+                      database-name="testdb"
+                      timeout="10000"
+                      auto-start="true"/>
+
+  <!-- JDBC data source -->
+  <bean id="todoDataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+    <property name="driverClassName" value="com.consol.citrus.db.driver.JdbcDriver"/>
+    <property name="url" value="jdbc:citrus:http://localhost:3306/testdb"/>
+    <property name="username" value="sa"/>
+    <property name="password" value=""/>
+  </bean>
+    
+</beans>

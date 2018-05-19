@@ -1,0 +1,14 @@
+<SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+  <wsa:To SOAP-ENV:mustUnderstand="1">http://citrusframework.org/samples/todolist</wsa:To>
+  <wsa:From>
+    <wsa:Address>http://citrusframework.org/samples/client</wsa:Address>
+  </wsa:From>
+  <wsa:ReplyTo>
+    <wsa:Address>http://citrusframework.org/samples/client</wsa:Address>
+  </wsa:ReplyTo>
+  <wsa:FaultTo>
+    <wsa:Address>http://citrusframework.org/samples/client</wsa:Address>
+  </wsa:FaultTo>
+  <wsa:Action>http://citrusframework.org/samples/todolist</wsa:Action>
+  <wsa:MessageID>@ignore@</wsa:MessageID>
+</SOAP-ENV:Header>

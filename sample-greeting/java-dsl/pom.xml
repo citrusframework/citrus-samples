@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.consol.citrus.samples</groupId>
-  <artifactId>citrus-sample-greeting</artifactId>
-  <name>citrus-sample-greeting</name>
+  <artifactId>citrus-java-sample-greeting</artifactId>
+  <name>Citrus Samples Java: Greeting</name>
   <version>2.7.6-SNAPSHOT</version>
   <packaging>war</packaging>
 
