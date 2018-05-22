@@ -75,6 +75,7 @@ public class TodoApplication extends SpringBootServletInitializer {
 
         return dataSource;
     }
+
     @Bean
     @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
     public TodoListDao todoListJdbcDao(Environment environment) {

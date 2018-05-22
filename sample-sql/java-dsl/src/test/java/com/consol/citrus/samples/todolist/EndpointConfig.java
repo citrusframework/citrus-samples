@@ -80,6 +80,7 @@ public class EndpointConfig {
         Server dbServer = new Server();
 
         HsqlProperties properties = new HsqlProperties();
+        properties.setProperty("server.port", "9099");
         properties.setProperty("server.database.0", "file:target/testdb");
         properties.setProperty("server.dbname.0", "testdb");
         properties.setProperty("server.remote_open", true);
@@ -93,7 +94,7 @@ public class EndpointConfig {
     public BasicDataSource todoListDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-        dataSource.setUrl("jdbc:hsqldb:hsql://localhost/testdb");
+        dataSource.setUrl("jdbc:hsqldb:hsql://localhost:9099/testdb");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
         dataSource.setInitialSize(1);

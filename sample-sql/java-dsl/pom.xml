@@ -68,18 +68,15 @@
       <artifactId>citrus-sample-todo</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>2.3.4</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>
       <version>1.4</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- Logging -->
@@ -159,6 +156,7 @@
             <configuration>
               <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
               <useTestClasspath>false</useTestClasspath>
+              <fork>true</fork>
               <jvmArguments>-Dtodo.persistence.type=jdbc</jvmArguments>
             </configuration>
             <executions>

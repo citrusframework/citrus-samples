@@ -152,6 +152,7 @@
             <configuration>
               <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
               <useTestClasspath>false</useTestClasspath>
+              <fork>true</fork>
             </configuration>
             <executions>
               <execution>

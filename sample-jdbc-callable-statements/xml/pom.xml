@@ -69,6 +69,11 @@
       <artifactId>citrus-sample-todo</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-db-driver</artifactId>
+      <version>${citrus.db.version}</version>
+    </dependency>
 
     <!-- Logging -->
     <dependency>
@@ -147,7 +152,8 @@
             <configuration>
               <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
               <useTestClasspath>false</useTestClasspath>
-              <jvmArguments>-Dtodo.persistence.type=jdbc -Dtodo.jdbc.driverClassName=com.consol.citrus.db.driver.JdbcDriver-Dtodo.jdbc.url=jdbc:citrus:http://localhost:3306/testdb</jvmArguments>
+              <fork>true</fork>
+              <jvmArguments>-Dtodo.persistence.type=jdbc -Dtodo.jdbc.driverClassName=com.consol.citrus.db.driver.JdbcDriver -Dtodo.jdbc.url=jdbc:citrus:http://localhost:3306/testdb</jvmArguments>
             </configuration>
             <executions>
               <execution>

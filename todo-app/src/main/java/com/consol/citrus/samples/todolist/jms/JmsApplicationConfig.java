@@ -17,10 +17,14 @@
 package com.consol.citrus.samples.todolist.jms;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.broker.BrokerFactory;
+import org.apache.activemq.broker.BrokerService;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.annotation.*;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.*;
 
 import javax.jms.ConnectionFactory;
@@ -33,9 +37,32 @@ import javax.jms.ConnectionFactory;
 @Conditional(JmsEnabledCondition.class)
 public class JmsApplicationConfig {
 
+    private String brokerUrl = "tcp://localhost:61616";
+
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    public BrokerService messageBroker() {
+        try {
+            BrokerService messageBroker = BrokerFactory.createBroker("broker:" + brokerUrl);
+            messageBroker.setPersistent(false);
+            messageBroker.setUseJmx(false);
+            return messageBroker;
+        } catch (Exception e) {
+            throw new BeanCreationException("Failed to create embedded message broker", e);
+        }
+    }
+
     @Bean
+    @DependsOn("messageBroker")
     public ConnectionFactory activeMqConnectionFactory() {
-        return new ActiveMQConnectionFactory("tcp://localhost:61616");
+        return new ActiveMQConnectionFactory(brokerUrl);
+    }
+
+    @Bean
+    public JmsTemplate jmsTemplate() {
+        JmsTemplate jmsTemplate = new JmsTemplate();
+        jmsTemplate.setConnectionFactory(activeMqConnectionFactory());
+        jmsTemplate.setMessageConverter(jacksonJmsMessageConverter());
+        return jmsTemplate;
     }
 
     @Bean

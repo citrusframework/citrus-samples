@@ -39,6 +39,7 @@
         <bean class="org.hsqldb.persist.HsqlProperties">
           <constructor-arg type="java.util.Properties">
             <value>
+              server.port=9099
               server.database.0=file:target/testdb
               server.dbname.0=testdb
               server.remote_open=true
@@ -52,7 +53,7 @@
     <!-- JDBC data source -->
     <bean id="todoDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
       <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
-      <property name="url" value="jdbc:hsqldb:hsql://localhost/testdb"/>
+      <property name="url" value="jdbc:hsqldb:hsql://localhost:9099/testdb"/>
       <property name="username" value="sa"/>
       <property name="password" value=""/>
       <property name="initialSize" value="1"/>

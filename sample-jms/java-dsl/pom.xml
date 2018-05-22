@@ -84,6 +84,11 @@
       <artifactId>citrus-sample-todo</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-broker</artifactId>
+      <version>${activemq.version}</version>
+    </dependency>
 
     <!-- Logging -->
     <dependency>
@@ -110,13 +115,6 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${testng.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-broker</artifactId>
-      <version>${activemq.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -160,42 +158,6 @@
 
   <profiles>
     <profile>
-      <id>activemq-embedded</id>
-      <activation>
-        <property>
-          <name>embedded</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.activemq.tooling</groupId>
-            <artifactId>activemq-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>start-activemq</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <fork>true</fork>
-                </configuration>
-              </execution>
-              <execution>
-                <id>stop-activemq</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
       <id>todo-app-embedded</id>
       <activation>
         <property>
@@ -211,6 +173,7 @@
             <configuration>
               <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
               <useTestClasspath>false</useTestClasspath>
+              <fork>true</fork>
               <jvmArguments>-Dtodo.jms.enabled=true</jvmArguments>
             </configuration>
             <executions>

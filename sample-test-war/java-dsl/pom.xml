@@ -6,11 +6,12 @@
   <artifactId>citrus-java-sample-test-war</artifactId>
   <name>Citrus Samples Java: Test WAR</name>
   <version>2.7.6-SNAPSHOT</version>
+  <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <jetty.version>9.4.6.v20170531</jetty.version>
+    <jetty.version>9.4.10.v20180503</jetty.version>
     <spring.boot.version>1.5.10.RELEASE</spring.boot.version>
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.14.3</testng.version>
@@ -32,10 +33,11 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.2</version>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.1.0</version>
         <configuration>
-          <skipIfEmpty>true</skipIfEmpty>
+          <skip>true</skip>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
 
@@ -52,7 +54,7 @@
             </goals>
             <configuration>
               <server>
-                <url>http://localhost:8686/tests</url>
+                <url>http://localhost:8686</url>
               </server>
               <run>
                 <async>true</async>
@@ -107,44 +109,10 @@
           <skipTests>true</skipTests>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty.version}</version>
-        <configuration>
-          <httpConnector>
-            <port>8686</port>
-            <idleTimeout>60000</idleTimeout>
-          </httpConnector>
-          <contextHandlers>
-            <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
-              <war>${project.build.directory}/${project.artifactId}-${project.version}-citrus-tests.war</war>
-              <contextPath>/tests</contextPath>
-              <tempDirectory>${project.build.directory}/tmp/tests</tempDirectory>
-            </contextHandler>
-          </contextHandlers>
-          <stopKey>stopMe</stopKey>
-          <stopPort>8088</stopPort>
-          <stopWait>10</stopWait>
-          <systemProperties>
-            <systemProperty>
-              <name>file.encoding</name>
-              <value>UTF-8</value>
-            </systemProperty>
-          </systemProperties>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
   <dependencies>
-    <dependency>
-      <groupId>com.consol.citrus.samples</groupId>
-      <artifactId>citrus-sample-todo</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -224,42 +192,6 @@
 
   <profiles>
     <profile>
-      <id>todo-app-embedded</id>
-      <activation>
-        <property>
-          <name>embedded</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <version>${spring.boot.version}</version>
-            <configuration>
-              <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
-              <useTestClasspath>false</useTestClasspath>
-            </configuration>
-            <executions>
-              <execution>
-                <id>pre-integration-test</id>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>post-integration-test</id>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    
-    <profile>
       <id>jetty-embedded</id>
       <activation>
         <property>
@@ -271,6 +203,23 @@
           <plugin>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
+            <version>${jetty.version}</version>
+            <configuration>
+              <war>${project.build.directory}/${project.artifactId}-${project.version}-citrus-tests.war</war>
+              <httpConnector>
+                <port>8686</port>
+                <idleTimeout>60000</idleTimeout>
+              </httpConnector>
+              <stopKey>stopMe</stopKey>
+              <stopPort>8088</stopPort>
+              <stopWait>10</stopWait>
+              <systemProperties>
+                <systemProperty>
+                  <name>file.encoding</name>
+                  <value>UTF-8</value>
+                </systemProperty>
+              </systemProperties>
+            </configuration>
             <executions>
               <execution>
                 <id>start-server</id>
@@ -288,13 +237,52 @@
                 <goals>
                   <goal>stop</goal>
                 </goals>
-                <configuration>
-                  <stopPort>8088</stopPort>
-                  <stopKey>stopMe</stopKey>
-                  <stopWait>10</stopWait>
-                </configuration>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>todo-app-embedded</id>
+      <activation>
+        <property>
+          <name>embedded</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>${spring.boot.version}</version>
+            <configuration>
+              <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
+              <useTestClasspath>false</useTestClasspath>
+              <fork>true</fork>
+            </configuration>
+            <executions>
+              <execution>
+                <id>pre-integration-test</id>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>post-integration-test</id>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>com.consol.citrus.samples</groupId>
+                <artifactId>citrus-sample-todo</artifactId>
+                <version>${project.version}</version>
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>
