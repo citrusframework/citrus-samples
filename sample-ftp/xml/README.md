@@ -4,6 +4,8 @@ FTP sample ![Logo][1]
 This sample shows hot to setup proper FTP communication as client and server in Citrus. The ftp-client component creates a new
 directory on the server, stores a file and retrieves the same file in a single test.
 
+FTP features are also described in detail in [reference guide][4]
+
 Objectives
 ---------
 
@@ -256,4 +258,4 @@ a complete [reference manual][3].
  [1]: https://www.citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://www.citrusframework.org
  [3]: https://www.citrusframework.org/reference/html/
- [4]: https://www.citrusframework.org/reference/html#validation-json
+ [4]: https://www.citrusframework.org/reference/html#ftp
