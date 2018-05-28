@@ -30,6 +30,7 @@
     <module>sample-annotation-config</module>
     <module>sample-javaconfig</module>
     <module>sample-mail</module>
+    <module>sample-ftp</module>
     <module>sample-testng</module>
     <module>sample-junit</module>
     <module>sample-junit5</module>
