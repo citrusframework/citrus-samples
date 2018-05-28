@@ -55,7 +55,8 @@ system under test. Please find following list of samples and their primary objec
 | [sample-http](sample-http)| Shows Http REST API calls as a client |
 | [sample-http-loadtest](sample-http-loadtest)| Calls REST API on Http server with multiple threads for load testing |
 | [sample-http-static-response](sample-http-static-response)| Shows how to setup a static response generating Http server component |
-| [sample-http-query-param](sample-http-query-param)| Exchange information using Http GET query parameters |
+| [sample-http-query-param](sample-http-form-data)| How to use Http form data with `x-www-form-urlencoded` Http POST |
+| [sample-http-form-data](sample-http-query-param)| Exchange information using Http GET query parameters |
 | [sample-http-basic-auth](sample-http-basic-auth)| Shows how to use basic authentication on client and server components |
 | [sample-https](sample-https)| Shows how to use SSL connectivity as a client and server |
 | [sample-wsdl](sample-wsdl)| Auto generate tests from WSDL |

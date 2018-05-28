@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-http="http://www.citrusframework.org/schema/http/config"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/http/config http://www.citrusframework.org/schema/http/config/citrus-http-config.xsd">
+
+    <citrus-http:client id="todoClient"
+                        request-url="http://localhost:8080"/>
+
+    <citrus-http:server id="todoServer"
+                      port="8080"
+                      auto-start="true"
+                      timeout="10000"/>
+
+    <citrus:message-validators>
+        <citrus:validator ref="defaultPlaintextMessageValidator"/>
+        <citrus:validator class="com.consol.citrus.http.validation.FormUrlEncodedMessageValidator"/>
+    </citrus:message-validators>
+
+</beans>
