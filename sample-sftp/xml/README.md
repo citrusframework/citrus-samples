@@ -1,10 +1,10 @@
-FTP sample ![Logo][1]
+SFTP sample ![Logo][1]
 ==============
 
-This sample shows hot to setup proper FTP communication as client and server in Citrus. The ftp-client component creates a new
+This sample shows hot to setup proper SFTP communication as client and server in Citrus. The sftp-client component uses private key authentication and creates a new
 directory on the server, stores a file and retrieves the same file in a single test.
 
-FTP features are also described in detail in [reference guide][4]
+SFTP features are also described in detail in [reference guide][4]
 
 Objectives
 ---------
@@ -15,53 +15,27 @@ using username password credentials. The ftp-server component will receive incom
 First of all let us setup the necessary components in the Spring bean configuration:
 
 ```xml
-<citrus-ftp:client id="ftpClient"
-                   auto-read-files="true"
-                   port="22222"
+<citrus-sftp:client id="sftpClient"
+                   strict-host-checking="false"
+                   port="2222"
                    username="citrus"
-                   password="admin"
+                   private-key-path="classpath:ssh/citrus.priv"
                    timeout="10000"/>
 
-<citrus-ftp:server id="ftpServer"
-                   port="22222"
+<citrus-sftp:server id="sftpServer"
+                   port="2222"
                    auto-start="true"
-                   auto-handle-commands="MKD,PORT,TYPE"
-                   user-manager-properties="classpath:citrus.ftp.user.properties"/>
+                   user="citrus"
+                   password="admin"
+                   allowed-key-path="classpath:ssh/citrus_pub.pem"/>
 ```
 
-The *ftpServer* is a small but fully qualified FTP server implementation in Citrus. The server receives `user-manager-properties` that define all available user accounts. The properties
-look like this:
-
-```properties
-# Password is "admin"
-ftpserver.user.citrus.userpassword=21232F297A57A5A743894A0E4A801FC3
-ftpserver.user.citrus.homedirectory=target/ftp/user/citrus
-ftpserver.user.citrus.enableflag=true
-ftpserver.user.citrus.writepermission=true
-ftpserver.user.citrus.maxloginnumber=0
-ftpserver.user.citrus.maxloginperip=0
-ftpserver.user.citrus.idletime=0
-ftpserver.user.citrus.uploadrate=0
-ftpserver.user.citrus.downloadrate=0
-
-ftpserver.user.anonymous.userpassword=
-ftpserver.user.anonymous.homedirectory=target/ftp/user/anonymous
-ftpserver.user.anonymous.enableflag=true
-ftpserver.user.anonymous.writepermission=false
-ftpserver.user.anonymous.maxloginnumber=20
-ftpserver.user.anonymous.maxloginperip=2
-ftpserver.user.anonymous.idletime=300
-ftpserver.user.anonymous.uploadrate=4800
-ftpserver.user.anonymous.downloadrate=4800
-```
-
-The FTP server defines two accounts `citrus` and `anonymous`. Clients may authenticate to the server using these credentials. Based on the user account
-we can set a user workspace home directory. The server will save incoming stored files to this directory and the server will read retrieved files from that
-home directory.
+The *sftpServer* is a small but fully qualified SFTP server implementation in Citrus. The server receives a `user` that defines the user account and its home directory. All commands
+will be performed in this user home directory. You can set the user home directory using the `user-home-path` attribute on the server. By default this is a directory located in `${user.dir}/target/{serverName}/home/{user}`. 
 
 In case you want to setup some files in that directory in order to provide it to clients, please copy those files to that home directory prior to the test.  
 
-The ftp-client connects to the server using the user credentials and is then able to store and retrieve files in a test.
+The sftp-client connects to the server using the user credentials and/or the private key authentication. The client uses the private key where the server adds the public key to the list of allowed keys.
 
 In a sample test we first create a new subdirectory in that user home directory.
 
@@ -70,7 +44,7 @@ In a sample test we first create a new subdirectory in that user home directory.
   <message>Create new directory on server</message>
 </echo>
 
-<send endpoint="ftpClient" fork="true">
+<send endpoint="sftpClient">
   <message>
     <payload>
       <ftp:command>
@@ -81,13 +55,13 @@ In a sample test we first create a new subdirectory in that user home directory.
   </message>
 </send>
 
-<receive endpoint="ftpClient">
+<receive endpoint="sftpClient">
   <message>
     <payload>
       <ftp:command-result>
         <ftp:success>true</ftp:success>
         <ftp:reply-code>257</ftp:reply-code>
-        <ftp:reply-string>257 "/todo" created.</ftp:reply-string>
+        <ftp:reply-string>Pathname created</ftp:reply-string>
       </ftp:command-result>
     </payload>
   </message>
@@ -95,46 +69,40 @@ In a sample test we first create a new subdirectory in that user home directory.
 ```
 
 As you can see the client is passing a `MKD` signal to the server. The user login procedure is done automatically and the directory creation is also
-dome automatically on the FTP server. This is because we added the `MKD` signal to the list of `auto-handle-commands`.
+dome automatically on the SFTP server. This is because the test case is not able to intercept those commands such as MKD and LIST on the server. The commands are directly
+executed in the user home directory. 
 
-```xml
-<citrus-ftp:server id="ftpServer"
-                   [...]
-                   auto-login="true"
-                   auto-handle-commands="MKD,PORT,TYPE"
-                   [...]/>
-```
-
-This tells the FTP server to automatically handle the user login as well as the given commands. Now lets store a new file in that user directory.
+Now lets store a new file in that user directory.
 
 ```xml
 <echo>
   <message>Store file to directory</message>
 </echo>
 
-<send endpoint="ftpClient" fork="true">
+<send endpoint="sftpClient" fork="true">
   <message>
     <payload>
       <ftp:put-command>
-        <ftp:file path="todo/entry.json" type="ASCII"/>
-        <ftp:target path="/todo/entry.json"/>
+        <ftp:file path="classpath:todo/entry.json" type="ASCII"/>
+        <ftp:target path="todo/todo.json"/>
       </ftp:put-command>
     </payload>
   </message>
 </send>
 
-<receive endpoint="ftpServer">
+<receive endpoint="sftpServer">
   <message>
     <payload>
-      <ftp:command>
+      <ftp:put-command>
         <ftp:signal>STOR</ftp:signal>
-        <ftp:arguments>/todo/entry.json</ftp:arguments>
-      </ftp:command>
+        <ftp:file path="@ignore@" type="ASCII"/>
+        <ftp:target path="/todo/todo.json"/>
+      </ftp:put-command>
     </payload>
   </message>
 </receive>
 
-<send endpoint="ftpServer">
+<send endpoint="sftpServer">
   <message>
     <payload>
       <ftp:command-result>
@@ -144,13 +112,13 @@ This tells the FTP server to automatically handle the user login as well as the 
   </message>
 </send>
 
-<receive endpoint="ftpClient">
+<receive endpoint="sftpClient">
   <message>
     <payload>
       <ftp:put-command-result>
         <ftp:success>true</ftp:success>
         <ftp:reply-code>226</ftp:reply-code>
-        <ftp:reply-string>@contains('Transfer complete')@</ftp:reply-string>
+        <ftp:reply-string>Transfer complete</ftp:reply-string>
       </ftp:put-command-result>
     </payload>
   </message>
@@ -171,7 +139,7 @@ Now we should be also able to list the files in that directory:
   <message>List files in directory</message>
 </echo>
 
-<send endpoint="ftpClient" fork="true">
+<send endpoint="sftpClient">
   <message>
     <payload>
       <ftp:list-command>
@@ -181,36 +149,17 @@ Now we should be also able to list the files in that directory:
   </message>
 </send>
 
-<receive endpoint="ftpServer">
-  <message>
-    <payload>
-      <ftp:command>
-        <ftp:signal>LIST</ftp:signal>
-        <ftp:arguments>todo</ftp:arguments>
-      </ftp:command>
-    </payload>
-  </message>
-</receive>
-
-<send endpoint="ftpServer">
-  <message>
-    <payload>
-      <ftp:command-result>
-        <ftp:success>true</ftp:success>
-      </ftp:command-result>
-    </payload>
-  </message>
-</send>
-
-<receive endpoint="ftpClient">
+<receive endpoint="sftpClient">
   <message>
     <payload>
       <ftp:list-command-result>
         <ftp:success>true</ftp:success>
-        <ftp:reply-code>226</ftp:reply-code>
-        <ftp:reply-string>@contains('Closing data connection')@</ftp:reply-string>
+        <ftp:reply-code>150</ftp:reply-code>
+        <ftp:reply-string>List files complete</ftp:reply-string>
         <ftp:files>
-          <ftp:file path="entry.json"/>
+          <ftp:file path="."/>
+          <ftp:file path=".."/>
+          <ftp:file path="todo.json"/>
         </ftp:files>
       </ftp:list-command-result>
     </payload>
@@ -225,7 +174,7 @@ Now we can also retrieve the file from the server by calling the `RETR` operatio
   <message>Retrieve file from server</message>
 </echo>
 
-<send endpoint="ftpClient" fork="true">
+<send endpoint="sftpClient" fork="true">
   <message>
     <payload>
       <ftp:get-command>
@@ -236,18 +185,19 @@ Now we can also retrieve the file from the server by calling the `RETR` operatio
   </message>
 </send>
 
-<receive endpoint="ftpServer">
+<receive endpoint="sftpServer">
   <message>
     <payload>
-      <ftp:command>
+      <ftp:get-command>
         <ftp:signal>RETR</ftp:signal>
-        <ftp:arguments>todo/todo.json</ftp:arguments>
-      </ftp:command>
+        <ftp:file path="/todo/todo.json" type="ASCII"/>
+        <ftp:target path="@ignore@"/>
+      </ftp:get-command>
     </payload>
   </message>
 </receive>
 
-<send endpoint="ftpServer">
+<send endpoint="sftpServer">
   <message>
     <payload>
       <ftp:command-result>
@@ -257,13 +207,13 @@ Now we can also retrieve the file from the server by calling the `RETR` operatio
   </message>
 </send>
 
-<receive endpoint="ftpClient">
+<receive endpoint="sftpClient">
   <message>
     <payload>
       <ftp:get-command-result>
         <ftp:success>true</ftp:success>
         <ftp:reply-code>226</ftp:reply-code>
-        <ftp:reply-string>@contains('Transfer complete')@</ftp:reply-string>
+        <ftp:reply-string>Transfer complete</ftp:reply-string>
         <ftp:file path="target/todo/todo.json">
           <ftp:data>citrus:readFile('classpath:todo/entry.json')</ftp:data>
         </ftp:file>
@@ -273,7 +223,7 @@ Now we can also retrieve the file from the server by calling the `RETR` operatio
 </receive>
 ```
 
-This completes our test as we were able to interact with the FTP server using the client signals.
+This completes our test as we were able to interact with the SFTP server using the client signals.
 
 Run
 ---------

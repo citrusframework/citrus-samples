@@ -18,16 +18,16 @@
 
     <actions>
       <echo>
-        <message>Remove ftp user directory if present</message>
+        <message>Remove sftp user directory if present</message>
       </echo>
 
-      <action reference="deleteFtpFiles"/>
+      <action reference="clearUserHome"/>
 
       <echo>
         <message>Create new directory on server</message>
       </echo>
 
-      <send endpoint="ftpClient">
+      <send endpoint="sftpClient">
         <message>
           <payload>
             <ftp:command>
@@ -38,13 +38,13 @@
         </message>
       </send>
 
-      <receive endpoint="ftpClient">
+      <receive endpoint="sftpClient">
         <message>
           <payload>
             <ftp:command-result>
               <ftp:success>true</ftp:success>
               <ftp:reply-code>257</ftp:reply-code>
-              <ftp:reply-string>257 "/todo" created.</ftp:reply-string>
+              <ftp:reply-string>Pathname created</ftp:reply-string>
             </ftp:command-result>
           </payload>
         </message>
@@ -58,7 +58,7 @@
         <message>Store file to directory</message>
       </echo>
 
-      <send endpoint="ftpClient" fork="true">
+      <send endpoint="sftpClient" fork="true">
         <message>
           <payload>
             <ftp:put-command>
@@ -69,18 +69,19 @@
         </message>
       </send>
 
-      <receive endpoint="ftpServer">
+      <receive endpoint="sftpServer">
         <message>
           <payload>
-            <ftp:command>
+            <ftp:put-command>
               <ftp:signal>STOR</ftp:signal>
-              <ftp:arguments>todo/todo.json</ftp:arguments>
-            </ftp:command>
+              <ftp:file path="@ignore@" type="ASCII"/>
+              <ftp:target path="/todo/todo.json"/>
+            </ftp:put-command>
           </payload>
         </message>
       </receive>
 
-      <send endpoint="ftpServer">
+      <send endpoint="sftpServer">
         <message>
           <payload>
             <ftp:command-result>
@@ -90,13 +91,13 @@
         </message>
       </send>
 
-      <receive endpoint="ftpClient">
+      <receive endpoint="sftpClient">
         <message>
           <payload>
             <ftp:put-command-result>
               <ftp:success>true</ftp:success>
               <ftp:reply-code>226</ftp:reply-code>
-              <ftp:reply-string>@contains('Transfer complete')@</ftp:reply-string>
+              <ftp:reply-string>Transfer complete</ftp:reply-string>
             </ftp:put-command-result>
           </payload>
         </message>
@@ -106,7 +107,7 @@
         <message>List files in directory</message>
       </echo>
 
-      <send endpoint="ftpClient" fork="true">
+      <send endpoint="sftpClient">
         <message>
           <payload>
             <ftp:list-command>
@@ -116,35 +117,16 @@
         </message>
       </send>
 
-      <receive endpoint="ftpServer">
-        <message>
-          <payload>
-            <ftp:command>
-              <ftp:signal>LIST</ftp:signal>
-              <ftp:arguments>todo</ftp:arguments>
-            </ftp:command>
-          </payload>
-        </message>
-      </receive>
-
-      <send endpoint="ftpServer">
-        <message>
-          <payload>
-            <ftp:command-result>
-              <ftp:success>true</ftp:success>
-            </ftp:command-result>
-          </payload>
-        </message>
-      </send>
-
-      <receive endpoint="ftpClient">
+      <receive endpoint="sftpClient">
         <message>
           <payload>
             <ftp:list-command-result>
               <ftp:success>true</ftp:success>
-              <ftp:reply-code>226</ftp:reply-code>
-              <ftp:reply-string>@contains('Closing data connection')@</ftp:reply-string>
+              <ftp:reply-code>150</ftp:reply-code>
+              <ftp:reply-string>List files complete</ftp:reply-string>
               <ftp:files>
+                <ftp:file path="."/>
+                <ftp:file path=".."/>
                 <ftp:file path="todo.json"/>
               </ftp:files>
             </ftp:list-command-result>
@@ -156,7 +138,7 @@
         <message>Retrieve file from server</message>
       </echo>
 
-      <send endpoint="ftpClient" fork="true">
+      <send endpoint="sftpClient" fork="true">
         <message>
           <payload>
             <ftp:get-command>
@@ -167,18 +149,19 @@
         </message>
       </send>
 
-      <receive endpoint="ftpServer">
+      <receive endpoint="sftpServer">
         <message>
           <payload>
-            <ftp:command>
+            <ftp:get-command>
               <ftp:signal>RETR</ftp:signal>
-              <ftp:arguments>todo/todo.json</ftp:arguments>
-            </ftp:command>
+              <ftp:file path="/todo/todo.json" type="ASCII"/>
+              <ftp:target path="@ignore@"/>
+            </ftp:get-command>
           </payload>
         </message>
       </receive>
 
-      <send endpoint="ftpServer">
+      <send endpoint="sftpServer">
         <message>
           <payload>
             <ftp:command-result>
@@ -188,13 +171,13 @@
         </message>
       </send>
 
-      <receive endpoint="ftpClient">
+      <receive endpoint="sftpClient">
         <message>
           <payload>
             <ftp:get-command-result>
               <ftp:success>true</ftp:success>
               <ftp:reply-code>226</ftp:reply-code>
-              <ftp:reply-string>@contains('Transfer complete')@</ftp:reply-string>
+              <ftp:reply-string>Transfer complete</ftp:reply-string>
               <ftp:file path="target/todo/todo.json">
                 <ftp:data>citrus:readFile('classpath:todo/entry.json')</ftp:data>
               </ftp:file>

@@ -23,7 +23,7 @@
                        user-manager-properties="classpath:citrus.ftp.user.properties"/>
 
     <bean id="deleteFtpFiles" class="com.consol.citrus.samples.todolist.DeleteFtpFilesAction">
-        <property name="ftpDirectoryPath" value="target/ftp/user/citrus/todo"/>
+        <constructor-arg value="target/ftp/user/citrus/todo"/>
     </bean>
 
 </beans>

@@ -18,10 +18,11 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
-import com.consol.citrus.ftp.client.FtpClient;
+import com.consol.citrus.ftp.client.SftpClient;
 import com.consol.citrus.ftp.message.FtpMessage;
-import com.consol.citrus.ftp.model.*;
-import com.consol.citrus.ftp.server.FtpServer;
+import com.consol.citrus.ftp.model.GetCommandResult;
+import com.consol.citrus.ftp.model.ListCommandResult;
+import com.consol.citrus.ftp.server.SftpServer;
 import com.consol.citrus.util.FileUtils;
 import org.apache.commons.net.ftp.FTPCmd;
 import org.apache.ftpserver.ftplet.DataType;
@@ -38,112 +39,81 @@ import java.io.IOException;
 public class TodoListIT extends TestNGCitrusTestDesigner {
 
     @Autowired
-    private FtpClient ftpClient;
+    private SftpClient sftpClient;
 
     @Autowired
-    private FtpServer ftpServer;
+    private SftpServer sftpServer;
 
     @Test
     @CitrusTest
     public void testStoreAndRetrieveFile() throws IOException {
         echo("Remove ftp user directory if present");
 
-        action(new DeleteFtpFilesAction("target/ftp/user/citrus/todo"));
+        action(new ClearUserHomeDirAction(String.format("target/%s/home/%s/todo", sftpServer.getName(), sftpServer.getUser())));
 
         echo("Create new directory on server");
 
-        send(ftpClient)
-            .message(FtpMessage.command(FTPCmd.MKD).arguments("todo"));
+        send(sftpClient)
+                .message(FtpMessage.command(FTPCmd.MKD).arguments("todo"));
 
-        receive(ftpClient)
-            .message(FtpMessage.result(getMkdirsCommandResult("todo")));
+        receive(sftpClient)
+                .message(FtpMessage.success(257, "Pathname created"));
 
-        echo("Directory 'todo' created on FTP server");
+        echo("Directory 'todo' created on SFTP server");
         echo("Store file to directory");
 
-        send(ftpClient)
-                .fork(true)
-                .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII));
+        send(sftpClient)
+            .fork(true)
+            .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII));
 
-        receive(ftpServer)
-                .message(FtpMessage.command(FTPCmd.STOR).arguments("todo/todo.json"));
+        receive(sftpServer)
+                .message(FtpMessage.put("@ignore@","/todo/todo.json", DataType.ASCII));
 
-        send(ftpServer)
+        send(sftpServer)
                 .payload(FtpMessage.success().getPayload(String.class));
 
-        receive(ftpClient)
-                .message(FtpMessage.result(getStoreFileCommandResult()));
+        receive(sftpClient)
+           .message(FtpMessage.putResult(226, "@contains(Transfer complete)@", true));
 
         echo("List files in directory");
 
-        send(ftpClient)
-                .fork(true)
+        send(sftpClient)
                 .message(FtpMessage.list("todo"));
 
-        receive(ftpServer)
-                .message(FtpMessage.command(FTPCmd.LIST).arguments("todo"));
-
-        send(ftpServer)
-                .payload(FtpMessage.success().getPayload(String.class));
-
-        receive(ftpClient)
+        receive(sftpClient)
                 .message(FtpMessage.result(getListCommandResult("todo.json")));
 
         echo("Retrieve file from server");
 
-        send(ftpClient)
+        send(sftpClient)
                 .fork(true)
                 .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII));
 
-        receive(ftpServer)
-                .message(FtpMessage.command(FTPCmd.RETR).arguments("todo/todo.json"));
+        receive(sftpServer)
+                .message(FtpMessage.get("/todo/todo.json", "@ignore@", DataType.ASCII));
 
-        send(ftpServer)
+        send(sftpServer)
                 .payload(FtpMessage.success().getPayload(String.class));
 
-        receive(ftpClient)
+        receive(sftpClient)
                 .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
-    }
-
-    private CommandResult getMkdirsCommandResult(String path) {
-        CommandResult result = new CommandResult();
-        result.setSuccess(true);
-        result.setReplyCode(String.valueOf(257));
-        result.setReplyString(String.format("@contains(\"/%s\" created)@", path));
-
-        return result;
-    }
-
-    private PutCommandResult getStoreFileCommandResult() {
-        PutCommandResult result = new PutCommandResult();
-        result.setSuccess(true);
-        result.setReplyCode(String.valueOf(226));
-        result.setReplyString("@contains(Transfer complete)@");
-
-        return result;
-    }
-
-    private GetCommandResult getRetrieveFileCommandResult(String path, Resource content) throws IOException {
-        GetCommandResult result = new GetCommandResult();
-        result.setSuccess(true);
-        result.setReplyCode(String.valueOf(226));
-        result.setReplyString("@contains('Transfer complete')@");
-
-        GetCommandResult.File entryResult = new GetCommandResult.File();
-        entryResult.setPath(path);
-        entryResult.setData(FileUtils.readToString(content));
-        result.setFile(entryResult);
-
-        return result;
     }
 
     private ListCommandResult getListCommandResult(String ... fileNames) {
         ListCommandResult result = new ListCommandResult();
         result.setSuccess(true);
-        result.setReplyCode(String.valueOf(226));
-        result.setReplyString("@contains('Closing data connection')@");
+        result.setReplyCode(String.valueOf(150));
+        result.setReplyString("List files complete");
 
         ListCommandResult.Files expectedFiles = new ListCommandResult.Files();
+
+        ListCommandResult.Files.File currentDir = new ListCommandResult.Files.File();
+        currentDir.setPath(".");
+        expectedFiles.getFiles().add(currentDir);
+
+        ListCommandResult.Files.File parentDir = new ListCommandResult.Files.File();
+        parentDir.setPath("..");
+        expectedFiles.getFiles().add(parentDir);
 
         for (String fileName : fileNames) {
             ListCommandResult.Files.File entry = new ListCommandResult.Files.File();
@@ -156,4 +126,17 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         return result;
     }
 
+    private GetCommandResult getRetrieveFileCommandResult(String path, Resource content) throws IOException {
+        GetCommandResult result = new GetCommandResult();
+        result.setSuccess(true);
+        result.setReplyCode(String.valueOf(226));
+        result.setReplyString("Transfer complete");
+
+        GetCommandResult.File entryResult = new GetCommandResult.File();
+        entryResult.setPath(path);
+        entryResult.setData(FileUtils.readToString(content));
+        result.setFile(entryResult);
+
+        return result;
+    }
 }

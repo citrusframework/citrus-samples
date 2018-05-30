@@ -13,23 +13,23 @@ import java.nio.file.attribute.BasicFileAttributes;
  * @author Christoph Deppisch
  * @since 2.7.6
  */
-public class DeleteFtpFilesAction extends AbstractTestAction {
+public class ClearUserHomeDirAction extends AbstractTestAction {
 
-    private final String ftpDirectoryPath;
+    private final String userHomePath;
 
     /**
      * Constructor initializing target file path.
-     * @param ftpDirectoryPath
+     * @param userHomePath
      */
-    public DeleteFtpFilesAction(String ftpDirectoryPath) {
-        this.ftpDirectoryPath = ftpDirectoryPath;
+    public ClearUserHomeDirAction(String userHomePath) {
+        this.userHomePath = userHomePath;
     }
 
     @Override
     public void doExecute(TestContext context) {
         try {
-            if (Files.exists(Paths.get(new FileSystemResource(ftpDirectoryPath).getURI()))) {
-                Files.walkFileTree(Paths.get(new FileSystemResource(ftpDirectoryPath).getURI()), new SimpleFileVisitor<Path>() {
+            if (Files.exists(Paths.get(new FileSystemResource(userHomePath).getURI()))) {
+                Files.walkFileTree(Paths.get(new FileSystemResource(userHomePath).getURI()), new SimpleFileVisitor<Path>() {
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                         Files.deleteIfExists(file);
@@ -37,19 +37,19 @@ public class DeleteFtpFilesAction extends AbstractTestAction {
                     }
                 });
 
-                Files.deleteIfExists(Paths.get(new FileSystemResource(ftpDirectoryPath).getURI()));
+                Files.deleteIfExists(Paths.get(new FileSystemResource(userHomePath).getURI()));
             }
         } catch (IOException e) {
-            throw new CitrusRuntimeException("Failed to delete ftp user directory", e);
+            throw new CitrusRuntimeException("Failed to delete user home directory", e);
         }
     }
 
     /**
-     * Gets the ftpDirectoryPath.
+     * Gets the userHomePath.
      *
      * @return
      */
-    public String getFtpDirectoryPath() {
-        return ftpDirectoryPath;
+    public String getUserHomePath() {
+        return userHomePath;
     }
 }

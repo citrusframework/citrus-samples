@@ -152,6 +152,62 @@ receive(ftpClient)
         .message(FtpMessage.result(getListCommandResult("entry.json")));
 ```
 
+```java
+private ListCommandResult getListCommandResult(String ... fileNames) {
+    ListCommandResult result = new ListCommandResult();
+    result.setSuccess(true);
+    result.setReplyCode(String.valueOf(226));
+    result.setReplyString("@contains('Closing data connection')@");
+
+    ListCommandResult.Files expectedFiles = new ListCommandResult.Files();
+
+    for (String fileName : fileNames) {
+        ListCommandResult.Files.File entry = new ListCommandResult.Files.File();
+        entry.setPath(fileName);
+        expectedFiles.getFiles().add(entry);
+    }
+
+    result.setFiles(expectedFiles);
+
+    return result;
+}
+```
+
+Now we can also retrieve the file from the server by calling the `RETR` operation.
+
+```java
+echo("Retrieve file from server");
+
+send(ftpClient)
+        .fork(true)
+        .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII));
+
+receive(ftpServer)
+        .message(FtpMessage.command(FTPCmd.RETR).arguments("todo/todo.json"));
+
+send(ftpServer)
+        .payload(FtpMessage.success().getPayload(String.class));
+
+receive(ftpClient)
+        .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
+```
+
+```java
+private GetCommandResult getRetrieveFileCommandResult(String path, Resource content) throws IOException {
+    GetCommandResult result = new GetCommandResult();
+    result.setSuccess(true);
+    result.setReplyCode(String.valueOf(226));
+    result.setReplyString("@contains('Transfer complete')@");
+
+    GetCommandResult.File entryResult = new GetCommandResult.File();
+    entryResult.setPath(path);
+    entryResult.setData(FileUtils.readToString(content));
+    result.setFile(entryResult);
+
+    return result;
+}
+```
+
 This completes our test as we were able to interact with the FTP server using the client signals.
 
 Run
