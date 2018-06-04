@@ -62,47 +62,47 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         echo("Store file to directory");
 
         send(ftpClient)
-                .fork(true)
-                .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII));
+            .fork(true)
+            .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII));
 
         receive(ftpServer)
-                .message(FtpMessage.command(FTPCmd.STOR).arguments("todo/todo.json"));
+            .message(FtpMessage.command(FTPCmd.STOR).arguments("todo/todo.json"));
 
         send(ftpServer)
-                .payload(FtpMessage.success().getPayload(String.class));
+            .message(FtpMessage.success());
 
         receive(ftpClient)
-                .message(FtpMessage.result(getStoreFileCommandResult()));
+            .message(FtpMessage.result(getStoreFileCommandResult()));
 
         echo("List files in directory");
 
         send(ftpClient)
-                .fork(true)
-                .message(FtpMessage.list("todo"));
+            .fork(true)
+            .message(FtpMessage.list("todo"));
 
         receive(ftpServer)
-                .message(FtpMessage.command(FTPCmd.LIST).arguments("todo"));
+            .message(FtpMessage.command(FTPCmd.LIST).arguments("todo"));
 
         send(ftpServer)
-                .payload(FtpMessage.success().getPayload(String.class));
+            .message(FtpMessage.success());
 
         receive(ftpClient)
-                .message(FtpMessage.result(getListCommandResult("todo.json")));
+            .message(FtpMessage.result(getListCommandResult("todo.json")));
 
         echo("Retrieve file from server");
 
         send(ftpClient)
-                .fork(true)
-                .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII));
+            .fork(true)
+            .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII));
 
         receive(ftpServer)
-                .message(FtpMessage.command(FTPCmd.RETR).arguments("todo/todo.json"));
+            .message(FtpMessage.command(FTPCmd.RETR).arguments("todo/todo.json"));
 
         send(ftpServer)
-                .payload(FtpMessage.success().getPayload(String.class));
+            .message(FtpMessage.success());
 
         receive(ftpClient)
-                .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
+            .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
     }
 
     private CommandResult getMkdirsCommandResult(String path) {

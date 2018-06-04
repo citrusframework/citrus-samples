@@ -54,10 +54,10 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         echo("Create new directory on server");
 
         send(sftpClient)
-                .message(FtpMessage.command(FTPCmd.MKD).arguments("todo"));
+            .message(FtpMessage.command(FTPCmd.MKD).arguments("todo"));
 
         receive(sftpClient)
-                .message(FtpMessage.success(257, "Pathname created"));
+            .message(FtpMessage.success(257, "Pathname created"));
 
         echo("Directory 'todo' created on SFTP server");
         echo("Store file to directory");
@@ -67,10 +67,10 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII));
 
         receive(sftpServer)
-                .message(FtpMessage.put("@ignore@","/todo/todo.json", DataType.ASCII));
+            .message(FtpMessage.put("@ignore@","/todo/todo.json", DataType.ASCII));
 
         send(sftpServer)
-                .payload(FtpMessage.success().getPayload(String.class));
+            .message(FtpMessage.success());
 
         receive(sftpClient)
            .message(FtpMessage.putResult(226, "@contains(Transfer complete)@", true));
@@ -78,25 +78,25 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         echo("List files in directory");
 
         send(sftpClient)
-                .message(FtpMessage.list("todo"));
+            .message(FtpMessage.list("todo"));
 
         receive(sftpClient)
-                .message(FtpMessage.result(getListCommandResult("todo.json")));
+            .message(FtpMessage.result(getListCommandResult("todo.json")));
 
         echo("Retrieve file from server");
 
         send(sftpClient)
-                .fork(true)
-                .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII));
+            .fork(true)
+            .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII));
 
         receive(sftpServer)
-                .message(FtpMessage.get("/todo/todo.json", "@ignore@", DataType.ASCII));
+            .message(FtpMessage.get("/todo/todo.json", "@ignore@", DataType.ASCII));
 
         send(sftpServer)
-                .payload(FtpMessage.success().getPayload(String.class));
+                .message(FtpMessage.success());
 
         receive(sftpClient)
-                .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
+            .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
     }
 
     private ListCommandResult getListCommandResult(String ... fileNames) {

@@ -75,7 +75,7 @@ receive(sftpServer)
         .message(FtpMessage.put("@ignore@","/todo/todo.json", DataType.ASCII));
 
 send(sftpServer)
-        .payload(FtpMessage.success().getPayload(String.class));
+        .message(FtpMessage.success());
 
 receive(sftpClient)
    .message(FtpMessage.putResult(226, "@contains(Transfer complete)@", true));
@@ -142,7 +142,7 @@ receive(sftpServer)
       .message(FtpMessage.get("/todo/todo.json", "@ignore@", DataType.ASCII));
 
 send(sftpServer)
-      .payload(FtpMessage.success().getPayload(String.class));
+      .message(FtpMessage.success());
 
 receive(sftpClient)
       .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));

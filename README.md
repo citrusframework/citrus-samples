@@ -45,6 +45,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-mail](sample-mail)| Shows mail server activities in Citrus |
 | [sample-ftp](sample-ftp)| Shows FTP client and server interaction in Citrus |
 | [sample-sftp](sample-sftp)| Shows SFTP client and server interaction in Citrus |
+| [sample-scp](sample-scp)| Shows SCP client and server interaction in Citrus |
 | [sample-databind](sample-databind)| Shows JSON object mapping feature when sending and receiving messages |
 | [sample-dataprovider](sample-dataprovider)| Shows TestNG data provider usage in Citrus |
 | [sample-dynamic-endpoints](sample-dynamic-endpoints)| Shows dynamic endpoint component usage |

@@ -120,7 +120,7 @@ receive(ftpServer)
         .message(FtpMessage.command(FTPCmd.STOR).arguments("todo/entry.json"));
 
 send(ftpServer)
-        .payload(FtpMessage.success().getPayload(String.class));
+        .message(FtpMessage.success());
 
 receive(ftpClient)
         .message(FtpMessage.result(getStoreFileCommandResult()));
@@ -146,7 +146,7 @@ receive(ftpServer)
         .message(FtpMessage.command(FTPCmd.LIST).arguments("todo"));
 
 send(ftpServer)
-        .payload(FtpMessage.success().getPayload(String.class));
+        .message(FtpMessage.success());
 
 receive(ftpClient)
         .message(FtpMessage.result(getListCommandResult("entry.json")));
@@ -186,7 +186,7 @@ receive(ftpServer)
         .message(FtpMessage.command(FTPCmd.RETR).arguments("todo/todo.json"));
 
 send(ftpServer)
-        .payload(FtpMessage.success().getPayload(String.class));
+        .message(FtpMessage.success());
 
 receive(ftpClient)
         .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
