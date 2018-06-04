@@ -21,11 +21,16 @@
         <message>Store file via SCP</message>
       </echo>
 
-      <async>
-        <actions>
-          <action reference="uploadAction"/>
-        </actions>
-      </async>
+      <send endpoint="scpClient" fork="true">
+        <message>
+          <payload>
+            <ftp:put-command>
+              <ftp:file path="classpath:todo/entry.json" type="ASCII"/>
+              <ftp:target path="todo.json"/>
+            </ftp:put-command>
+          </payload>
+        </message>
+      </send>
 
       <receive endpoint="sftpServer">
         <message>
@@ -49,17 +54,30 @@
         </message>
       </send>
 
-      <sleep milliseconds="1000"/>
+      <receive endpoint="scpClient">
+        <message>
+          <payload>
+            <ftp:command-result>
+              <ftp:success>true</ftp:success>
+            </ftp:command-result>
+          </payload>
+        </message>
+      </receive>
 
       <echo>
         <message>Retrieve file from server</message>
       </echo>
 
-      <async>
-        <actions>
-          <action reference="downloadAction"/>
-        </actions>
-      </async>
+      <send endpoint="scpClient" fork="true">
+        <message>
+          <payload>
+            <ftp:get-command>
+              <ftp:file path="todo.json" type="ASCII"/>
+              <ftp:target path="file:target/scp/todo.json"/>
+            </ftp:get-command>
+          </payload>
+        </message>
+      </send>
 
       <receive endpoint="sftpServer">
         <message>
@@ -83,7 +101,15 @@
         </message>
       </send>
 
-      <sleep milliseconds="1000"/>
+      <receive endpoint="scpClient">
+        <message>
+          <payload>
+            <ftp:command-result>
+              <ftp:success>true</ftp:success>
+            </ftp:command-result>
+          </payload>
+        </message>
+      </receive>
 
       <groovy>
         import com.consol.citrus.exceptions.CitrusRuntimeException;

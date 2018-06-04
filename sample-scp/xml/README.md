@@ -1,7 +1,7 @@
 SCP sample ![Logo][1]
 ==============
 
-This sample works with secure copy aka SCP in order to copy files as client to a server provided by Citrus. The sftp-client uses the upload for storing a new file on the 
+This sample works with secure copy aka SCP in order to copy files as client to a server provided by Citrus. The scp-client uses the upload for storing a new file on the 
 server. After that the very same file is downloaded via SCP in a single test.
 
 Common FTP features are also described in detail in [reference guide][4]
@@ -15,6 +15,12 @@ using username password credentials. The secure ftp-server component will receiv
 First of all let us setup the necessary components in the Spring bean configuration:
 
 ```xml
+<citrus-scp:client id="scpClient"
+                   port="2222"
+                   username="citrus"
+                   password="admin"
+                   private-key-path="classpath:ssh/citrus.priv"/>
+                   
 <citrus-sftp:server id="sftpServer"
                    port="2222"
                    auto-start="true"
@@ -31,36 +37,7 @@ home directory.
 
 In case you want to setup some files in that directory in order to provide it to clients, please copy those files to that home directory prior to the test.  
 
-The sftp-client connects to the server using the user credentials and is then able to store and retrieve files in a test via SCP.
-
-We setup a custom `ScpClientAction` as Citrus test action that will perform upload and download operations via SCP. The `ScpClientAction` receives the user, host, port and private key information. Based on that
-the action is able to upload and download files to and from the SFTP server. 
-
-```java
-ClientSession session = SshClient.setupClientSession("-P", stdin, System.out, System.err, "-P", String.valueOf(port), "-o", "HostKeyAlgorithms=+ssh-dss", "-i", privateKeyPath, "-l", user, host);
-ScpClient scpClient = session.createScpClient();
-```
-
-```xml
-<bean id="scpClientAction" class="com.consol.citrus.samples.todolist.ScpClientAction">
-    <constructor-arg type="java.lang.String" value="citrus"/>
-    <constructor-arg type="java.lang.String" value="localhost"/>
-    <constructor-arg value="2222"/>
-    <constructor-arg value="classpath:ssh/citrus.priv"/>
-</bean>
-
-<bean id="uploadAction" parent="scpClientAction">
-    <property name="mode" value="UPLOAD"/>
-    <property name="source" value="classpath:todo/entry.json"/>
-    <property name="targetPath" value="todo.json"/>
-</bean>
-
-<bean id="downloadAction" parent="scpClientAction">
-    <property name="mode" value="DOWNLOAD"/>
-    <property name="sourcePath" value="todo.json"/>
-    <property name="targetPath" value="target/scp/todo.json"/>
-</bean>
-```
+The scp-client connects to the server using the user credentials and is then able to store and retrieve files in a test via SCP.
 
 In our test we can now start to upload a file using SCP.
 
@@ -69,11 +46,16 @@ In our test we can now start to upload a file using SCP.
   <message>Store file via SCP</message>
 </echo>
 
-<async>
-  <actions>
-    <action reference="uploadAction"/>
-  </actions>
-</async>
+<send endpoint="scpClient" fork="true">
+  <message>
+    <payload>
+      <ftp:put-command>
+        <ftp:file path="classpath:todo/entry.json" type="ASCII"/>
+        <ftp:target path="todo.json"/>
+      </ftp:put-command>
+    </payload>
+  </message>
+</send>
 
 <receive endpoint="sftpServer">
   <message>
@@ -96,9 +78,19 @@ In our test we can now start to upload a file using SCP.
     </payload>
   </message>
 </send>
+
+<receive endpoint="scpClient">
+  <message>
+    <payload>
+      <ftp:command-result>
+        <ftp:success>true</ftp:success>
+      </ftp:command-result>
+    </payload>
+  </message>
+</receive>
 ```
 
-Now we have both client and server interaction in the same test case. This requires us to use `<async>` action container on all client
+Now we have both client and server interaction in the same test case. This requires us to use `fork` option enabled on all client
 requests as we need to continue with the test in order to handle the server interaction, too. We can store a new file `todo/entry.json` which is transmitted
 to the server via secure copy.
 
@@ -112,11 +104,16 @@ Lets download that very same file in another SCP file transfer:
   <message>Retrieve file from server</message>
 </echo>
 
-<async>
-  <actions>
-    <action reference="downloadAction"/>
-  </actions>
-</async>
+<send endpoint="scpClient" fork="true">
+  <message>
+    <payload>
+      <ftp:get-command>
+        <ftp:file path="todo.json" type="ASCII"/>
+        <ftp:target path="file:target/scp/todo.json"/>
+      </ftp:get-command>
+    </payload>
+  </message>
+</send>
 
 <receive endpoint="sftpServer">
   <message>
@@ -139,6 +136,16 @@ Lets download that very same file in another SCP file transfer:
     </payload>
   </message>
 </send>
+
+<receive endpoint="scpClient">
+  <message>
+    <payload>
+      <ftp:command-result>
+        <ftp:success>true</ftp:success>
+      </ftp:command-result>
+    </payload>
+  </message>
+</receive>
 ```
 
 This completes our test as we were able to interact with the SFTP server using the client secure copy operations.

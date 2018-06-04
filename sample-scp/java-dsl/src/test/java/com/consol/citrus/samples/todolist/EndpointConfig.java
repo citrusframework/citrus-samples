@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
+import com.consol.citrus.ftp.client.ScpClient;
 import com.consol.citrus.ftp.server.SftpServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,17 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class EndpointConfig {
+
+    @Bean
+    public ScpClient scpClient() {
+        return CitrusEndpoints.scp()
+                .client()
+                .port(2222)
+                .username("citrus")
+                .password("admin")
+                .privateKeyPath("classpath:ssh/citrus.priv")
+                .build();
+    }
 
     @Bean
     public SftpServer sftpServer() {

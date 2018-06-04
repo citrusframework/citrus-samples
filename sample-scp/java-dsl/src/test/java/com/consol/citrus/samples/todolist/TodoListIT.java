@@ -21,19 +21,18 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.exceptions.CitrusRuntimeException;
+import com.consol.citrus.ftp.client.ScpClient;
 import com.consol.citrus.ftp.message.FtpMessage;
 import com.consol.citrus.ftp.server.SftpServer;
 import com.consol.citrus.util.FileUtils;
 import org.apache.ftpserver.ftplet.DataType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Paths;
 
 /**
  * @author Christoph Deppisch
@@ -41,52 +40,50 @@ import java.nio.file.*;
 public class TodoListIT extends TestNGCitrusTestDesigner {
 
     @Autowired
-    private SftpServer sftpServer;
+    private ScpClient scpClient;
 
-    private Resource privateKey = new ClassPathResource("ssh/citrus.priv");
+    @Autowired
+    private SftpServer sftpServer;
 
     @Test
     @CitrusTest
-    public void testStoreAndRetrieveFile() throws IOException {
-        String sourcePath = new ClassPathResource("todo/entry.json").getFile().getAbsolutePath();
-        String targetFile = "todo.json";
-        String downloadPath = "target/scp/" + targetFile;
-
+    public void testStoreAndRetrieveFile() {
         echo("Store file via SCP");
 
-        async().actions(new ScpClientAction(sftpServer.getUser(), "localhost", sftpServer.getPort(), privateKey.getFile().getAbsolutePath())
-                                .upload(sourcePath, targetFile));
+        send(scpClient)
+           .fork(true)
+           .message(FtpMessage.put("classpath:todo/entry.json", "todo.json", DataType.ASCII));
 
         receive(sftpServer)
-                .message(FtpMessage.put("@ignore@", targetFile, DataType.ASCII));
+            .message(FtpMessage.put("@ignore@", "todo.json", DataType.ASCII));
 
         send(sftpServer)
-                .message(FtpMessage.success());
+            .message(FtpMessage.success());
 
-        sleep(1000L);
+        receive(scpClient)
+            .message(FtpMessage.success());
 
         echo("Retrieve file from server");
 
-        Path downloadTarget = Paths.get(downloadPath);
-        Files.createDirectories(downloadTarget.getParent());
-
-        async().actions(new ScpClientAction(sftpServer.getUser(), "localhost", sftpServer.getPort(), privateKey.getFile().getAbsolutePath())
-                                .download(targetFile, Paths.get(downloadPath).toAbsolutePath().toString()));
+        send(scpClient)
+            .fork(true)
+            .message(FtpMessage.get("todo.json", "file:target/scp/todo.json", DataType.ASCII));
 
         receive(sftpServer)
-                .message(FtpMessage.get("/" + targetFile, "@ignore@", DataType.ASCII));
+            .message(FtpMessage.get("/todo.json", "@ignore@", DataType.ASCII));
 
         send(sftpServer)
-                .message(FtpMessage.success());
+            .message(FtpMessage.success());
 
-        sleep(1000);
-        
+        receive(scpClient)
+            .message(FtpMessage.success());
+
         action(new AbstractTestAction() {
             @Override
             public void doExecute(TestContext context) {
                 try {
-                    String content = FileUtils.readToString(new FileInputStream(Paths.get(downloadPath).toFile()));
-                    Assert.assertEquals(content, FileUtils.readToString(FileUtils.getFileResource(sourcePath)));
+                    String content = FileUtils.readToString(Paths.get("target/scp/todo.json").toFile());
+                    Assert.assertEquals(content, FileUtils.readToString(new ClassPathResource("todo/entry.json")));
                 } catch (IOException e) {
                     throw new CitrusRuntimeException("Failed to read downloaded file", e);
                 }

@@ -2,11 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:citrus="http://www.citrusframework.org/schema/config"
+       xmlns:citrus-scp="http://www.citrusframework.org/schema/scp/config"
        xmlns:citrus-sftp="http://www.citrusframework.org/schema/sftp/config"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.citrusframework.org/schema/config http://www.citrusframework.org/schema/config/citrus-config.xsd
+       http://www.citrusframework.org/schema/scp/config http://www.citrusframework.org/schema/scp/config/citrus-scp-config.xsd
        http://www.citrusframework.org/schema/sftp/config http://www.citrusframework.org/schema/sftp/config/citrus-sftp-config.xsd">
+
+    <citrus-scp:client id="scpClient"
+                       port="2222"
+                       username="citrus"
+                       password="admin"
+                       private-key-path="classpath:ssh/citrus.priv"/>
 
     <citrus-sftp:server id="sftpServer"
                        port="2222"
@@ -14,24 +22,4 @@
                        user="citrus"
                        password="admin"
                        allowed-key-path="classpath:ssh/citrus_pub.pem"/>
-
-    <bean id="scpClientAction" class="com.consol.citrus.samples.todolist.ScpClientAction">
-        <constructor-arg type="java.lang.String" value="citrus"/>
-        <constructor-arg type="java.lang.String" value="localhost"/>
-        <constructor-arg value="2222"/>
-        <constructor-arg value="classpath:ssh/citrus.priv"/>
-    </bean>
-
-    <bean id="uploadAction" parent="scpClientAction">
-        <property name="mode" value="UPLOAD"/>
-        <property name="source" value="classpath:todo/entry.json"/>
-        <property name="targetPath" value="todo.json"/>
-    </bean>
-
-    <bean id="downloadAction" parent="scpClientAction">
-        <property name="mode" value="DOWNLOAD"/>
-        <property name="sourcePath" value="todo.json"/>
-        <property name="targetPath" value="target/scp/todo.json"/>
-    </bean>
-
 </beans>

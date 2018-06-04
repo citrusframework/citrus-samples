@@ -67,7 +67,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII));
 
         receive(sftpServer)
-            .message(FtpMessage.put("@ignore@","/todo/todo.json", DataType.ASCII));
+            .message(FtpMessage.put("@ignore@", "/todo/todo.json", DataType.ASCII));
 
         send(sftpServer)
             .message(FtpMessage.success());
