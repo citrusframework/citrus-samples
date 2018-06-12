@@ -48,6 +48,10 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testStoreAndRetrieveFile() {
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
         echo("Store file via SCP");
 
         send(scpClient)

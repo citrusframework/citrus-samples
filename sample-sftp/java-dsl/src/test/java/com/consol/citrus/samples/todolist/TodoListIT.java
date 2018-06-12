@@ -47,6 +47,10 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testStoreAndRetrieveFile() throws IOException {
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
         echo("Remove ftp user directory if present");
 
         action(new ClearUserHomeDirAction(String.format("target/%s/home/%s/todo", sftpServer.getName(), sftpServer.getUser())));

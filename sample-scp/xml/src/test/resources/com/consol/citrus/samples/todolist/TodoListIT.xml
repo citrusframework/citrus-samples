@@ -16,6 +16,12 @@
       <last-updated-on>2018-05-28T00:00:00</last-updated-on>
     </meta-info>
 
+    <variables>
+      <variable name="todoId" value="citrus:randomUUID()"/>
+      <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+      <variable name="todoDescription" value="Description: ${todoName}"/>
+    </variables>
+
     <actions>
       <echo>
         <message>Store file via SCP</message>
