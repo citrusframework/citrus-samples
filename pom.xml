@@ -38,8 +38,7 @@
     <module>sample-dynamic-endpoints</module>
     <module>sample-binary</module>
     <module>samples-soap</module>
-    <module>sample-sql</module>
-    <module>samples-jdbc</module>
+    <module>samples-db</module>
   </modules>
   
   <repositories>
