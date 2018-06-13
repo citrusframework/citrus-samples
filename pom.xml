@@ -23,9 +23,7 @@
     <module>sample-annotation-config</module>
     <module>sample-javaconfig</module>
     <module>sample-mail</module>
-    <module>sample-ftp</module>
-    <module>sample-sftp</module>
-    <module>sample-scp</module>
+    <module>samples-ftp</module>
     <module>samples-testng</module>
     <module>samples-junit</module>
     <module>samples-http</module>
