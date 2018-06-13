@@ -60,9 +60,7 @@
     <module>sample-soap-ssl</module>
     <module>sample-soap-static-response</module>
     <module>sample-sql</module>
-    <module>sample-jdbc</module>
-    <module>sample-jdbc-transactions</module>
-    <module>sample-jdbc-callable-statements</module>
+    <module>samples-jdbc</module>
   </modules>
   
   <repositories>
