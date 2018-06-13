@@ -11,8 +11,6 @@
   <modules>
     <module>demo</module>
     <module>todo-app</module>
-    <module>sample-test-jar</module>
-    <module>sample-test-war</module>
     <module>sample-camel-context</module>
     <module>sample-behaviors</module>
     <module>sample-dictionaries</module>
@@ -37,6 +35,7 @@
     <module>sample-binary</module>
     <module>samples-soap</module>
     <module>samples-db</module>
+    <module>samples-remote</module>
   </modules>
   
   <repositories>
