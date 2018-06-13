@@ -33,11 +33,9 @@
     <module>sample-rmi</module>
     <module>sample-dataprovider</module>
     <module>sample-reporting</module>
-    <module>sample-xhtml</module>
-    <module>sample-xml</module>
+    <module>samples-xml</module>
     <module>samples-json</module>
     <module>sample-hamcrest</module>
-    <module>sample-oxm</module>
     <module>sample-jms</module>
     <module>sample-dynamic-endpoints</module>
     <module>sample-binary</module>
