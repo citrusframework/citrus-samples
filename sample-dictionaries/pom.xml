@@ -20,7 +20,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-dictionaries</artifactId>
-  <version>2.7.6-SNAPSHOT</version>
+  <version>2.7.6</version>
   <name>Citrus Samples: Dictionaries</name>
   <packaging>pom</packaging>
   
