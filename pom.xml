@@ -32,13 +32,7 @@
     <module>sample-junit</module>
     <module>sample-junit5</module>
     <module>sample-swagger</module>
-    <module>sample-http</module>
-    <module>sample-http-loadtest</module>
-    <module>sample-http-static-response</module>
-    <module>sample-http-query-param</module>
-    <module>sample-http-form-data</module>
-    <module>sample-http-basic-auth</module>
-    <module>sample-https</module>
+    <module>samples-http</module>
     <module>sample-rmi</module>
     <module>sample-dataprovider</module>
     <module>sample-reporting</module>
