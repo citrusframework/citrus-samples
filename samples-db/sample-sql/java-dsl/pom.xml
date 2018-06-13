@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-sql</artifactId>
-  <name>Citrus Samples Java: SQL</name>
+  <name>Citrus Samples:: SQL: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

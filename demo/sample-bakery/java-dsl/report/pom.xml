@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>citrus-java-bakery-report</artifactId>
-  <name>Citrus Samples Java: Bakery Report</name>
+  <name>Citrus Samples:: Bakery Report: Java</name>
   <packaging>war</packaging>
 
   <properties>

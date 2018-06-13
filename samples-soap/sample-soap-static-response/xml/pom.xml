@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-xml-sample-soap-static-response</artifactId>
-  <name>Citrus Samples XML: SOAP Static Response</name>
+  <name>Citrus Samples:: SOAP Static Response: XML</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

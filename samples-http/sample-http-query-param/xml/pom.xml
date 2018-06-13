@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-xml-sample-http-query-param</artifactId>
-  <name>Citrus Samples XML: Http Query Parameter</name>
+  <name>Citrus Samples:: Http Query Parameter: XML</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

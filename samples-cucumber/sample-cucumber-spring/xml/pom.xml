@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-xml-sample-cucumber-spring</artifactId>
-  <name>Citrus Samples XML: Cucumber BDD Spring</name>
+  <name>Citrus Samples:: Cucumber BDD Spring: XML</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

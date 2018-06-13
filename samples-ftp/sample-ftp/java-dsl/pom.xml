@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-ftp</artifactId>
-  <name>Citrus Samples Java: FTP</name>
+  <name>Citrus Samples:: FTP: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

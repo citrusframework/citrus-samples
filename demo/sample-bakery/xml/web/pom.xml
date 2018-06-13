@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>citrus-xml-bakery-web</artifactId>
-  <name>Citrus Samples XML: Bakery Web</name>
+  <name>Citrus Samples:: Bakery Web: XML</name>
   <packaging>war</packaging>
 
   <properties>

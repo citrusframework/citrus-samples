@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-incident</artifactId>
-  <name>Citrus Samples Java: Incident</name>
+  <name>Citrus Samples:: Incident: Java</name>
   <version>2.7.7-SNAPSHOT</version>
   <packaging>war</packaging>
 

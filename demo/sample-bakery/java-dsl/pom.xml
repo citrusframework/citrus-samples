@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-bakery</artifactId>
-  <name>Citrus Samples Java: Bakery</name>
+  <name>Citrus Samples:: Bakery: Java</name>
   <version>2.7.7-SNAPSHOT</version>
   <packaging>pom</packaging>
 

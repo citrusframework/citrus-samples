@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>citrus-java-bakery-worker</artifactId>
-  <name>Citrus Samples Java: Bakery Worker</name>
+  <name>Citrus Samples:: Bakery Worker: Java</name>
 
   <properties>
     <factory.type>chocolate</factory.type>

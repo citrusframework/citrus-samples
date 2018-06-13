@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>citrus-xml-bakery-worker</artifactId>
-  <name>Citrus Samples XML: Bakery Worker</name>
+  <name>Citrus Samples:: Bakery Worker: XML</name>
 
   <properties>
     <factory.type>chocolate</factory.type>

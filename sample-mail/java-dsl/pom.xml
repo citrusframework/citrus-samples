@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-mail</artifactId>
-  <name>Citrus Samples Java: Mail</name>
+  <name>Citrus Samples:: Mail: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

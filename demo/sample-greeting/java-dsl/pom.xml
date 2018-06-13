@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-greeting</artifactId>
-  <name>Citrus Samples Java: Greeting</name>
+  <name>Citrus Samples:: Greeting: Java</name>
   <version>2.7.7-SNAPSHOT</version>
   <packaging>war</packaging>
 

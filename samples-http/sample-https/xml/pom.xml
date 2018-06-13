@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-xml-sample-https</artifactId>
-  <name>Citrus Samples XML: Https</name>
+  <name>Citrus Samples:: Https: XML</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

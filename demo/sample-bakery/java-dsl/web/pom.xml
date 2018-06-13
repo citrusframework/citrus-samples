@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>citrus-java-bakery-web</artifactId>
-  <name>Citrus Samples Java: Bakery Web</name>
+  <name>Citrus Samples:: Bakery Web: Java</name>
   <packaging>war</packaging>
 
   <properties>

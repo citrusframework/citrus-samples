@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>citrus-xml-bakery-integration</artifactId>
-  <name>Citrus Samples XML: Bakery Integration</name>
+  <name>Citrus Samples:: Bakery Integration: XML</name>
 
   <properties>
     <jetty.embedded.disabled>false</jetty.embedded.disabled>

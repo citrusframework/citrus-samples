@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-soap-ssl</artifactId>
-  <name>Citrus Samples Java: SOAP SSL</name>
+  <name>Citrus Samples:: SOAP SSL: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

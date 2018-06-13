@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-dynamic-endpoints</artifactId>
-  <name>Citrus Samples Java: Dynamic Endpoints</name>
+  <name>Citrus Samples:: Dynamic Endpoints: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

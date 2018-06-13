@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-cucumber-spring</artifactId>
-  <name>Citrus Samples Java: Cucumber BDD Spring</name>
+  <name>Citrus Samples:: Cucumber BDD Spring: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

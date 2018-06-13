@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-xml-sample-soap-attachment</artifactId>
-  <name>Citrus Samples XML: SOAP Attachments</name>
+  <name>Citrus Samples:: SOAP Attachments: XML</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

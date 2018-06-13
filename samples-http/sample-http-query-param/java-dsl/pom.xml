@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-http-query-param</artifactId>
-  <name>Citrus Samples Java: Http Query Parameter</name>
+  <name>Citrus Samples:: Http Query Parameter: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

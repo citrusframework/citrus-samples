@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-test-war</artifactId>
-  <name>Citrus Samples Java: Test WAR</name>
+  <name>Citrus Samples:: Test WAR: Java</name>
   <version>2.7.7-SNAPSHOT</version>
   <packaging>war</packaging>
 

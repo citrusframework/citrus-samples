@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-junit</artifactId>
-  <name>Citrus Samples Java: JUnit</name>
+  <name>Citrus Samples:: JUnit: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

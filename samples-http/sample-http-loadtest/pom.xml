@@ -21,7 +21,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-http-loadtest</artifactId>
   <version>2.7.7-SNAPSHOT</version>
-  <name>Citrus Samples: Http Loadtest</name>
+  <name>Citrus Samples:: Http Loadtest</name>
   <packaging>pom</packaging>
   
   <modules>

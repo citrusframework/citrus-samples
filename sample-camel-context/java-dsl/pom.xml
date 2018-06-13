@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-camel-context</artifactId>
   <version>2.7.7-SNAPSHOT</version>
-  <name>Citrus Samples Java: Apache Camel Context</name>
+  <name>Citrus Samples:: Apache Camel Context: Java</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

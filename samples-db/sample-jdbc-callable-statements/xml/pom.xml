@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-xml-sample-jdbc-callable-statements</artifactId>
-  <name>Citrus Samples XML: JDBC Callable Statements</name>
+  <name>Citrus Samples:: JDBC Callable Statements: XML</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

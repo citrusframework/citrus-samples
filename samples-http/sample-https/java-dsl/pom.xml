@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-https</artifactId>
-  <name>Citrus Samples Java: Https</name>
+  <name>Citrus Samples:: Https: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

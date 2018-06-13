@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-wsdl</artifactId>
-  <name>Citrus Samples Java: WSDL</name>
+  <name>Citrus Samples:: WSDL: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

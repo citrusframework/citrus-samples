@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-behaviors</artifactId>
-  <name>Citrus Samples Java: Behaviors</name>
+  <name>Citrus Samples:: Behaviors: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

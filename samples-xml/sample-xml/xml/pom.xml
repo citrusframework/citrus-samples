@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-xml-sample-xml</artifactId>
-  <name>Citrus Samples XML: XML</name>
+  <name>Citrus Samples:: XML: XML</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

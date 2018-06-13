@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-xml-sample-http-basic-auth</artifactId>
-  <name>Citrus Samples XML: Http Basic Auth</name>
+  <name>Citrus Samples:: Http Basic Auth: XML</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

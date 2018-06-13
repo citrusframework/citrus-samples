@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-soap-wsaddressing</artifactId>
-  <name>Citrus Samples Java: SOAP WsAddressing</name>
+  <name>Citrus Samples:: SOAP WsAddressing: Java</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>

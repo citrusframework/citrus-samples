@@ -4,7 +4,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-xml-sample-hamcrest</artifactId>
-  <name>Citrus Samples XML: Hamcrest</name>
+  <name>Citrus Samples:: Hamcrest: XML</name>
   <version>2.7.7-SNAPSHOT</version>
 
   <properties>
