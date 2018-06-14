@@ -23,13 +23,9 @@ import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.hsqldb.persist.HsqlProperties;
-import org.hsqldb.server.Server;
-import org.hsqldb.server.ServerAcl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
 import java.util.Collections;
 
 /**
@@ -59,7 +55,7 @@ public class EndpointConfig {
             @Override
             public void beforeSuite(TestDesigner designer) {
                 designer.sql(todoListDataSource())
-                    .statement("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)");
+                    .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)");
             }
         };
     }
@@ -73,21 +69,6 @@ public class EndpointConfig {
                     .statement("DELETE FROM todo_entries");
             }
         };
-    }
-
-    @Bean(initMethod = "start", destroyMethod = "stop")
-    public Server hsqldbServer() throws IOException, ServerAcl.AclFormatException {
-        Server dbServer = new Server();
-
-        HsqlProperties properties = new HsqlProperties();
-        properties.setProperty("server.port", "9099");
-        properties.setProperty("server.database.0", "file:target/testdb");
-        properties.setProperty("server.dbname.0", "testdb");
-        properties.setProperty("server.remote_open", true);
-        properties.setProperty("hsqldb.reconfig_logging", false);
-
-        dbServer.setProperties(properties);
-        return dbServer;
     }
 
     @Bean(destroyMethod = "close")

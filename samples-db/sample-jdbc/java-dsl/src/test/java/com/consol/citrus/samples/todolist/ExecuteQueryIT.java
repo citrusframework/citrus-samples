@@ -43,11 +43,11 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
     public void testCreateTable() {
         async()
             .actions(sql(dataSource)
-                    .statement("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
+                    .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
 
         receive(jdbcServer)
                 .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
+                .message(JdbcMessage.execute("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
 
         send(jdbcServer)
                 .message(JdbcMessage.success());

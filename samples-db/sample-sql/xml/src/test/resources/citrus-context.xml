@@ -20,7 +20,7 @@
     <citrus:before-suite id="createDatabase">
       <citrus:actions>
         <citrus-test:sql datasource="todoDataSource">
-          <citrus-test:statement>CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)</citrus-test:statement>
+          <citrus-test:statement>CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)</citrus-test:statement>
         </citrus-test:sql>
       </citrus:actions>
     </citrus:before-suite>
@@ -32,23 +32,6 @@
         </citrus-test:sql>
       </citrus:actions>
     </citrus:after-suite>
-
-    <!-- HSQL DB server -->
-    <bean id="hsqldbServer" class="org.hsqldb.server.Server" init-method="start" destroy-method="stop">
-      <property name="properties">
-        <bean class="org.hsqldb.persist.HsqlProperties">
-          <constructor-arg type="java.util.Properties">
-            <value>
-              server.port=9099
-              server.database.0=file:target/testdb
-              server.dbname.0=testdb
-              server.remote_open=true
-              hsqldb.reconfig_logging=false
-            </value>
-          </constructor-arg>
-        </bean>
-      </property>
-    </bean>
 
     <!-- JDBC data source -->
     <bean id="todoDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">

@@ -38,7 +38,7 @@ public SequenceBeforeSuite beforeSuite() {
         @Override
         public void beforeSuite(TestDesigner designer) {
             designer.sql(todoListDataSource())
-                .statement("CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)");
+                .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)");
         }
     };
 }

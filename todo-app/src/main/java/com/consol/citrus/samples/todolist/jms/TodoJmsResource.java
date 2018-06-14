@@ -29,7 +29,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Conditional(JmsEnabledCondition.class)
-public class TodoJmsResource{
+public class TodoJmsResource {
 
     @Autowired
     private TodoListService todoListService;

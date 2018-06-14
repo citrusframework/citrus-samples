@@ -32,7 +32,7 @@ Before the test suite is started we create the relational database tables requir
 <citrus:before-suite id="createDatabase">
   <citrus:actions>
     <citrus-test:sql datasource="todoListDataSource">
-      <citrus-test:statement>CREATE TABLE todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255))</citrus-test:statement>
+      <citrus-test:statement>CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255))</citrus-test:statement>
     </citrus-test:sql>
   </citrus:actions>
 </citrus:before-suite>

@@ -16,18 +16,11 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.samples.todolist.dao.*;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertyResolver;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -40,7 +33,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @SpringBootApplication
 @EnableSwagger2
-@EnableConfigurationProperties(JdbcConfigurationProperties.class)
 public class TodoApplication extends SpringBootServletInitializer {
 
     @Override
@@ -56,35 +48,6 @@ public class TodoApplication extends SpringBootServletInitializer {
                 .select()
                 .paths(PathSelectors.regex("/api.*"))
                 .build();
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "in_memory", matchIfMissing = true)
-    public TodoListDao todoListInMemoryDao() {
-        return new InMemoryTodoListDao();
-    }
-
-    @Bean(destroyMethod = "close")
-    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
-    public BasicDataSource jdbcDataSource(final JdbcConfigurationProperties configurationProperties) {
-        final BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(configurationProperties.getDriverClassName());
-        dataSource.setUrl(configurationProperties.getUrl());
-        dataSource.setUsername(configurationProperties.getUsername());
-        dataSource.setPassword(configurationProperties.getPassword());
-
-        return dataSource;
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
-    public TodoListDao todoListJdbcDao(Environment environment) {
-        PropertyResolver propertyResolver = new RelaxedPropertyResolver(environment, "todo.persistence.");
-        if (!propertyResolver.getProperty("transactional", "false").equals("false")) {
-            return new JdbcTransactionalTodoListDao();
-        } else {
-            return new JdbcTodoListDao();
-        }
     }
 
     private ApiInfo apiInfo() {
