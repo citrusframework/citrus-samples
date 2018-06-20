@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spring:beans xmlns="http://www.citrusframework.org/schema/testcase"
+              xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:http="http://www.citrusframework.org/schema/http/testcase"
+              xmlns:selenium="http://www.citrusframework.org/schema/selenium/testcase"
+              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                  http://www.citrusframework.org/schema/testcase http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd
+                  http://www.citrusframework.org/schema/selenium/testcase http://www.citrusframework.org/schema/selenium/testcase/citrus-selenium-testcase.xsd
+                  http://www.citrusframework.org/schema/http/testcase http://www.citrusframework.org/schema/http/testcase/citrus-http-testcase.xsd">
+
+  <testcase name="TodoPagesIT_indexPage">
+    <meta-info>
+      <author>Christoph Deppisch</author>
+      <creationdate>2017-11-14</creationdate>
+      <status>FINAL</status>
+      <last-updated-by>Christoph Deppisch</last-updated-by>
+      <last-updated-on>2017-11-14T12:00:00</last-updated-on>
+    </meta-info>
+
+    <variables>
+      <variable name="todoId" value="citrus:randomNumber(4)"/>
+      <variable name="todoName" value="citrus:concat('todo_', ${todoId})"/>
+      <variable name="todoDescription" value="Description: ${todoName}"/>
+      <variable name="done" value="false"/>
+      <variable name="requestUrl" value="http://localhost:8080"/>
+    </variables>
+
+    <actions>
+      <selenium:start browser="browser"/>
+
+      <selenium:navigate page="${requestUrl}"/>
+
+      <http:send-request client="todoClient">
+        <http:DELETE path="/api/todolist"/>
+      </http:send-request>
+
+      <http:receive-response client="todoClient">
+        <http:headers status="200"/>
+      </http:receive-response>
+
+      <selenium:page type="com.consol.citrus.samples.todolist.page.WelcomePage"
+                     action="validate"/>
+
+      <selenium:page type="com.consol.citrus.samples.todolist.page.WelcomePage"
+                     action="startApp"/>
+
+      <selenium:page type="com.consol.citrus.samples.todolist.page.TodoPage"
+                     action="validate"/>
+    </actions>
+  </testcase>
+</spring:beans>
