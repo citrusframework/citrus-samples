@@ -27,6 +27,6 @@ Information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
- [1]: https://www.citrusframework.org/img/brand-logo.png "Citrus"
- [2]: https://www.citrusframework.org
- [3]: https://www.citrusframework.org/reference/html/
+ [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
+ [2]: https://citrusframework.org
+ [3]: https://citrusframework.org/reference/html/
