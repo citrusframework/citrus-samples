@@ -2,7 +2,7 @@ Binary sample ![Logo][1]
 ==============
 
 This sample demonstrates how Citrus handles binary message content. The sample send some binary content to a JMS queue destination and receives
-that same content in a next step from the JMS destination.
+that same content in a next step from the JMS destination. Read more about this in [reference guide][4]
 
 Objectives
 ---------
@@ -128,4 +128,4 @@ a complete [reference manual][3].
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
- [4]: https://citrusframework.org/reference/html#jms
+ [4]: https://citrusframework.org/reference/html#binary-message-validation

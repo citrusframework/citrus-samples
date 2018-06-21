@@ -62,7 +62,6 @@ http()
         
 Each expression is evaluated and checked for expected values. In case a JsonPath expression can not be evaluated or 
 does not meet the expected value the test ends with failure.
-
                 
 Run
 ---------

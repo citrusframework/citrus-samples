@@ -135,4 +135,4 @@ a complete [reference manual][3].
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
- [4]: https://citrusframework.org/reference/html#validation-json
+ [4]: https://citrusframework.org/reference/html#soap

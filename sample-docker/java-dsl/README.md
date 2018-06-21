@@ -12,7 +12,7 @@ Read about the Citrus Docker integration in the [reference guide][4]
 Objectives
 ---------
 
-**NOTE:** This test depends on the [todo-app](../todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+**NOTE:** This test depends on the [todo-app](../todo-app/README.md) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
 
 The [todo-list](../todo-app/README.md) sample application provides a REST API for managing todo entries. We want to access this REST API in a integration test scenario while the application is
 run as Docker container. This means we need to build the todo-app as Docker image, run that image on Docker and start the integration tests. The Citrus tests
