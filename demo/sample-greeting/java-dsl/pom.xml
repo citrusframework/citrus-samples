@@ -133,6 +133,82 @@
       </plugin>
 
       <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.26.0</version>
+        <configuration>
+          <verbose>true</verbose>
+          <watchInterval>1000</watchInterval>
+          <images>
+            <image>
+              <alias>activemq-broker</alias>
+              <name>consol/activemq-5.12:latest</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <ports>
+                  <port>61616:61616</port>
+                  <port>8161:8161</port>
+                </ports>
+                <wait>
+                  <log>Broker startup</log>
+                  <http>
+                    <url>http://localhost:8161</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>green</color>
+                </log>
+              </run>
+            </image>
+            <image>
+              <alias>greeting</alias>
+              <name>citrus/greeting:${project.version}</name>
+              <build>
+                <from>fabric8/tomcat-8:latest</from>
+                <assembly>
+                  <inline>
+                    <files>
+                      <file>
+                        <source>${project.build.directory}/${artifactId}-${project.version}.war</source>
+                        <destName>ROOT.war</destName>
+                        <outputDirectory>.</outputDirectory>
+                      </file>
+                    </files>
+                  </inline>
+                </assembly>
+              </build>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <env>
+                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
+                </env>
+                <ports>
+                  <port>${server.port}:8080</port>
+                </ports>
+                <links>
+                  <link>activemq-broker:activemq</link>
+                </links>
+                <wait>
+                  <log>initialization completed</log>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>green</color>
+                </log>
+              </run>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
         <version>2.2</version>
@@ -180,7 +256,7 @@
     <dependency>
       <groupId>org.springframework.webflow</groupId>
       <artifactId>spring-js</artifactId>
-      <version>2.4.2.RELEASE</version>
+      <version>2.4.4.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -320,7 +396,41 @@
 
   <profiles>
     <profile>
-      <id>activemq-embedded</id>
+      <id>greeting-container</id>
+      <activation>
+        <property>
+          <name>docker</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>start</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>build</goal>
+                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>greeting-embedded</id>
       <activation>
         <property>
           <name>embedded</name>
@@ -351,19 +461,7 @@
               </execution>
             </executions>
           </plugin>
-        </plugins>
-      </build>
-    </profile>
 
-    <profile>
-      <id>jetty-embedded</id>
-      <activation>
-        <property>
-          <name>embedded</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
           <plugin>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>

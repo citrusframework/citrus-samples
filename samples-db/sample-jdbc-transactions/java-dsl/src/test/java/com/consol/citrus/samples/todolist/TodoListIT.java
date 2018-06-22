@@ -22,6 +22,7 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
@@ -40,6 +41,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     public void testTransaction() {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
+
+        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+                .status(HttpStatus.OK)
+                .method(HttpMethod.GET)
+                .ms(20000L)
+                .interval(1000L);
 
         http()
                 .client(todoClient)
@@ -72,6 +79,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     public void testRollback() {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
+
+        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+                .status(HttpStatus.OK)
+                .method(HttpMethod.GET)
+                .ms(20000L)
+                .interval(1000L);
 
         http()
                 .client(todoClient)
@@ -106,6 +119,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoDescription", "Description: ${todoName}");
 
         jdbcServer.getEndpointConfiguration().setAutoTransactionHandling(true);
+
+        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+                .status(HttpStatus.OK)
+                .method(HttpMethod.GET)
+                .ms(20000L)
+                .interval(1000L);
 
         http()
                 .client(todoClient)

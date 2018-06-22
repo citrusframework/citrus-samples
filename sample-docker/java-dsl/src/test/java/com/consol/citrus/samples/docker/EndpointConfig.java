@@ -19,7 +19,6 @@ package com.consol.citrus.samples.docker;
 import com.consol.citrus.docker.client.DockerClient;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,12 +27,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class EndpointConfig {
-
-    @Value("${todo.server.host:localhost}")
-    private String todoServerHost;
-
-    @Value("${todo.server.port:8080}")
-    private String todoServerPort;
 
     @Bean
     public DockerClient dockerClient() {
@@ -47,7 +40,7 @@ public class EndpointConfig {
     public HttpClient todoClient() {
         return CitrusEndpoints.http()
                             .client()
-                            .requestUrl(String.format("http://%s:%s", todoServerHost, todoServerPort))
+                            .requestUrl("http://todo-app:8080")
                             .build();
     }
 }

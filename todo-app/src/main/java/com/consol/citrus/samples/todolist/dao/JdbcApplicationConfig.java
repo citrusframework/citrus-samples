@@ -22,11 +22,8 @@ import org.hsqldb.server.Server;
 import org.hsqldb.server.ServerAcl;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertyResolver;
 
 import java.io.IOException;
 
@@ -34,17 +31,18 @@ import java.io.IOException;
  * @author Christoph Deppisch
  */
 @Configuration
+@ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
 @EnableConfigurationProperties(JdbcConfigurationProperties.class)
 public class JdbcApplicationConfig {
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     @ConditionalOnProperty(prefix = "todo.persistence", value = "server", havingValue = "enabled", matchIfMissing = true)
-    public Server database() {
+    public Server database(JdbcConfigurationProperties configurationProperties) {
         Server database = new Server();
         try {
             HsqlProperties properties = new HsqlProperties();
-            properties.setProperty("server.port", "9099");
-            properties.setProperty("server.database.0", "file:target/testdb");
+            properties.setProperty("server.port", configurationProperties.getPort());
+            properties.setProperty("server.database.0", configurationProperties.getFile());
             properties.setProperty("server.dbname.0", "testdb");
             properties.setProperty("server.remote_open", true);
             properties.setProperty("hsqldb.reconfig_logging", false);
@@ -56,25 +54,25 @@ public class JdbcApplicationConfig {
         return database;
     }
 
-    @Bean
-    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "in_memory", matchIfMissing = true)
-    public TodoListDao todoListInMemoryDao() {
-        return new InMemoryTodoListDao();
+    @Bean(name = "database")
+    @ConditionalOnProperty(prefix = "todo.persistence", value = "server", havingValue = "disabled")
+    public String databaseDisabled() {
+        return "todo.persistence.server.disabled";
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
-    public TodoListDao todoListJdbcDao(Environment environment) {
-        PropertyResolver propertyResolver = new RelaxedPropertyResolver(environment, "todo.persistence.");
-        if (!propertyResolver.getProperty("transactional", "false").equals("false")) {
-            return new JdbcTransactionalTodoListDao();
-        } else {
-            return new JdbcTodoListDao();
-        }
+    @ConditionalOnProperty(prefix = "todo.persistence", value = "transactional", havingValue = "false", matchIfMissing = true)
+    public TodoListDao todoListJdbcDao() {
+        return new JdbcTodoListDao();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "todo.persistence", value = "transactional")
+    public TodoListDao transactionalTodoListJdbcDao() {
+        return new JdbcTransactionalTodoListDao();
     }
 
     @Bean(destroyMethod = "close")
-    @ConditionalOnProperty(prefix = "todo.persistence", value = "type", havingValue = "jdbc")
     @DependsOn("database")
     public BasicDataSource dataSource(JdbcConfigurationProperties configurationProperties) {
         BasicDataSource dataSource = new BasicDataSource();

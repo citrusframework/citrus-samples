@@ -103,9 +103,9 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <activemq.server.host>${docker.host.name}</activemq.server.host>
+            <activemq.server.host>localhost</activemq.server.host>
             <activemq.server.port>${activemq.server.port}</activemq.server.port>
-            <report.server.host>${docker.host.name}</report.server.host>
+            <report.server.host>localhost</report.server.host>
             <report.server.port>${report.server.port}</report.server.port>
           </systemPropertyVariables>
         </configuration>
@@ -204,7 +204,7 @@
             </systemProperty>
             <systemProperty>
               <key>ACTIVEMQ_PORT_61616_TCP_ADDR</key>
-              <value>${docker.host.name}</value>
+              <value>localhost</value>
             </systemProperty>
             <systemProperty>
               <key>ACTIVEMQ_PORT_61616_TCP_PORT</key>
@@ -212,7 +212,7 @@
             </systemProperty>
             <systemProperty>
               <key>REPORT_PORT_8080_TCP_ADDR</key>
-              <value>${docker.host.name}</value>
+              <value>localhost</value>
             </systemProperty>
             <systemProperty>
               <key>REPORT_PORT_8080_TCP_PORT</key>
@@ -232,7 +232,7 @@
           <images>
             <image>
               <alias>activemq-broker</alias>
-              <name>consol/${message.broker}:latest</name>
+              <name>${message.broker}:latest</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <ports>
@@ -242,7 +242,7 @@
                 <wait>
                   <log>Broker startup</log>
                   <http>
-                    <url>http://${docker.host.name}:${activemq.admin.port}</url>
+                    <url>http://localhost:${activemq.admin.port}</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -257,7 +257,7 @@
             </image>
             <image>
               <alias>worker-chocolate</alias>
-              <name>jolokia/java-jolokia:7</name>
+              <name>jolokia/java-jolokia:8</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <volumes>

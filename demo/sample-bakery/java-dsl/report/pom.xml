@@ -97,7 +97,7 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <report.server.host>${docker.host.name}</report.server.host>
+            <report.server.host>localhost</report.server.host>
             <report.server.port>${report.server.port}</report.server.port>
             <mail.server.port>${mail.server.port}</mail.server.port>
           </systemPropertyVariables>
@@ -119,7 +119,7 @@
           <systemProperties>
             <systemProperty>
               <name>MAIL_PORT_2222_TCP_ADDR</name>
-              <value>${docker.host.name}</value>
+              <value>localhost</value>
             </systemProperty>
             <systemProperty>
               <name>MAIL_PORT_2222_TCP_PORT</name>
@@ -139,7 +139,7 @@
           <images>
             <image>
               <alias>report-server</alias>
-              <name>consol/${application.server}:latest</name>
+              <name>${application.server}:latest</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <volumes>
@@ -149,7 +149,7 @@
                 </volumes>
                 <env>
                   <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
-                  <MAIL_PORT_2222_TCP_ADDR>${docker.host.name}</MAIL_PORT_2222_TCP_ADDR>
+                  <MAIL_PORT_2222_TCP_ADDR>${env.HOST_IP}</MAIL_PORT_2222_TCP_ADDR>
                   <MAIL_PORT_2222_TCP_PORT>${mail.server.port}</MAIL_PORT_2222_TCP_PORT>
                 </env>
                 <ports>
@@ -158,7 +158,7 @@
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://${docker.host.name}:${report.server.port}/report/jolokia</url>
+                    <url>http://localhost:${report.server.port}/report/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>

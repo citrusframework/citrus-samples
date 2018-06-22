@@ -13,6 +13,7 @@
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.14.3</testng.version>
     <citrus.version>2.7.7-SNAPSHOT</citrus.version>
+    <todo.app.version>1.1.0</todo.app.version>
   </properties>
 
   <build>
@@ -26,6 +27,12 @@
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version>
       </plugin>
 
       <plugin>
@@ -59,18 +66,17 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>0.22.1</version>
+        <version>0.26.0</version>
         <configuration>
+          <logDate>default</logDate>
           <verbose>true</verbose>
+          <watchInterval>1000</watchInterval>
           <images>
             <image>
               <alias>todo-app-tests</alias>
               <name>citrus/todo-app-tests:${project.version}</name>
               <build>
-                <from>consol/citrus:2.7.2</from>
-                <tags>
-                  <tag>latest</tag>
-                </tags>
+                <from>consol/citrus:2.7.6</from>
                 <assembly>
                   <descriptorRef>project</descriptorRef>
                 </assembly>
@@ -98,11 +104,13 @@
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>${slf4j.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>${slf4j.version}</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -116,6 +124,7 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${testng.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <!-- Citrus -->
@@ -145,9 +154,25 @@
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>consol-labs-snapshots</id>
+      <url>http://labs.consol.de/maven/snapshots-repository/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>interval:10080</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <profiles>
     <profile>
-      <id>minikube</id>
+      <id>todo-app-pod</id>
+      <activation>
+        <property>
+          <name>k8s</name>
+        </property>
+      </activation>
       <properties>
         <test>skip</test>
         <it.test>skip</it.test>
@@ -186,15 +211,4 @@
       </build>
     </profile>
   </profiles>
-
-  <repositories>
-    <repository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
 </project>

@@ -109,9 +109,9 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <activemq.server.host>${docker.host.name}</activemq.server.host>
+            <activemq.server.host>localhost</activemq.server.host>
             <activemq.server.port>${activemq.server.port}</activemq.server.port>
-            <bakery.server.host>${docker.host.name}</bakery.server.host>
+            <bakery.server.host>localhost</bakery.server.host>
             <bakery.server.port>${bakery.server.port}</bakery.server.port>
           </systemPropertyVariables>
         </configuration>
@@ -132,7 +132,7 @@
           <systemProperties>
             <systemProperty>
               <name>ACTIVEMQ_PORT_61616_TCP_ADDR</name>
-              <value>${docker.host.name}</value>
+              <value>localhost</value>
             </systemProperty>
             <systemProperty>
               <name>ACTIVEMQ_PORT_61616_TCP_PORT</name>
@@ -152,7 +152,7 @@
           <images>
             <image>
               <alias>activemq-broker</alias>
-              <name>consol/${message.broker}:latest</name>
+              <name>${message.broker}:latest</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <ports>
@@ -162,7 +162,7 @@
                 <wait>
                   <log>Broker startup</log>
                   <http>
-                    <url>http://${docker.host.name}:${activemq.admin.port}</url>
+                    <url>http://localhost:${activemq.admin.port}</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>
@@ -177,7 +177,7 @@
             </image>
             <image>
               <alias>bakery-web-server</alias>
-              <name>consol/${application.server}:latest</name>
+              <name>${application.server}:latest</name>
               <run>
                 <namingStrategy>alias</namingStrategy>
                 <volumes>
@@ -197,7 +197,7 @@
                 <wait>
                   <log>Server startup</log>
                   <http>
-                    <url>http://${docker.host.name}:${bakery.server.port}/bakery/jolokia</url>
+                    <url>http://localhost:${bakery.server.port}/bakery/jolokia</url>
                     <method>GET</method>
                     <status>200</status>
                   </http>

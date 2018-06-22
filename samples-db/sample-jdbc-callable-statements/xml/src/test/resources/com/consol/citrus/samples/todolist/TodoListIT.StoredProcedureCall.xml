@@ -25,6 +25,10 @@
     </variables>
 
     <actions>
+      <wait milliseconds="20000" interval="1000">
+        <http url="http://localhost:8080" status="200"/>
+      </wait>
+
       <http:send-request client="todoClient" fork="true">
         <http:GET path="/api/todolist/1"/>
       </http:send-request>

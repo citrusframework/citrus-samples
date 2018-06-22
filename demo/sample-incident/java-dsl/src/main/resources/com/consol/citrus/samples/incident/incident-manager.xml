@@ -9,7 +9,7 @@
 
     <!-- ActiveMQ connection factory-->
     <bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-      <property name="brokerURL" value="tcp://localhost:61616" />
+      <property name="brokerURL" value="tcp://#{systemEnvironment['ACTIVEMQ_PORT_61616_TCP_ADDR']?:'localhost'}:61616" />
     </bean>
 
     <!-- Http inbound endpoint for incoming incident requests -->
@@ -53,7 +53,7 @@
 
     <!-- Network Http client service -->
     <bean class="com.consol.citrus.samples.incident.service.NetworkServiceImpl">
-      <property name="serviceUri" value="http://localhost:18002/network/NetworkService/v1/"/>
+      <property name="serviceUri" value="http://#{systemEnvironment['NETWORK_SERVER_PORT_18002_TCP_ADDR']?:'localhost'}:18002/network/NetworkService/v1/"/>
       <property name="restTemplate">
         <bean class="org.springframework.web.client.RestTemplate">
           <property name="messageConverters">
@@ -99,7 +99,7 @@
                   serviceClass="org.citrusframework.schema.samples.smsgateway.v1.SmsGateway"
                   serviceName="sms:SmsGateway"
                   endpointName="sms:SmsGatewayHTTP"
-                  address="http://localhost:18005/sms/SmsGateway/v1">
+                  address="http://#{systemEnvironment['SMS_GATEWAY_PORT_18005_TCP_ADDR']?:'localhost'}:18005/sms/SmsGateway/v1">
       <jaxws:properties>
         <entry key="schema-validation-enabled" value="true"/>
       </jaxws:properties>

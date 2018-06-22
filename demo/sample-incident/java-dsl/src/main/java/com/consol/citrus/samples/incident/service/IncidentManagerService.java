@@ -27,8 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jws.WebParam;
-import java.util.Calendar;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Christoph Deppisch
@@ -93,7 +92,7 @@ public class IncidentManagerService implements IncidentManager {
      * @return
      */
     private Calendar getScheduledTime() {
-        Calendar scheduled = Calendar.getInstance();
+        Calendar scheduled = Calendar.getInstance(TimeZone.getTimeZone("Europe/Copenhagen"));
         scheduled.add(Calendar.HOUR, 1);
 
         scheduled.set(Calendar.MINUTE, 0);

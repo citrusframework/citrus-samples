@@ -33,7 +33,7 @@
 
   <!-- ActiveMQ connection factory-->
   <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-    <property name="brokerURL" value="tcp://localhost:61616" />
+    <property name="brokerURL" value="tcp://#{systemEnvironment['ACTIVEMQ_PORT_61616_TCP_ADDR']?:'localhost'}:61616" />
   </bean>
 
   <!-- JMS inbound/outbound adapters -->

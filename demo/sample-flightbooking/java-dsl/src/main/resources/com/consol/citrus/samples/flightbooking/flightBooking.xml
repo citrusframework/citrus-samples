@@ -37,7 +37,7 @@
   </int:channel>
 
   <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-    <property name="brokerURL" value="tcp://localhost:61616" />
+    <property name="brokerURL" value="tcp://#{systemEnvironment['ACTIVEMQ_PORT_61616_TCP_ADDR']?:'localhost'}:61616" />
     <property name="watchTopicAdvisories" value="false"/>
   </bean>
 
@@ -84,7 +84,7 @@
   <int:transformer input-channel="royalAirlineFlights" ref="marshallingTransformer" output-channel="royalAirlineFlightsXML"/>
   <http:outbound-gateway id="royalAirlineGateway"
                          request-channel="royalAirlineFlightsXML"
-                         url="http://localhost:8074/flight"
+                         url="http://#{systemEnvironment['ROYAL_SERVER_PORT_8074_TCP_ADDR']?:'localhost'}:8074/flight"
                          http-method="POST"
                          expected-response-type="java.lang.String"
                          charset="UTF-8"

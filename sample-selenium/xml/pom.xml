@@ -14,6 +14,7 @@
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.14.3</testng.version>
     <citrus.version>2.7.7-SNAPSHOT</citrus.version>
+    <todo.app.version>1.1.0</todo.app.version>
   </properties>
 
   <build>
@@ -58,6 +59,54 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring.boot.version}</version>
+        <configuration>
+          <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
+          <useTestClasspath>false</useTestClasspath>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.26.0</version>
+        <configuration>
+          <logDate>default</logDate>
+          <verbose>true</verbose>
+          <images>
+            <image>
+              <alias>todo-app</alias>
+              <name>citrusframework/todo-demo-app:${todo.app.version}</name>
+              <watch>
+                <mode>none</mode>
+              </watch>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <ports>
+                  <port>8080:8080</port>
+                </ports>
+                <wait>
+                  <http>
+                    <url>http://localhost:8080/todolist</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>green</color>
+                </log>
+              </run>
+            </image>
+          </images>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -142,39 +191,6 @@
           <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
-            <version>0.26.0</version>
-            <configuration>
-              <logDate>default</logDate>
-              <verbose>true</verbose>
-              <images>
-                <image>
-                  <alias>todo-app</alias>
-                  <name>citrusframework/todo-demo-app:1.1.0</name>
-                  <watch>
-                    <mode>none</mode>
-                  </watch>
-                  <run>
-                    <namingStrategy>alias</namingStrategy>
-                    <ports>
-                      <port>8080:8080</port>
-                    </ports>
-                    <wait>
-                      <http>
-                        <url>http://localhost:8080/todolist</url>
-                        <method>GET</method>
-                        <status>200</status>
-                      </http>
-                      <time>60000</time>
-                      <shutdown>500</shutdown>
-                    </wait>
-                    <log>
-                      <enabled>true</enabled>
-                      <color>green</color>
-                    </log>
-                  </run>
-                </image>
-              </images>
-            </configuration>
             <executions>
               <execution>
                 <id>start</id>
@@ -208,10 +224,7 @@
           <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
-            <version>${spring.boot.version}</version>
             <configuration>
-              <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
-              <useTestClasspath>false</useTestClasspath>
               <fork>true</fork>
             </configuration>
             <executions>

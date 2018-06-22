@@ -13,8 +13,7 @@
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.14.3</testng.version>
     <citrus.version>2.7.7-SNAPSHOT</citrus.version>
-    <todo.server.host>localhost</todo.server.host>
-    <todo.server.port>8080</todo.server.port>
+    <todo.app.version>1.1.0</todo.app.version>
   </properties>
 
   <build>
@@ -28,6 +27,12 @@
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version>
       </plugin>
 
       <plugin>
@@ -46,10 +51,6 @@
         <version>2.20.1</version>
         <configuration>
           <failIfNoTests>false</failIfNoTests>
-          <systemProperties>
-            <todo.server.host>${todo.server.host}</todo.server.host>
-            <todo.server.port>${todo.server.port}</todo.server.port>
-          </systemProperties>
         </configuration>
         <executions>
           <execution>
@@ -65,36 +66,20 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>0.24.0</version>
+        <version>0.26.0</version>
         <configuration>
+          <logDate>default</logDate>
           <verbose>true</verbose>
           <watchInterval>1000</watchInterval>
           <images>
             <image>
               <alias>todo-app</alias>
-              <name>citrus/todo-app:${project.version}</name>
+              <name>citrusframework/todo-demo-app:${todo.app.version}</name>
               <watch>
                 <mode>none</mode>
               </watch>
-              <build>
-                <from>fabric8/tomcat-8:latest</from>
-                <assembly>
-                  <inline>
-                    <files>
-                      <file>
-                        <source>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</source>
-                        <destName>ROOT.war</destName>
-                        <outputDirectory>.</outputDirectory>
-                      </file>
-                    </files>
-                  </inline>
-                </assembly>
-              </build>
               <run>
                 <namingStrategy>alias</namingStrategy>
-                <env>
-                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
-                </env>
                 <ports>
                   <port>8080:8080</port>
                 </ports>
@@ -131,7 +116,7 @@
                   </bind>
                 </volumes>
                 <workingDir>/maven</workingDir>
-                <cmd>mvn install -Dtodo.server.host=todo-app</cmd>
+                <cmd>mvn install</cmd>
                 <links>
                   <link>todo-app</link>
                 </links>
@@ -211,9 +196,25 @@
     </dependency>
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>consol-labs-snapshots</id>
+      <url>http://labs.consol.de/maven/snapshots-repository/</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>interval:10080</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <profiles>
     <profile>
-      <id>docker</id>
+      <id>todo-app-container</id>
+      <activation>
+        <property>
+          <name>docker</name>
+        </property>
+      </activation>
       <properties>
         <test>skip</test>
         <it.test>skip</it.test>
@@ -245,15 +246,4 @@
       </build>
     </profile>
   </profiles>
-
-  <repositories>
-    <repository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
 </project>

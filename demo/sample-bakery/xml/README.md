@@ -59,11 +59,11 @@ After that you will then see some Docker containers started on your host
 docker ps
 
 CONTAINER ID        IMAGE                         COMMAND                  CREATED         STATUS          PORTS                      NAMES
-2e45c4ddff48        jolokia/java-jolokia:7        "java -jar maven/work"   Some time ago   Up 2 minutes                               worker-caramel
-bf50270203be        jolokia/java-jolokia:7        "java -jar maven/work"   Some time ago   Up 2 minutes                               worker-blueberry
-73f24a48f56a        jolokia/java-jolokia:7        "java -jar maven/work"   Some time ago   Up 2 minutes                               worker-chocolate
-18fe23c3506d        consol/tomcat-7.0:latest      "/bin/sh -c /opt/tomc"   Some time ago   Up 2 minutes    0.0.0.0:18002->8080/tcp    report-server
-a8d782ae98be        consol/tomcat-7.0:latest      "/bin/sh -c /opt/tomc"   Some time ago   Up 2 minutes    0.0.0.0:18001->8080/tcp    bakery-web-server
+2e45c4ddff48        jolokia/java-jolokia:8        "java -jar maven/work"   Some time ago   Up 2 minutes                               worker-caramel
+bf50270203be        jolokia/java-jolokia:8        "java -jar maven/work"   Some time ago   Up 2 minutes                               worker-blueberry
+73f24a48f56a        jolokia/java-jolokia:8        "java -jar maven/work"   Some time ago   Up 2 minutes                               worker-chocolate
+18fe23c3506d        fabric8/tomcat-8:latest       "/bin/sh -c /opt/tomc"   Some time ago   Up 2 minutes    0.0.0.0:18002->8080/tcp    report-server
+a8d782ae98be        fabric8/tomcat-8:latest       "/bin/sh -c /opt/tomc"   Some time ago   Up 2 minutes    0.0.0.0:18001->8080/tcp    bakery-web-server
 7f0b6276df3d        consol/activemq-5.12:latest   "/bin/sh -c '/opt/apa"   Some time ago   Up 2 minutes    0.0.0.0:61616->61616/tcp   activemq-broker
 ```
 

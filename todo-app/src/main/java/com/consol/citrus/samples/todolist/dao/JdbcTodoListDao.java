@@ -17,27 +17,24 @@
 package com.consol.citrus.samples.todolist.dao;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.sql.*;
+import java.util.*;
 
 /**
  * @author Christoph Deppisch
  */
 @SuppressWarnings({"SqlNoDataSourceInspection", "SqlDialectInspection"})
-public class JdbcTodoListDao implements TodoListDao {
+public class JdbcTodoListDao implements TodoListDao, InitializingBean {
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private JdbcConfigurationProperties jdbcConfigurationProperties;
 
     @Override
     public void save(TodoEntry entry) {
@@ -154,5 +151,21 @@ public class JdbcTodoListDao implements TodoListDao {
 
     private DataSource getDataSource() {
         return dataSource;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (jdbcConfigurationProperties.isAutoCreateTables()) {
+            try {
+                try (Connection connection = getConnection()) {
+                    connection.setAutoCommit(true);
+                    try (PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)")) {
+                        statement.executeUpdate();
+                    }
+                }
+            } catch (SQLException e) {
+                throw new DataAccessException("Could not create db tables", e);
+            }
+        }
     }
 }

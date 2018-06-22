@@ -74,6 +74,43 @@
           </systemProperties>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.26.0</version>
+        <configuration>
+          <logDate>default</logDate>
+          <verbose>true</verbose>
+          <images>
+            <image>
+              <alias>activemq-broker</alias>
+              <name>consol/activemq-5.12:latest</name>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <ports>
+                  <port>61616:61616</port>
+                  <port>8161:8161</port>
+                </ports>
+                <wait>
+                  <log>Broker startup</log>
+                  <http>
+                    <url>http://localhost:8161</url>
+                    <method>GET</method>
+                    <status>200</status>
+                  </http>
+                  <time>60000</time>
+                  <shutdown>500</shutdown>
+                </wait>
+                <log>
+                  <enabled>true</enabled>
+                  <color>green</color>
+                </log>
+              </run>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -152,38 +189,6 @@
           <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
-            <version>0.26.0</version>
-            <configuration>
-              <logDate>default</logDate>
-              <verbose>true</verbose>
-              <images>
-                <image>
-                  <alias>activemq-broker</alias>
-                  <name>consol/activemq-5.12:latest</name>
-                  <run>
-                    <namingStrategy>alias</namingStrategy>
-                    <ports>
-                      <port>61616:61616</port>
-                      <port>8161:8161</port>
-                    </ports>
-                    <wait>
-                      <log>Broker startup</log>
-                      <http>
-                        <url>http://localhost:8161</url>
-                        <method>GET</method>
-                        <status>200</status>
-                      </http>
-                      <time>60000</time>
-                      <shutdown>500</shutdown>
-                    </wait>
-                    <log>
-                      <enabled>true</enabled>
-                      <color>green</color>
-                    </log>
-                  </run>
-                </image>
-              </images>
-            </configuration>
             <executions>
               <execution>
                 <id>start</id>

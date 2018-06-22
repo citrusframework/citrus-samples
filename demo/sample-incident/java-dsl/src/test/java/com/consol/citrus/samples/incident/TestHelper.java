@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.incident;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * @author Christoph Deppisch
@@ -37,7 +38,7 @@ public abstract class TestHelper {
      * @return
      */
     public static Calendar getDefaultScheduleTime() {
-        Calendar scheduled = Calendar.getInstance();
+        Calendar scheduled = Calendar.getInstance(TimeZone.getTimeZone("Europe/Copenhagen"));
         scheduled.add(Calendar.HOUR, 1);
 
         scheduled.set(Calendar.MINUTE, 0);
