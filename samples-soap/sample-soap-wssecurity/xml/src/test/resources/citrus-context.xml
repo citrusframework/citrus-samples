@@ -30,7 +30,7 @@
                       interceptors="clientInterceptors"/>
 
     <util:list id="clientInterceptors">
-      <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+      <bean class="org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor">
         <property name="securementActions" value="Timestamp UsernameToken"/>
         <property name="securementUsername" value="admin"/>
         <property name="securementPassword" value="secret"/>
@@ -54,10 +54,10 @@
         </property>
       </bean>
       <bean class="com.consol.citrus.ws.interceptor.LoggingEndpointInterceptor"/>
-      <bean class="org.springframework.ws.soap.security.wss4j.Wss4jSecurityInterceptor">
+      <bean class="org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor">
         <property name="validationActions" value="Timestamp UsernameToken"/>
         <property name="validationCallbackHandler">
-          <bean id="passwordCallbackHandler" class="org.springframework.ws.soap.security.wss4j.callback.SimplePasswordValidationCallbackHandler">
+          <bean id="passwordCallbackHandler" class="org.springframework.ws.soap.security.wss4j2.callback.SimplePasswordValidationCallbackHandler">
             <property name="usersMap">
               <map>
                 <entry key="admin" value="secret"/>
