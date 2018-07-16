@@ -28,7 +28,7 @@ import org.testng.annotations.*;
 /**
  * @author Christoph Deppisch
  */
-@Test(invocationCount = 250, threadPoolSize = 25)
+@Test(invocationCount = 40, threadPoolSize = 4)
 public class TodoListLoadTestIT extends TestNGCitrusTest {
 
     @Autowired

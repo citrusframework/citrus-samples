@@ -2,12 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
        xmlns:ws="http://www.springframework.org/schema/integration/ws"
-       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/integration
             http://www.springframework.org/schema/integration/spring-integration.xsd
+            http://www.springframework.org/schema/integration/xml
+            http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd
             http://www.springframework.org/schema/integration/ws
             http://www.springframework.org/schema/integration/ws/spring-integration-ws.xsd
             http://www.springframework.org/schema/oxm
@@ -46,8 +49,8 @@
     </property>
   </bean>
 
-  <bean id="exceptionResolver" class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">
-    <property name="defaultFault" value="{http://www.consol.com/citrus/samples/errorcodes}CITRUS:1000" />
+  <bean id="exceptionResolver" class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver"
+        p:defaultFault="{http://www.consol.com/citrus/samples/errorcodes}CITRUS:1000">
     <property name="exceptionMappings">
       <value>
         com.consol.citrus.samples.bookstore.exceptions.XmlSchemaValidationException={http://www.consol.com/citrus/samples/errorcodes}CITRUS:999,Client sent invalid request!
@@ -58,32 +61,35 @@
   </bean>
 
   <ws:inbound-gateway id="bookStoreInboundGateway"
-                      request-channel="inboundChannel"
-                      reply-channel="outboundChannel"/>
+                      request-channel="inboundXmlChannel"
+                      reply-channel="outboundXmlChannel"/>
 
   <ws:inbound-gateway id="bookAbstractInboundGateway"
-                      request-channel="inboundChannel"
-                      reply-channel="outboundChannel"/>
+                      request-channel="inboundXmlChannel"
+                      reply-channel="outboundXmlChannel"/>
 
-  <int:channel id="inboundChannel">
+  <int:channel id="inboundXmlChannel">
     <int:interceptors>
       <int:wire-tap channel="logger"/>
       <bean class="com.consol.citrus.samples.bookstore.validation.XmlSchemaValidatingChannelInterceptor">
         <constructor-arg value="classpath:com/consol/citrus/samples/bookstore/schema/BookStoreSchema.xsd" />
       </bean>
-      <bean class="org.springframework.integration.transformer.MessageTransformingChannelInterceptor">
-        <constructor-arg ref="unmarshallingTransformer"/>
-      </bean>
     </int:interceptors>
   </int:channel>
 
-  <int:channel id="outboundChannel">
-    <int:interceptors>
-      <bean class="org.springframework.integration.transformer.MessageTransformingChannelInterceptor">
-        <constructor-arg ref="marshallingTransformer"/>
-      </bean>
-    </int:interceptors>
-  </int:channel>
+  <int:channel id="inboundChannel"/>
+
+  <int-xml:unmarshalling-transformer unmarshaller="marshaller"
+                                     input-channel="inboundXmlChannel"
+                                     output-channel="inboundChannel"/>
+
+  <int-xml:marshalling-transformer marshaller="marshaller"
+                                   input-channel="outboundChannel"
+                                   output-channel="outboundXmlChannel"
+                                   result-transformer="resultTransformer"/>
+
+  <int:channel id="outboundXmlChannel"/>
+  <int:channel id="outboundChannel"/>
 
   <int:payload-type-router input-channel="inboundChannel" resolution-required="true">
     <int:mapping type="com.consol.citrus.samples.bookstore.model.AddBookRequestMessage" channel="addChannel" />
@@ -102,18 +108,6 @@
   <!-- XML marshalling/unmarshalling -->
   <oxm:jaxb2-marshaller id="marshaller" context-path="com.consol.citrus.samples.bookstore.model"/>
 
-  <bean id="unmarshallingTransformer" class="org.springframework.integration.xml.transformer.UnmarshallingTransformer">
-    <constructor-arg>
-      <ref bean="marshaller"/>
-    </constructor-arg>
-  </bean>
-
-  <bean id="marshallingTransformer" class="org.springframework.integration.xml.transformer.MarshallingTransformer">
-    <constructor-arg>
-      <ref bean="marshaller"/>
-    </constructor-arg>
-    <constructor-arg>
-      <bean class="org.springframework.integration.xml.transformer.ResultToStringTransformer"/>
-    </constructor-arg>
-  </bean>
+  <bean id="resultTransformer" class="org.springframework.integration.xml.transformer.ResultToStringTransformer"/>
+  
 </beans>

@@ -30,13 +30,13 @@
     </citrus:global-variables>
     
     <!-- Greeting Sample -->
-    <!-- Message channel adapter -->
-    <citrus:channel-endpoint id="greetingChannelRequestSender"
-                                   channel="greetings"/>
+    <citrus:channel-endpoint id="greetingsEndpoint"
+                                 channel="greetings"
+                                 timeout="5000"/>
     
-    <citrus:channel-endpoint id="greetingChannelResponseReceiver"
-                                     channel="greetings"
-                                     timeout="5000"/>
+    <citrus:channel-endpoint id="greetingsTransformedEndpoint"
+                                 channel="greetingsTransformed"
+                                 timeout="5000"/>
     
     <!-- Jms adapter -->
     <citrus-jms:endpoint id="greetingJmsRequestSender"

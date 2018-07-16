@@ -32,16 +32,18 @@
   </int:channel>
 
   <!-- ActiveMQ connection factory-->
-  <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+  <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
     <property name="brokerURL" value="tcp://#{systemEnvironment['ACTIVEMQ_PORT_61616_TCP_ADDR']?:'localhost'}:61616" />
   </bean>
 
   <!-- JMS inbound/outbound adapters -->
   <jms:message-driven-channel-adapter id="greetingReqeustInboundAdapter"
+                                      connection-factory="jmsConnectionFactory"
                                       destination-name="Citrus.Samples.Greeting.Request.Queue"
                                       channel="greetingRequests"/>
 
   <jms:outbound-channel-adapter id="greetingResponsOutboundAdapter"
+                                connection-factory="jmsConnectionFactory"
                                 destination-name="Citrus.Samples.Greeting.Response.Queue"
                                 channel="greetingResponses"/>
 

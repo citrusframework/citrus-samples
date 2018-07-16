@@ -17,7 +17,6 @@
 package com.consol.citrus.samples.greeting;
 
 import com.consol.citrus.channel.ChannelEndpoint;
-import com.consol.citrus.channel.ChannelEndpointConfiguration;
 import com.consol.citrus.container.SequenceBeforeTest;
 import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.dsl.design.TestDesignerBeforeTestSupport;
@@ -79,11 +78,21 @@ public class CitrusEndpointConfig {
     }
 
     @Bean
-    public ChannelEndpoint greetingChannelEndpoint() {
-        ChannelEndpointConfiguration endpointConfiguration = new ChannelEndpointConfiguration();
-        endpointConfiguration.setChannelName("greetings");
-        endpointConfiguration.setTimeout(5000L);
-        return new ChannelEndpoint(endpointConfiguration);
+    public ChannelEndpoint greetingsEndpoint() {
+        return CitrusEndpoints.channel()
+                .asynchronous()
+                .channel("greetings")
+                .timeout(5000L)
+                .build();
+    }
+
+    @Bean
+    public ChannelEndpoint greetingsTransformedEndpoint() {
+        return CitrusEndpoints.channel()
+                .asynchronous()
+                .channel("greetingsTransformed")
+                .timeout(5000L)
+                .build();
     }
 
     @Bean

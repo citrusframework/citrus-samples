@@ -36,12 +36,12 @@
     </int:interceptors>
   </int:channel>
 
-  <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+  <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
     <property name="brokerURL" value="tcp://#{systemEnvironment['ACTIVEMQ_PORT_61616_TCP_ADDR']?:'localhost'}:61616" />
     <property name="watchTopicAdvisories" value="false"/>
   </bean>
 
-  <jms:message-driven-channel-adapter id="bookingIn" destination-name="Travel.Agency.Request.Queue" channel="bookingsXML"/>
+  <jms:message-driven-channel-adapter id="bookingIn" destination-name="Travel.Agency.Request.Queue" channel="bookingsXML" connection-factory="jmsConnectionFactory"/>
 
   <int:channel id="bookingsXML"/>
   <int:transformer input-channel="bookingsXML" ref="unmarshallingTransformer" output-channel="bookings"/>
@@ -107,7 +107,7 @@
 
   <int:transformer input-channel="smartAirlineFlights" ref="marshallingTransformer" output-channel="smartAirlineFlightsXML"/>
 
-  <jms:outbound-channel-adapter id="smartAirlineAdapter" channel="smartAirlineFlightsXML" destination-name="Smart.Airline.Request.Queue"/>
+  <jms:outbound-channel-adapter id="smartAirlineAdapter" channel="smartAirlineFlightsXML" destination-name="Smart.Airline.Request.Queue" connection-factory="jmsConnectionFactory"/>
 
   <int:channel id="confirmedFlightsXML">
     <int:interceptors>
@@ -115,7 +115,7 @@
     </int:interceptors>
   </int:channel>
 
-  <jms:message-driven-channel-adapter id="smartConfirmedFlightsAdapter" destination-name="Smart.Airline.Response.Queue" channel="confirmedFlightsXML"/>
+  <jms:message-driven-channel-adapter id="smartConfirmedFlightsAdapter" destination-name="Smart.Airline.Response.Queue" channel="confirmedFlightsXML" connection-factory="jmsConnectionFactory"/>
 
   <int:channel id="confirmedFlights"/>
   <int:transformer input-channel="confirmedFlightsXML" ref="unmarshallingTransformer" output-channel="confirmedFlights"/>
@@ -149,7 +149,7 @@
     </constructor-arg>
   </bean>
 
-  <jms:outbound-channel-adapter id="bookingOut" channel="bookingResultsXML" destination-name="Travel.Agency.Response.Queue"/>
+  <jms:outbound-channel-adapter id="bookingOut" channel="bookingResultsXML" destination-name="Travel.Agency.Response.Queue" connection-factory="jmsConnectionFactory"/>
 
   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 

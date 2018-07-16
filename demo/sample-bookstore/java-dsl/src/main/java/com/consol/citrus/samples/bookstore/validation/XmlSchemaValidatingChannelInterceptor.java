@@ -20,10 +20,10 @@ import com.consol.citrus.samples.bookstore.exceptions.XmlSchemaValidationExcepti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
-import org.springframework.messaging.support.ChannelInterceptorAdapter;
 import org.springframework.integration.xml.DefaultXmlPayloadConverter;
 import org.springframework.integration.xml.XmlPayloadConverter;
 import org.springframework.messaging.*;
+import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.xml.validation.*;
 import org.xml.sax.SAXParseException;
 
@@ -37,7 +37,7 @@ import java.io.IOException;
  * 
  * @author Christoph Deppisch
  */
-public class XmlSchemaValidatingChannelInterceptor extends ChannelInterceptorAdapter {
+public class XmlSchemaValidatingChannelInterceptor implements ChannelInterceptor {
     /** XML validator */
     private XmlValidator xmlValidator;
 
@@ -77,7 +77,7 @@ public class XmlSchemaValidatingChannelInterceptor extends ChannelInterceptorAda
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         validateSchema(message, channel);
         log.debug("XSD schema validation successful");
-        return super.preSend(message, channel);
+        return message;
     }
 
     /**

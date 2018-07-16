@@ -5,21 +5,21 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-incident</artifactId>
   <name>Citrus Samples:: Incident: Java</name>
-  <version>2.7.7-SNAPSHOT</version>
+  <version>2.8.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>4.3.14.RELEASE</spring.version>
-    <spring.ws.version>2.4.2.RELEASE</spring.ws.version>
-    <spring.integration.version>4.3.14.RELEASE</spring.integration.version>
+    <spring.version>5.0.7.RELEASE</spring.version>
+    <spring.ws.version>3.0.1.RELEASE</spring.ws.version>
+    <spring.integration.version>5.0.6.RELEASE</spring.integration.version>
     <activemq.version>5.15.2</activemq.version>
     <apache.cxf.version>3.1.14</apache.cxf.version>
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.14.3</testng.version>
-    <citrus.version>2.7.7-SNAPSHOT</citrus.version>
-    <jetty.version>9.4.6.v20170531</jetty.version>
+    <citrus.version>2.8.0-SNAPSHOT</citrus.version>
+    <jetty.version>9.4.11.v20180605</jetty.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>
   </properties>
@@ -296,7 +296,7 @@
     <dependency>
       <groupId>org.springframework.webflow</groupId>
       <artifactId>spring-js</artifactId>
-      <version>2.4.4.RELEASE</version>
+      <version>2.4.7.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -359,6 +359,12 @@
       <version>${spring.integration.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.6</version>
+    </dependency>
+
     <!-- Apache CXF -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
@@ -386,11 +392,6 @@
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-spring</artifactId>
       <version>${activemq.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.xbean</groupId>
-      <artifactId>xbean-spring</artifactId>
-      <version>4.5</version>
     </dependency>
 
     <!-- Logging -->

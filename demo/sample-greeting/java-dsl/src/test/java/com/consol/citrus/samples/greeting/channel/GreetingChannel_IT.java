@@ -29,8 +29,12 @@ import org.testng.annotations.Test;
 public class GreetingChannel_IT extends TestNGCitrusTestDesigner {
 
     @Autowired
-    @Qualifier("greetingChannelEndpoint")
-    private ChannelEndpoint greetingChannelEndpoint;
+    @Qualifier("greetingsEndpoint")
+    private ChannelEndpoint greetingsEndpoint;
+
+    @Autowired
+    @Qualifier("greetingsTransformedEndpoint")
+    private ChannelEndpoint greetingsTransformedEndpoint;
 
     @Test
     @CitrusTest(name = "GreetingChannel_IT")
@@ -38,7 +42,7 @@ public class GreetingChannel_IT extends TestNGCitrusTestDesigner {
         variable("correlationId", "citrus:randomNumber(10)");
         variable("user", "Christoph");
 
-        send(greetingChannelEndpoint)
+        send(greetingsEndpoint)
             .payload("<tns:GreetingRequestMessage xmlns:tns=\"http://www.citrusframework.org/samples/greeting\">\n" +
                         "<tns:CorrelationId>${correlationId}</tns:CorrelationId>\n" +
                         "<tns:Operation>sayHello</tns:Operation>\n" +
@@ -49,7 +53,7 @@ public class GreetingChannel_IT extends TestNGCitrusTestDesigner {
             .header("CorrelationId", "${correlationId}")
             .description("Send asynchronous greeting request: Citrus -> GreetingService");
 
-        receive(greetingChannelEndpoint)
+        receive(greetingsTransformedEndpoint)
             .payload("<tns:GreetingResponseMessage xmlns:tns=\"http://www.citrusframework.org/samples/greeting\">\n" +
                         "<tns:CorrelationId>${correlationId}</tns:CorrelationId>\n" +
                         "<tns:Operation>sayHello</tns:Operation>\n" +
