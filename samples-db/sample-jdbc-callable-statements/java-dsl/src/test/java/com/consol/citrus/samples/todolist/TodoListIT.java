@@ -42,17 +42,18 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
         http()
-                .client(todoClient)
-                .send()
-                .get("api/todolist/1")
-                .fork(true);
+            .client(todoClient)
+            .send()
+            .get("api/todolist/1")
+            .fork(true);
 
         receive(jdbcServer)
                 .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
@@ -73,15 +74,15 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.closeStatement());
 
         http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.OK)
-                .payload("[ {" +
-                            "\"id\": \"${todoId}\"," +
-                            "\"title\": \"${todoName}\"," +
-                            "\"description\": \"${todoDescription}\"," +
-                            "\"done\": false" +
-                        "} ]");
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("[ {" +
+                        "\"id\": \"${todoId}\"," +
+                        "\"title\": \"${todoName}\"," +
+                        "\"description\": \"${todoDescription}\"," +
+                        "\"done\": false" +
+                    "} ]");
     }
 
     @Test
@@ -91,17 +92,18 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
         http()
-                .client(todoClient)
-                .send()
-                .get("api/todolist/1")
-                .fork(true);
+            .client(todoClient)
+            .send()
+            .get("api/todolist/1")
+            .fork(true);
 
         receive(jdbcServer)
                 .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
@@ -125,31 +127,32 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.closeStatement());
 
         http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.OK)
-                .payload("[ {" +
-                        "\"id\": \"${todoId}\"," +
-                        "\"title\": \"${todoName}\"," +
-                        "\"description\": \"${todoDescription}\"," +
-                        "\"done\": false" +
-                        "} ]");
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("[ {" +
+                    "\"id\": \"${todoId}\"," +
+                    "\"title\": \"${todoName}\"," +
+                    "\"description\": \"${todoDescription}\"," +
+                    "\"done\": false" +
+                    "} ]");
     }
 
     @Test
     @CitrusTest
     public void testStoredProcedureCallFailed() {
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
         
         http()
-                .client(todoClient)
-                .send()
-                .get("api/todolist/1")
-                .fork(true);
+            .client(todoClient)
+            .send()
+            .get("api/todolist/1")
+            .fork(true);
 
         receive(jdbcServer)
                 .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
@@ -164,25 +167,26 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.closeStatement());
 
         http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.INTERNAL_SERVER_ERROR);
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Test
     @CitrusTest
     public void testStoredProcedureNotFound() {
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
         http()
-                .client(todoClient)
-                .send()
-                .get("api/todolist/1")
-                .fork(true);
+            .client(todoClient)
+            .send()
+            .get("api/todolist/1")
+            .fork(true);
 
         receive(jdbcServer)
                 .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
@@ -191,8 +195,8 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.error().exception("Could not find procedure 'limitedToDoList'"));
 
         http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.INTERNAL_SERVER_ERROR);
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

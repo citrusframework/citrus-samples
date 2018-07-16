@@ -42,19 +42,20 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
         http()
-                .client(todoClient)
-                .send()
-                .post("/todolist")
-                .fork(true)
-                .contentType("application/x-www-form-urlencoded")
-                .payload("title=${todoName}&description=${todoDescription}");
+            .client(todoClient)
+            .send()
+            .post("/todolist")
+            .fork(true)
+            .contentType("application/x-www-form-urlencoded")
+            .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
                 .message(JdbcMessage.startTransaction());
@@ -69,9 +70,9 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.commitTransaction());
 
         http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.FOUND);
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.FOUND);
     }
 
     @Test
@@ -80,19 +81,20 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
         http()
-                .client(todoClient)
-                .send()
-                .post("/todolist")
-                .fork(true)
-                .contentType("application/x-www-form-urlencoded")
-                .payload("title=${todoName}&description=${todoDescription}");
+            .client(todoClient)
+            .send()
+            .post("/todolist")
+            .fork(true)
+            .contentType("application/x-www-form-urlencoded")
+            .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
                 .message(JdbcMessage.startTransaction());
@@ -107,9 +109,9 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.rollbackTransaction());
 
         http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.INTERNAL_SERVER_ERROR);
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Test
@@ -120,19 +122,20 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         jdbcServer.getEndpointConfiguration().setAutoTransactionHandling(true);
 
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
         http()
-                .client(todoClient)
-                .send()
-                .post("/todolist")
-                .fork(true)
-                .contentType("application/x-www-form-urlencoded")
-                .payload("title=${todoName}&description=${todoDescription}");
+            .client(todoClient)
+            .send()
+            .post("/todolist")
+            .fork(true)
+            .contentType("application/x-www-form-urlencoded")
+            .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
                 .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
@@ -141,9 +144,9 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .message(JdbcMessage.success().rowsUpdated(1));
 
         http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.FOUND);
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.FOUND);
     }
 
     @AfterTest
