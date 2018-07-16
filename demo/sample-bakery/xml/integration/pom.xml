@@ -11,6 +11,7 @@
 
   <artifactId>citrus-xml-bakery-integration</artifactId>
   <name>Citrus Samples:: Bakery Integration: XML</name>
+  <packaging>war</packaging>
 
   <properties>
     <jetty.embedded.disabled>false</jetty.embedded.disabled>
@@ -50,6 +51,14 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
@@ -81,12 +90,12 @@
           <jettyXml>${pom.basedir}/src/jetty/jetty-embedded.xml</jettyXml>
           <contextHandlers>
             <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
-              <war>${settings.localRepository}/com/consol/citrus/samples/citrus-bakery-web/${project.version}/citrus-bakery-web-${project.version}.war</war>
+              <war>${settings.localRepository}/com/consol/citrus/samples/citrus-xml-bakery-web/${project.version}/citrus-xml-bakery-web-${project.version}.war</war>
               <contextPath>/bakery</contextPath>
               <tempDirectory>${project.build.directory}/tmp/bakery</tempDirectory>
             </contextHandler>
             <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
-              <war>${settings.localRepository}/com/consol/citrus/samples/citrus-bakery-report/${project.version}/citrus-bakery-report-${project.version}.war</war>
+              <war>${settings.localRepository}/com/consol/citrus/samples/citrus-xml-bakery-report/${project.version}/citrus-xml-bakery-report-${project.version}.war</war>
               <contextPath>/report</contextPath>
               <tempDirectory>${project.build.directory}/tmp/report</tempDirectory>
             </contextHandler>
