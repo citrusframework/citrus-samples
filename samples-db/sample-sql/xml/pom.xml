@@ -68,7 +68,7 @@
         <configuration>
           <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
           <useTestClasspath>false</useTestClasspath>
-          <jvmArguments>-Dtodo.persistence.type=jdbc</jvmArguments>
+          <jvmArguments>-Dtodo.persistence.type=jdbc -Dtodo.jdbc.port=9099 -Dtodo.jdbc.file=${project.build.outputDirectory}/filedb</jvmArguments>
         </configuration>
       </plugin>
 

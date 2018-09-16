@@ -69,7 +69,7 @@
         <configuration>
           <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
           <useTestClasspath>false</useTestClasspath>
-          <jvmArguments>-Dtodo.persistence.type=jdbc -Dtodo.jdbc.driverClassName=com.consol.citrus.db.driver.JdbcDriver -Dtodo.jdbc.url=jdbc:citrus:http://localhost:3306/testdb</jvmArguments>
+          <jvmArguments>-Dtodo.persistence.type=jdbc -Dtodo.persistence.server=disabled -Dtodo.jdbc.driverClassName=com.consol.citrus.db.driver.JdbcDriver -Dtodo.jdbc.url=jdbc:citrus:http://localhost:3306/testdb -Dtodo.jdbc.username=user -Dtodo.jdbc.password=password -Dtodo.jdbc.autoCreateTables=false</jvmArguments>
         </configuration>
       </plugin>
 
