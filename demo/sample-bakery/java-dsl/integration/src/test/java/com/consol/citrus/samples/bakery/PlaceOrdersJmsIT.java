@@ -17,8 +17,6 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.container.IteratingConditionExpression;
-import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.functions.Functions;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
@@ -52,13 +50,8 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
             .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError()
-            .until(new IteratingConditionExpression() {
-                @Override
-                public boolean evaluate(int index, TestContext context) {
-                    return index > 20;
-                }
-            })
-            .autoSleep(100L)
+            .until((index, context) -> index > 20)
+            .autoSleep(500L)
             .actions(http().client(reportingClient)
                             .send()
                             .get("/reporting/order")
@@ -79,13 +72,8 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
                 .payload("<order><type>caramel</type><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError()
-            .until(new IteratingConditionExpression() {
-                @Override
-                public boolean evaluate(int index, TestContext context) {
-                    return index > 20;
-                }
-            })
-            .autoSleep(100L)
+            .until((index, context) -> index > 20)
+            .autoSleep(500L)
             .actions(http().client(reportingClient)
                             .send()
                             .get("/reporting/order")
@@ -106,13 +94,8 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestDesigner {
                 .payload("<order><type>blueberry</type><id>${orderId}</id><amount>1</amount></order>");
 
         repeatOnError()
-            .until(new IteratingConditionExpression() {
-                @Override
-                public boolean evaluate(int index, TestContext context) {
-                    return index > 20;
-                }
-            })
-            .autoSleep(100L)
+            .until((index, context) -> index > 20)
+            .autoSleep(500L)
             .actions(http().client(reportingClient)
                             .send()
                             .get("/reporting/order")
