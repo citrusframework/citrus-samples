@@ -36,7 +36,8 @@ system under test. Please find following list of samples and their primary objec
 | [sample-mail](sample-mail)| Shows mail server activities in Citrus |
 | [sample-selenium](sample-selenium)| Perform UI testing with Selenium and Citrus |
 | [sample-dynamic-endpoints](sample-dynamic-endpoints)| Shows dynamic endpoint component usage |
-| [sample-jms](sample-jms)| Shows JMS queue connectivity |
+| [sample-jms](sample-jms)| Shows JMS message broker integration |
+| [sample-kafka](sample-kafka)| Shows Kafka integration |
 | [sample-rmi](sample-rmi)| Shows how to use RMI with Citrus as a client and server |
 | [sample-camel-context](sample-camel-context)| Interact with Apache Camel context and routes |
 | Samples DB                            | Description |

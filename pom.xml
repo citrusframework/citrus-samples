@@ -32,6 +32,7 @@
     <module>samples-json</module>
     <module>sample-hamcrest</module>
     <module>sample-jms</module>
+    <module>sample-kafka</module>
     <module>sample-dynamic-endpoints</module>
     <module>sample-binary</module>
     <module>samples-soap</module>
