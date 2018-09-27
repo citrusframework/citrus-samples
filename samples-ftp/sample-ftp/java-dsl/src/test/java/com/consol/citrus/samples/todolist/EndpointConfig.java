@@ -54,6 +54,7 @@ public class EndpointConfig {
                 .autoStart(true)
                 .autoHandleCommands(Stream.of(FTPCmd.MKD.getCommand(),
                                               FTPCmd.PORT.getCommand(),
+                                              FTPCmd.PASV.getCommand(),
                                               FTPCmd.TYPE.getCommand()).collect(Collectors.joining(",")))
                 .userManagerProperties(new ClassPathResource("citrus.ftp.user.properties"))
                 .build();

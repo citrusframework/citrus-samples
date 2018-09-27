@@ -19,7 +19,7 @@
                        port="22222"
                        auto-login="true"
                        auto-start="true"
-                       auto-handle-commands="MKD,PORT,TYPE"
+                       auto-handle-commands="MKD,PORT,TYPE,PASV"
                        user-manager-properties="classpath:citrus.ftp.user.properties"/>
 
     <bean id="deleteFtpFiles" class="com.consol.citrus.samples.todolist.DeleteFtpFilesAction">
