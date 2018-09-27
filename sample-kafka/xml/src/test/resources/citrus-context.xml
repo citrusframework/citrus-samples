@@ -20,9 +20,13 @@
 
     <citrus-kafka:embedded-server id="embeddedKafkaServer"
                                   kafka-server-port="9092"
-                                  topics="todo.inbound"/>
+                                  topics="todo.inbound,todo.report"/>
 
     <citrus-kafka:endpoint id="todoKafkaEndpoint"
                            server="localhost:9092"
                            topic="todo.inbound"/>
+
+    <citrus-kafka:endpoint id="todoReportEndpoint"
+                           offset-reset="earliest"
+                           topic="todo.report"/>
 </beans>

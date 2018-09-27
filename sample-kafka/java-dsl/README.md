@@ -19,7 +19,7 @@ with the tests. So the Citrus Kafka producer endpoint just needs to connect to t
 public EmbeddedKafkaServer embeddedKafkaServer() {
     return new EmbeddedKafkaServerBuilder()
             .kafkaServerPort(9092)
-            .topics("todo.inbound")
+            .topics("todo.inbound,todo.report")
             .build();
 }
     
@@ -46,6 +46,33 @@ The Kafka record value is also defined to be a String in JSON format. The todo a
 
 The Kafka operation is asynchronous so we do not get any response back. Next action in our test deals with validating that the new todo 
 entry has been added successfully. Please review the next steps in the sample test that perform proper validation.
+
+In case we need to receive a message on a Kafka topic we also add a Kafka endpoint component to the Citrus Spring configuration.
+
+```java
+@Bean
+public KafkaEndpoint todoReportEndpoint() {
+    return CitrusEndpoints.kafka()
+            .asynchronous()
+            .server("localhost:9092")
+            .topic("todo.report")
+            .offsetReset("earliest")
+            .build();
+}
+```
+
+The endpoint above consumes records on the `todo.report` topic. The offset reset defines how the consumer will deal with records that have been sent to the topic before the subscription has started.
+As you can see you can also skip the `server` property on the endpoint when the default `localhost:9092` is used. Now we can receive
+records on that topic in the test case. 
+
+```java
+receive(todoReportEndpoint)
+            .messageType(MessageType.JSON)
+            .message(new KafkaMessage("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
+                        .messageKey("todo.entries.done"));
+```
+
+The received record is validated with an expected message key and payload.
         
 Run
 ---------

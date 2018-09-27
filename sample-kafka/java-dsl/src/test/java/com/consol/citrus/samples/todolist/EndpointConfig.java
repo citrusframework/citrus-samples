@@ -52,7 +52,7 @@ public class EndpointConfig {
     public EmbeddedKafkaServer embeddedKafkaServer() {
         return new EmbeddedKafkaServerBuilder()
                 .kafkaServerPort(9092)
-                .topics("todo.inbound")
+                .topics("todo.inbound", "todo.report")
                 .build();
     }
 
@@ -62,6 +62,16 @@ public class EndpointConfig {
                 .asynchronous()
                 .server("localhost:9092")
                 .topic("todo.inbound")
+                .build();
+    }
+
+    @Bean
+    public KafkaEndpoint todoReportEndpoint() {
+        return CitrusEndpoints.kafka()
+                .asynchronous()
+                .server("localhost:9092")
+                .topic("todo.report")
+                .offsetReset("earliest")
                 .build();
     }
 }
