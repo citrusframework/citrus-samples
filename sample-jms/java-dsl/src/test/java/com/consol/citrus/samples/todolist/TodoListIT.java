@@ -23,8 +23,8 @@ import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
 /**
@@ -38,6 +38,10 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Autowired
     @Qualifier("todoJmsEndpoint")
     private JmsEndpoint todoJmsEndpoint;
+
+    @Autowired
+    @Qualifier("todoReportEndpoint")
+    private JmsEndpoint todoReportEndpoint;
 
     @Autowired
     @Qualifier("todoJmsSyncEndpoint")
@@ -65,6 +69,50 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
             .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+    }
+
+    @Test
+    @CitrusTest
+    public void testReportTodoEntryDone() {
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        send(todoJmsEndpoint)
+                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+                .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+
+        echo("Set todo entry status to done");
+
+        http()
+            .client(todoClient)
+            .send()
+            .put("/api/todo/${todoId}")
+            .queryParam("done", "true")
+            .accept(MediaType.APPLICATION_JSON_VALUE);
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK);
+
+        echo("Trigger Jms report");
+
+        http()
+            .client(todoClient)
+            .send()
+            .get("/api/jms/report/done")
+            .accept(MediaType.APPLICATION_JSON_VALUE);
+
+        http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK);
+
+        receive(todoReportEndpoint)
+                .messageType(MessageType.JSON)
+                .payload("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
+                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry");
     }
 
     @Test

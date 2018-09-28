@@ -20,6 +20,17 @@ The Citrus project needs a JMS connection factory that is defined in the Spring 
     
 We use ActiveMQ as message broker so we use the respective connection factory implementation here. The message broker is automatically
 started with the Maven build lifecycle.
+
+We can use that connection factory in a JMS endpoint configuration:
+
+```xml
+<citrus-jms:endpoint id="todoJmsEndpoint"
+                     connection-factory="connectionFactory"
+                     destination-name="jms.todo.inbound"/>
+```
+
+The endpoint defines the connection factory and the JMS destination. In our example this is a message queue name `jms.todo.inbound`. JMS topics are also supported read about it in
+[reference guide][4].    
     
 No we can add a new todo entry by sending a JSON message to the JMS queue destination.
     
@@ -46,6 +57,45 @@ entry has been added successfully. The XPath expression validation makes sure th
 we have added before in the test.
 
 You can read about http and XPath validation features in the sample [xhtml](../sample-xhtml/README.md)
+
+In order to demonstrate the receive operation on a JMS queue in Citrus we can trigger a JMS report message on the todo-app server via Http.
+
+```xml
+<http:send-request client="todoClient">
+  <http:GET path="/api/jms/report/done">
+    <http:headers accept="application/json"/>
+  </http:GET>
+</http:send-request>
+
+<http:receive-response client="todoClient">
+  <http:headers status="200" reason-phrase="OK"/>
+</http:receive-response>
+```
+
+The Http GET request triggers a JMS report generation on the todo-app SUT. The report is sent to a JMS queue destination `jms.todo.report`. We can receive that message within Citrus
+with a normal `receive` operation on a JMS endpoint.
+
+```xml
+<citrus-jms:endpoint id="todoReportEndpoint"
+                     destination-name="jms.todo.report"/>
+```
+
+```xml
+<receive endpoint="todoReportEndpoint">
+  <message type="json">
+    <data>
+      <![CDATA[
+        [{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "attachment":null, "done":true}]
+      ]]>
+    </data>
+  </message>
+  <header>
+    <element name="_type" value="com.consol.citrus.samples.todolist.model.TodoEntry"/>
+  </header>
+</receive>
+```
+
+The action receives the report message from that JMS queue and validates the message content (payload and header).
         
 Run
 ---------

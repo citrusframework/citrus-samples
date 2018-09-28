@@ -21,6 +21,9 @@
     <citrus-jms:endpoint id="todoJmsEndpoint"
                          destination-name="jms.todo.inbound"/>
 
+    <citrus-jms:endpoint id="todoReportEndpoint"
+                         destination-name="jms.todo.report"/>
+
     <citrus-jms:sync-endpoint id="todoJmsSyncEndpoint"
                               destination-name="jms.todo.inbound.sync"
                               reply-destination-name="jms.todo.inbound.sync.reply"/>
