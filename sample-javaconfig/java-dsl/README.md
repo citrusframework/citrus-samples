@@ -44,7 +44,7 @@ http()
     .client(todoClient)
     .send()
     .get("/todolist")
-    .accept("text/html");
+    .accept(MediaType.TEXT_HTML_VALUE);
 ```
         
 Citrus and Spring framework automatically injects the endpoint with respective configuration for `requestUrl = http://localhost:8080`.    

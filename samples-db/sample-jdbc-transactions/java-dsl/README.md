@@ -48,7 +48,7 @@ http()
     .send()
     .post("/todolist")
     .fork(true)
-    .contentType("application/x-www-form-urlencoded")
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     .payload("title=${todoName}&description=${todoDescription}");
 
 receive(jdbcServer)

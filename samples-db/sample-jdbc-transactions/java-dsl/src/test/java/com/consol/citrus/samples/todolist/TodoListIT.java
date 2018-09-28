@@ -22,8 +22,7 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
@@ -54,7 +53,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .send()
             .post("/todolist")
             .fork(true)
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
@@ -93,7 +92,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .send()
             .post("/todolist")
             .fork(true)
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)
@@ -134,7 +133,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .send()
             .post("/todolist")
             .fork(true)
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=${todoName}&description=${todoDescription}");
 
         receive(jdbcServer)

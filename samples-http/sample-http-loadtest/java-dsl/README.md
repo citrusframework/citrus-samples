@@ -50,7 +50,7 @@ public class TodoListLoadTestIT extends TestNGCitrusTest {
             .client(todoClient)
             .send()
             .post("/todolist")
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=citrus:concat('todo_', citrus:randomNumber(10))");
 
         designer.http()
@@ -66,7 +66,7 @@ public class TodoListLoadTestIT extends TestNGCitrusTest {
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept("text/html");
+            .accept(MediaType.TEXT_HTML_VALUE);
 
         designer.http()
             .client(todoClient)

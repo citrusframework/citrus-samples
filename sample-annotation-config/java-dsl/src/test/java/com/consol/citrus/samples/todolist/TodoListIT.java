@@ -23,6 +23,7 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.http.config.annotation.HttpClientConfig;
 import com.consol.citrus.message.MessageType;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
 /**
@@ -41,7 +42,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept("text/html");
+            .accept(MediaType.TEXT_HTML_VALUE);
 
         http()
             .client(todoClient)

@@ -28,7 +28,7 @@ http()
     .client(todoClient)
     .send()
     .get("/todolist")
-    .accept("text/html");
+    .accept(MediaType.TEXT_HTML_VALUE);
 ```
         
 Citrus automatically injects the endpoint with respective configuration for `requestUrl = http://localhost:8080`. You can use this endpoint

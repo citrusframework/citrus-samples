@@ -21,6 +21,7 @@ import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.message.MessageType;
 import cucumber.api.java.en.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -53,7 +54,7 @@ public class TodoSteps {
             .client("todoListClient")
             .send()
             .post("/todolist")
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=" + todoName);
 
         designer.http()

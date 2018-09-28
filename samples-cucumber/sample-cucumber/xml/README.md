@@ -71,7 +71,7 @@ public class TodoSteps {
             .client("todoListClient")
             .send()
             .post("/todolist")
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=" + todoName);
 
         designer.http()

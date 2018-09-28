@@ -25,6 +25,7 @@ import com.consol.citrus.message.MessageType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 /**
  * @author Christoph Deppisch
@@ -42,7 +43,7 @@ public class TodoListIT {
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept("text/html");
+            .accept(MediaType.TEXT_HTML_VALUE);
 
         designer.http()
             .client(todoClient)
@@ -68,7 +69,7 @@ public class TodoListIT {
             .client(todoClient)
             .send()
             .post("/todolist")
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=${todoName}&description=${todoDescription}"));
 
         runner.http(action -> action

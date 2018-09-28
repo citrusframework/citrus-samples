@@ -25,6 +25,7 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.testng.annotations.*;
 
 /**
@@ -43,7 +44,7 @@ public class TodoListIT extends TestNGCitrusTest {
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept("text/html");
+            .accept(MediaType.TEXT_HTML_VALUE);
 
         designer.http()
             .client(todoClient)
@@ -69,7 +70,7 @@ public class TodoListIT extends TestNGCitrusTest {
         runner.http(action -> action.client(todoClient)
             .send()
             .post("/todolist")
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=${todoName}&description=${todoDescription}"));
 
         runner.http(action -> action.client(todoClient)

@@ -61,7 +61,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept("text/html");
+            .accept(MediaType.TEXT_HTML_VALUE);
 
         http()
             .client(todoClient)
@@ -132,7 +132,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .client(todoClient)
                 .send()
                 .get("/todolist")
-                .accept("text/html");
+                .accept(MediaType.TEXT_HTML_VALUE);
 
         http()
                 .client(todoClient)

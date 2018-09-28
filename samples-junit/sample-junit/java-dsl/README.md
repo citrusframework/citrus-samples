@@ -40,7 +40,7 @@ public class TodoListIT extends JUnit4CitrusTestRunner {
         http(action -> action.client(todoClient)
             .send()
             .post("/todolist")
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=${todoName}&description=${todoDescription}"));
 
         http(action -> action.client(todoClient)
@@ -72,7 +72,7 @@ public class TodoListInjectIT extends JUnit4CitrusTest {
         runner.http(action -> action.client(todoClient)
             .send()
             .post("/todolist")
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=${todoName}&description=${todoDescription}"));
 
         runner.http(action -> action.client(todoClient)

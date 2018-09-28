@@ -29,7 +29,7 @@ http()
     .client(todoClient)
     .send()
     .post("/todolist")
-    .contentType("application/x-www-form-urlencoded")
+    .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     .payload("title=${todoName}&description=${todoDescription}");
 ```
         

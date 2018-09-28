@@ -23,6 +23,7 @@ import com.consol.citrus.message.MessageType;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 /**
  * @author Christoph Deppisch
@@ -38,7 +39,7 @@ public class TodoListRunnerIT extends JUnit4CitrusTestRunner {
         http(action -> action.client(todoClient)
             .send()
             .get("/todolist")
-            .accept("text/html"));
+            .accept(MediaType.TEXT_HTML_VALUE));
 
         http(action -> action.client(todoClient)
             .receive()
@@ -62,7 +63,7 @@ public class TodoListRunnerIT extends JUnit4CitrusTestRunner {
         http(action -> action.client(todoClient)
             .send()
             .post("/todolist")
-            .contentType("application/x-www-form-urlencoded")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=${todoName}&description=${todoDescription}"));
 
         http(action -> action.client(todoClient)
