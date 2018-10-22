@@ -8,7 +8,7 @@ Objectives
 ---------
 
 The [todo-list](../todo-app/README.md) sample application manages todo entries. The application provides a REST web API 
-for adding new entries and listing all entries. This API is specified using Swagger ()
+for adding new entries and listing all entries. This API is specified using Swagger OpenAPI.
 
 The sample API specification looks like this.
 
