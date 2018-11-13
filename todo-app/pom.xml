@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-todo</artifactId>
   <name>Citrus Samples:: Todo App</name>
-  <version>2.7.7-SNAPSHOT</version>
+  <version>2.7.8</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
