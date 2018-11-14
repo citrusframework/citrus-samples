@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-junit</artifactId>
   <name>Citrus Samples:: JUnit: Java</name>
-  <version>2.7.8</version>
+  <version>2.7.9-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,7 +13,7 @@
     <spring.boot.version>1.5.10.RELEASE</spring.boot.version>
     <slf4j.version>1.7.25</slf4j.version>
     <junit.version>4.12</junit.version>
-    <citrus.version>2.7.8</citrus.version>
+    <citrus.version>2.7.9-SNAPSHOT</citrus.version>
     <todo.app.version>1.1.0</todo.app.version>
   </properties>
 
