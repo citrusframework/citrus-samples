@@ -50,11 +50,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
         http()
             .client(todoClient)
@@ -115,11 +116,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
         http()
             .client(todoClient)
@@ -175,11 +177,12 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http(todoClient.getEndpointConfiguration().getRequestUrl())
+        waitFor().http()
                 .status(HttpStatus.OK)
                 .method(HttpMethod.GET)
                 .ms(20000L)
-                .interval(1000L);
+                .interval(1000L)
+                .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
         http()
                 .client(todoClient)
