@@ -20,7 +20,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-bookstore</artifactId>
-  <version>2.7.9-SNAPSHOT</version>
+  <version>2.7.9</version>
   <name>Citrus Samples:: Bookstore</name>
   <packaging>pom</packaging>
   

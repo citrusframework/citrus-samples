@@ -20,7 +20,7 @@
   
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-cucumber-spring</artifactId>
-  <version>2.7.9-SNAPSHOT</version>
+  <version>2.7.9</version>
   <name>Citrus Samples:: Cucumber BDD Spring</name>
   <packaging>pom</packaging>
   
