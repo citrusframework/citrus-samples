@@ -9,17 +9,19 @@ sudo: required
 git:
   depth: false
 
-branches:
-  only:
-    - feature-add-travis-pipeline
-
 # Skip installation step
 install: true
 
 jobs:
   include:
     - stage: install-todo-app
-      script mvn install -pl :citrus-sample-todo
+      script: mvn install -pl :citrus-sample-todo
+    - stage: it-citrus-java-sample-annotation-config
+      script: mvn -Dembedded -pl :citrus-java-sample-annotation-config
+
+stages:
+  - install-todo-app
+  - citrus-java-sample-annotation-config
 
 cache:
   directories:
