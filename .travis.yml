@@ -17,7 +17,7 @@ jobs:
     - stage: install-todo-app
       script: mvn install -pl :citrus-sample-todo
     - stage: it-citrus-java-sample-annotation-config
-      script: mvn -Dembedded -pl :citrus-java-sample-annotation-config
+      script: mvn verify -Dembedded -pl :citrus-java-sample-annotation-config
 
 stages:
   - install-todo-app
