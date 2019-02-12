@@ -178,10 +178,10 @@ jobs:
       script: mvn verify -Dembedded -pl :citrus-java-sample-testng
 
     - stage: it-citrus-java-sample-oxm
-        script: mvn verify -Dembedded -pl :citrus-java-sample-oxm
+      script: mvn verify -Dembedded -pl :citrus-java-sample-oxm
 
     - stage: it-citrus-java-sample-xhtml
-        script: mvn verify -Dembedded -pl :citrus-java-sample-xhtml
+      script: mvn verify -Dembedded -pl :citrus-java-sample-xhtml
 
 # Here be dragons (aka. xml tests)
 
