@@ -222,7 +222,7 @@ jobs:
       script: mvn verify -Dembedded -pl :citrus-xml-sample-reporting
 
     - stage: it-citrus-xml-sample-rmi
-      script: mvn verify -Dembedded -pl :citrus-java-xml-rmi
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-rmi
 
     - stage: it-citrus-xml-sample-ftp
       script: mvn verify -Dembedded -pl :citrus-xml-sample-ftp
