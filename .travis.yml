@@ -15,7 +15,7 @@ install: true
 jobs:
   include:
     - stage: install-todo-app
-      script mvn install -pl :citrus-sample-todo
+      script: mvn install -pl :citrus-sample-todo
 
 cache:
   directories:
