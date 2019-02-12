@@ -9,10 +9,6 @@ sudo: required
 git:
   depth: false
 
-branches:
-  only:
-    - feature-add-travis-pipeline
-
 # Skip installation step
 install: true
 
