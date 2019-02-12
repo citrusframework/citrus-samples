@@ -16,12 +16,52 @@ jobs:
   include:
     - stage: install-todo-app
       script: mvn install -pl :citrus-sample-todo
+
     - stage: it-citrus-java-sample-annotation-config
       script: mvn verify -Dembedded -pl :citrus-java-sample-annotation-config
 
+    - stage: it-citrus-java-sample-behavior
+      script: mvn verify -Dembedded -pl :citrus-java-sample-behavior
+
+    - stage: it-citrus-java-sample-binary
+      script: mvn verify -Dembedded -pl :citrus-java-sample-binary
+
+    - stage: it-citrus-java-sample-camel-context
+      script: mvn verify -Dembedded -pl :citrus-java-sample-camel-context
+
+    - stage: it-citrus-java-sample-disctionaries
+      script: mvn verify -Dembedded -pl :citrus-java-sample-dictionaries
+
+    - stage: it-citrus-java-sample-docker
+      script: mvn verify -Dembedded -pl :citrus-java-sample-docker
+
+# Here be dragons (aka. xml tests)
+
+    - stage: it-citrus-xml-sample-behavior
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-behavior
+
+    - stage: it-citrus-xml-sample-camel-context
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-camel-context
+
+    - stage: it-citrus-xml-sample-disctionaries
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-dictionaries
+
+    - stage: it-citrus-xml-sample-docker
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-docker
+
 stages:
   - install-todo-app
-  - citrus-java-sample-annotation-config
+  - it-citrus-java-sample-annotation-config
+  - it-citrus-java-sample-behavior
+  - it-citrus-java-sample-binary
+  - it-citrus-java-sample-camel-context
+  - it-citrus-java-sample-disctionaries
+  - it-citrus-java-sample-docker
+
+  - it-citrus-xml-sample-binary
+  - it-citrus-xml-sample-camel-context
+  - it-citrus-xml-sample-disctionaries
+  - it-citrus-xml-sample-docker
 
 cache:
   directories:
