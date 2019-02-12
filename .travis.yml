@@ -1,0 +1,26 @@
+language: java
+jdk:
+  - openjdk8
+
+dist: trusty
+sudo: required
+
+# infinite depth for better sonar metrics
+git:
+  depth: false
+
+branches:
+  only:
+    - feature-add-travis-pipeline
+
+# Skip installation step
+install: true
+
+jobs:
+  include:
+    - stage: install-todo-app
+      script mvn install -pl :citrus-sample-todo
+
+cache:
+  directories:
+    - '$HOME/.sonar/cache'
