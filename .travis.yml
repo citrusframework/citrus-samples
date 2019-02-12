@@ -65,4 +65,4 @@ stages:
 
 cache:
   directories:
-    - '$HOME/.sonar/cache'
+    - $HOME/.m2
