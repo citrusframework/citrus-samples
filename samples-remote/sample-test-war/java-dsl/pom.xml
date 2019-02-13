@@ -112,16 +112,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring.boot.version}</version>
-        <configuration>
-          <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
-          <useTestClasspath>false</useTestClasspath>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <version>0.26.0</version>
@@ -323,28 +313,6 @@
       </activation>
       <build>
         <plugins>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <configuration>
-              <fork>true</fork>
-            </configuration>
-            <executions>
-              <execution>
-                <id>pre-integration-test</id>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>post-integration-test</id>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-
           <plugin>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>

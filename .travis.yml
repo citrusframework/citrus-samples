@@ -65,34 +65,30 @@ jobs:
     - stage: it-citrus-java-sample-rmi
       script: mvn verify -Dembedded -pl :citrus-java-sample-rmi
 
-#   TODO: check for headless selenium driver
+#   TODO: get selenium running on travis
 #    - stage: it-citrus-java-sample-selenium
 #      script: mvn verify -Dembedded -pl :citrus-java-sample-selenium
 
-    - stage: it-citrus-sample-cucumber-spring
-      script: mvn verify -Dembedded -pl :citrus-sample-cucumber-spring
+    - stage: it-citrus-java-sample-cucumber
+      script: mvn verify -Dembedded -pl :citrus-java-sample-cucumber
 
-    - stage: it-citrus-sample-cucumber2
-      script: mvn verify -Dembedded -pl :citrus-sample-cucumber-spring2
+    - stage: it-citrus-java-sample-cucumber-spring
+      script: mvn verify -Dembedded -pl :citrus-java-sample-cucumber-spring
 
-#   TODO: check "address already in use"
-#    - stage: it-citrus-java-sample-jdbc
-#      script: mvn verify -Dembedded -pl :citrus-java-sample-jdbc
-#
-#    - stage: it-citrus-java-sample-jdbc-callable-statements
-#      script: mvn verify -Dembedded -pl :citrus-java-sample-jdbc-callable-statements
-#
-#    - stage: it-citrus-java-sample-jdbc-transactions
-#      script: mvn verify -Dembedded -pl :citrus-java-sample-jdbc-transactions
-#   :ODOT
+    - stage: it-citrus-java-sample-cucumber2
+      script: mvn verify -Dembedded -pl :citrus-java-sample-cucumber-spring2
 
-    - stage: it-citrus-java-sample-sql
-      script: mvn verify -Dembedded -pl :citrus-java-sample-sql
+    - stage: it-citrus-java-sample-jdbc
+      script: mvn verify -Dembedded -pl :citrus-java-sample-jdbc
 
+    - stage: it-citrus-java-sample-jdbc-callable-statements
+      script: mvn verify -Dembedded -pl :citrus-java-sample-jdbc-callable-statements
+
+    - stage: it-citrus-java-sample-jdbc-transactions
+      script: mvn verify -Dembedded -pl :citrus-java-sample-jdbc-transactions
 
     - stage: it-citrus-java-sample-sql
       script: mvn verify -Dembedded -pl :citrus-java-sample-sql
-
 
     - stage: it-citrus-java-sample-ftp
       script: mvn verify -Dembedded -pl :citrus-java-sample-ftp
@@ -143,7 +139,7 @@ jobs:
     - stage: it-citrus-java-sample-test-jar
       script: mvn verify -Dembedded -pl :citrus-java-sample-test-jar
 
-#    TODO: java.net.SocketException: Connection reset
+#    TODO: The jetty-plugin is not properly configured, the server returns a 404 on every request
 #    - stage: it-citrus-java-sample-test-war
 #      script: mvn verify -Dembedded -pl :citrus-java-sample-test-war
 
@@ -153,7 +149,7 @@ jobs:
     - stage: it-citrus-java-sample-soap-attachment
       script: mvn verify -Dembedded -pl :citrus-java-sample-soap-attachment
 
-    - stage: it-citrus-java-sample-soap-motm
+    - stage: it-citrus-java-sample-soap-mtom
       script: mvn verify -Dembedded -pl :citrus-java-sample-soap-mtom
 
     - stage: it-citrus-java-sample-soap-ssl
@@ -184,9 +180,6 @@ jobs:
       script: mvn verify -Dembedded -pl :citrus-java-sample-xhtml
 
 # Here be dragons (aka. xml tests)
-
-    - stage: it-citrus-xml-sample-behaviors
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-behaviors
 
     - stage: it-citrus-xml-sample-camel-context
       script: mvn verify -Dembedded -pl :citrus-xml-sample-camel-context
@@ -227,20 +220,27 @@ jobs:
     - stage: it-citrus-xml-sample-ftp
       script: mvn verify -Dembedded -pl :citrus-xml-sample-ftp
 
-#   TODO: check for headless selenium driver
+#   TODO: get selenium running on travis
 #    - stage: it-citrus-xml-sample-selenium
 #      script: mvn verify -Dembedded -pl :citrus-xml-sample-selenium
 
-#   TODO: check "address already in use"
-#    - stage: it-citrus-xml-sample-jdbc
-#      script: mvn verify -Dembedded -pl :citrus-xml-sample-jdbc
-#
-#    - stage: it-citrus-xml-sample-jdbc-callable-statements
-#      script: mvn verify -Dembedded -pl :citrus-xml-sample-jdbc-callable-statements
-#
-#    - stage: it-citrus-xml-sample-jdbc-transactions
-#      script: mvn verify -Dembedded -pl :citrus-xml-sample-jdbc-transactions
-#   :ODOT
+    - stage: it-citrus-xml-sample-cucumber
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-cucumber
+
+    - stage: it-citrus-xml-sample-cucumber-spring
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-cucumber-spring
+
+    - stage: it-citrus-xml-sample-cucumber2
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-cucumber-spring2
+
+    - stage: it-citrus-xml-sample-jdbc
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-jdbc
+
+    - stage: it-citrus-xml-sample-jdbc-callable-statements
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-jdbc-callable-statements
+
+    - stage: it-citrus-xml-sample-jdbc-transactions
+      script: mvn verify -Dembedded -pl :citrus-xml-sample-jdbc-transactions
 
     - stage: it-citrus-xml-sample-sql
       script: mvn verify -Dembedded -pl :citrus-xml-sample-sql
@@ -312,7 +312,7 @@ jobs:
 stages:
   - install-todo-app
   - it-citrus-java-sample-annotation-config
-  - it-citrus-java-sample-behavior
+  - it-citrus-java-sample-behaviors
   - it-citrus-java-sample-binary
   - it-citrus-java-sample-camel-context
   - it-citrus-java-sample-disctionaries
@@ -327,8 +327,10 @@ stages:
   - it-citrus-java-sample-message-store
   - it-citrus-java-sample-reporting
   - it-citrus-java-sample-rmi
-  - it-citrus-sample-cucumber-spring
-  - it-citrus-sample-cucumber2
+  #  - it-citrus-java-sample-selenium
+  - it-citrus-java-sample-cucumber
+  - it-citrus-java-sample-cucumber-spring
+  - it-citrus-java-sample-cucumber2
   - it-citrus-java-sample-jdbc
   - it-citrus-java-sample-jdbc-callable-statements
   - it-citrus-java-sample-jdbc-transactions
@@ -339,6 +341,7 @@ stages:
   - it-citrus-java-sample-http
   - it-citrus-java-sample-http-basic-auth
   - it-citrus-java-sample-http-form-data
+#  - it-citrus-java-sample-http-loadtest
   - it-citrus-java-sample-http-query-param
   - it-citrus-java-sample-http-static-response
   - it-citrus-java-sample-https
@@ -348,9 +351,10 @@ stages:
   - it-citrus-java-sample-junit
   - it-citrus-java-sample-junit5
   - it-citrus-java-sample-test-jar
+#  - it-citrus-java-sample-test-war
   - it-citrus-java-sample-soap
   - it-citrus-java-sample-soap-attachment
-  - it-citrus-java-sample-soap-attachment
+  - it-citrus-java-sample-soap-mtom
   - it-citrus-java-sample-soap-ssl
   - it-citrus-java-sample-soap-static-response
   - it-citrus-java-sample-soap-wsaddressing
@@ -374,6 +378,10 @@ stages:
   - it-citrus-xml-sample-message-store
   - it-citrus-xml-sample-reporting
   - it-citrus-xml-sample-rmi
+#  - it-citrus-xml-sample-selenium
+  - it-citrus-xml-sample-cucumber
+  - it-citrus-xml-sample-cucumber-spring
+  - it-citrus-xml-sample-cucumber2
   - it-citrus-xml-sample-jdbc
   - it-citrus-xml-sample-jdbc-callable-statements
   - it-citrus-xml-sample-jdbc-transactions
@@ -384,6 +392,7 @@ stages:
   - it-citrus-xml-sample-http
   - it-citrus-xml-sample-http-basic-auth
   - it-citrus-xml-sample-http-form-data
+#  - it-citrus-xml-sample-http-loadtest
   - it-citrus-xml-sample-http-query-param
   - it-citrus-xml-sample-http-static-response
   - it-citrus-xml-sample-https

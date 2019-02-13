@@ -54,7 +54,7 @@ public class EndpointConfig {
                 .server()
                 .host("localhost")
                 .databaseName("testdb")
-                .port(3306)
+                .port(13306)
                 .timeout(10000L)
                 .autoStart(true)
                 .build();
@@ -64,7 +64,7 @@ public class EndpointConfig {
     public SingleConnectionDataSource dataSource() {
         SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
         dataSource.setDriverClassName(JdbcDriver.class.getName());
-        dataSource.setUrl("jdbc:citrus:http://localhost:3306/testdb");
+        dataSource.setUrl("jdbc:citrus:http://localhost:13306/testdb");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
         return dataSource;
