@@ -215,7 +215,7 @@ jobs:
 #   TODO: get selenium running on travis
 #    - stage: it-citrus-xml-sample-selenium
 #      script:
-      - mvn verify -Dembedded -pl :citrus-xml-sample-selenium
+#      - mvn verify -Dembedded -pl :citrus-xml-sample-selenium
     - stage: it-citrus-xml-sample-cucumber
       script:
       - mvn verify -Dembedded -pl :citrus-xml-sample-cucumber
