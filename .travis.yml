@@ -1,313 +1,306 @@
 language: java
 jdk:
-  - openjdk8
+- openjdk8
 
 dist: trusty
-sudo: required
 
-# infinite depth for better sonar metrics
-git:
-  depth: false
-
-# Skip installation step
 install: true
 
 jobs:
   include:
     - stage: install-todo-app
-      script: mvn clean install -pl :citrus-sample-todo
-
+      script:
+      - mvn clean install -pl :citrus-sample-todo
     - stage: it-citrus-java-sample-annotation-config
-      script: mvn verify -Dembedded -pl :citrus-java-sample-annotation-config
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-annotation-config
     - stage: it-citrus-java-sample-behaviors
-      script: mvn verify -Dembedded -pl :citrus-java-sample-behaviors
-
+      script: 
+      - mvn verify -Dembedded -pl :citrus-java-sample-behaviors
     - stage: it-citrus-java-sample-binary
-      script: mvn verify -Dembedded -pl :citrus-java-sample-binary
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-binary
     - stage: it-citrus-java-sample-camel-context
-      script: mvn verify -Dembedded -pl :citrus-java-sample-camel-context
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-camel-context
     - stage: it-citrus-java-sample-disctionaries
-      script: mvn verify -Dembedded -pl :citrus-java-sample-dictionaries
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-dictionaries
     - stage: it-citrus-java-sample-docker
-      script: mvn verify -Dembedded -pl :citrus-java-sample-docker
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-docker
     - stage: it-citrus-java-sample-dynamic-endpoints
-      script: mvn verify -Dembedded -pl :citrus-java-sample-dynamic-endpoints
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-dynamic-endpoints
     - stage: it-citrus-java-sample-hamcrest
-      script: mvn verify -Dembedded -pl :citrus-java-sample-hamcrest
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-hamcrest
     - stage: it-citrus-java-sample-javaconfig
-      script: mvn verify -Dembedded -pl :citrus-java-sample-javaconfig
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-javaconfig
     - stage: it-citrus-java-sample-jms
-      script: mvn verify -Dembedded -pl :citrus-java-sample-jms
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-jms
     - stage: it-citrus-java-sample-kafka
-      script: mvn verify -Dembedded -pl :citrus-java-sample-kafka
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-kafka
     - stage: it-citrus-java-sample-kubernetes
-      script: mvn verify -Dembedded -pl :citrus-java-sample-kubernetes
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-kubernetes
     - stage: it-citrus-java-sample-mail
-      script: mvn verify -Dembedded -pl :citrus-java-sample-mail
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-mail
     - stage: it-citrus-java-sample-message-store
-      script: mvn verify -Dembedded -pl :citrus-java-sample-message-store
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-message-store
     - stage: it-citrus-java-sample-reporting
-      script: mvn verify -Dembedded -pl :citrus-java-sample-reporting
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-reporting
     - stage: it-citrus-java-sample-rmi
-      script: mvn verify -Dembedded -pl :citrus-java-sample-rmi
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-rmi
 #   TODO: get selenium running on travis
 #    - stage: it-citrus-java-sample-selenium
-#      script: mvn verify -Dembedded -pl :citrus-java-sample-selenium
-
+#      script:
+#      - mvn verify -Dembedded -pl :citrus-java-sample-selenium
     - stage: it-citrus-java-sample-cucumber
-      script: mvn verify -Dembedded -pl :citrus-java-sample-cucumber
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-cucumber
     - stage: it-citrus-java-sample-cucumber-spring
-      script: mvn verify -Dembedded -pl :citrus-java-sample-cucumber-spring
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-cucumber-spring
     - stage: it-citrus-java-sample-cucumber2
-      script: mvn verify -Dembedded -pl :citrus-java-sample-cucumber-spring2
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-cucumber-spring2
     - stage: it-citrus-java-sample-jdbc
-      script: mvn verify -Dembedded -pl :citrus-java-sample-jdbc
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-jdbc
     - stage: it-citrus-java-sample-jdbc-callable-statements
-      script: mvn verify -Dembedded -pl :citrus-java-sample-jdbc-callable-statements
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-jdbc-callable-statements
     - stage: it-citrus-java-sample-jdbc-transactions
-      script: mvn verify -Dembedded -pl :citrus-java-sample-jdbc-transactions
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-jdbc-transactions
     - stage: it-citrus-java-sample-sql
-      script: mvn verify -Dembedded -pl :citrus-java-sample-sql
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-sql
     - stage: it-citrus-java-sample-ftp
-      script: mvn verify -Dembedded -pl :citrus-java-sample-ftp
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-ftp
     - stage: it-citrus-java-sample-scp
-      script: mvn verify -Dembedded -pl :citrus-java-sample-scp
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-scp
     - stage: it-citrus-java-sample-sftp
-      script: mvn verify -Dembedded -pl :citrus-java-sample-sftp
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-sftp
     - stage: it-citrus-java-sample-http
-      script: mvn verify -Dembedded -pl :citrus-java-sample-http
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-http
     - stage: it-citrus-java-sample-http-basic-auth
-      script: mvn verify -Dembedded -pl :citrus-java-sample-http-basic-auth
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-http-basic-auth
     - stage: it-citrus-java-sample-http-form-data
-      script: mvn verify -Dembedded -pl :citrus-java-sample-http-form-data
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-http-form-data
 #    TODO: throws ConcurrentModificationException
 #    - stage: it-citrus-java-sample-http-loadtest
-#      script: mvn verify -Dembedded -pl :citrus-java-sample-http-loadtest
-
+#      script:
+#      - mvn verify -Dembedded -pl :citrus-java-sample-http-loadtest
     - stage: it-citrus-java-sample-http-query-param
-      script: mvn verify -Dembedded -pl :citrus-java-sample-http-query-param
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-http-query-param
     - stage: it-citrus-java-sample-http-static-response
-      script: mvn verify -Dembedded -pl :citrus-java-sample-http-static-response
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-http-static-response
     - stage: it-citrus-java-sample-https
-      script: mvn verify -Dembedded -pl :citrus-java-sample-https
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-https
     - stage: it-citrus-java-sample-swagger
-      script: mvn verify -Dembedded -pl :citrus-java-sample-swagger
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-swagger
     - stage: it-citrus-java-sample-databind
-      script: mvn verify -Dembedded -pl :citrus-java-sample-databind
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-databind
     - stage: it-citrus-java-sample-json
-      script: mvn verify -Dembedded -pl :citrus-java-sample-json
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-json
     - stage: it-citrus-java-sample-junit
-      script: mvn verify -Dembedded -pl :citrus-java-sample-junit
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-junit
     - stage: it-citrus-java-sample-junit5
-      script: mvn verify -Dembedded -pl :citrus-java-sample-junit5
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-junit5
     - stage: it-citrus-java-sample-test-jar
-      script: mvn verify -Dembedded -pl :citrus-java-sample-test-jar
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-test-jar
 #    TODO: The jetty-plugin is not properly configured, the server returns a 404 on every request
 #    - stage: it-citrus-java-sample-test-war
-#      script: mvn verify -Dembedded -pl :citrus-java-sample-test-war
-
+#      script:
+#      - mvn verify -Dembedded -pl :citrus-java-sample-test-war
     - stage: it-citrus-java-sample-soap
-      script: mvn verify -Dembedded -pl :citrus-java-sample-soap
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-soap
     - stage: it-citrus-java-sample-soap-attachment
-      script: mvn verify -Dembedded -pl :citrus-java-sample-soap-attachment
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-soap-attachment
     - stage: it-citrus-java-sample-soap-mtom
-      script: mvn verify -Dembedded -pl :citrus-java-sample-soap-mtom
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-soap-mtom
     - stage: it-citrus-java-sample-soap-ssl
-      script: mvn verify -Dembedded -pl :citrus-java-sample-soap-ssl
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-soap-ssl
     - stage: it-citrus-java-sample-soap-static-response
-      script: mvn verify -Dembedded -pl :citrus-java-sample-soap-static-response
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-soap-static-response
     - stage: it-citrus-java-sample-soap-wsaddressing
-      script: mvn verify -Dembedded -pl :citrus-java-sample-soap-wsaddressing
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-soap-wsaddressing
     - stage: it-citrus-java-sample-soap-wssecurity
-      script: mvn verify -Dembedded -pl :citrus-java-sample-soap-wssecurity
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-soap-wssecurity
     - stage: it-citrus-java-sample-wsdl
-      script: mvn verify -Dembedded -pl :citrus-java-sample-wsdl
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-wsdl
     - stage: it-citrus-java-sample-dataprovider
-      script: mvn verify -Dembedded -pl :citrus-java-sample-dataprovider
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-dataprovider
     - stage: it-citrus-java-sample-testng
-      script: mvn verify -Dembedded -pl :citrus-java-sample-testng
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-testng
     - stage: it-citrus-java-sample-oxm
-      script: mvn verify -Dembedded -pl :citrus-java-sample-oxm
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-oxm
     - stage: it-citrus-java-sample-xhtml
-      script: mvn verify -Dembedded -pl :citrus-java-sample-xhtml
-
-# Here be dragons (aka. xml tests)
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-java-sample-xhtml
     - stage: it-citrus-xml-sample-camel-context
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-camel-context
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-camel-context
     - stage: it-citrus-xml-sample-disctionaries
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-dictionaries
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-dictionaries
     - stage: it-citrus-xml-sample-docker
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-docker
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-docker
     - stage: it-citrus-xml-sample-dynamic-endpoints
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-dynamic-endpoints
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-dynamic-endpoints
     - stage: it-citrus-xml-sample-hamcrest
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-hamcrest
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-hamcrest
     - stage: it-citrus-xml-sample-jms
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-jms
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-jms
     - stage: it-citrus-xml-sample-kafka
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-kafka
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-kafka
     - stage: it-citrus-xml-sample-kubernetes
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-kubernetes
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-kubernetes
     - stage: it-citrus-xml-sample-mail
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-mail
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-mail
     - stage: it-citrus-xml-sample-message-store
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-message-store
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-message-store
     - stage: it-citrus-xml-sample-reporting
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-reporting
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-reporting
     - stage: it-citrus-xml-sample-rmi
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-rmi
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-rmi
     - stage: it-citrus-xml-sample-ftp
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-ftp
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-ftp
 #   TODO: get selenium running on travis
 #    - stage: it-citrus-xml-sample-selenium
-#      script: mvn verify -Dembedded -pl :citrus-xml-sample-selenium
-
+#      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-selenium
     - stage: it-citrus-xml-sample-cucumber
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-cucumber
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-cucumber
     - stage: it-citrus-xml-sample-cucumber-spring
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-cucumber-spring
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-cucumber-spring
     - stage: it-citrus-xml-sample-cucumber2
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-cucumber-spring2
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-cucumber-spring2
     - stage: it-citrus-xml-sample-jdbc
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-jdbc
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-jdbc
     - stage: it-citrus-xml-sample-jdbc-callable-statements
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-jdbc-callable-statements
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-jdbc-callable-statements
     - stage: it-citrus-xml-sample-jdbc-transactions
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-jdbc-transactions
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-jdbc-transactions
     - stage: it-citrus-xml-sample-sql
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-sql
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-sql
     - stage: it-citrus-xml-sample-scp
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-scp
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-scp
     - stage: it-citrus-xml-sample-sftp
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-sftp
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-sftp
     - stage: it-citrus-xml-sample-http
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-http
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-http
     - stage: it-citrus-xml-sample-http-basic-auth
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-http-basic-auth
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-http-basic-auth
     - stage: it-citrus-xml-sample-http-form-data
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-http-form-data
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-http-form-data
 #    TODO: throws ConcurrentModificationException
 #    - stage: it-citrus-xml-sample-http-loadtest
-#      script: mvn verify -Dembedded -pl :citrus-xml-sample-http-loadtest
-
+#      script:
+#      - mvn verify -Dembedded -pl :citrus-xml-sample-http-loadtest
     - stage: it-citrus-xml-sample-http-query-param
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-http-query-param
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-http-query-param
     - stage: it-citrus-xml-sample-http-static-response
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-http-static-response
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-http-static-response
     - stage: it-citrus-xml-sample-https
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-https
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-https
     - stage: it-citrus-xml-sample-json
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-json
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-json
     - stage: it-citrus-xml-sample-junit
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-junit
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-junit
     - stage: it-citrus-xml-sample-junit5
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-junit5
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-junit5
     - stage: it-citrus-xml-sample-soap
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-soap
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-soap
     - stage: it-citrus-xml-sample-soap-attachment
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-soap-attachment
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-soap-attachment
     - stage: it-citrus-xml-sample-soap-ssl
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-soap-ssl
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-soap-ssl
     - stage: it-citrus-xml-sample-soap-static-response
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-soap-static-response
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-soap-static-response
     - stage: it-citrus-xml-sample-soap-wsaddressing
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-soap-wsaddressing
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-soap-wsaddressing
     - stage: it-citrus-xml-sample-soap-wssecurity
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-soap-wssecurity
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-soap-wssecurity
     - stage: it-citrus-xml-sample-dataprovider
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-dataprovider
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-dataprovider
     - stage: it-citrus-xml-sample-testng
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-testng
-
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-testng
     - stage: it-citrus-xml-sample-xhtml
-      script: mvn verify -Dembedded -pl :citrus-xml-sample-xhtml
+      script:
+      - mvn verify -Dembedded -pl :citrus-xml-sample-xhtml
 
 stages:
   - install-todo-app
@@ -327,7 +320,7 @@ stages:
   - it-citrus-java-sample-message-store
   - it-citrus-java-sample-reporting
   - it-citrus-java-sample-rmi
-  #  - it-citrus-java-sample-selenium
+#  - it-citrus-java-sample-selenium
   - it-citrus-java-sample-cucumber
   - it-citrus-java-sample-cucumber-spring
   - it-citrus-java-sample-cucumber2
@@ -364,7 +357,6 @@ stages:
   - it-citrus-java-sample-testng
   - it-citrus-java-sample-oxm
   - it-citrus-java-sample-xhtml
-
   - it-citrus-xml-sample-binary
   - it-citrus-xml-sample-camel-context
   - it-citrus-xml-sample-disctionaries
