@@ -18,7 +18,7 @@
                       request-url="http://localhost:8080"/>
 
   <citrus-jdbc:server id="jdbcServer"
-                      port="3306"
+                      port="13306"
                       database-name="testdb"
                       timeout="10000"
                       auto-start="true"/>
@@ -26,7 +26,7 @@
   <!-- JDBC data source -->
   <bean id="todoDataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
     <property name="driverClassName" value="com.consol.citrus.db.driver.JdbcDriver"/>
-    <property name="url" value="jdbc:citrus:http://localhost:3306/testdb"/>
+    <property name="url" value="jdbc:citrus:http://localhost:13306/testdb"/>
     <property name="username" value="sa"/>
     <property name="password" value=""/>
   </bean>
