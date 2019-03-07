@@ -46,7 +46,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Test
     @CitrusTest
-    public void testStoreAndRetrieveFile() throws IOException {
+    public void testStoreAndRetrieveFile() {
         variable("todoId", "citrus:randomUUID()");
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
@@ -57,50 +57,68 @@ public class TodoListIT extends TestNGCitrusTestRunner {
 
         echo("Create new directory on server");
 
-        send(sftpClient)
-            .message(FtpMessage.command(FTPCmd.MKD).arguments("todo"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(sftpClient)
+            .message(FtpMessage.command(FTPCmd.MKD).arguments("todo")));
 
-        receive(sftpClient)
-            .message(FtpMessage.success(257, "Pathname created"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(sftpClient)
+            .message(FtpMessage.success(257, "Pathname created")));
 
         echo("Directory 'todo' created on SFTP server");
         echo("Store file to directory");
 
-        send(sftpClient)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(sftpClient)
             .fork(true)
-            .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII));
+            .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII)));
 
-        receive(sftpServer)
-            .message(FtpMessage.put("@ignore@", "/todo/todo.json", DataType.ASCII));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(sftpServer)
+            .message(FtpMessage.put("@ignore@", "/todo/todo.json", DataType.ASCII)));
 
-        send(sftpServer)
-            .message(FtpMessage.success());
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(sftpServer)
+            .message(FtpMessage.success()));
 
-        receive(sftpClient)
-           .message(FtpMessage.putResult(226, "@contains(Transfer complete)@", true));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(sftpClient)
+            .message(FtpMessage.putResult(226, "@contains(Transfer complete)@", true)));
 
         echo("List files in directory");
 
-        send(sftpClient)
-            .message(FtpMessage.list("todo"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(sftpClient)
+            .message(FtpMessage.list("todo")));
 
-        receive(sftpClient)
-            .message(FtpMessage.result(getListCommandResult("todo.json")));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(sftpClient)
+            .message(FtpMessage.result(getListCommandResult("todo.json"))));
 
         echo("Retrieve file from server");
 
-        send(sftpClient)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(sftpClient)
             .fork(true)
-            .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII));
+            .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII)));
 
-        receive(sftpServer)
-            .message(FtpMessage.get("/todo/todo.json", "@ignore@", DataType.ASCII));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(sftpServer)
+            .message(FtpMessage.get("/todo/todo.json", "@ignore@", DataType.ASCII)));
 
-        send(sftpServer)
-                .message(FtpMessage.success());
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(sftpServer)
+            .message(FtpMessage.success()));
 
-        receive(sftpClient)
-            .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
+        receive(receiveMessageBuilder -> {
+            try {
+                receiveMessageBuilder
+                .endpoint(sftpClient)
+                .message(FtpMessage.result(
+                    getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }});
     }
 
     private ListCommandResult getListCommandResult(String ... fileNames) {
