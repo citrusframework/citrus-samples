@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2017 the original author or authors.
+ * Copyright 2006-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.dsl.junit.JUnit4CitrusTest;
 import com.consol.citrus.dsl.runner.TestRunner;
 import com.consol.citrus.http.client.HttpClient;
@@ -38,15 +37,13 @@ public class TodoListIT extends JUnit4CitrusTest {
 
     @Test
     @CitrusTest
-    public void testGet(@CitrusResource TestDesigner designer) {
-        designer.http()
-            .client(todoClient)
+    public void testGet(@CitrusResource TestRunner runner) {
+        runner.http(action -> action.client(todoClient)
             .send()
             .get("/todolist")
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        designer.http()
-            .client(todoClient)
+        runner.http(action -> action.client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
@@ -56,7 +53,7 @@ public class TodoListIT extends JUnit4CitrusTest {
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                         "<head>@ignore@</head>" +
                         "<body>@ignore@</body>" +
-                    "</html>");
+                    "</html>"));
     }
 
     @Test
@@ -75,5 +72,4 @@ public class TodoListIT extends JUnit4CitrusTest {
             .receive()
             .response(HttpStatus.FOUND));
     }
-
 }

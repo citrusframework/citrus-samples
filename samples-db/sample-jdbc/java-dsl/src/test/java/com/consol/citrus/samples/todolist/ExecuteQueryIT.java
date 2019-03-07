@@ -17,20 +17,19 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
-import javax.sql.DataSource;
-
 /**
  * @author Christoph Deppisch
  */
-public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
+public class ExecuteQueryIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private JdbcServer jdbcServer;
@@ -42,15 +41,18 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
     @CitrusTest
     public void testCreateTable() {
         async()
-            .actions(sql(dataSource)
-                    .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
+            .actions(sql(executeSQLbuilder -> executeSQLbuilder
+                .dataSource(dataSource)
+                .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)")));
 
-        receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.execute("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)")));
 
-        send(jdbcServer)
-                .message(JdbcMessage.success());
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.success()));
     }
 
     @Test
@@ -61,20 +63,23 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
         variable("todoDescription", "Description: ${todoName}");
 
         async()
-            .actions(query(dataSource)
-                    .statement("SELECT id, title, description FROM todo_entries")
-                    .validate("id", "${todoId}")
-                    .validate("title", "${todoName}")
-                    .validate("description", "${todoDescription}"));
+            .actions(query(exeucteSQLBuilder-> exeucteSQLBuilder
+                .dataSource(dataSource)
+                .statement("SELECT id, title, description FROM todo_entries")
+                .validate("id", "${todoId}")
+                .validate("title", "${todoName}")
+                .validate("description", "${todoDescription}")));
 
-        receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries")));
 
-        send(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.success()
-                                    .dataSet(new ClassPathResource("dataset.json")));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.success()
+                                .dataSet(new ClassPathResource("dataset.json"))));
     }
 
     @Test
@@ -83,14 +88,18 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
         String sql = "DELETE FROM todo_entries";
 
         async()
-            .actions(sql(dataSource).statement(sql));
+            .actions(sql(executeSQLbuilder -> executeSQLbuilder
+                .dataSource(dataSource)
+                .statement(sql)));
 
-        receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute(sql));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.execute(sql)));
 
-        send(jdbcServer)
-                .message(JdbcMessage.success().rowsUpdated(10));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.success().rowsUpdated(10)));
     }
 
     @Test
@@ -99,16 +108,17 @@ public class ExecuteQueryIT extends TestNGCitrusTestDesigner {
         String sql = "DROP TABLE todo_entries";
 
         async()
-            .actions(sql(dataSource).statement(sql));
+            .actions(sql(exeucteSQLBuilder -> exeucteSQLBuilder
+                .dataSource(dataSource)
+                .statement(sql)));
 
-        receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute(sql));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.execute(sql)));
 
-        send(jdbcServer)
-                .message(JdbcMessage.success());
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.success()));
     }
-
-
-
 }

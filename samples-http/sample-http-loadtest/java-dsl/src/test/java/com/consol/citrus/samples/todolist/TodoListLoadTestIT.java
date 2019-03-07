@@ -18,7 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.design.TestDesigner;
+import com.consol.citrus.dsl.runner.TestRunner;
 import com.consol.citrus.dsl.testng.TestNGCitrusTest;
 import com.consol.citrus.http.client.HttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,41 +29,42 @@ import org.testng.annotations.*;
 /**
  * @author Christoph Deppisch
  */
+
 @Test(invocationCount = 40, threadPoolSize = 8)
 public class TodoListLoadTestIT extends TestNGCitrusTest {
 
     @Autowired
     private HttpClient todoClient;
 
-    @Parameters( { "designer" })
+    @Parameters( { "runner" })
     @CitrusTest
-    public void testAddTodo(@Optional @CitrusResource TestDesigner designer) {
-        designer.http()
+    public void testAddTodo(@Optional @CitrusResource TestRunner runner) {
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=citrus:concat('todo_', citrus:randomNumber(10))");
+            .payload("title=citrus:concat('todo_', citrus:randomNumber(10))"));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.FOUND));
     }
 
-    @Parameters( { "designer" })
+    @Parameters( { "runner" })
     @CitrusTest
-    public void testListTodos(@Optional @CitrusResource TestDesigner designer) {
-        designer.http()
+    public void testListTodos(@Optional @CitrusResource TestRunner runner) {
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
 }

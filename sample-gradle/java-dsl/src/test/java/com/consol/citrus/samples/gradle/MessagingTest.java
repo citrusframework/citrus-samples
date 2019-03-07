@@ -18,7 +18,7 @@ package com.consol.citrus.samples.gradle;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.channel.ChannelEndpoint;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @author Christoph Deppisch
  */
 @ContextConfiguration(classes = { EndpointConfig.class })
-public class MessagingTest extends TestNGCitrusTestDesigner {
+public class MessagingTest extends TestNGCitrusTestRunner {
 
     @Autowired
     private ChannelEndpoint testChannelEndpoint;
@@ -39,13 +39,15 @@ public class MessagingTest extends TestNGCitrusTestDesigner {
     public void testMessaging() {
         echo("Test simple message send and receive");
 
-        send(testChannelEndpoint)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(testChannelEndpoint)
             .messageType(MessageType.PLAINTEXT)
-            .payload("Hello Citrus!");
+            .payload("Hello Citrus!"));
 
-        receive(testChannelEndpoint)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(testChannelEndpoint)
             .messageType(MessageType.PLAINTEXT)
-            .payload("Hello Citrus!");
+            .payload("Hello Citrus!"));
 
         echo("Successful send and receive");
     }

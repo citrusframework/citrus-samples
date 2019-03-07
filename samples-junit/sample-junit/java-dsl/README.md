@@ -26,10 +26,12 @@ In test cases we can reference this client component in order to send REST calls
 the `JUnit4CitrusTestRunner` implementation as base for your test.
     
 ```java
-public class TodoListIT extends JUnit4CitrusTestRunner {
+public class TodoListRunnerIT extends JUnit4CitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
+
+    [...]
 
     @Test
     @CitrusTest
@@ -47,21 +49,22 @@ public class TodoListIT extends JUnit4CitrusTestRunner {
             .receive()
             .response(HttpStatus.FOUND));
     }
-}      
+
+}
 ```
         
 The `JUnit4CitrusTestRunner` makes sure that Citrus framework is loaded at startup and all configuration is done properly. Also we need to set the annotation `@CitrusTest` on our test methods in
 addition to the normal JUnit `@Test` annotation. This way we can inject Citrus endpoints such as the `todoClient` and we can use the runner Java fluent API in Citrus to send and receive messages using that client component. 
 
-As an alternative to that you can also use the test designer fluent API. You need to extend from `JUnit4CitrusTestDesigner` base class then. The other concepts and configuration stays the same.
-
 Last not least we can also use resource injection to the test methods using `@CitrusResource` method parameter annotations.
 
 ```java
-public class TodoListInjectIT extends JUnit4CitrusTest {
+public class TodoListIT extends JUnit4CitrusTest {
 
     @Autowired
     private HttpClient todoClient;
+
+    [...]
 
     @Test
     @CitrusTest
@@ -79,8 +82,9 @@ public class TodoListInjectIT extends JUnit4CitrusTest {
             .receive()
             .response(HttpStatus.FOUND));
     }
+}
 
-}  
+}
 ```
   
 We can inject method parameters such as `@CitrusResource` annotated `TestRunner` that is our entrance to the Citrus Java fluent API.

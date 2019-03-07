@@ -17,9 +17,9 @@
 package com.consol.citrus.samples.flightbooking;
 
 import com.consol.citrus.container.SequenceBeforeTest;
-import com.consol.citrus.dsl.design.TestDesigner;
-import com.consol.citrus.dsl.design.TestDesignerBeforeTestSupport;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
+import com.consol.citrus.dsl.runner.TestRunner;
+import com.consol.citrus.dsl.runner.TestRunnerBeforeTestSupport;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.variable.GlobalVariables;
@@ -73,7 +73,7 @@ public class CitrusEndpointConfig {
     private String dbPassword;
 
     @Bean
-    public XsdSchemaRepository schemaRepository() throws ParserConfigurationException, SAXException, IOException {
+    public XsdSchemaRepository schemaRepository() {
         XsdSchemaRepository schemaRepository = new XsdSchemaRepository();
         schemaRepository.getLocations().add("classpath:com/consol/citrus/samples/flightbooking/schema/FlightBookingSchema.xsd");
         return schemaRepository;
@@ -103,47 +103,47 @@ public class CitrusEndpointConfig {
     @Bean
     public HttpServer royalAirlineServer() {
         return CitrusEndpoints.http()
-                .server()
-                .autoStart(true)
-                .port(8074)
-                .timeout(5000)
-                .build();
+            .server()
+            .autoStart(true)
+            .port(8074)
+            .timeout(5000)
+            .build();
     }
 
     @Bean
     public JmsEndpoint travelAgencyBookingRequestEndpoint() {
         return CitrusEndpoints.jms()
-                .asynchronous()
-                .destination(travelAgencyRequestQueue)
-                .connectionFactory(connectionFactory())
-                .build();
+            .asynchronous()
+            .destination(travelAgencyRequestQueue)
+            .connectionFactory(connectionFactory())
+            .build();
     }
 
     @Bean
     public JmsEndpoint travelAgencyBookingResponseEndpoint() {
         return CitrusEndpoints.jms()
-                .asynchronous()
-                .destination(travelAgencyResponseQueue)
-                .connectionFactory(connectionFactory())
-                .build();
+            .asynchronous()
+            .destination(travelAgencyResponseQueue)
+            .connectionFactory(connectionFactory())
+            .build();
     }
 
     @Bean
     public JmsEndpoint smartAirlineBookingRequestEndpoint() {
         return CitrusEndpoints.jms()
-                .asynchronous()
-                .destination(smartAirlineBookingRequestEndpoint)
-                .connectionFactory(connectionFactory())
-                .build();
+            .asynchronous()
+            .destination(smartAirlineBookingRequestEndpoint)
+            .connectionFactory(connectionFactory())
+            .build();
     }
 
     @Bean
     public JmsEndpoint smartAirlineBookingResponseEndpoint() {
         return CitrusEndpoints.jms()
-                .asynchronous()
-                .destination(smartAirlineBookingResponseEndpoint)
-                .connectionFactory(connectionFactory())
-                .build();
+            .asynchronous()
+            .destination(smartAirlineBookingResponseEndpoint)
+            .connectionFactory(connectionFactory())
+            .build();
     }
 
     @Bean(destroyMethod = "close")
@@ -161,15 +161,15 @@ public class CitrusEndpointConfig {
 
     @Bean
     public SequenceBeforeTest beforeTest() {
-        return new TestDesignerBeforeTestSupport() {
+        return new TestRunnerBeforeTestSupport() {
             @Override
-            public void beforeTest(TestDesigner testDesigner) {
-                testDesigner.purgeQueues()
+            public void beforeTest(TestRunner testRunner) {
+                testRunner.purgeQueues(purgeJmsQueryBuilder -> purgeJmsQueryBuilder
                     .connectionFactory(connectionFactory())
                     .queue(travelAgencyRequestQueue)
                     .queue(travelAgencyResponseQueue)
                     .queue(smartAirlineBookingRequestEndpoint)
-                    .queue(smartAirlineBookingResponseEndpoint);
+                    .queue(smartAirlineBookingResponseEndpoint));
             }
         };
     }

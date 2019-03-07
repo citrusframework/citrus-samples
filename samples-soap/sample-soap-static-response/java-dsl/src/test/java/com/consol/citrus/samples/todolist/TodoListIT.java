@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private WebServiceClient todoClient;
@@ -33,13 +33,13 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testTodo() {
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .send()
             .soapAction("getTodo")
-            .payload("<todo:getTodoRequest xmlns:todo=\"http://citrusframework.org/samples/todolist\"></todo:getTodoRequest>");
+            .payload("<todo:getTodoRequest xmlns:todo=\"http://citrusframework.org/samples/todolist\"></todo:getTodoRequest>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .receive()
             .payload("<getTodoResponse xmlns=\"http://citrusframework.org/samples/todolist\">" +
@@ -49,19 +49,19 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                             "<description>${todoDescription}</description>" +
                             "<done>false</done>" +
                         "</todoEntry>" +
-                    "</getTodoResponse>");
+                    "</getTodoResponse>"));
     }
 
     @Test
     @CitrusTest
     public void testTodoList() {
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .send()
             .soapAction("getTodoList")
-            .payload("<todo:getTodoListRequest xmlns:todo=\"http://citrusframework.org/samples/todolist\"></todo:getTodoListRequest>");
+            .payload("<todo:getTodoListRequest xmlns:todo=\"http://citrusframework.org/samples/todolist\"></todo:getTodoListRequest>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .receive()
             .payload("<getTodoListResponse xmlns=\"http://citrusframework.org/samples/todolist\">" +
@@ -73,7 +73,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                                 "<done>false</done>" +
                             "</todoEntry>" +
                         "</list>" +
-                    "</getTodoListResponse>");
+                    "</getTodoListResponse>"));
     }
 
 }

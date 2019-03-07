@@ -19,7 +19,7 @@ package com.consol.citrus.samples.todolist;
 import com.consol.citrus.actions.AbstractTestAction;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.exceptions.CitrusRuntimeException;
 import com.consol.citrus.ftp.client.ScpClient;
 import com.consol.citrus.ftp.message.FtpMessage;
@@ -37,7 +37,7 @@ import java.nio.file.Paths;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private ScpClient scpClient;
@@ -54,35 +54,43 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         echo("Store file via SCP");
 
-        send(scpClient)
-           .fork(true)
-           .message(FtpMessage.put("classpath:todo/entry.json", "todo.json", DataType.ASCII));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(scpClient)
+            .fork(true)
+            .message(FtpMessage.put("classpath:todo/entry.json", "todo.json", DataType.ASCII)));
 
-        receive(sftpServer)
-            .message(FtpMessage.put("@ignore@", "todo.json", DataType.ASCII));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(sftpServer)
+            .message(FtpMessage.put("@ignore@", "todo.json", DataType.ASCII)));
 
-        send(sftpServer)
-            .message(FtpMessage.success());
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(sftpServer)
+            .message(FtpMessage.success()));
 
-        receive(scpClient)
-            .message(FtpMessage.success());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(scpClient)
+            .message(FtpMessage.success()));
 
         echo("Retrieve file from server");
 
-        send(scpClient)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(scpClient)
             .fork(true)
-            .message(FtpMessage.get("todo.json", "file:target/scp/todo.json", DataType.ASCII));
+            .message(FtpMessage.get("todo.json", "file:target/scp/todo.json", DataType.ASCII)));
 
-        receive(sftpServer)
-            .message(FtpMessage.get("/todo.json", "@ignore@", DataType.ASCII));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(sftpServer)
+            .message(FtpMessage.get("/todo.json", "@ignore@", DataType.ASCII)));
 
-        send(sftpServer)
-            .message(FtpMessage.success());
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(sftpServer)
+            .message(FtpMessage.success()));
 
-        receive(scpClient)
-            .message(FtpMessage.success());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(scpClient)
+            .message(FtpMessage.success()));
 
-        action(new AbstractTestAction() {
+        run(new AbstractTestAction() {
             @Override
             public void doExecute(TestContext context) {
                 try {

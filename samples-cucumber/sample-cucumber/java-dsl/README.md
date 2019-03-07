@@ -8,7 +8,7 @@ Objectives
 ---------
 
 This sample application shows the usage of both Cucumber and Citrus in combination. Step definitions are able to use *CitrusResource*
-annotations for injecting a TestDesigner instance. The test designer is then used in steps to build a Citrus integration test.
+annotations for injecting a TestRunner instance. The test runner is then used in steps to build a Citrus integration test.
 
 At the end the Citrus test is automatically executed. We can use normal step definition classes that use Gherkin annotations
 (@Given, @When, @Then) provided by Cucumber.
@@ -44,40 +44,41 @@ Feature: Todo app
     Then the todo list should be empty
 ```
         
-The steps executed are defined in a separate class where a Citrus test designer is used to build integration test logic.
+The steps executed are defined in a separate class where a Citrus test runner is used to build integration test logic.
 
 ```java
 public class TodoSteps {
 
+    /** Test runner filled with actions by step definitions */
     @CitrusResource
-    private TestDesigner designer;
+    private TestRunner runner;
 
     @Given("^Todo list is empty$")
     public void empty_todos() {
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .send()
-            .delete("/api/todolist");
+            .delete("/api/todolist"));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
-    @When("^I add entry \"([^\"]*)\"$")
+    @When("^(?:I|user) adds? entry \"([^\"]*)\"$")
     public void add_entry(String todoName) {
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=" + todoName);
+            .payload("title=" + todoName));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.FOUND));
     }
     
     [...]

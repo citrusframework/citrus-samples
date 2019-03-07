@@ -18,7 +18,7 @@ package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.functions.Functions;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class PlaceBulkOrderIT extends TestNGCitrusTestDesigner {
+public class PlaceBulkOrderIT extends TestNGCitrusTestRunner {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")
@@ -57,30 +57,35 @@ public class PlaceBulkOrderIT extends TestNGCitrusTestDesigner {
         variable("orderId", Functions.randomNumber(10L, null));
         variable("amount", 1001L);
 
-        send(bakeryOrderEndpoint)
-                .payload("<order><type>${orderType}</type><id>${orderId}</id><amount>${amount}</amount></order>");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(bakeryOrderEndpoint)
+            .payload("<order><type>${orderType}</type><id>${orderId}</id><amount>${amount}</amount></order>"));
 
         echo("Receive report mail for 1000+ order");
 
-        receive(mailServer)
-                .payload(new ClassPathResource("templates/mail.xml"))
-                .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Congratulations!")
-                .header(CitrusMailMessageHeaders.MAIL_FROM, "cookie-report@example.com")
-                .header(CitrusMailMessageHeaders.MAIL_TO, "stakeholders@example.com");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(mailServer)
+            .payload(new ClassPathResource("templates/mail.xml"))
+            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Congratulations!")
+            .header(CitrusMailMessageHeaders.MAIL_FROM, "cookie-report@example.com")
+            .header(CitrusMailMessageHeaders.MAIL_TO, "stakeholders@example.com"));
 
-        send(mailServer)
-                .payload(new ClassPathResource("templates/mail_response.xml"));
+        send(sendMesageBuilder -> sendMesageBuilder
+            .endpoint(mailServer)
+            .payload(new ClassPathResource("templates/mail_response.xml")));
 
         echo("Receive report with 1000+ order");
 
-        http().client(reportingClient)
-                .send()
-                .get("/reporting/json");
+        http(httpActionBuilder -> httpActionBuilder
+            .client(reportingClient)
+            .send()
+            .get("/reporting/json"));
 
-        http().client(reportingClient)
-                .receive()
-                .response(HttpStatus.OK)
-                .messageType(MessageType.JSON)
-                .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(1000)@\"}");
+        http(httpActionBuilder -> httpActionBuilder
+            .client(reportingClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.JSON)
+            .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(1000)@\"}"));
     }
 }

@@ -43,7 +43,7 @@ public class TodoListIT extends AbstractKubernetesIT {
     @Test
     @CitrusTest
     public void testDeploymentState() {
-        kubernetes()
+        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
             .client(k8sClient)
             .pods()
             .list()
@@ -51,15 +51,15 @@ public class TodoListIT extends AbstractKubernetesIT {
             .validate("$..status.phase", "Running")
             .validate((pods, context) -> {
                 Assert.assertFalse(CollectionUtils.isEmpty(pods.getResult().getItems()));
-            });
+            }));
 
-        kubernetes()
+        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
             .client(k8sClient)
             .services()
             .get("citrus-sample-todo-service")
             .validate((service, context) -> {
                 Assert.assertNotNull(service.getResult());
-            });
+            }));
     }
 
     @Test
@@ -70,38 +70,41 @@ public class TodoListIT extends AbstractKubernetesIT {
         variable("todoDescription", "Description: ${todoName}");
         variable("done", "false");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}");
+            .payload("${todoId}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept(ContentType.APPLICATION_JSON.getMimeType());
+            .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }
 
     @Test
     @CitrusTest
     public void testTodoServiceReplication() {
+        // 8080
+        // bricht irgendwie aus dem Schema aus: warum hat der timer nicht denselben Build-Prozess wie
+        // der Rest?
         timer()
             .timerId("createTodoItems")
             .fork(true)
@@ -113,23 +116,23 @@ public class TodoListIT extends AbstractKubernetesIT {
                 createVariable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))"),
                 createVariable("todoDescription", "Description: ${todoName}"),
                 createVariable("done", "false"),
-                http()
+                http(httpActionBuilder -> httpActionBuilder
                     .client(todoClient)
                     .send()
                     .post("/api/todolist")
                     .messageType(MessageType.JSON)
                     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-                    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"),
+                    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")),
 
-                http()
+                http(httpActionBuilder -> httpActionBuilder
                     .client(todoClient)
                     .receive()
                     .response(HttpStatus.OK)
                     .messageType(MessageType.PLAINTEXT)
-                    .payload("${todoId}")
+                    .payload("${todoId}"))
             );
 
-        kubernetes()
+        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
             .pods()
             .list()
             .label("app=todo")
@@ -137,21 +140,23 @@ public class TodoListIT extends AbstractKubernetesIT {
                 Assert.assertNotNull(pods.getResult());
                 Assert.assertEquals(pods.getResult().getItems().size(), 1L);
                 context.setVariable("todoPod", pods.getResult().getItems().get(0).getMetadata().getName());
-            });
+            }));
 
+        // 8080
+        // hier auch: warum anderer build-Prozess?
         parallel()
             .actions(
-                kubernetes()
+                kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
                     .pods()
                     .watch()
                     .name("${todoPod}")
                     .namespace("default")
-                    .validate((result, context) -> Assert.assertEquals(((WatchEventResult) result).getAction(), Watcher.Action.MODIFIED)),
-                kubernetes()
+                    .validate((result, context) -> Assert.assertEquals(((WatchEventResult) result).getAction(), Watcher.Action.MODIFIED))),
+                kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
                     .pods()
                     .delete("${todoPod}")
                     .namespace("default")
-                    .validate((result, context) -> Assert.assertTrue(result.getResult().getSuccess()))
+                    .validate((result, context) -> Assert.assertTrue(result.getResult().getSuccess())))
             );
 
         sleep(2000L);
@@ -163,32 +168,32 @@ public class TodoListIT extends AbstractKubernetesIT {
         createVariable("todoDescription", "Description: ${todoName}");
         createVariable("done", "false");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}");
+            .payload("${todoId}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept(ContentType.APPLICATION_JSON.getMimeType());
+            .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }
 }

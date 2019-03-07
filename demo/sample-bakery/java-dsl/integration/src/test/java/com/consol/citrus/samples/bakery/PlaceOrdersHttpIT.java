@@ -18,7 +18,7 @@ package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.functions.Functions;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
 import org.apache.http.entity.ContentType;
@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
+public class PlaceOrdersHttpIT extends TestNGCitrusTestRunner {
 
     @Autowired
     @Qualifier("bakeryClient")
@@ -46,89 +46,104 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestDesigner {
     public void placeChocolateCookieOrder() {
         variable("orderId", Functions.randomNumber(10L, null));
 
-        http().client(bakeryClient)
-                .send()
-                .post("/order")
-                .contentType(ContentType.APPLICATION_JSON.getMimeType())
-                .payload("{ \"order\": { \"type\": \"chocolate\", \"id\": ${orderId}, \"amount\": 1}}");
+        http(httpActionBuilder -> httpActionBuilder
+            .client(bakeryClient)
+            .send()
+            .post("/order")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
+            .payload("{ \"order\": { \"type\": \"chocolate\", \"id\": ${orderId}, \"amount\": 1}}"));
 
         repeatOnError()
             .until((index, context) -> index > 20)
             .autoSleep(500L)
-            .actions(http().client(reportingClient)
-                            .send()
-                            .get("/reporting/order")
-                            .queryParam("id", "${orderId}"),
-                    http().client(reportingClient)
-                            .receive()
-                            .response(HttpStatus.OK)
-                            .messageType(MessageType.JSON)
-                            .payload("{\"status\": true}")
+            .actions(
+                http(httpActionBuilder -> httpActionBuilder
+                    .client(reportingClient)
+                    .send()
+                    .get("/reporting/order")
+                    .queryParam("id", "${orderId}")),
+                http(httpActionBuilder -> httpActionBuilder
+                    .client(reportingClient)
+                    .receive()
+                    .response(HttpStatus.OK)
+                    .messageType(MessageType.JSON)
+                    .payload("{\"status\": true}"))
             );
 
-        http().client(bakeryClient)
-                .receive()
-                .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT);
+        http(httpActionBuilder -> httpActionBuilder
+            .client(bakeryClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.PLAINTEXT));
     }
 
     @CitrusTest
     public void placeCaramelCookieOrder() {
         variable("orderId", Functions.randomNumber(10L, null));
 
-        http().client(bakeryClient)
-                .send()
-                .post("/order")
-                .contentType(ContentType.APPLICATION_JSON.getMimeType())
-                .payload("{ \"order\": { \"type\": \"caramel\", \"id\": ${orderId}, \"amount\": 1}}");
+        http(httpActionBuilder -> httpActionBuilder
+            .client(bakeryClient)
+            .send()
+            .post("/order")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
+            .payload("{ \"order\": { \"type\": \"caramel\", \"id\": ${orderId}, \"amount\": 1}}"));
 
         repeatOnError()
             .until((index, context) -> index > 20)
             .autoSleep(500L)
-            .actions(http().client(reportingClient)
-                            .send()
-                            .get("/reporting/order")
-                            .queryParam("id", "${orderId}"),
-                    http().client(reportingClient)
-                            .receive()
-                            .response(HttpStatus.OK)
-                            .messageType(MessageType.JSON)
-                            .payload("{\"status\": true}")
+            .actions(
+                http(httpActionBuilder -> httpActionBuilder
+                    .client(reportingClient)
+                    .send()
+                    .get("/reporting/order")
+                    .queryParam("id", "${orderId}")),
+                http(httpActionBuilder -> httpActionBuilder
+                    .client(reportingClient)
+                    .receive()
+                    .response(HttpStatus.OK)
+                    .messageType(MessageType.JSON)
+                    .payload("{\"status\": true}"))
             );
 
-        http().client(bakeryClient)
-                .receive()
-                .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT);
+        http(httpActionBuilder -> httpActionBuilder
+            .client(bakeryClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.PLAINTEXT));
     }
 
     @CitrusTest
     public void placeBlueberryCookieOrder() {
         variable("orderId", Functions.randomNumber(10L, null));
 
-        http().client(bakeryClient)
-                .send()
-                .post("/order")
-                .contentType(ContentType.APPLICATION_JSON.getMimeType())
-                .payload("{ \"order\": { \"type\": \"blueberry\", \"id\": ${orderId}, \"amount\": 1}}");
+        http(httpActionBuilder -> httpActionBuilder
+            .client(bakeryClient)
+            .send()
+            .post("/order")
+            .contentType(ContentType.APPLICATION_JSON.getMimeType())
+            .payload("{ \"order\": { \"type\": \"blueberry\", \"id\": ${orderId}, \"amount\": 1}}"));
 
         repeatOnError()
             .until((index, context) -> index > 20)
             .autoSleep(500L)
-            .actions(http().client(reportingClient)
-                            .send()
-                            .get("/reporting/order")
-                            .queryParam("id", "${orderId}"),
-                    http().client(reportingClient)
-                            .receive()
-                            .response(HttpStatus.OK)
-                            .messageType(MessageType.JSON)
-                            .payload("{\"status\": true}")
+            .actions(
+                http(httpActionBuilder -> httpActionBuilder
+                    .client(reportingClient)
+                    .send()
+                    .get("/reporting/order")
+                    .queryParam("id", "${orderId}")),
+                http(httpActionBuilder -> httpActionBuilder
+                    .client(reportingClient)
+                    .receive()
+                    .response(HttpStatus.OK)
+                    .messageType(MessageType.JSON)
+                    .payload("{\"status\": true}"))
             );
 
-        http().client(bakeryClient)
-                .receive()
-                .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT);
+        http(httpActionBuilder -> httpActionBuilder
+            .client(bakeryClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.PLAINTEXT));
     }
 }

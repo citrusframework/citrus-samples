@@ -26,10 +26,12 @@ In test cases we can reference this client component in order to send REST calls
 the `TestNGCitrusTestRunner` implementation as base for your test.
     
 ```java
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListRunnerIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
+
+    [...]
 
     @Test
     @CitrusTest
@@ -47,21 +49,22 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .receive()
             .response(HttpStatus.FOUND));
     }
-}      
+
+}  
 ```
         
 The `TestNGCitrusTestRunner` makes sure that Citrus framework is loaded at startup and all configuration is done properly. Also we need to set the annotation `@CitrusTest` on our test methods in
 addition to the normal TestNG `@Test` annotation. This way we can inject Citrus endpoints such as the `todoClient` and we can use the runner Java fluent API in Citrus to send and receive messages using that client component. 
 
-As an alternative to that you can also use the test designer fluent API. You need to extend from `TestNGCitrusTestDesigner` base class then. The other concepts and configuration stays the same.
-
 Last not least we can also use resource injection to the test methods using `@CitrusResource` method parameter annotations.
 
 ```java
-public class TodoListInjectIT extends TestNGCitrusTest {
+public class TodoListIT extends TestNGCitrusTest {
 
     @Autowired
     private HttpClient todoClient;
+
+    [...]
 
     @Test
     @Parameters("runner")
@@ -81,7 +84,7 @@ public class TodoListInjectIT extends TestNGCitrusTest {
             .response(HttpStatus.FOUND));
     }
 
-}  
+}
 ```
   
 We can inject method parameters such as `@CitrusResource` annotated `TestRunner` that is our entrance to the Citrus Java fluent API. In TestNG we need to add the `@Optional` annotation in order to tell

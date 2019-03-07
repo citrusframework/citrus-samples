@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.ftp.client.SftpClient;
 import com.consol.citrus.ftp.message.FtpMessage;
 import com.consol.citrus.ftp.model.GetCommandResult;
@@ -36,7 +36,7 @@ import java.io.IOException;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private SftpClient sftpClient;
@@ -53,7 +53,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         echo("Remove ftp user directory if present");
 
-        action(new ClearUserHomeDirAction(String.format("target/%s/home/%s/todo", sftpServer.getName(), sftpServer.getUser())));
+        run(new ClearUserHomeDirAction(String.format("target/%s/home/%s/todo", sftpServer.getName(), sftpServer.getUser())));
 
         echo("Create new directory on server");
 

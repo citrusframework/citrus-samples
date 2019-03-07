@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
 import com.consol.citrus.mail.message.MailMessage;
@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
@@ -49,29 +49,30 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         clearTodoList();
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}");
+            .payload("${todoId}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
-            .get("/api/reporting/mail");
+            .get("/api/reporting/mail"));
 
         echo("Receive reporting mail");
 
-        receive(mailServer)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(mailServer)
             .message(MailMessage.request()
                     .from("todo-report@example.org")
                     .to("users@example.org")
@@ -79,15 +80,16 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                     .bcc("")
                     .subject("ToDo report")
                     .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
-            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report");
+            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
-        send(mailServer)
-            .message(MailMessage.response(250, "OK"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(mailServer)
+            .message(MailMessage.response(250, "OK")));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
     @Test
@@ -101,41 +103,43 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         clearTodoList();
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}");
+            .payload("${todoId}"));
 
         variable("entryCount", "1");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
-            .get("/api/reporting/mail");
+            .get("/api/reporting/mail"));
 
         echo("Receive reporting mail");
 
-        receive(mailServer)
+        receive(receiveMesageBuilder -> receiveMesageBuilder
+            .endpoint(mailServer)
             .payload(new ClassPathResource("templates/mail.xml"))
-            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report");
+            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
-        send(mailServer)
-            .payload(new ClassPathResource("templates/mail-response.xml"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(mailServer)
+            .payload(new ClassPathResource("templates/mail-response.xml")));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
     @Test
@@ -149,57 +153,59 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
 
         clearTodoList();
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}");
+            .payload("${todoId}"));
 
         variable("entryCount", "1");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
-            .get("/api/reporting/mail");
+            .get("/api/reporting/mail"));
 
         echo("Receive reporting mail");
 
-        receive(mailServer)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(mailServer)
             .messageType(MessageType.JSON)
             .payload(new ClassPathResource("templates/mail.json"))
-            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report");
+            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
-        send(mailServer)
-            .payload(new ClassPathResource("templates/mail-response.json"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(mailServer)
+            .payload(new ClassPathResource("templates/mail-response.json")));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
     /**
      * Remove all entries from todolist.
      */
     private void clearTodoList() {
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
-            .delete("/todolist");
+            .delete("/todolist"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.FOUND));
     }
 
 }

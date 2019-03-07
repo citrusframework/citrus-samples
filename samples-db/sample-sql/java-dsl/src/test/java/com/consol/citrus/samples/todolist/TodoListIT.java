@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import javax.sql.DataSource;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
@@ -41,13 +41,13 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testIndexPage() {
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
@@ -58,7 +58,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                         "<head>@ignore@</head>" +
                         "<body>@ignore@</body>" +
-                    "</html>");
+                    "</html>"));
     }
 
     @Test
@@ -67,38 +67,40 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        query(todoDataSource)
+        query(executeSQLQueryBuilder -> executeSQLQueryBuilder
+            .dataSource(todoDataSource)
             .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")
-            .validate("cnt", "0");
+            .validate("cnt", "0"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}");
+            .payload("title=${todoName}&description=${todoDescription}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.FOUND));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
-            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
 
-        query(todoDataSource)
+        query(executeSQLQueryBuilder -> executeSQLQueryBuilder
+            .dataSource(todoDataSource)
             .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")
-            .validate("cnt", "1");
+            .validate("cnt", "1"));
     }
 
 }

@@ -18,7 +18,7 @@ package com.consol.citrus.samples.javaee.employee;
 
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
-import com.consol.citrus.dsl.design.TestDesigner;
+import com.consol.citrus.dsl.runner.TestRunner;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.Deployments;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -61,59 +61,67 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(1)
     @CitrusTest
-    public void testPostAndGet(@CitrusResource TestDesigner citrus) {
-        citrus.http().client(serviceUri)
-                .send()
-                .post()
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=Penny&age=20");
+    public void testPostAndGet(@CitrusResource TestRunner citrus) {
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .post()
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .payload("name=Penny&age=20"));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .send()
-                .post()
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=Leonard&age=21");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .post()
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .payload("name=Leonard&age=21"));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .send()
-                .post()
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=Sheldon&age=22");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .post()
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .payload("name=Sheldon&age=22"));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .send()
-                .get()
-                .accept(MediaType.APPLICATION_XML);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .get()
+            .accept(MediaType.APPLICATION_XML));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.OK)
-                .payload("<employees>" +
-                            "<employee>" +
-                                "<age>20</age>" +
-                                "<name>Penny</name>" +
-                            "</employee>" +
-                            "<employee>" +
-                                "<age>21</age>" +
-                                "<name>Leonard</name>" +
-                            "</employee>" +
-                            "<employee>" +
-                                "<age>22</age>" +
-                                "<name>Sheldon</name>" +
-                            "</employee>" +
-                        "</employees>");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("<employees>" +
+                       "<employee>" +
+                         "<age>20</age>" +
+                         "<name>Penny</name>" +
+                        "</employee>" +
+                        "<employee>" +
+                          "<age>21</age>" +
+                          "<name>Leonard</name>" +
+                        "</employee>" +
+                        "<employee>" +
+                          "<age>22</age>" +
+                          "<name>Sheldon</name>" +
+                        "</employee>" +
+                      "</employees>"));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -121,19 +129,21 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(2)
     @CitrusTest
-    public void testGetSingle(@CitrusResource TestDesigner citrus) {
-        citrus.http().client(serviceUri)
-                .send()
-                .get("/1")
-                .accept(MediaType.APPLICATION_XML);
+    public void testGetSingle(@CitrusResource TestRunner citrus) {
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .get("/1")
+            .accept(MediaType.APPLICATION_XML));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.OK)
-                .payload("<employee>" +
-                            "<age>21</age>" +
-                            "<name>Leonard</name>" +
-                        "</employee>");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("<employee>" +
+                       "<age>21</age>" +
+                       "<name>Leonard</name>" +
+                     "</employee>"));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -141,45 +151,49 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(3)
     @CitrusTest
-    public void testPut(@CitrusResource TestDesigner citrus) {
-        citrus.http().client(serviceUri)
-                .send()
-                .put()
-                .fork(true)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=Howard&age=21&email=howard@example.com");
+    public void testPut(@CitrusResource TestRunner citrus) {
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .put()
+            .fork(true)
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .payload("name=Howard&age=21&email=howard@example.com"));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .send()
-                .get()
-                .accept(MediaType.APPLICATION_XML);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .get()
+            .accept(MediaType.APPLICATION_XML));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.OK)
-                .payload("<employees>" +
-                            "<employee>" +
-                                "<age>20</age>" +
-                                "<name>Penny</name>" +
-                            "</employee>" +
-                            "<employee>" +
-                                "<age>21</age>" +
-                                "<name>Leonard</name>" +
-                            "</employee>" +
-                            "<employee>" +
-                                "<age>22</age>" +
-                                "<name>Sheldon</name>" +
-                            "</employee>" +
-                            "<employee>" +
-                                "<age>21</age>" +
-                                "<name>Howard</name>" +
-                                "<email>howard@example.com</email>" +
-                            "</employee>" +
-                        "</employees>");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("<employees>" +
+                       "<employee>" +
+                         "<age>20</age>" +
+                         "<name>Penny</name>" +
+                       "</employee>" +
+                       "<employee>" +
+                         "<age>21</age>" +
+                         "<name>Leonard</name>" +
+                       "</employee>" +
+                       "<employee>" +
+                         "<age>22</age>" +
+                         "<name>Sheldon</name>" +
+                       "</employee>" +
+                       "<employee>" +
+                         "<age>21</age>" +
+                         "<name>Howard</name>" +
+                         "<email>howard@example.com</email>" +
+                       "</employee>" +
+                     "</employees>"));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -187,38 +201,42 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(4)
     @CitrusTest
-    public void testDelete(@CitrusResource TestDesigner citrus) {
-        citrus.http().client(serviceUri)
-                .send()
-                .delete("/Leonard");
+    public void testDelete(@CitrusResource TestRunner citrus) {
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .delete("/Leonard"));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .send()
-                .get()
-                .accept(MediaType.APPLICATION_XML);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .get()
+            .accept(MediaType.APPLICATION_XML));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.OK)
-                .payload("<employees>" +
-                            "<employee>" +
-                                "<age>20</age>" +
-                                "<name>Penny</name>" +
-                            "</employee>" +
-                            "<employee>" +
-                                "<age>22</age>" +
-                                "<name>Sheldon</name>" +
-                            "</employee>" +
-                            "<employee>" +
-                                "<age>21</age>" +
-                                "<name>Howard</name>" +
-                                "<email>howard@example.com</email>" +
-                            "</employee>" +
-                        "</employees>");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("<employees>" +
+                       "<employee>" +
+                         "<age>20</age>" +
+                         "<name>Penny</name>" +
+                       "</employee>" +
+                       "<employee>" +
+                         "<age>22</age>" +
+                         "<name>Sheldon</name>" +
+                       "</employee>" +
+                       "<employee>" +
+                         "<age>21</age>" +
+                         "<name>Howard</name>" +
+                         "<email>howard@example.com</email>" +
+                       "</employee>" +
+                     "</employees>"));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -226,21 +244,23 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(5)
     @CitrusTest
-    public void testClientSideNegotiation(@CitrusResource TestDesigner citrus) {
-        citrus.http().client(serviceUri)
-                .send()
-                .get()
-                .accept(MediaType.APPLICATION_JSON);
+    public void testClientSideNegotiation(@CitrusResource TestRunner citrus) {
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .get()
+            .accept(MediaType.APPLICATION_JSON));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.OK)
-                .messageType(MessageType.JSON)
-                .payload("{\"employee\":[" +
-                            "{\"name\":\"Penny\",\"age\":20,\"email\":null,\"mobile\":null}," +
-                            "{\"name\":\"Sheldon\",\"age\":22,\"email\":null,\"mobile\":null}," +
-                            "{\"name\":\"Howard\",\"age\":21,\"email\":\"howard@example.com\",\"mobile\":null}" +
-                        "]}");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.JSON)
+            .payload("{\"employee\":[" +
+                       "{\"name\":\"Penny\",\"age\":20,\"email\":null,\"mobile\":null}," +
+                       "{\"name\":\"Sheldon\",\"age\":22,\"email\":null,\"mobile\":null}," +
+                       "{\"name\":\"Howard\",\"age\":21,\"email\":\"howard@example.com\",\"mobile\":null}" +
+                     "]}"));
 
         citrusFramework.run(citrus.getTestCase());
     }
@@ -248,24 +268,28 @@ public class EmployeeResourceTest {
     @Test
     @InSequence(6)
     @CitrusTest
-    public void testDeleteAll(@CitrusResource TestDesigner citrus) {
-        citrus.http().client(serviceUri)
-                .send()
-                .delete();
+    public void testDeleteAll(@CitrusResource TestRunner citrus) {
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .delete());
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .send()
-                .get()
-                .accept(MediaType.APPLICATION_XML);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .get()
+            .accept(MediaType.APPLICATION_XML));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.OK)
-                .payload("<employees></employees>");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("<employees></employees>"));
 
         citrusFramework.run(citrus.getTestCase());
     }

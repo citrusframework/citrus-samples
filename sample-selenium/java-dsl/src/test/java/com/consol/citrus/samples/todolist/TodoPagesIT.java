@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.samples.todolist.page.TodoPage;
 import com.consol.citrus.samples.todolist.page.WelcomePage;
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoPagesIT extends TestNGCitrusTestDesigner {
+public class TodoPagesIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private SeleniumBrowser browser;
@@ -41,36 +41,36 @@ public class TodoPagesIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testIndexPage() {
-        selenium()
-                .browser(browser)
-                .start();
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .browser(browser)
+            .start());
 
-        selenium()
-            .navigate(todoClient.getEndpointConfiguration().getRequestUrl());
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .navigate(todoClient.getEndpointConfiguration().getRequestUrl()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
-            .delete("/api/todolist");
+            .delete("/api/todolist"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
 
         WelcomePage welcomePage = new WelcomePage();
 
-        selenium()
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
             .page(welcomePage)
-            .validate();
+            .validate());
 
-        selenium()
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
             .page(welcomePage)
-            .execute("startApp");
+            .execute("startApp"));
 
-        selenium()
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
             .page(new TodoPage())
-            .validate();
+            .validate());
     }
 
     @Test
@@ -79,44 +79,44 @@ public class TodoPagesIT extends TestNGCitrusTestDesigner {
         variable("todoName", "todo_citrus:randomNumber(4)");
         variable("todoDescription", "Description: ${todoName}");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
-            .delete("/api/todolist");
+            .delete("/api/todolist"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
 
-        selenium()
-                .browser(browser)
-                .start();
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .browser(browser)
+            .start());
 
-        selenium()
-            .navigate(todoClient.getEndpointConfiguration().getRequestUrl() + "/todolist");
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .navigate(todoClient.getEndpointConfiguration().getRequestUrl() + "/todolist"));
 
         TodoPage todoPage = new TodoPage();
 
-        selenium()
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
             .page(todoPage)
-            .validate();
+            .validate());
 
-        selenium()
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
             .page(todoPage)
             .argument("${todoName}")
             .argument("${todoDescription}")
-            .execute("submit");
+            .execute("submit"));
 
-        selenium()
-                .waitUntil()
-                .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
-                .timeout(2000L)
-                .visible();
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .waitUntil()
+            .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
+            .timeout(2000L)
+            .visible());
 
-        selenium()
-                .find()
-                .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
-                .text("${todoName}");
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .find()
+            .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
+            .text("${todoName}"));
     }
 }

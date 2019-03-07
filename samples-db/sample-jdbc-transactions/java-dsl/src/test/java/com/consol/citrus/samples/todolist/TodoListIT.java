@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
@@ -26,7 +26,7 @@ import org.springframework.http.*;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private JdbcServer jdbcServer;
@@ -48,30 +48,34 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/todolist")
             .fork(true)
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}");
+            .payload("title=${todoName}&description=${todoDescription}"));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.startTransaction());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.startTransaction()));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
 
-        send(jdbcServer)
-                .message(JdbcMessage.success().rowsUpdated(1));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.success().rowsUpdated(1)));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.commitTransaction());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.commitTransaction()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.FOUND));
     }
 
     @Test
@@ -87,30 +91,34 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/todolist")
             .fork(true)
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}");
+            .payload("title=${todoName}&description=${todoDescription}"));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.startTransaction());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.startTransaction()));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
 
-        send(jdbcServer)
-                .message(JdbcMessage.error().exception("Could not execute something"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.error().exception("Could not execute something")));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.rollbackTransaction());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.rollbackTransaction()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.INTERNAL_SERVER_ERROR);
+            .response(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @Test
@@ -128,24 +136,26 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/todolist")
             .fork(true)
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}");
+            .payload("title=${todoName}&description=${todoDescription}"));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
 
-        send(jdbcServer)
-                .message(JdbcMessage.success().rowsUpdated(1));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.success().rowsUpdated(1)));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.FOUND));
     }
 
     @AfterTest

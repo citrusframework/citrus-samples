@@ -18,7 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.message.Message;
 import com.consol.citrus.message.MessageType;
@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private JmsEndpoint todoJmsEndpoint;
@@ -43,15 +43,17 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoDescription", "Description: ${todoName}");
         variable("done", "false");
 
-        send(todoJmsEndpoint)
-                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-                .messageType(MessageType.BINARY)
-                .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoJmsEndpoint)
+            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .messageType(MessageType.BINARY)
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-        receive(todoJmsEndpoint)
-                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-                .messageType(MessageType.BINARY_BASE64)
-                .payload("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}')");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(todoJmsEndpoint)
+            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .messageType(MessageType.BINARY_BASE64)
+            .payload("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}')"));
     }
 
     @Test
@@ -61,16 +63,18 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoDescription", "Description: ${todoName}");
         variable("done", "false");
 
-        send(todoJmsEndpoint)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoJmsEndpoint)
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
             .messageType(MessageType.BINARY)
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+            .payload("{ \"title\": \"$  {todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-        receive(todoJmsEndpoint)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(todoJmsEndpoint)
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
             .messageType(MessageType.BINARY)
             .validator(new BinaryMessageValidator())
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }
 
     /**
@@ -82,7 +86,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         public void validateMessage(Message receivedMessage, Message controlMessage,
                                     TestContext context, DefaultValidationContext validationContext) {
             Assert.isTrue(new String(receivedMessage.getPayload(byte[].class))
-                    .equals(new String(controlMessage.getPayload(byte[].class))), "Binary message validation failed!");
+                .equals(new String(controlMessage.getPayload(byte[].class))), "Binary message validation failed!");
         }
 
         @Override

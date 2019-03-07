@@ -34,11 +34,12 @@ Before the test suite is started we create the relational database tables requir
 ```java
 @Bean
 public SequenceBeforeSuite beforeSuite() {
-    return new TestDesignerBeforeSuiteSupport() {
+    return new TestRunnerBeforeSuiteSupport() {
         @Override
-        public void beforeSuite(TestDesigner designer) {
-            designer.sql(todoListDataSource())
-                .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)");
+        public void beforeSuite(TestRunner designer) {
+            designer.sql(executeSQLBuilder -> executeSQLBuilder
+                .dataSource(todoListDataSource())
+                .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
         }
     };
 }
@@ -49,11 +50,12 @@ After the test we delete all test data again.
 ```java
 @Bean
 public SequenceAfterSuite afterSuite() {
-    return new TestDesignerAfterSuiteSupport() {
+    return new TestRunnerAfterSuiteSupport() {
         @Override
-        public void afterSuite(TestDesigner designer) {
-            designer.sql(todoListDataSource())
-                .statement("DELETE FROM todo_entries");
+        public void afterSuite(TestRunner designer) {
+            designer.sql(executeSQLBuilder -> executeSQLBuilder
+                .dataSource(todoListDataSource())
+                .statement("DELETE FROM todo_entries"));
         }
     };
 }

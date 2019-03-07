@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.ws.message.SoapAttachment;
 import com.consol.citrus.ws.server.WebServiceServer;
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class GetImageIT extends TestNGCitrusTestDesigner {
+public class GetImageIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private WebServiceClient imageClient;
@@ -45,33 +45,33 @@ public class GetImageIT extends TestNGCitrusTestDesigner {
         attachment.setCharsetName("utf-8");
         attachment.setContentResourcePath("image/logo.png");
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(imageClient)
             .send()
             .fork(true)
             .soapAction("getImage")
             .payload("<image:getImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:id>IMAGE</image:id>" +
-                    "</image:getImage>");
+                    "</image:getImage>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(imageServer)
             .receive()
             .soapAction("getImage")
             .payload("<image:getImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:id>IMAGE</image:id>" +
-                    "</image:getImage>");
+                    "</image:getImage>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(imageServer)
             .send()
             .payload("<image:getImageResponse xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:image>cid:IMAGE</image:image>" +
                     "</image:getImageResponse>")
             .attachment(attachment)
-            .mtomEnabled(true);
+            .mtomEnabled(true));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(imageClient)
             .receive()
             .schemaValidation(false)
@@ -81,7 +81,7 @@ public class GetImageIT extends TestNGCitrusTestDesigner {
                         "</image:image>" +
                     "</image:getImageResponse>")
             .attachmentValidator(new BinarySoapAttachmentValidator())
-            .attachment(attachment);
+            .attachment(attachment));
     }
 
     @Test
@@ -94,38 +94,38 @@ public class GetImageIT extends TestNGCitrusTestDesigner {
         attachment.setContentResourcePath("image/logo.png");
         attachment.setMtomInline(true);
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(imageClient)
             .send()
             .fork(true)
             .soapAction("getImage")
             .payload("<image:getImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:id>IMAGE</image:id>" +
-                    "</image:getImage>");
+                    "</image:getImage>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(imageServer)
             .receive()
             .soapAction("getImage")
             .payload("<image:getImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:id>IMAGE</image:id>" +
-                    "</image:getImage>");
+                    "</image:getImage>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(imageServer)
             .send()
             .payload("<image:getImageResponse xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:image>cid:IMAGE</image:image>" +
                     "</image:getImageResponse>")
             .attachment(attachment)
-            .mtomEnabled(true);
+            .mtomEnabled(true));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(imageClient)
             .receive()
             .payload("<image:getImageResponse xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:image>citrus:readFile(image/logo.base64)</image:image>" +
-                    "</image:getImageResponse>");
+                    "</image:getImageResponse>"));
     }
 
 }

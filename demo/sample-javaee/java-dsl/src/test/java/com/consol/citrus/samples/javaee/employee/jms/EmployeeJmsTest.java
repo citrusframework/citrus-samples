@@ -19,8 +19,8 @@ package com.consol.citrus.samples.javaee.employee.jms;
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
 import com.consol.citrus.arquillian.shrinkwrap.CitrusArchiveBuilder;
-import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
+import com.consol.citrus.dsl.runner.TestRunner;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.Deployments;
@@ -74,16 +74,18 @@ public class EmployeeJmsTest {
 
     @Test
     @CitrusTest
-    public void testAdd(@CitrusResource TestDesigner citrus) throws Exception {
-        citrus.send(employeeJmsEndpoint)
-                .messageType(MessageType.PLAINTEXT)
-                .header("name", "Amy")
-                .header("age", 20);
+    public void testAdd(@CitrusResource TestRunner citrus) {
+        citrus.send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(employeeJmsEndpoint)
+            .messageType(MessageType.PLAINTEXT)
+            .header("name", "Amy")
+            .header("age", 20));
 
-        citrus.receive(employeeJmsEndpoint)
-                .messageType(MessageType.PLAINTEXT)
-                .payload("Successfully created employee: Amy(20)")
-                .header("success", true);
+        citrus.receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(employeeJmsEndpoint)
+            .messageType(MessageType.PLAINTEXT)
+            .payload("Successfully created employee: Amy(20)")
+            .header("success", true));
 
         citrusFramework.run(citrus.getTestCase());
     }

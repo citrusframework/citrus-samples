@@ -34,76 +34,76 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     @Test
     @CitrusTest
     public void testListNodes() {
-        kubernetes()
+        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
             .client(k8sClient)
             .nodes()
             .list()
             .validate((result, context) -> {
                 Assert.assertFalse(CollectionUtils.isEmpty(result.getResult().getItems()));
-            });
+            }));
     }
 
     @Test
     @CitrusTest
     public void testListNamespaces() {
-        kubernetes()
+        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
             .client(k8sClient)
             .namespaces()
             .list()
             .validate((result, context) -> {
                 Assert.assertFalse(CollectionUtils.isEmpty(result.getResult().getItems()));
-            });
+            }));
     }
 
     @Test
     @CitrusTest
     public void testListEndpoints() {
-        kubernetes()
+        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
             .client(k8sClient)
             .endpoints()
             .list()
             .namespace("default")
             .validate((result, context) -> {
                 Assert.assertFalse(CollectionUtils.isEmpty(result.getResult().getItems()));
-            });
+            }));
     }
 
     @Test
     @CitrusTest
     public void testListServices() {
-        kubernetes()
+        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
             .client(k8sClient)
             .services()
             .list()
             .namespace("default")
             .validate((result, context) -> {
                 Assert.assertFalse(CollectionUtils.isEmpty(result.getResult().getItems()));
-            });
+            }));
     }
 
     @Test
     @CitrusTest
     public void testListPods() {
-        kubernetes()
+        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
             .client(k8sClient)
             .pods()
             .list()
             .namespace("default")
             .validate((result, context) -> {
                 Assert.assertFalse(CollectionUtils.isEmpty(result.getResult().getItems()));
-            });
+            }));
     }
 
     @Test
     @CitrusTest
     public void testListReplicationControllers() {
-        kubernetes()
+        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
             .client(k8sClient)
             .replicationControllers()
             .list()
             .namespace("default")
             .validate((result, context) -> {
                 Assert.assertTrue(CollectionUtils.isEmpty(result.getResult().getItems()));
-            });
+            }));
     }
 }

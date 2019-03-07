@@ -18,7 +18,7 @@ package com.consol.citrus.samples.greeting.channel;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.channel.ChannelEndpoint;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class GreetingChannel_IT extends TestNGCitrusTestDesigner {
+public class GreetingChannel_IT extends TestNGCitrusTestRunner {
 
     @Autowired
     @Qualifier("greetingsEndpoint")
@@ -42,7 +42,8 @@ public class GreetingChannel_IT extends TestNGCitrusTestDesigner {
         variable("correlationId", "citrus:randomNumber(10)");
         variable("user", "Christoph");
 
-        send(greetingsEndpoint)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(greetingsEndpoint)
             .payload("<tns:GreetingRequestMessage xmlns:tns=\"http://www.citrusframework.org/samples/greeting\">\n" +
                         "<tns:CorrelationId>${correlationId}</tns:CorrelationId>\n" +
                         "<tns:Operation>sayHello</tns:Operation>\n" +
@@ -51,9 +52,10 @@ public class GreetingChannel_IT extends TestNGCitrusTestDesigner {
                     "</tns:GreetingRequestMessage>")
             .header("Operation", "sayHello")
             .header("CorrelationId", "${correlationId}")
-            .description("Send asynchronous greeting request: Citrus -> GreetingService");
+            .description("Send asynchronous greeting request: Citrus -> GreetingService"));
 
-        receive(greetingsTransformedEndpoint)
+        receive(receiveMessageBuidler -> receiveMessageBuidler
+            .endpoint(greetingsTransformedEndpoint)
             .payload("<tns:GreetingResponseMessage xmlns:tns=\"http://www.citrusframework.org/samples/greeting\">\n" +
                         "<tns:CorrelationId>${correlationId}</tns:CorrelationId>\n" +
                         "<tns:Operation>sayHello</tns:Operation>\n" +
@@ -62,6 +64,6 @@ public class GreetingChannel_IT extends TestNGCitrusTestDesigner {
                     "</tns:GreetingResponseMessage>")
             .header("Operation", "sayHello")
             .header("CorrelationId", "${correlationId}")
-            .description("Receive asynchronous greeting response: GreetingService -> Citrus");
+            .description("Receive asynchronous greeting response: GreetingService -> Citrus"));
     }
 }

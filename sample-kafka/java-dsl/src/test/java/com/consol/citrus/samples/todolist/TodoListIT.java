@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
 import com.consol.citrus.kafka.message.KafkaMessage;
@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
@@ -51,22 +51,23 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        send(todoKafkaEndpoint)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoKafkaEndpoint)
             .header(KafkaMessageHeaders.MESSAGE_KEY, "${todoName}")
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
-            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
     }
 
     @Test
@@ -76,40 +77,42 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        send(todoKafkaEndpoint)
-                .header(KafkaMessageHeaders.MESSAGE_KEY, "${todoName}")
-                .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoKafkaEndpoint)
+            .header(KafkaMessageHeaders.MESSAGE_KEY, "${todoName}")
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
         echo("Set todo entry status to done");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .put("/api/todo/${todoId}")
             .queryParam("done", "true")
-            .accept(MediaType.APPLICATION_JSON_VALUE);
+            .accept(MediaType.APPLICATION_JSON_VALUE));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
 
         echo("Trigger Kafka report");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/api/kafka/report/done")
-            .accept(MediaType.APPLICATION_JSON_VALUE);
+            .accept(MediaType.APPLICATION_JSON_VALUE));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
 
-        receive(todoReportEndpoint)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(todoReportEndpoint)
             .messageType(MessageType.JSON)
             .message(new KafkaMessage("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
-                        .messageKey("todo.entries.done"));
+                        .messageKey("todo.entries.done")));
     }
 }

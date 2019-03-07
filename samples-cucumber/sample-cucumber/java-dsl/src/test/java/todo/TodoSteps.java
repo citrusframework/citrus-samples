@@ -17,7 +17,7 @@
 package todo;
 
 import com.consol.citrus.annotations.CitrusResource;
-import com.consol.citrus.dsl.design.TestDesigner;
+import com.consol.citrus.dsl.runner.TestRunner;
 import com.consol.citrus.message.MessageType;
 import cucumber.api.java.en.*;
 import org.springframework.http.HttpStatus;
@@ -26,70 +26,80 @@ import org.springframework.http.MediaType;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-/**
+/**designer
  * @author Christoph Deppisch
  */
 public class TodoSteps {
 
-    /** Test designer filled with actions by step definitions */
+    /** Test runner filled with actions by step definitions */
     @CitrusResource
-    private TestDesigner designer;
+    private TestRunner runner;
 
     @Given("^Todo list is empty$")
     public void empty_todos() {
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .send()
-            .delete("/api/todolist");
+            .delete("/api/todolist"));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
     @When("^(?:I|user) adds? entry \"([^\"]*)\"$")
     public void add_entry(String todoName) {
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=" + todoName);
+            .payload("title=" + todoName));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.FOUND));
     }
 
     @When("^(?:I|user) removes? entry \"([^\"]*)\"$")
-    public void remove_entry(String todoName) throws UnsupportedEncodingException {
-        designer.http()
-                .client("todoListClient")
-                .send()
-                .delete("/api/todo?title=" + URLEncoder.encode(todoName, "UTF-8"));
+    // TODO: mbu
+    // again, lambda must be pure. This lead to the following (clumsy) desing. Up for debate.
+    public void remove_entry(String todoName) {
+        runner.http(httpActionBuilder -> {
+            try {
+                httpActionBuilder
+                    .client("todoListClient")
+                    .send()
+                    .delete("/api/todo?title=" + URLEncoder.encode(todoName, "UTF-8"));
+            } catch (UnsupportedEncodingException e){
+                // This should never happen. But if it happens, catch, wrap in a RuntimeException,
+                // rethrow
+                throw new RuntimeException(e);
+            }
+        });
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
                 .client("todoListClient")
                 .receive()
                 .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT);
+                .messageType(MessageType.PLAINTEXT));
     }
 
     @Then("^(?:the )?number of todo entries should be (\\d+)$")
     public void verify_todos(int todoCnt) {
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .send()
-            .get("/api/todolist/count");
+            .get("/api/todolist/count"));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client("todoListClient")
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.PLAINTEXT)
-            .payload(String.valueOf(todoCnt));
+            .payload(String.valueOf(todoCnt)));
     }
 
     @Then("^(?:the )?todo list should be empty$")

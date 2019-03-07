@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
@@ -35,16 +35,16 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testSslConnectivity() {
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todo")
-            .accept(ContentType.APPLICATION_XML.getMimeType());
+            .accept(ContentType.APPLICATION_XML.getMimeType()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
 }

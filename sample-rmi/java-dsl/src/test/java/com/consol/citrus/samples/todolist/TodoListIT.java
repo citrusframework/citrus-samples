@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.rmi.client.RmiClient;
 import com.consol.citrus.rmi.message.RmiMessage;
 import com.consol.citrus.rmi.server.RmiServer;
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private RmiClient todoRmiClient;
@@ -39,43 +39,51 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testAddTodo() {
-        send(todoRmiClient)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoRmiClient)
             .fork(true)
             .message(RmiMessage.invocation(TodoListService.class, "addTodo")
                     .argument("todo-star")
-                    .argument("Star me on github"));
+                    .argument("Star me on github")));
 
-        receive(todoRmiServer)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(todoRmiServer)
             .message(RmiMessage.invocation(TodoListService.class, "addTodo")
                     .argument("todo-star")
-                    .argument("Star me on github"));
+                    .argument("Star me on github")));
 
-        send(todoRmiServer)
-            .message(RmiMessage.result());
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoRmiServer)
+            .message(RmiMessage.result()));
 
-        receive(todoRmiClient)
-            .message(RmiMessage.result());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(todoRmiClient)
+            .message(RmiMessage.result()));
     }
 
     @Test
     @CitrusTest
     public void testGetTodos() {
-        send(todoRmiClient)
-                .fork(true)
-                .message(RmiMessage.invocation(TodoListService.class, "getTodos"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoRmiClient)
+            .fork(true)
+            .message(RmiMessage.invocation(TodoListService.class, "getTodos")));
 
-        receive(todoRmiServer)
-                .message(RmiMessage.invocation(TodoListService.class, "getTodos"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(todoRmiServer)
+            .message(RmiMessage.invocation(TodoListService.class, "getTodos")));
 
-        send(todoRmiServer)
-                .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
-                            "<object type=\"java.util.Map\" value=\"{todo-follow=Follow us on github}\"/>" +
-                        "</service-result>");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoRmiServer)
+            .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+                        "<object type=\"java.util.Map\" value=\"{todo-follow=Follow us on github}\"/>" +
+                    "</service-result>"));
 
-        receive(todoRmiClient)
-                .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
-                            "<object type=\"java.util.LinkedHashMap\" value=\"{todo-follow=Follow us on github}\"/>" +
-                        "</service-result>");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(todoRmiClient)
+            .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+                        "<object type=\"java.util.LinkedHashMap\" value=\"{todo-follow=Follow us on github}\"/>" +
+                    "</service-result>"));
     }
 
 }

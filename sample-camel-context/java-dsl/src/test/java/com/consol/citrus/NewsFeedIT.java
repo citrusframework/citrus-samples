@@ -17,7 +17,7 @@
 package com.consol.citrus;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.ws.message.SoapMessage;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
  * @since 2.1
  */
 @Test
-public class NewsFeedIT extends TestNGCitrusTestDesigner {
+public class NewsFeedIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private JmsEndpoint newsJmsEndpoint;
@@ -40,44 +40,50 @@ public class NewsFeedIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest(name = "NewsFeed_Ok_IT")
     public void newsFeed_Ok_1_Test() {
-        send(newsJmsEndpoint)
-                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
-                            "<nf:Message>Citrus rocks!</nf:Message>" +
-                        "</nf:News>");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(newsJmsEndpoint)
+            .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                        "<nf:Message>Citrus rocks!</nf:Message>" +
+                    "</nf:News>"));
 
-        receive(newsServer)
-                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
-                            "<nf:Message>Citrus rocks!</nf:Message>" +
-                        "</nf:News>")
-                .header(SoapMessageHeaders.SOAP_ACTION, "newsFeed");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(newsServer)
+            .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                        "<nf:Message>Citrus rocks!</nf:Message>" +
+                    "</nf:News>")
+            .header(SoapMessageHeaders.SOAP_ACTION, "newsFeed"));
 
-        send(newsServer)
-                .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200");
+        send(sendMessageBuilder -> sendMessageBuilder
+                .endpoint(newsServer)
+                .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200"));
     }
 
     @CitrusTest(name = "NewsFeed_Ok_2_IT")
     public void newsFeed_Ok_2_Test() {
         echo("Send JMS request message to queue destination");
 
-        send("newsJmsEndpoint")
-                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
-                            "<nf:Message>Citrus rocks!</nf:Message>" +
-                        "</nf:News>")
-                .header("Operation", "HelloService/sayHello");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint("newsJmsEndpoint")
+            .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                        "<nf:Message>Citrus rocks!</nf:Message>" +
+                    "</nf:News>")
+            .header("Operation", "HelloService/sayHello"));
 
         echo("Receive JMS message on queue destination");
 
-        soap().server(newsServer)
-                .receive()
-                .soapAction( "newsFeed")
-                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
-                            "<nf:Message>Citrus rocks!</nf:Message>" +
-                        "</nf:News>");
+        soap(soapActionBuilder -> soapActionBuilder
+            .server(newsServer)
+            .receive()
+            .soapAction( "newsFeed")
+            .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                        "<nf:Message>Citrus rocks!</nf:Message>" +
+                    "</nf:News>"));
 
-        soap().server(newsServer)
-                .send()
-                .message(new SoapMessage()
-                        .setHeader(SoapMessageHeaders.HTTP_STATUS_CODE, "200"));
+        soap(soapActionBuilder -> soapActionBuilder
+            .server(newsServer)
+            .send()
+            .message(new SoapMessage()
+                .setHeader(SoapMessageHeaders.HTTP_STATUS_CODE, "200")));
     }
 
 }

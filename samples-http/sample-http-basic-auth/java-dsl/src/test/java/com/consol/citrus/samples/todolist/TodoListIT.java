@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
@@ -38,62 +38,62 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testBasicAuth() {
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoBasicAuthClient)
             .send()
             .get("/todo/")
-            .accept(ContentType.APPLICATION_XML.getMimeType());
+            .accept(ContentType.APPLICATION_XML.getMimeType()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoBasicAuthClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
     @Test
     @CitrusTest
     public void testBasicAuthHeader() {
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todo/")
             .accept(ContentType.APPLICATION_XML.getMimeType())
-            .header("Authorization", "Basic citrus:encodeBase64('citrus:secr3t')");
+            .header("Authorization", "Basic citrus:encodeBase64('citrus:secr3t')"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
     @Test
     @CitrusTest
     public void testBasicAuthMissing() {
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todo/")
-            .accept(ContentType.APPLICATION_XML.getMimeType());
+            .accept(ContentType.APPLICATION_XML.getMimeType()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.UNAUTHORIZED);
+            .response(HttpStatus.UNAUTHORIZED));
     }
 
     @Test
     @CitrusTest
     public void testBasicAuthFailed() {
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todo/")
             .accept(ContentType.APPLICATION_XML.getMimeType())
-            .header("Authorization", "Basic citrus:encodeBase64('wrong:wrong')");
+            .header("Authorization", "Basic citrus:encodeBase64('wrong:wrong')"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.UNAUTHORIZED);
+            .response(HttpStatus.UNAUTHORIZED));
     }
 }

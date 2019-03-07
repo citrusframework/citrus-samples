@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.ws.message.SoapAttachment;
 import com.consol.citrus.ws.server.WebServiceServer;
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class AddImageIT extends TestNGCitrusTestDesigner {
+public class AddImageIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private WebServiceClient imageClient;
@@ -45,7 +45,7 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
         attachment.setCharsetName("utf-8");
         attachment.setContentResourcePath("image/logo.png");
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(imageClient)
             .send()
             .fork(true)
@@ -55,11 +55,11 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
                     "<image:image>cid:IMAGE</image:image>" +
                     "</image:addImage>")
             .attachment(attachment)
-            .mtomEnabled(true);
+            .mtomEnabled(true));
 
 
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(imageServer)
             .receive()
             .soapAction("addImage")
@@ -71,21 +71,21 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
                         "</image:image>" +
                     "</image:addImage>")
             .attachmentValidator(new BinarySoapAttachmentValidator())
-            .attachment(attachment);
+            .attachment(attachment));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(imageServer)
             .send()
             .payload("<image:addImageResponse xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:success>true</image:success>" +
-                    "</image:addImageResponse>");
+                    "</image:addImageResponse>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(imageClient)
             .receive()
             .payload("<image:addImageResponse xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:success>true</image:success>" +
-                    "</image:addImageResponse>");
+                    "</image:addImageResponse>"));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
         attachment.setContentResourcePath("image/logo.png");
         attachment.setMtomInline(true);
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(imageClient)
             .send()
             .fork(true)
@@ -108,29 +108,29 @@ public class AddImageIT extends TestNGCitrusTestDesigner {
                         "<image:image>cid:IMAGE</image:image>" +
                     "</image:addImage>")
             .attachment(attachment)
-            .mtomEnabled(true);
+            .mtomEnabled(true));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(imageServer)
             .receive()
             .soapAction("addImage")
             .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:id>logo</image:id>" +
                         "<image:image>citrus:readFile(image/logo.base64)</image:image>" +
-                    "</image:addImage>");
+                    "</image:addImage>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(imageServer)
             .send()
             .payload("<image:addImageResponse xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:success>true</image:success>" +
-                    "</image:addImageResponse>");
+                    "</image:addImageResponse>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(imageClient)
             .receive()
             .payload("<image:addImageResponse xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:success>true</image:success>" +
-                    "</image:addImageResponse>");
+                    "</image:addImageResponse>"));
     }
 }

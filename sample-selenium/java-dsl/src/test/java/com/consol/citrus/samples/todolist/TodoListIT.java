@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.selenium.endpoint.SeleniumBrowser;
 import org.openqa.selenium.By;
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private SeleniumBrowser browser;
@@ -39,27 +39,27 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
     @Test
     @CitrusTest
     public void testIndexPage() {
-        selenium()
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
                 .browser(browser)
-                .start();
+                .start());
 
-        selenium()
-                .navigate(todoClient.getEndpointConfiguration().getRequestUrl());
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+                .navigate(todoClient.getEndpointConfiguration().getRequestUrl()));
 
-        selenium()
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
                 .find()
                 .enabled(true)
                 .displayed(true)
-                .element(By.linkText("Run application"));
+                .element(By.linkText("Run application")));
 
-        selenium()
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
                 .click()
-                .element(By.linkText("Run application"));
+                .element(By.linkText("Run application")));
 
-        selenium()
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
                 .find()
                 .element(By.tagName("h1"))
-                .text("TODO list");
+                .text("TODO list"));
     }
 
     @Test
@@ -68,48 +68,50 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "todo_citrus:randomNumber(4)");
         variable("todoDescription", "Description: ${todoName}");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
-            .delete("/api/todolist");
+            .delete("/api/todolist"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
 
-        selenium()
-                .browser(browser)
-                .start();
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .browser(browser)
+            .start());
 
-        selenium()
-                .navigate(todoClient.getEndpointConfiguration().getRequestUrl() + "/todolist");
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .navigate(todoClient.getEndpointConfiguration().getRequestUrl() + "/todolist"));
 
-        selenium()
-                .find()
-                .element(By.xpath("(//li[@class='list-group-item'])[last()]"))
-                .text("No todos found");
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .find()
+            .element(By.xpath("(//li[@class='list-group-item'])[last()]"))
+            .text("No todos found"));
 
-        selenium()
-                .setInput("${todoName}")
-                .element(By.name("title"));
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .setInput("${todoName}")
+            .element(By.name("title")));
 
-        selenium()
-                .setInput("${todoDescription}")
-                .element(By.name("description"));
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .setInput("${todoDescription}")
+            .element(By.name("description"))
+        );
 
-        selenium().click()
-                .element(By.tagName("button"));
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .click()
+            .element(By.tagName("button")));
 
-        selenium()
-                .waitUntil()
-                .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
-                .timeout(2000L)
-                .visible();
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .waitUntil()
+            .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
+            .timeout(2000L)
+            .visible());
 
-        selenium()
-                .find()
-                .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
-                .text("${todoName}");
+        selenium(seleniumActionBuilder -> seleniumActionBuilder
+            .find()
+            .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
+            .text("${todoName}"));
     }
 }

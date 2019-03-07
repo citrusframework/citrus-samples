@@ -64,6 +64,8 @@ public class EmployeeMailTest {
     @Test
     @CitrusTest
     public void testPostWithWelcomeEmail(@CitrusResource TestDesigner citrus) {
+        // TODO: mbu
+        // TestRunner has no ".variable(...)" method
         citrus.variable("employee.name", "Rajesh");
         citrus.variable("employee.age", "20");
         citrus.variable("employee.email", "rajesh@example.com");

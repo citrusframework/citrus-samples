@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.flightbooking;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * @author Christoph Deppisch
  */
 @Test
-public class FlightBookingIT extends TestNGCitrusTestDesigner {
+public class FlightBookingIT extends TestNGCitrusTestRunner {
 
     @Autowired
     @Qualifier("travelAgencyBookingRequestEndpoint")
@@ -55,41 +55,47 @@ public class FlightBookingIT extends TestNGCitrusTestDesigner {
         variable("correlationId", "citrus:concat('Lx1x', 'citrus:randomNumber(10)')");
         variable("customerId", "citrus:concat('Mx1x', citrus:randomNumber(10))");
 
-        send(travelAgencyBookingRequestEndpoint)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(travelAgencyBookingRequestEndpoint)
             .payload(new ClassPathResource("templates/TravelBookingRequest.xml"))
-                .header("bookingCorrelationId", "${correlationId}");
+                .header("bookingCorrelationId", "${correlationId}"));
 
-        receive(royalAirlineServer)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(royalAirlineServer)
             .payload(new ClassPathResource("templates/RoyalAirlineBookingRequest.xml"))
             .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId")
             .header("bookingCorrelationId", "${correlationId}")
             .extractFromHeader("X-sequenceNumber", "${sequenceNumber}")
             .extractFromHeader("X-sequenceSize", "${sequenceSize}")
-            .extractFromPayload("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${royalAirlineBookingId}");
+            .extractFromPayload("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${royalAirlineBookingId}"));
 
-        send(royalAirlineServer)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(royalAirlineServer)
             .payload(new ClassPathResource("templates/RoyalAirlineBookingResponse.xml"))
             .header("X-sequenceNumber", "${sequenceNumber}")
             .header("X-sequenceSize", "${sequenceSize}")
-            .header("bookingCorrelationId", "${correlationId}");
+            .header("bookingCorrelationId", "${correlationId}"));
 
-        receive(smartAirlineBookingRequestEndpoint)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(smartAirlineBookingRequestEndpoint)
             .payload(new ClassPathResource("templates/SmartAirlineBookingRequest.xml"))
             .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId")
             .header("bookingCorrelationId", "${correlationId}")
             .extractFromHeader("sequenceNumber", "${sequenceNumber}")
             .extractFromHeader("sequenceSize", "${sequenceSize}")
-            .extractFromPayload("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${smartAirlineBookingId}");
+            .extractFromPayload("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${smartAirlineBookingId}"));
 
-        send(smartAirlineBookingResponseEndpoint)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(smartAirlineBookingResponseEndpoint)
             .payload(new ClassPathResource("templates/SmartAirlineBookingResponse.xml"))
             .header("sequenceNumber", "${sequenceNumber}")
             .header("sequenceSize", "${sequenceSize}")
-            .header("bookingCorrelationId", "${correlationId}");
+            .header("bookingCorrelationId", "${correlationId}"));
 
-        receive(travelAgencyBookingResponseEndpoint)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(travelAgencyBookingResponseEndpoint)
             .payload(new ClassPathResource("templates/TravelBookingResponse.xml"))
-            .header("bookingCorrelationId", "${correlationId}");
+            .header("bookingCorrelationId", "${correlationId}"));
     }
 
 }

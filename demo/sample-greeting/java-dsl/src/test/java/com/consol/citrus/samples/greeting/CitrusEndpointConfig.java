@@ -18,9 +18,9 @@ package com.consol.citrus.samples.greeting;
 
 import com.consol.citrus.channel.ChannelEndpoint;
 import com.consol.citrus.container.SequenceBeforeTest;
-import com.consol.citrus.dsl.design.TestDesigner;
-import com.consol.citrus.dsl.design.TestDesignerBeforeTestSupport;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
+import com.consol.citrus.dsl.runner.TestRunner;
+import com.consol.citrus.dsl.runner.TestRunnerBeforeTestSupport;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.variable.GlobalVariables;
 import com.consol.citrus.xml.XsdSchemaRepository;
@@ -80,19 +80,19 @@ public class CitrusEndpointConfig {
     @Bean
     public ChannelEndpoint greetingsEndpoint() {
         return CitrusEndpoints.channel()
-                .asynchronous()
-                .channel("greetings")
-                .timeout(5000L)
-                .build();
+            .asynchronous()
+            .channel("greetings")
+            .timeout(5000L)
+            .build();
     }
 
     @Bean
     public ChannelEndpoint greetingsTransformedEndpoint() {
         return CitrusEndpoints.channel()
-                .asynchronous()
-                .channel("greetingsTransformed")
-                .timeout(5000L)
-                .build();
+            .asynchronous()
+            .channel("greetingsTransformed")
+            .timeout(5000L)
+            .build();
     }
 
     @Bean
@@ -103,30 +103,30 @@ public class CitrusEndpointConfig {
     @Bean
     public JmsEndpoint greetingJmsRequestSender() {
         return CitrusEndpoints.jms()
-                .asynchronous()
-                .connectionFactory(connectionFactory())
-                .destination(greetingRequestQueue)
-                .build();
+            .asynchronous()
+            .connectionFactory(connectionFactory())
+            .destination(greetingRequestQueue)
+            .build();
     }
 
     @Bean
     public JmsEndpoint greetingJmsResponseReceiver() {
         return CitrusEndpoints.jms()
-                .asynchronous()
-                .connectionFactory(connectionFactory())
-                .destination(greetingResponseQueue)
-                .build();
+            .asynchronous()
+            .connectionFactory(connectionFactory())
+            .destination(greetingResponseQueue)
+            .build();
     }
 
     @Bean
     public SequenceBeforeTest beforeTest() {
-        return new TestDesignerBeforeTestSupport() {
+        return new TestRunnerBeforeTestSupport() {
             @Override
-            public void beforeTest(TestDesigner testDesigner) {
-                testDesigner.purgeQueues()
-                        .connectionFactory(connectionFactory())
-                        .queue(greetingRequestQueue)
-                        .queue(greetingResponseQueue);
+            public void beforeTest(TestRunner testRunner) {
+                testRunner.purgeQueues(purgeJmsQueueBuilder -> purgeJmsQueueBuilder
+                    .connectionFactory(connectionFactory())
+                    .queue(greetingRequestQueue)
+                    .queue(greetingResponseQueue));
             }
         };
     }

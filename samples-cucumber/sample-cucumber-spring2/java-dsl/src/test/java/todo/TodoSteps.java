@@ -31,6 +31,9 @@ import java.net.URLEncoder;
 /**
  * @author Christoph Deppisch
  */
+// TODO: mbu
+// this class cannot (easily) be refactored to use TestRunner. Doing so will result in undefined
+// scenarios.
 public class TodoSteps {
 
     /** Test designer filled with actions by step definitions */

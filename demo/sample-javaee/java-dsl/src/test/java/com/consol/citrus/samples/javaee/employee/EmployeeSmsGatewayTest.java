@@ -18,7 +18,7 @@ package com.consol.citrus.samples.javaee.employee;
 
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
-import com.consol.citrus.dsl.design.TestDesigner;
+import com.consol.citrus.dsl.runner.TestRunner;
 import com.consol.citrus.samples.javaee.Deployments;
 import com.consol.citrus.ws.server.WebServiceServer;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -33,7 +33,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 import java.net.URL;
 
 @RunWith(Arquillian.class)
@@ -52,7 +51,7 @@ public class EmployeeSmsGatewayTest {
     private WebServiceServer smsGatewayServer;
 
     @Deployment(testable = false)
-    public static WebArchive createDeployment() throws IOException {
+    public static WebArchive createDeployment() {
         return Deployments.employeeWebRegistry();
     }
 
@@ -63,43 +62,49 @@ public class EmployeeSmsGatewayTest {
 
     @Test
     @CitrusTest
-    public void testPostWithWelcomeEmail(@CitrusResource TestDesigner citrus) {
+    public void testPostWithWelcomeEmail(@CitrusResource TestRunner citrus) {
         citrus.variable("employee.name", "Bernadette");
         citrus.variable("employee.age", "24");
         citrus.variable("employee.mobile", "4915199999999");
 
-        citrus.http().client(serviceUri)
-                .send()
-                .post()
-                .fork(true)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=${employee.name}&age=${employee.age}&mobile=${employee.mobile}");
+        citrus.http(httpActionBuilder -> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .post()
+            .fork(true)
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .payload("name=${employee.name}&age=${employee.age}&mobile=${employee.mobile}"));
 
-        citrus.receive(smsGatewayServer)
-                .payload(new ClassPathResource("templates/send-sms-request.xml"));
+        citrus.receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(smsGatewayServer)
+            .payload(new ClassPathResource("templates/send-sms-request.xml")));
 
-        citrus.send(smsGatewayServer)
-                .payload(new ClassPathResource("templates/send-sms-response.xml"));
+        citrus.send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(smsGatewayServer)
+                .payload(new ClassPathResource("templates/send-sms-response.xml")));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder -> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .send()
-                .get()
-                .accept(MediaType.APPLICATION_XML);
+        citrus.http(httpActionBuilder -> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .get()
+            .accept(MediaType.APPLICATION_XML));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.OK)
-                .payload("<employees>" +
-                            "<employee>" +
-                                "<age>${employee.age}</age>" +
-                                "<name>${employee.name}</name>" +
-                                "<mobile>${employee.mobile}</mobile>" +
-                            "</employee>" +
-                        "</employees>");
+        citrus.http(httpActionBuilder -> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("<employees>" +
+                       "<employee>" +
+                         "<age>${employee.age}</age>" +
+                         "<name>${employee.name}</name>" +
+                         "<mobile>${employee.mobile}</mobile>" +
+                       "</employee>" +
+                     "</employees>"));
 
         citrusFramework.run(citrus.getTestCase());
     }

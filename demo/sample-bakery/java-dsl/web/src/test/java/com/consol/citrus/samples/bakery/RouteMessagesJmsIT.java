@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class RouteMessagesJmsIT extends TestNGCitrusTestDesigner {
+public class RouteMessagesJmsIT extends TestNGCitrusTestRunner {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")
@@ -48,31 +48,39 @@ public class RouteMessagesJmsIT extends TestNGCitrusTestDesigner {
 
     @CitrusTest
     public void routeMessagesContentBased() {
-        send(bakeryOrderEndpoint)
-                .payload("<order><type>chocolate</type><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(bakeryOrderEndpoint)
+            .payload("<order><type>chocolate</type><id>citrus:randomNumber(10)</id><amount>1</amount></order>"));
 
-        receive(workerChocolateEndpoint)
-                .payload("<order><type>chocolate</type><id>@ignore@</id><amount>1</amount></order>");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(workerChocolateEndpoint)
+            .payload("<order><type>chocolate</type><id>@ignore@</id><amount>1</amount></order>"));
 
-        send(bakeryOrderEndpoint)
-                .payload("<order><type>caramel</type><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(bakeryOrderEndpoint)
+            .payload("<order><type>caramel</type><id>citrus:randomNumber(10)</id><amount>1</amount></order>"));
 
-        receive(workerCaramelEndpoint)
-                .payload("<order><type>caramel</type><id>@ignore@</id><amount>1</amount></order>");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(workerCaramelEndpoint)
+            .payload("<order><type>caramel</type><id>@ignore@</id><amount>1</amount></order>"));
 
-        send(bakeryOrderEndpoint)
-                .payload("<order><type>blueberry</type><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(bakeryOrderEndpoint)
+            .payload("<order><type>blueberry</type><id>citrus:randomNumber(10)</id><amount>1</amount></order>"));
 
-        receive(workerBlueberryEndpoint)
-                .payload("<order><type>blueberry</type><id>@ignore@</id><amount>1</amount></order>");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(workerBlueberryEndpoint)
+            .payload("<order><type>blueberry</type><id>@ignore@</id><amount>1</amount></order>"));
     }
 
     @CitrusTest
     public void routeUnknownOrderType() {
-        send(bakeryOrderEndpoint)
-                .payload("<order><type>brownie</type><id>citrus:randomNumber(10)</id><amount>1</amount></order>");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(bakeryOrderEndpoint)
+            .payload("<order><type>brownie</type><id>citrus:randomNumber(10)</id><amount>1</amount></order>"));
 
-        receive("jms:factory.unknown.inbound")
-                .payload("<order><type>brownie</type><id>@ignore@</id><amount>1</amount></order>");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint("jms:factory.unknown.inbound")
+            .payload("<order><type>brownie</type><id>@ignore@</id><amount>1</amount></order>"));
     }
 }
