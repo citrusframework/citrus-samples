@@ -212,10 +212,11 @@ Have a look at the Citrus endpoint configuration that shows the service discover
 ```java
 @Bean
 public HttpClient todoClient() {
-    return CitrusEndpoints.http()
-                        .client()
-                        .requestUrl("http://citrus-sample-todo-service:8080")
-                        .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://citrus-sample-todo-service:8080")
+        .build();
 }
 ```
 
@@ -225,12 +226,13 @@ we can add a Citrus Kubernetes client to access the Kubernetes API within a test
 ```java
 @Bean
 public KubernetesClient k8sClient() {
-    return CitrusEndpoints.kubernetes()
+    return CitrusEndpoints
+        .kubernetes()
             .client()
             .username("minikube")
             .namespace("default")
             .url("https://kubernetes:443")
-            .build();
+        .build();
 }
 ```
 
@@ -243,7 +245,7 @@ private KubernetesClient k8sClient;
 @Test
 @CitrusTest
 public void testDeploymentState() {
-    kubernetes()
+    kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
         .client(k8sClient)
         .pods()
         .list()
@@ -251,15 +253,13 @@ public void testDeploymentState() {
         .validate("$..status.phase", "Running")
         .validate((pods, context) -> {
             Assert.assertFalse(CollectionUtils.isEmpty(pods.getResult().getItems()));
-        });
+        }));
 
-    kubernetes()
+    kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
         .client(k8sClient)
         .services()
         .get("citrus-sample-todo-service")
-        .validate((service, context) -> {
-            Assert.assertNotNull(service.getResult());
-        });
+        .validate((service, context) -> Assert.assertNotNull(service.getResult())));
 }
 ```
 
@@ -278,33 +278,33 @@ public void testTodoService() {
     variable("todoDescription", "Description: ${todoName}");
     variable("done", "false");
 
-    http()
+    http(httpActionBuilder -> httpActionBuilder
         .client(todoClient)
         .send()
         .post("/api/todolist")
         .messageType(MessageType.JSON)
         .contentType(ContentType.APPLICATION_JSON.getMimeType())
-        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-    http()
+    http(httpActionBuilder -> httpActionBuilder
         .client(todoClient)
         .receive()
         .response(HttpStatus.OK)
         .messageType(MessageType.PLAINTEXT)
-        .payload("${todoId}");
+        .payload("${todoId}"));
 
-    http()
+    http(httpActionBuilder -> httpActionBuilder
         .client(todoClient)
         .send()
         .get("/api/todo/${todoId}")
-        .accept(ContentType.APPLICATION_JSON.getMimeType());
+        .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-    http()
+    http(httpActionBuilder -> httpActionBuilder
         .client(todoClient)
         .receive()
         .response(HttpStatus.OK)
         .messageType(MessageType.JSON)
-        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 }
 ```
 
@@ -314,11 +314,11 @@ that consume services just like other clients would do in production. On top of 
 The test is able to check the Kubernetes deployment state. We can even manipulate the Kubernetes resources at test runtime:
 
 ```java
-kubernetes()
+kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
     .pods()
     .delete("${todoPod}")
     .namespace("default")
-    .validate((result, context) -> Assert.assertTrue(result.getResult().getSuccess()))
+    .validate((result, context) -> Assert.assertTrue(result.getResult().getSuccess())))
 ```
 
 The listing above deletes the todo-list pod. In that case the default Kubernetes replica set may just automatically start another pod so the todo-list application is kept running.

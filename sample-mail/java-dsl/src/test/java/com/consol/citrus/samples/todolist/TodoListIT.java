@@ -74,12 +74,12 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(mailServer)
             .message(MailMessage.request()
-                    .from("todo-report@example.org")
-                    .to("users@example.org")
-                    .cc("")
-                    .bcc("")
-                    .subject("ToDo report")
-                    .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
+                .from("todo-report@example.org")
+                .to("users@example.org")
+                .cc("")
+                .bcc("")
+                .subject("ToDo report")
+                .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
             .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
         send(sendMessageBuilder -> sendMessageBuilder

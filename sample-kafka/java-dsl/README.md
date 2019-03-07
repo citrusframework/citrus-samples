@@ -19,26 +19,28 @@ with the tests. So the Citrus Kafka producer endpoint just needs to connect to t
 public EmbeddedKafkaServer embeddedKafkaServer() {
     return new EmbeddedKafkaServerBuilder()
             .kafkaServerPort(9092)
-            .topics("todo.inbound,todo.report")
-            .build();
+            .topics("todo.inbound", "todo.report")
+        .build();
 }
-    
+
 @Bean
 public KafkaEndpoint todoKafkaEndpoint() {
-    return CitrusEndpoints.kafka()
+    return CitrusEndpoints
+        .kafka()
             .asynchronous()
             .server("localhost:9092")
             .topic("todo.inbound")
-            .build();
+        .build();
 }
 ```
 
 The endpoint connects to the server cluster and uses the topic `todo.inbound`. We can now place new todo entries to that topic in our test.
     
 ```java
-send(todoKafkaEndpoint)
-        .header(KafkaMessageHeaders.MESSAGE_KEY, "${todoName}")
-        .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(todoKafkaEndpoint)
+    .header(KafkaMessageHeaders.MESSAGE_KEY, "${todoName}")
+    .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 ```
         
 We can add a special message header **KafkaMessageHeaders.MESSAGE_KEY** which is the Kafka producer record message key. The message key is automatically serialized/deserialized as String value. 
@@ -52,12 +54,13 @@ In case we need to receive a message on a Kafka topic we also add a Kafka endpoi
 ```java
 @Bean
 public KafkaEndpoint todoReportEndpoint() {
-    return CitrusEndpoints.kafka()
+    return CitrusEndpoints
+        .kafka()
             .asynchronous()
             .server("localhost:9092")
             .topic("todo.report")
             .offsetReset("earliest")
-            .build();
+        .build();
 }
 ```
 
@@ -66,10 +69,11 @@ As you can see you can also skip the `server` property on the endpoint when the 
 records on that topic in the test case. 
 
 ```java
-receive(todoReportEndpoint)
-            .messageType(MessageType.JSON)
-            .message(new KafkaMessage("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
-                        .messageKey("todo.entries.done"));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(todoReportEndpoint)
+    .messageType(MessageType.JSON)
+    .message(new KafkaMessage("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
+        .messageKey("todo.entries.done")));
 ```
 
 The received record is validated with an expected message key and payload.

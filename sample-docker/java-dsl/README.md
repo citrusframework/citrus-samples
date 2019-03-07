@@ -244,10 +244,11 @@ for accessing the REST API:
 ```java
 @Bean
 public HttpClient todoClient() {
-    return CitrusEndpoints.http()
-                        .client()
-                        .requestUrl(String.format("http://%s:%s", todoServerHost, todoServerPort))
-                        .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://todo-app:8080")
+        .build();
 }
 ```
 
@@ -255,20 +256,20 @@ As you can see the client will be able to resolve the hostname *todo-app* via Do
 add new todo items.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
     .post("/api/todolist")
     .messageType(MessageType.JSON)
     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
     .messageType(MessageType.PLAINTEXT)
-    .payload("${todoId}");
+    .payload("${todoId}"));
 ```
 
 In addition to that the Citrus configuration also defines a Docker client component:
@@ -276,20 +277,21 @@ In addition to that the Citrus configuration also defines a Docker client compon
 ```java
 @Bean
 public DockerClient dockerClient() {
-    return CitrusEndpoints.docker()
+    return CitrusEndpoints
+        .docker()
             .client()
             .url("unix:///var/run/dockerhost/docker.sock")
-            .build();
+        .build();
 }
 ```
 
 This client is then able to access the Docker API from within the Citrus test container in order to check the deployment state of the system under test.
 
 ```java
-docker()
+docker(dockerActionBuilder -> dockerActionBuilder
     .client(dockerClient)
     .inspectContainer("todo-app")
-    .validateCommandResult((container, context) -> Assert.assertTrue(container.getState().getRunning()));
+    .validateCommandResult((container, context) -> Assert.assertTrue(container.getState().getRunning())));
 ```
    
 The test action above verifies that the *todo-app* container is up and running. We can also think of manipulating the Docker container. With the Docker Citrus

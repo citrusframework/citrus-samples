@@ -35,10 +35,11 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://localhost:8080")
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("http://localhost:8080")
+            .build();
     }
 
     @Bean
@@ -55,11 +56,12 @@ public class EndpointConfig {
 
     @Bean
     public JmsEndpoint todoJmsEndpoint() {
-        return CitrusEndpoints.jms()
+        return CitrusEndpoints.
+            jms()
                 .asynchronous()
                 .connectionFactory(connectionFactory())
                 .destination("jms.todo.inbound")
-                .build();
+            .build();
     }
 
     @Bean

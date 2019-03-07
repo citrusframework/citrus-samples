@@ -35,10 +35,11 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
+        return CitrusEndpoints
+            .http()
                 .client()
                 .requestUrl("http://localhost:8080")
-                .build();
+            .build();
     }
 
     @Bean
@@ -50,7 +51,8 @@ public class EndpointConfig {
 
     @Bean
     public JdbcServer jdbcServer() {
-        return CitrusEndpoints.jdbc()
+        return CitrusEndpoints
+            .jdbc()
                 .server()
                 .host("localhost")
                 .databaseName("testdb")
@@ -58,7 +60,7 @@ public class EndpointConfig {
                 .timeout(10000L)
                 .autoStart(true)
                 .autoTransactionHandling(false)
-                .build();
+            .build();
     }
 
     @Bean

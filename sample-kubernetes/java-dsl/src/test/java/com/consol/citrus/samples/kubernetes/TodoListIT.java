@@ -57,9 +57,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .client(k8sClient)
             .services()
             .get("citrus-sample-todo-service")
-            .validate((service, context) -> {
-                Assert.assertNotNull(service.getResult());
-            }));
+            .validate((service, context) -> Assert.assertNotNull(service.getResult())));
     }
 
     @Test
@@ -143,7 +141,6 @@ public class TodoListIT extends AbstractKubernetesIT {
             }));
 
         // 8080
-        // hier auch: warum anderer build-Prozess?
         parallel()
             .actions(
                 kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder

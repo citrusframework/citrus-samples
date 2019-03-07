@@ -38,10 +38,11 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://localhost:8080")
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("http://localhost:8080")
+            .build();
     }
 
     @Bean
@@ -55,8 +56,8 @@ public class EndpointConfig {
     public SequenceBeforeSuite beforeSuite() {
         return new TestRunnerBeforeSuiteSupport() {
             @Override
-            public void beforeSuite(TestRunner designer) {
-                designer.sql(executeSQLBuilder -> executeSQLBuilder
+            public void beforeSuite(TestRunner runner) {
+                runner.sql(executeSQLBuilder -> executeSQLBuilder
                     .dataSource(todoListDataSource())
                     .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
             }
@@ -67,8 +68,8 @@ public class EndpointConfig {
     public SequenceAfterSuite afterSuite() {
         return new TestRunnerAfterSuiteSupport() {
             @Override
-            public void afterSuite(TestRunner designer) {
-                designer.sql(executeSQLBuilder -> executeSQLBuilder
+            public void afterSuite(TestRunner runner) {
+                runner.sql(executeSQLBuilder -> executeSQLBuilder
                     .dataSource(todoListDataSource())
                     .statement("DELETE FROM todo_entries"));
             }

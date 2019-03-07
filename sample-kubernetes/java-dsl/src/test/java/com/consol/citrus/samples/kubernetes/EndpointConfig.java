@@ -30,19 +30,21 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://citrus-sample-todo-service:8080")
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("http://citrus-sample-todo-service:8080")
+            .build();
     }
 
     @Bean
     public KubernetesClient k8sClient() {
-        return CitrusEndpoints.kubernetes()
+        return CitrusEndpoints
+            .kubernetes()
                 .client()
                 .username("minikube")
                 .namespace("default")
                 .url("https://kubernetes:443")
-                .build();
+            .build();
     }
 }

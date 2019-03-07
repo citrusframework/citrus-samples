@@ -36,8 +36,8 @@ Before the test suite is started we create the relational database tables requir
 public SequenceBeforeSuite beforeSuite() {
     return new TestRunnerBeforeSuiteSupport() {
         @Override
-        public void beforeSuite(TestRunner designer) {
-            designer.sql(executeSQLBuilder -> executeSQLBuilder
+        public void beforeSuite(TestRunner runner) {
+            runner.sql(executeSQLBuilder -> executeSQLBuilder
                 .dataSource(todoListDataSource())
                 .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
         }
@@ -52,8 +52,8 @@ After the test we delete all test data again.
 public SequenceAfterSuite afterSuite() {
     return new TestRunnerAfterSuiteSupport() {
         @Override
-        public void afterSuite(TestRunner designer) {
-            designer.sql(executeSQLBuilder -> executeSQLBuilder
+        public void afterSuite(TestRunner runner) {
+            runner.sql(executeSQLBuilder -> executeSQLBuilder
                 .dataSource(todoListDataSource())
                 .statement("DELETE FROM todo_entries"));
         }
@@ -65,9 +65,10 @@ In the test case we can reference the datasource in order to access the stored d
 verify the result sets.
 
 ```java
-query(todoDataSource)
+query(executeSQLQueryBuilder -> executeSQLQueryBuilder
+    .dataSource(todoDataSource)
     .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")
-    .validate("cnt", "1");
+    .validate("cnt", "0"));
 ```
 
 Run

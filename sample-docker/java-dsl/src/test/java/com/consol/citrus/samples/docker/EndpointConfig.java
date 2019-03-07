@@ -30,17 +30,19 @@ public class EndpointConfig {
 
     @Bean
     public DockerClient dockerClient() {
-        return CitrusEndpoints.docker()
+        return CitrusEndpoints
+            .docker()
                 .client()
                 .url("unix:///var/run/dockerhost/docker.sock")
-                .build();
+            .build();
     }
 
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://todo-app:8080")
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("http://todo-app:8080")
+            .build();
     }
 }

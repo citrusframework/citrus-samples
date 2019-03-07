@@ -18,7 +18,7 @@ package com.consol.citrus.samples.javaee.employee;
 
 import com.consol.citrus.Citrus;
 import com.consol.citrus.annotations.*;
-import com.consol.citrus.dsl.design.TestDesigner;
+import com.consol.citrus.dsl.runner.TestRunner;
 import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
 import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.samples.javaee.Deployments;
@@ -63,48 +63,52 @@ public class EmployeeMailTest {
 
     @Test
     @CitrusTest
-    public void testPostWithWelcomeEmail(@CitrusResource TestDesigner citrus) {
-        // TODO: mbu
-        // TestRunner has no ".variable(...)" method
+    public void testPostWithWelcomeEmail(@CitrusResource TestRunner citrus) {
         citrus.variable("employee.name", "Rajesh");
         citrus.variable("employee.age", "20");
         citrus.variable("employee.email", "rajesh@example.com");
 
-        citrus.http().client(serviceUri)
-                .send()
-                .post()
-                .fork(true)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=${employee.name}&age=${employee.age}&email=${employee.email}");
+        citrus.http(httpActionBuilder -> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .post()
+            .fork(true)
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .payload("name=${employee.name}&age=${employee.age}&email=${employee.email}"));
 
-        citrus.receive(mailServer)
-                .payload(new ClassPathResource("templates/welcome-mail.xml"))
-                .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Welcome new employee")
-                .header(CitrusMailMessageHeaders.MAIL_FROM, "employee-registry@example.com")
-                .header(CitrusMailMessageHeaders.MAIL_TO, "${employee.email}");
+        citrus.receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(mailServer)
+            .payload(new ClassPathResource("templates/welcome-mail.xml"))
+            .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Welcome new employee")
+            .header(CitrusMailMessageHeaders.MAIL_FROM, "employee-registry@example.com")
+            .header(CitrusMailMessageHeaders.MAIL_TO, "${employee.email}"));
 
-        citrus.send(mailServer)
-                .payload(new ClassPathResource("templates/welcome-mail-response.xml"));
+        citrus.send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(mailServer)
+            .payload(new ClassPathResource("templates/welcome-mail-response.xml")));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder -> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .send()
-                .get()
-                .accept(MediaType.APPLICATION_XML);
+        citrus.http(httpActionBuilder -> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .get()
+            .accept(MediaType.APPLICATION_XML));
 
-        citrus.http().client(serviceUri)
-                .receive()
-                .response(HttpStatus.OK)
-                .payload("<employees>" +
-                            "<employee>" +
-                                "<age>${employee.age}</age>" +
-                                "<name>${employee.name}</name>" +
-                                "<email>${employee.email}</email>" +
-                            "</employee>" +
-                        "</employees>");
+        citrus.http(httpActionBuilder -> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("<employees>" +
+                       "<employee>" +
+                         "<age>${employee.age}</age>" +
+                         "<name>${employee.name}</name>" +
+                         "<email>${employee.email}</email>" +
+                       "</employee>" +
+                     "</employees>"));
 
         citrusFramework.run(citrus.getTestCase());
     }

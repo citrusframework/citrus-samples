@@ -29,18 +29,20 @@ As you can see we are using a special Citrus JDBC driver here. This driver conne
 In the test case we can verify any JDBC operation on the datasource without having to actually create the data in the database.
 
 ```java
-receive(jdbcServer)
-        .messageType(MessageType.JSON)
-        .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(jdbcServer)
+    .messageType(MessageType.JSON)
+    .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries")));
 
-send(jdbcServer)
-        .messageType(MessageType.JSON)
-        .message(JdbcMessage.success().dataSet("[ {" +
-                    "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
-                    "\"title\": \"${todoName}\"," +
-                    "\"description\": \"${todoDescription}\"," +
-                    "\"done\": \"false\"" +
-                "} ]"));
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(jdbcServer)
+    .messageType(MessageType.JSON)
+    .message(JdbcMessage.success().dataSet("[ {" +
+                "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
+                "\"title\": \"${todoName}\"," +
+                "\"description\": \"${todoDescription}\"," +
+                "\"done\": \"false\"" +
+            "} ]")));
 ```
 
 Run

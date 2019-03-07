@@ -15,22 +15,23 @@ The database server and its datasource are configured in the endpoint configurat
 ```java
 @Bean
 public JdbcServer jdbcServer() {
-    return CitrusEndpoints.jdbc()
+    return CitrusEndpoints
+        .jdbc()
             .server()
             .host("localhost")
             .databaseName("testdb")
-            .port(3306)
+            .port(13306)
             .timeout(10000L)
             .autoStart(true)
             .autoCreateStatement(false)
-            .build();
+        .build();
 }
 
 @Bean
 public SingleConnectionDataSource dataSource() {
     SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
     dataSource.setDriverClassName(JdbcDriver.class.getName());
-    dataSource.setUrl("jdbc:citrus:http://localhost:3306/testdb");
+    dataSource.setUrl("jdbc:citrus:http://localhost:13306/testdb");
     dataSource.setUsername("sa");
     dataSource.setPassword("");
     return dataSource;
@@ -47,40 +48,46 @@ variable("todoId", "citrus:randomUUID()");
 variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
 variable("todoDescription", "Description: ${todoName}");
 
-http()
-        .client(todoClient)
-        .send()
-        .get("api/todolist/1")
-        .fork(true);
+[...]
 
-receive(jdbcServer)
-        .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
+http(httpActionBuilder -> httpActionBuilder
+    .client(todoClient)
+    .send()
+    .get("api/todolist/1")
+    .fork(true));
 
-receive(jdbcServer)
-        .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(jdbcServer)
+    .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}")));
 
-send(jdbcServer)
-        .messageType(MessageType.JSON)
-        .message(JdbcMessage.result().dataSet("[ {" +
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(jdbcServer)
+    .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)")));
+
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(jdbcServer)
+    .messageType(MessageType.JSON)
+    .message(JdbcMessage.success().dataSet("[ {" +
+            "\"id\": \"${todoId}\"," +
+            "\"title\": \"${todoName}\"," +
+            "\"description\": \"${todoDescription}\"," +
+            "\"done\": \"false\"" +
+            "} ]")));
+
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(jdbcServer)
+    .message(JdbcMessage.closeStatement()));
+
+http(httpActionBuilder -> httpActionBuilder
+    .client(todoClient)
+    .receive()
+    .response(HttpStatus.OK)
+    .payload("[ {" +
                 "\"id\": \"${todoId}\"," +
                 "\"title\": \"${todoName}\"," +
                 "\"description\": \"${todoDescription}\"," +
-                "\"done\": \"false\"" +
-                "} ]"));
-
-receive(jdbcServer)
-        .message(JdbcMessage.closeStatement());
-
-http()
-        .client(todoClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .payload("[ {" +
-                    "\"id\": \"${todoId}\"," +
-                    "\"title\": \"${todoName}\"," +
-                    "\"description\": \"${todoDescription}\"," +
-                    "\"done\": false" +
-                "} ]");
+                "\"done\": false" +
+            "} ]"));
 ```
 
 Run

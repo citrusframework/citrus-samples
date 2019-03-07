@@ -30,19 +30,21 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://localhost:8080")
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("http://localhost:8080")
+            .build();
     }
 
     @Bean
     public MailServer mailServer() {
-        return CitrusEndpoints.mail()
+        return CitrusEndpoints
+            .mail()
                 .server()
                 .port(2222)
                 .autoAccept(true)
                 .autoStart(true)
-                .build();
+            .build();
     }
 }

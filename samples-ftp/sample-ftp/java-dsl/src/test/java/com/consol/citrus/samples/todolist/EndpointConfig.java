@@ -35,19 +35,21 @@ public class EndpointConfig {
 
     @Bean
     public FtpClient ftpClient() {
-        return CitrusEndpoints.ftp()
+        return CitrusEndpoints
+            .ftp()
                 .client()
                 .autoReadFiles(true)
                 .port(22222)
                 .username("citrus")
                 .password("admin")
                 .timeout(10000L)
-                .build();
+            .build();
     }
 
     @Bean
     public FtpServer ftpListServer() {
-        return CitrusEndpoints.ftp()
+        return CitrusEndpoints
+            .ftp()
                 .server()
                 .port(22222)
                 .autoLogin(true)
@@ -57,6 +59,6 @@ public class EndpointConfig {
                                               FTPCmd.PASV.getCommand(),
                                               FTPCmd.TYPE.getCommand()).collect(Collectors.joining(",")))
                 .userManagerProperties(new ClassPathResource("citrus.ftp.user.properties"))
-                .build();
+            .build();
     }
 }

@@ -35,10 +35,11 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://localhost:8080")
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("http://localhost:8080")
+            .build();
     }
 
     @Bean
@@ -53,25 +54,27 @@ public class EndpointConfig {
         return new EmbeddedKafkaServerBuilder()
                 .kafkaServerPort(9092)
                 .topics("todo.inbound", "todo.report")
-                .build();
+            .build();
     }
 
     @Bean
     public KafkaEndpoint todoKafkaEndpoint() {
-        return CitrusEndpoints.kafka()
+        return CitrusEndpoints
+            .kafka()
                 .asynchronous()
                 .server("localhost:9092")
                 .topic("todo.inbound")
-                .build();
+            .build();
     }
 
     @Bean
     public KafkaEndpoint todoReportEndpoint() {
-        return CitrusEndpoints.kafka()
+        return CitrusEndpoints
+            .kafka()
                 .asynchronous()
                 .server("localhost:9092")
                 .topic("todo.report")
                 .offsetReset("earliest")
-                .build();
+            .build();
     }
 }
