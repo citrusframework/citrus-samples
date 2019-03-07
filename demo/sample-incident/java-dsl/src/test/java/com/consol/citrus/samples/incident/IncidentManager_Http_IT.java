@@ -411,8 +411,8 @@ public class IncidentManager_Http_IT extends TestNGCitrusTestRunner {
 
     @CitrusTest(name = "IncidentManager_Http_Ok_4_IT")
     public void testIncidentManager_Http_Ok_4 () {
-        variable("ticketId", new RandomUUIDFunction().execute(Collections.emptyList(), null));
-        variable("customerId", new RandomNumberFunction().execute(Collections.singletonList("6"), null));
+        variable("ticketId", new RandomUUIDFunction().execute(Collections.<String>emptyList(), null));
+        variable("customerId", new RandomNumberFunction().execute(Collections.<String>singletonList("6"), null));
 
         send(sendMessageBuilder -> sendMessageBuilder
             .endpoint(incidentHttpClient)

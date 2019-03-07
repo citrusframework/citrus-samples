@@ -67,7 +67,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .endpoint(todoJmsEndpoint)
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
             .messageType(MessageType.BINARY)
-            .payload("{ \"title\": \"$  {todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(todoJmsEndpoint)
