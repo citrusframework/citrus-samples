@@ -81,7 +81,7 @@ public class TodoListLoadTestIT extends TestNGCitrusTest {
 There are two test methods one adding a new todo entry with form url encoded Http POST request and one getting the whole list of todo entries with GET request.
 Both methods are executed in parallel creating load on the server. The server must respond to all requests with success otherwise the whole test will fail.   
 
-The test uses resource injection with method parameters. This is required for parallel testing. So each test method instance gets a separate test designer instance
+The test uses resource injection with method parameters. This is required for parallel testing. So each test method instance gets a separate test runner instance
 to work with.
         
 Run

@@ -156,7 +156,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             entryResult.setData(FileUtils.readToString(content));
             result.setFile(entryResult);
         } catch (IOException e) {
-            log.error(e.toString());
+            throw new RuntimeException(e);
         }
 
         return result;

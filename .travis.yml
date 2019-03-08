@@ -23,6 +23,9 @@ jobs:
     - stage: it-citrus-demo-bookstore
       script:
       - mvn clean verify -Dembedded -pl :citrus-java-sample-bookstore
+    - stage: it-citrus-demo-flightbooking
+      script:
+        - mvn clean verify -Dembedded -pl :citrus-java-sample-flightbooking
     - stage: it-citrus-demo-greeting
       script:
         - mvn clean verify -Dembedded -pl :citrus-java-sample-greeting
@@ -33,8 +36,6 @@ jobs:
 #    - stage: it-citrus-demo-javaee
 #      script:
 #      - mvn clean verify -Dembedded -pl :citrus-java-sample-javaee
-    - stage: it-citrus-demo-flightbooking
-      script: mvn clean verify -Dembedded -pl :citrus-java-sample-flightbooking
     - stage: install-todo-app
       script:
       - mvn clean install -pl :citrus-sample-todo
@@ -200,6 +201,9 @@ jobs:
     - stage: it-citrus-java-sample-xhtml
       script:
       - mvn verify -Dembedded -pl :citrus-java-sample-xhtml
+    - stage: it-citrus-java-sample-xml
+      script:
+        - mvn verify -Dembedded -pp :citurs-java-sample-xml
 
 stages:
   - it-citrus-demo-bakery-worker
@@ -265,6 +269,7 @@ stages:
   - it-citrus-java-sample-testng
   - it-citrus-java-sample-oxm
   - it-citrus-java-sample-xhtml
+  - it-citrus-java-sample-xml
 
 cache:
   directories:
