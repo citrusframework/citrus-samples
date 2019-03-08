@@ -16,10 +16,11 @@ We need a Http client component in the configuration:
 ```java
 @Bean
 public HttpClient todoClient() {
-    return CitrusEndpoints.http()
-                        .client()
-                        .requestUrl("http://localhost:8080")
-                        .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://localhost:8080")
+        .build();
 }
 ```
         
@@ -30,7 +31,7 @@ some load on that server. We can do so by adding a TestNG parameter to the annot
 @Test(invocationCount = 250, threadPoolSize = 25)
 ```
         
-TestNG will start *25* threads in parallel that will send **250** requests in total per test to the todolist application. This creates load on that server. When you execute
+TestNG will start **25** threads in parallel that will send **250** requests in total per test to the todolist application. This creates load on that server. When you execute
 this test you will see lots of requests and responses exchanged during the test run. At the end you will have 250 test instances per test reporting success or failure.
 
 This creates very basic load testing scenarios. Of course the tests need to be stateless in order to perform in parallel. You may add message selectors on receive

@@ -15,20 +15,22 @@ in the Spring bean configuration:
 ```java
 @Bean
 public HttpClient todoClient() {
-    return CitrusEndpoints.http()
-                        .client()
-                        .requestUrl("http://localhost:8080")
-                        .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://localhost:8080")
+        .build();
 }
 
 @Bean
 public HttpServer todoListServer() {
-    return CitrusEndpoints.http()
+    return CitrusEndpoints
+        .http()
             .server()
             .port(8080)
             .timeout(10000)
             .autoStart(true)
-            .build();
+        .build();
 }
 ```
 
@@ -37,30 +39,30 @@ or Citrus would consume requests as a server from a system under test. In this s
 request message sending as client.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
     .get("/api/todo")
     .fork(true)
     .queryParam("id", UUID.randomUUID().toString())
     .queryParam("title", "todo_0001")
-    .queryParam("description", null);
+    .queryParam("description", null));
 
-http()
+http(httpActionBuilder -> httpActionBuilder
     .server(todoListServer)
     .receive()
     .get("/api/todo")
     .queryParam("title", "todo_0001")
-    .queryParam("description", "@ignore@");
+    .queryParam("description", "@ignore@"));
 
-http()
+http(httpActionBuilder -> httpActionBuilder
     .server(todoListServer)
-    .respond(HttpStatus.FOUND);
+    .respond(HttpStatus.FOUND));
 
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .receive()
-    .response(HttpStatus.FOUND);
+    .response(HttpStatus.FOUND));
 ```
 
 As you can see we can add multiple query parameters to the GET request with the `queryParam()` methods. The client send action will automatically add those parameters to the request

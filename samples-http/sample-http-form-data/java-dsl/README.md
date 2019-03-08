@@ -14,20 +14,22 @@ The test will simulate client and server for form data exchange via Http POST. F
 ```java
 @Bean
 public HttpClient todoClient() {
-    return CitrusEndpoints.http()
-                        .client()
-                        .requestUrl("http://localhost:8080")
-                        .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://localhost:8080")
+        .build();
 }
 
 @Bean
 public HttpServer todoListServer() {
-    return CitrusEndpoints.http()
+    return CitrusEndpoints
+        .http()
             .server()
             .port(8080)
             .timeout(10000)
             .autoStart(true)
-            .build();
+        .build();
 }
 ```
 
@@ -37,30 +39,30 @@ of the communication. In a real world scenario you may just have one side client
 So lets start writing a client request that uses form urlencoded message content:
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
     .post("/api/todo")
     .fork(true)
     .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    .payload("title=${todoName}&description=${todoDescription}");
+    .payload("title=${todoName}&description=${todoDescription}"));
 ```
 
 As you can see we are using a Http `POST` request with form urlencoded message body. The form data uses two fields `title` and `description` with respective values. On the server side we are able 
 to receive this form data for validation:
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .server(todoListServer)
     .receive()
     .post("/api/todo")
     .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     .messageType(MessageType.PLAINTEXT)
-    .payload("{description=[${todoDescription}], title=[${todoName}]}");
+    .payload("{description=[${todoDescription}], title=[${todoName}]}"));
 
-http()
+http(httpActionBuilder -> httpActionBuilder
     .server(todoListServer)
-    .respond(HttpStatus.OK);
+    .respond(HttpStatus.OK));
 ```
 
 The Citrus Http server is automatically handling the form data and converts the data to a list of fields with its values. We can use the plaintext message validation to check that the form data is
@@ -80,17 +82,17 @@ public FormUrlEncodedMessageValidator formUrlEncodedMessageValidator(MessageVali
 The `com.consol.citrus.http.validation.FormUrlEncodedMessageValidator` validator implementation provides convenient form data marshalling that we can use in our test cases when expecting form urlencoded message content.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .server(todoListServer)
     .receive()
     .post("/api/todo")
     .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     .messageType(FormUrlEncodedMessageValidator.MESSAGE_TYPE)
-    .payload(getFormData(), new FormMarshaller());
+    .payload(getFormData(), new FormMarshaller()));
 
-http()
+http(httpActionBuilder -> httpActionBuilder
     .server(todoListServer)
-    .respond(HttpStatus.OK);
+    .respond(HttpStatus.OK));
 ```
 
 As you can see we can now use the special message type `x-www-form-urlencoded` which enables the `FormUrlEncodedMessageValidator` mechanism. This allows us to specify the full form data as plain Java object.

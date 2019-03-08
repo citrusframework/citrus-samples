@@ -15,31 +15,32 @@ We need a Http client component in the configuration:
 ```java
 @Bean
 public HttpClient todoClient() {
-    return CitrusEndpoints.http()
-                        .client()
-                        .requestUrl("http://localhost:8080")
-                        .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://localhost:8080")
+        .build();
 }
 ```
     
 In test cases we can reference this client component in order to send REST calls to the server.
     
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
     .post("/todolist")
     .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    .payload("title=${todoName}&description=${todoDescription}");
+    .payload("title=${todoName}&description=${todoDescription}"));
 ```
         
 As you can see we are able to send **x-www-form-urlencoded** message content as **POST** request. The response is then validated as **Http 200 OK**.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .receive()
-    .response(HttpStatus.OK);
+    .response(HttpStatus.FOUND));
 ```
         
 Run

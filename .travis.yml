@@ -269,3 +269,4 @@ stages:
 cache:
   directories:
     - $HOME/.m2
+    - $HOME/build

@@ -59,19 +59,21 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://localhost:" + port)
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("http://localhost:" + port)
+            .build();
     }
 
     @Bean
     public HttpClient todoBasicAuthClient() throws Exception {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://localhost:" + port)
-                            .requestFactory(basicAuthRequestFactory())
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("http://localhost:" + port)
+                .requestFactory(basicAuthRequestFactory())
+            .build();
     }
 
     @Bean
@@ -93,13 +95,14 @@ public class EndpointConfig {
 
     @Bean
     public HttpServer basicAuthHttpServer() throws Exception {
-        return CitrusEndpoints.http()
+        return CitrusEndpoints
+            .http()
                 .server()
                 .port(port)
                 .endpointAdapter(staticEndpointAdapter())
                 .securityHandler(basicAuthSecurityHandler())
                 .autoStart(true)
-                .build();
+            .build();
     }
 
     @Bean
