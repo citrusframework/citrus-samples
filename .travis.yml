@@ -203,8 +203,7 @@ jobs:
       - mvn verify -Dembedded -pl :citrus-java-sample-xhtml
     - stage: it-citrus-java-sample-xml
       script:
-        - mvn verify -Dembedded -pp :citurs-java-sample-xml
-
+      - mvn verify -Dembedded -pl :citrus-java-sample-xml
 stages:
   - it-citrus-demo-bakery-worker
   - it-citrus-demo-bakery-web
