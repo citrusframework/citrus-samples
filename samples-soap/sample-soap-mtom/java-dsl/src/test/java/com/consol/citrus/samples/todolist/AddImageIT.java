@@ -57,8 +57,6 @@ public class AddImageIT extends TestNGCitrusTestRunner {
             .attachment(attachment)
             .mtomEnabled(true));
 
-
-
         soap(soapActionBuilder -> soapActionBuilder
             .server(imageServer)
             .receive()

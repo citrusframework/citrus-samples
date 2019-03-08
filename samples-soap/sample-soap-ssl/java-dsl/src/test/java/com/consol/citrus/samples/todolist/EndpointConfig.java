@@ -80,17 +80,19 @@ public class EndpointConfig {
 
     @Bean
     public WebServiceClient todoClient() {
-        return CitrusEndpoints.soap()
-                            .client()
-                            .defaultUri(String.format("https://localhost:%s/services/ws/todolist", securePort))
-                            .messageSender(sslRequestMessageSender())
-                            .build();
+        return CitrusEndpoints
+            .soap()
+                .client()
+                .defaultUri(String.format("https://localhost:%s/services/ws/todolist", securePort))
+                .messageSender(sslRequestMessageSender())
+            .build();
     }
 
     @Bean
     public HttpClient httpClient() {
         try {
-            SSLContext sslcontext = SSLContexts.custom()
+            SSLContext sslcontext = SSLContexts
+                .custom()
                     .loadTrustMaterial(new ClassPathResource("keys/citrus.jks").getFile(), "secret".toCharArray(),
                             new TrustSelfSignedStrategy())
                     .build();
@@ -98,11 +100,12 @@ public class EndpointConfig {
             SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
                     sslcontext, NoopHostnameVerifier.INSTANCE);
 
-            return HttpClients.custom()
+            return HttpClients
+                .custom()
                     .setSSLSocketFactory(sslSocketFactory)
                     .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                     .addInterceptorFirst(new HttpComponentsMessageSender.RemoveSoapHeadersInterceptor())
-                    .build();
+                .build();
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             throw new BeanCreationException("Failed to create http client for ssl connection", e);
         }
@@ -115,12 +118,13 @@ public class EndpointConfig {
 
     @Bean
     public WebServiceServer todoSslServer() {
-        return CitrusEndpoints.soap()
+        return CitrusEndpoints
+            .soap()
                 .server()
                 .connector(sslConnector())
                 .timeout(5000)
                 .autoStart(true)
-                .build();
+            .build();
     }
 
     @Bean

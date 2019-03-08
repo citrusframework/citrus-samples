@@ -67,11 +67,12 @@ public class EndpointConfig {
 
     @Bean
     public WebServiceClient todoClient() {
-        return CitrusEndpoints.soap()
-                            .client()
-                            .defaultUri("http://localhost:8080/services/ws/todolist")
-                            .interceptors(clientInterceptors())
-                            .build();
+        return CitrusEndpoints
+            .soap()
+                .client()
+                .defaultUri("http://localhost:8080/services/ws/todolist")
+                .interceptors(clientInterceptors())
+            .build();
     }
 
     @Bean
@@ -92,12 +93,13 @@ public class EndpointConfig {
 
     @Bean
     public WebServiceServer todoListServer() {
-        return CitrusEndpoints.soap()
+        return CitrusEndpoints
+            .soap()
                 .server()
                 .autoStart(true)
                 .port(8080)
                 .interceptors(serverInterceptors())
-                .build();
+            .build();
     }
 
     @Bean

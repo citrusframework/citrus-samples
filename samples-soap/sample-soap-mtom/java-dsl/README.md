@@ -45,19 +45,21 @@ public SoapMessageFactory messageFactory() {
 
 @Bean
 public WebServiceClient imageClient() {
-    return CitrusEndpoints.soap()
-                        .client()
-                        .defaultUri("http://localhost:8080/services/image")
-                        .build();
+    return CitrusEndpoints
+        .soap()
+            .client()
+            .defaultUri("http://localhost:8080/services/image")
+        .build();
 }
 
 @Bean
 public WebServiceServer imageServer() {
-    return CitrusEndpoints.soap()
+    return CitrusEndpoints
+        .soap()
             .server()
             .port(8080)
             .autoStart(true)
-            .build();
+        .build();
 }
 ```
     
@@ -72,19 +74,25 @@ MTOM enabled
 First of all we want to send and receive a SOAP message with MTOM enabled attachment. The request defines the `cid:IMAGE` reference in the payload and enabled MTOM usage on the client request.
     
 ```java
-soap()
+SoapAttachment attachment = new SoapAttachment();
+attachment.setContentId("IMAGE");
+attachment.setContentType("image/png");
+attachment.setCharsetName("utf-8");
+attachment.setContentResourcePath("image/logo.png");
+
+soap(soapActionBuilder -> soapActionBuilder
     .client(imageClient)
     .send()
     .fork(true)
     .soapAction("addImage")
     .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
-                "<image:id>logo</image:id>" +
-                "<image:image>cid:IMAGE</image:image>" +
+            "<image:id>logo</image:id>" +
+            "<image:image>cid:IMAGE</image:image>" +
             "</image:addImage>")
-    .attachment("IMAGE", "application/octet-stream", new ClassPathResource("image/logo.png"))
-    .mtomEnabled(true);
+    .attachment(attachment)
+    .mtomEnabled(true));
 
-soap()
+soap(soapActionBuilder -> soapActionBuilder
     .server(imageServer)
     .receive()
     .soapAction("addImage")
@@ -96,7 +104,7 @@ soap()
                 "</image:image>" +
             "</image:addImage>")
     .attachmentValidator(new BinarySoapAttachmentValidator())
-    .attachment("IMAGE", "application/octet-stream", new ClassPathResource("image/logo.png"));
+    .attachment(attachment));
 ```
 
 The server is able to receive the MTOM enabled message. The image data is streamed as a SOAP attachment using MTOM. This means that the image element in the payload
@@ -120,12 +128,13 @@ We can enable MTOM inline on the Citrus SOAP attachment object as follows:
  
 ```java
 SoapAttachment attachment = new SoapAttachment();
-attachment.setContentType("application/octet-stream");
+attachment.setContentId("IMAGE");
+attachment.setContentType("image/png");
+attachment.setCharsetName("utf-8");
 attachment.setContentResourcePath("image/logo.png");
 attachment.setMtomInline(true);
-attachment.setContentId("IMAGE");
 
-soap()
+soap(soapActionBuilder -> soapActionBuilder
     .client(imageClient)
     .send()
     .fork(true)
@@ -135,16 +144,16 @@ soap()
                 "<image:image>cid:IMAGE</image:image>" +
             "</image:addImage>")
     .attachment(attachment)
-    .mtomEnabled(true);
+    .mtomEnabled(true));
 
-soap()
+soap(soapActionBuilder -> soapActionBuilder
     .server(imageServer)
     .receive()
     .soapAction("addImage")
     .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                 "<image:id>logo</image:id>" +
                 "<image:image>citrus:readFile(image/logo.base64)</image:image>" +
-            "</image:addImage>");
+            "</image:addImage>"));
 ``` 
 
 Now with MTOM inline the request is not using `xop:Inlcude` but a base64 encoded data stream in the payload. We can validate this stream with a combination of

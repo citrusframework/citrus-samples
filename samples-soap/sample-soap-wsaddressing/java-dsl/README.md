@@ -15,11 +15,12 @@ First of all we add the WSAddressing header conversion to the client component.
 ```java
 @Bean
 public WebServiceClient todoClient() {
-    return CitrusEndpoints.soap()
-                        .client()
-                        .defaultUri("http://localhost:8080/services/ws/todolist")
-                        .messageConverter(wsAddressingMessageConverter())
-                        .build();
+    return CitrusEndpoints
+        .soap()
+            .client()
+            .defaultUri("http://localhost:8080/services/ws/todolist")
+            .messageConverter(wsAddressingMessageConverter())
+        .build();
 }
 
 @Bean
@@ -70,12 +71,13 @@ The server component has to add the *SOAP-ENV:mustUnderstand* handling explicitl
 ```java
 @Bean
 public WebServiceServer todoListServer() {
-    return CitrusEndpoints.soap()
+    return CitrusEndpoints
+        .soap()
             .server()
             .autoStart(true)
             .port(8080)
             .interceptors(serverInterceptors())
-            .build();
+        .build();
 }
 
 @Bean
@@ -94,16 +96,16 @@ public EndpointInterceptor soapMustUnderstandEndpointInterceptor() {
 The server is now ready to receive the request and validate the WSAddressing header information. 
 
 ```java
-soap()
+soap(soapActionBuilder -> soapActionBuilder
     .server(todoServer)
     .receive()
     .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"))
-    .header(new ClassPathResource("templates/soapWsAddressingHeader.xml"));
+    .header(new ClassPathResource("templates/soapWsAddressingHeader.xml")));
 
-soap()
+soap(soapActionBuilder -> soapActionBuilder
     .server(todoServer)
     .send()
-    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml"));
+    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));
 ```
         
 We do this by adding the complete SOAP header as expected XML structure. The header information is loaded from external file resource.
@@ -131,13 +133,13 @@ simply because this is a generated UUID value that is newly generated on the cli
 In general we can overwrite WSAddressing header information in each send operation by setting the special WSAddressing message headers.
 
 ```java
-soap()
+soap(soapActionBuilder -> soapActionBuilder
     .client(todoClient)
     .send()
     .soapAction("addTodoEntry")
     .header(WsAddressingMessageHeaders.ACTION, "http://citrusframework.org/samples/todolist/addTodoEntry")
     .header(WsAddressingMessageHeaders.MESSAGE_ID, "urn:uuid:citrus:randomUUID()")
-    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"));
+    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml")));
 ```
         
 Run

@@ -26,11 +26,12 @@ After that we can configure the SOAP client to use WSS4J security username and p
 ```java
 @Bean
 public WebServiceClient todoClient() {
-    return CitrusEndpoints.soap()
-                        .client()
-                        .defaultUri("http://localhost:8080/services/ws/todolist")
-                        .interceptors(clientInterceptors())
-                        .build();
+    return CitrusEndpoints
+        .soap()
+            .client()
+            .defaultUri("http://localhost:8080/services/ws/todolist")
+            .interceptors(clientInterceptors())
+        .build();
 }
 
 @Bean
@@ -58,12 +59,13 @@ The server component has to verify incoming requests to have this token set as e
 ```java
 @Bean
 public WebServiceServer todoListServer() {
-    return CitrusEndpoints.soap()
+    return CitrusEndpoints
+        .soap()
             .server()
             .autoStart(true)
             .port(8080)
             .interceptors(serverInterceptors())
-            .build();
+        .build();
 }
 
 @Bean
@@ -89,7 +91,7 @@ public Wss4jSecurityInterceptor wss4jSecurityServerInterceptor() {
     interceptor.setValidationCallbackHandler(validationCallbackHandler);
 
     return interceptor;
-}   
+}
 ```
      
 The server security interceptor validates with simple username password handler. As a result only granted users can access
