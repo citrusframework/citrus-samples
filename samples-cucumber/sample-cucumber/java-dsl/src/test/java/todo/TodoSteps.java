@@ -64,27 +64,18 @@ public class TodoSteps {
     }
 
     @When("^(?:I|user) removes? entry \"([^\"]*)\"$")
-    // TODO: mbu
-    // again, lambda must be pure. This lead to the following (clumsy) desing. Up for debate.
-    public void remove_entry(String todoName) {
-        runner.http(httpActionBuilder -> {
-            try {
-                httpActionBuilder
-                    .client("todoListClient")
-                    .send()
-                    .delete("/api/todo?title=" + URLEncoder.encode(todoName, "UTF-8"));
-            } catch (UnsupportedEncodingException e){
-                // This should never happen. But if it happens, catch, wrap in a RuntimeException,
-                // rethrow
-                throw new RuntimeException(e);
-            }
-        });
+    public void remove_entry(String todoName) throws UnsupportedEncodingException{
+        String encoding = URLEncoder.encode(todoName, "UTF-8");
+        runner.http(httpActionBuilder -> httpActionBuilder
+            .client("todoListClient")
+            .send()
+            .delete("/api/todo?title=" + encoding));
 
         runner.http(httpActionBuilder -> httpActionBuilder
-                .client("todoListClient")
-                .receive()
-                .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT));
+            .client("todoListClient")
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.PLAINTEXT));
     }
 
     @Then("^(?:the )?number of todo entries should be (\\d+)$")

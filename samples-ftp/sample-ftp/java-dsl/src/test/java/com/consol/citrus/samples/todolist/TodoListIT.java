@@ -18,6 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
+import com.consol.citrus.exceptions.CitrusRuntimeException;
 import com.consol.citrus.ftp.client.FtpClient;
 import com.consol.citrus.ftp.message.FtpMessage;
 import com.consol.citrus.ftp.model.*;
@@ -142,9 +143,6 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     }
 
     private GetCommandResult getRetrieveFileCommandResult(String path, Resource content) {
-        // TODO: mbu
-        // We should take a look at this. Since we use this method within a lambda, it must be pure,
-        // Whether the presented solution is "the way to go" is up for debate.
         GetCommandResult result = new GetCommandResult();
         try {
             result.setSuccess(true);
@@ -156,7 +154,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             entryResult.setData(FileUtils.readToString(content));
             result.setFile(entryResult);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CitrusRuntimeException(e);
         }
 
         return result;
