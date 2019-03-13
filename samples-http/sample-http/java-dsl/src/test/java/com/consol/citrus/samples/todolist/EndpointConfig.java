@@ -24,9 +24,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Collections;
 
-/**
- * @author Christoph Deppisch
- */
 @Configuration
 public class EndpointConfig {
 
@@ -41,7 +38,7 @@ public class EndpointConfig {
 
     @Bean
     public NamespaceContextBuilder namespaceContextBuilder() {
-        NamespaceContextBuilder namespaceContextBuilder = new NamespaceContextBuilder();
+        final NamespaceContextBuilder namespaceContextBuilder = new NamespaceContextBuilder();
         namespaceContextBuilder.setNamespaceMappings(Collections.singletonMap("xh", "http://www.w3.org/1999/xhtml"));
         return namespaceContextBuilder;
     }
