@@ -17,25 +17,27 @@ First of all let us setup the necessary components in the Spring bean configurat
 ```java
 @Bean
 public ScpClient scpClient() {
-    return CitrusEndpoints.scp()
+    return CitrusEndpoints
+        .scp()
             .client()
             .port(2222)
             .username("citrus")
             .password("admin")
             .privateKeyPath("classpath:ssh/citrus.priv")
-            .build();
+        .build();
 }
 
 @Bean
 public SftpServer sftpServer() {
-    return CitrusEndpoints.sftp()
+    return CitrusEndpoints
+        .sftp()
             .server()
             .port(2222)
             .autoStart(true)
             .user("citrus")
             .password("admin")
             .allowedKeyPath("classpath:ssh/citrus_pub.pem")
-            .build();
+        .build();
 }
 ```
 
@@ -54,18 +56,23 @@ In our test we can now start to upload a file using SCP.
 ```java
 echo("Store file via SCP");
 
-send(scpClient)
-   .fork(true)
-   .message(FtpMessage.put("classpath:todo/entry.json", "todo.json", DataType.ASCII));
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(scpClient)
+    .fork(true)
+    .message(FtpMessage.put("classpath:todo/entry.json", "todo.json", DataType.ASCII)));
 
-receive(sftpServer)
-    .message(FtpMessage.put("@ignore@", "todo.json", DataType.ASCII));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(sftpServer)
+    .message(FtpMessage.put("@ignore@", "todo.json", DataType.ASCII)));
 
-send(sftpServer)
-    .message(FtpMessage.success());
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(sftpServer)
+    .message(FtpMessage.success()));
 
-receive(scpClient)
-    .message(FtpMessage.success());
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(scpClient)
+    .message(FtpMessage.success()));
+
 ```
 
 Now we have both client and server interaction in the same test case. This requires us to use `fork` option enabled on all client
@@ -80,18 +87,22 @@ Lets download that very same file in another SCP file transfer:
 ```java
 echo("Retrieve file from server");
 
-send(scpClient)
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(scpClient)
     .fork(true)
-    .message(FtpMessage.get("todo.json", "file:target/scp/todo.json", DataType.ASCII));
+    .message(FtpMessage.get("todo.json", "file:target/scp/todo.json", DataType.ASCII)));
 
-receive(sftpServer)
-    .message(FtpMessage.get("/todo.json", "@ignore@", DataType.ASCII));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(sftpServer)
+    .message(FtpMessage.get("/todo.json", "@ignore@", DataType.ASCII)));
 
-send(sftpServer)
-    .message(FtpMessage.success());
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(sftpServer)
+    .message(FtpMessage.success()));
 
-receive(scpClient)
-    .message(FtpMessage.success());
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(scpClient)
+    .message(FtpMessage.success()));
 ```
 
 This completes our test as we were able to interact with the SFTP server using the client secure copy operations.

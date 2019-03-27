@@ -24,8 +24,6 @@ import java.util.Map;
  * @author Christoph Deppisch
  */
 public interface TodoListService extends Remote {
-
     void addTodo(String id, String description) throws RemoteException;
-
     Map<String, String> getTodos() throws RemoteException;
 }

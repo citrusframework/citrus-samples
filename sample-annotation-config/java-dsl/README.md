@@ -24,11 +24,11 @@ In contrast to adding the bean to the Spring application context we define the e
 able to reference this endpoint in any send and receive operation in Citrus Java fluent API.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
     .get("/todolist")
-    .accept(MediaType.TEXT_HTML_VALUE);
+    .accept(MediaType.TEXT_HTML_VALUE));
 ```
         
 Citrus automatically injects the endpoint with respective configuration for `requestUrl = http://localhost:8080`. You can use this endpoint

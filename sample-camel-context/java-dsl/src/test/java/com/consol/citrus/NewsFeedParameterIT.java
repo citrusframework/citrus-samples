@@ -17,7 +17,7 @@
 package com.consol.citrus;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.testng.CitrusParameters;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * @since 2.1
  */
 @Test
-public class NewsFeedParameterIT extends TestNGCitrusTestDesigner {
+public class NewsFeedParameterIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private JmsEndpoint newsJmsEndpoint;
@@ -43,21 +43,24 @@ public class NewsFeedParameterIT extends TestNGCitrusTestDesigner {
     @CitrusParameters({ "message" })
     @Test(dataProvider = "messageDataProvider")
     public void newsFeed_DataProvider_Ok_Test(String message) {
-        send(newsJmsEndpoint)
+        send(sendActionBuilder -> sendActionBuilder
+                .endpoint(newsJmsEndpoint)
                 .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
                             "<nf:Message>${message}</nf:Message>" +
-                        "</nf:News>");
+                        "</nf:News>"));
 
-        soap().server(newsServer)
+        soap(soapActionBuilder -> soapActionBuilder
+                .server(newsServer)
                 .receive()
                 .soapAction("newsFeed")
                 .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
                             "<nf:Message>" + message + "</nf:Message>" +
-                        "</nf:News>");
+                        "</nf:News>"));
 
-        soap().server(newsServer)
+        soap(soapActionBuilder -> soapActionBuilder
+                .server(newsServer)
                 .send()
-                .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200");
+                .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200"));
     }
 
     @DataProvider

@@ -16,10 +16,11 @@ We need a Http client component in the configuration:
 ```java
 @Bean
 public HttpClient todoClient() {
-    return CitrusEndpoints.http()
-                        .client()
-                        .requestUrl("http://localhost:8080")
-                        .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://localhost:8080")
+        .build();
 }
 ```
         
@@ -30,48 +31,48 @@ some load on that server. We can do so by adding a TestNG parameter to the annot
 @Test(invocationCount = 250, threadPoolSize = 25)
 ```
         
-TestNG will start *25* threads in parallel that will send **250** requests in total per test to the todolist application. This creates load on that server. When you execute
+TestNG will start **25** threads in parallel that will send **250** requests in total per test to the todolist application. This creates load on that server. When you execute
 this test you will see lots of requests and responses exchanged during the test run. At the end you will have 250 test instances per test reporting success or failure.
 
 This creates very basic load testing scenarios. Of course the tests need to be stateless in order to perform in parallel. You may add message selectors on receive
 operations in the test and you may have to correlate response messages so the test instances will not steal messages from each other during the test run.
 
 ```java
-@Test(invocationCount = 250, threadPoolSize = 25)
+@Test(invocationCount = 40, threadPoolSize = 8)
 public class TodoListLoadTestIT extends TestNGCitrusTest {
 
     @Autowired
     private HttpClient todoClient;
 
-    @Parameters( { "designer" })
+    @Parameters( { "runner" })
     @CitrusTest
-    public void testAddTodo(@Optional @CitrusResource TestDesigner designer) {
-        designer.http()
+    public void testAddTodo(@Optional @CitrusResource TestRunner runner) {
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=citrus:concat('todo_', citrus:randomNumber(10))");
+            .payload("title=citrus:concat('todo_', citrus:randomNumber(10))"));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.FOUND));
     }
 
-    @Parameters( { "designer" })
+    @Parameters( { "runner" })
     @CitrusTest
-    public void testListTodos(@Optional @CitrusResource TestDesigner designer) {
-        designer.http()
+    public void testListTodos(@Optional @CitrusResource TestRunner runner) {
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
 }
@@ -80,7 +81,7 @@ public class TodoListLoadTestIT extends TestNGCitrusTest {
 There are two test methods one adding a new todo entry with form url encoded Http POST request and one getting the whole list of todo entries with GET request.
 Both methods are executed in parallel creating load on the server. The server must respond to all requests with success otherwise the whole test will fail.   
 
-The test uses resource injection with method parameters. This is required for parallel testing. So each test method instance gets a separate test designer instance
+The test uses resource injection with method parameters. This is required for parallel testing. So each test method instance gets a separate test runner instance
 to work with.
         
 Run

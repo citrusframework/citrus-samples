@@ -15,30 +15,33 @@ First we need the mail server component in Citrus. Lets add this to the configur
 ```java
 @Bean
 public MailServer mailServer() {
-    return CitrusEndpoints.mail()
+    return CitrusEndpoints
+        .mail()
             .server()
             .port(2222)
             .autoAccept(true)
             .autoStart(true)
-            .build();
+        .build();
 }
 ```
                 
 Now we can receive the mail in the test case.
     
 ```java
-receive(mailServer)
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(mailServer)
     .message(MailMessage.request()
-                .from("todo-report@example.org")
-                .to("users@example.org")
-                .cc("")
-                .bcc("")
-                .subject("ToDo report")
-                .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
-    .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report");
+        .from("todo-report@example.org")
+        .to("users@example.org")
+        .cc("")
+        .bcc("")
+        .subject("ToDo report")
+        .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
+    .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
-send(mailServer)
-    .message(MailMessage.response(250, "OK"));            
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(mailServer)
+    .message(MailMessage.response(250, "OK")));            
 ```
         
 The mail content is marshalled to an expected XML representation that we expect to arrive in the test.

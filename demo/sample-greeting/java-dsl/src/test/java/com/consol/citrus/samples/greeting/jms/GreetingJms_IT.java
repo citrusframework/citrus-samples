@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.greeting.jms;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class GreetingJms_IT extends TestNGCitrusTestDesigner {
+public class GreetingJms_IT extends TestNGCitrusTestRunner {
 
     @Autowired
     @Qualifier("greetingJmsRequestSender")
@@ -42,27 +42,29 @@ public class GreetingJms_IT extends TestNGCitrusTestDesigner {
         variable("correlationId", "citrus:randomNumber(10)");
         variable("user", "Christoph");
 
-        send(greetingJmsRequestSender)
-                .payload("<tns:GreetingRequestMessage xmlns:tns=\"http://www.citrusframework.org/samples/greeting\">\n" +
-                            "<tns:CorrelationId>${correlationId}</tns:CorrelationId>\n" +
-                            "<tns:Operation>sayHello</tns:Operation>\n" +
-                            "<tns:User>${user}</tns:User>\n" +
-                            "<tns:Text>Hello Citrus!</tns:Text>\n" +
-                        "</tns:GreetingRequestMessage>")
-                .header("Operation", "sayHello")
-                .header("CorrelationId", "${correlationId}")
-                .description("Send asynchronous greeting request: Citrus -> GreetingService");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(greetingJmsRequestSender)
+            .payload("<tns:GreetingRequestMessage xmlns:tns=\"http://www.citrusframework.org/samples/greeting\">\n" +
+                        "<tns:CorrelationId>${correlationId}</tns:CorrelationId>\n" +
+                        "<tns:Operation>sayHello</tns:Operation>\n" +
+                        "<tns:User>${user}</tns:User>\n" +
+                        "<tns:Text>Hello Citrus!</tns:Text>\n" +
+                    "</tns:GreetingRequestMessage>")
+            .header("Operation", "sayHello")
+            .header("CorrelationId", "${correlationId}")
+            .description("Send asynchronous greeting request: Citrus -> GreetingService"));
 
-        receive(greetingJmsResponseReceiver)
-                .payload("<tns:GreetingResponseMessage xmlns:tns=\"http://www.citrusframework.org/samples/greeting\">\n" +
-                            "<tns:CorrelationId>${correlationId}</tns:CorrelationId>\n" +
-                            "<tns:Operation>sayHello</tns:Operation>\n" +
-                            "<tns:User>GreetingService</tns:User>\n" +
-                            "<tns:Text>Hello ${user}!</tns:Text>\n" +
-                        "</tns:GreetingResponseMessage>")
-                .header("Operation", "sayHello")
-                .header("CorrelationId", "${correlationId}")
-                .description("Receive asynchronous greeting response: GreetingService -> Citrus");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(greetingJmsResponseReceiver)
+            .payload("<tns:GreetingResponseMessage xmlns:tns=\"http://www.citrusframework.org/samples/greeting\">\n" +
+                        "<tns:CorrelationId>${correlationId}</tns:CorrelationId>\n" +
+                        "<tns:Operation>sayHello</tns:Operation>\n" +
+                        "<tns:User>GreetingService</tns:User>\n" +
+                        "<tns:Text>Hello ${user}!</tns:Text>\n" +
+                    "</tns:GreetingResponseMessage>")
+            .header("Operation", "sayHello")
+            .header("CorrelationId", "${correlationId}")
+            .description("Receive asynchronous greeting response: GreetingService -> Citrus"));
     }
     
 }

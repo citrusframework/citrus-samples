@@ -17,7 +17,10 @@
 package com.consol.citrus.samples.docker;
 
 import com.consol.citrus.docker.client.DockerClient;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +28,10 @@ import org.testng.IHookCallBack;
 import org.testng.ITestResult;
 import org.testng.annotations.BeforeSuite;
 
-import java.util.concurrent.*;
-
 /**
  * @author Christoph Deppisch
  */
-public class AbstractDockerIT extends TestNGCitrusTestDesigner {
+public class AbstractDockerIT extends TestNGCitrusTestRunner {
 
     /** Logger */
     private static Logger log = LoggerFactory.getLogger(AbstractDockerIT.class);

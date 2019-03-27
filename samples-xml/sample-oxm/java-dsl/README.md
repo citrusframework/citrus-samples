@@ -41,19 +41,19 @@ That is all for configuration, now we can use model objects as message payload i
 @Autowired
 private Jaxb2Marshaller marshaller;
     
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
     .post("/api/todolist")
-    .contentType(ContentType.APPLICATION_JSON.getMimeType())
-    .payload(new TodoEntry("${todoName}", "${todoDescription}"), marshaller);
+    .contentType(ContentType.APPLICATION_XML.getMimeType())
+    .payload(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), marshaller));
 ```
         
 As you can see we are able to send the model object as payload. The test variable support is also given. Citrus will automatically marshall the object to a **application/json** message content 
 as **POST** request. In a receive action we are able to use a mapping validation callback in order to get access to the model objects of an incoming message payload.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
@@ -63,7 +63,7 @@ http()
             Assert.assertNotNull(todoEntry);
             Assert.assertEquals(todoEntry.getId(), uuid);
         }
-    });
+    }));
 ```
         
 The validation callback gets the model object as first method parameter. You can now add some validation logic with assertions on the model object.        

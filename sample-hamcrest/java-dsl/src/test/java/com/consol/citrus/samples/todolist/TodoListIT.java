@@ -16,23 +16,30 @@
 
 package com.consol.citrus.samples.todolist;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.startsWith;
+
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import java.util.UUID;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import java.util.UUID;
-
-import static org.hamcrest.Matchers.*;
-
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
@@ -46,28 +53,28 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "todo_${todoId}");
         variable("todoDescription", "Description: ${todoName}");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}");
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}");
+            .payload("${todoId}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
-            .accept(ContentType.APPLICATION_JSON.getMimeType());
+            .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
@@ -76,7 +83,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
             .validate("$.id", equalTo(todoId))
             .validate("$.title", allOf(startsWith("todo_"), endsWith(todoId)))
             .validate("$.description", anyOf(startsWith("Description:"), nullValue()))
-            .validate("$.done", not(true));
+            .validate("$.done", not(true)));
     }
 
     @Test
@@ -88,20 +95,20 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 createVariable("todoId", "citrus:randomUUID()"),
                 createVariable("todoName", "todo_${i}"),
                 createVariable("todoDescription", "Description: ${todoName}"),
-                http()
+                http(httpActionBuilder -> httpActionBuilder
                     .client(todoClient)
                     .send()
                     .post("/api/todolist")
                     .messageType(MessageType.JSON)
                     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-                    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"),
+                    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}")),
 
-                http()
+                http(httpActionBuilder -> httpActionBuilder
                     .client(todoClient)
                     .receive()
                     .response(HttpStatus.OK)
                     .messageType(MessageType.PLAINTEXT)
-                    .payload("${todoId}")
+                    .payload("${todoId}"))
         );
     }
 }

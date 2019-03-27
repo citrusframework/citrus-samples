@@ -1,4 +1,0 @@
-<im:OpenIncidentResponse xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1">
-  <im:ticketId>${ticketId}</im:ticketId>
-  <im:scheduled>@ignore@</im:scheduled>
-</im:OpenIncidentResponse>

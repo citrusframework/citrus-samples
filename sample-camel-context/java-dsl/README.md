@@ -16,9 +16,10 @@ So we need a Camel route to test.
 @Bean
 public CamelContext camelContext() throws Exception {
     SpringCamelContext context = new SpringCamelContext();
-    context.addRouteDefinition(new RouteDefinition().from("jms:queue:JMS.Queue.News")
-                                                .to("log:com.consol.citrus.camel?level=INFO")
-                                                .to("spring-ws:http://localhost:18009?soapAction=newsFeed"));
+    context.addRouteDefinition(new RouteDefinition()
+        .from("jms:queue:JMS.Queue.News")
+        .to("log:com.consol.citrus.camel?level=INFO")
+        .to("spring-ws:http://localhost:18009?soapAction=newsFeed"));
     return context;
 }
 ```
@@ -29,22 +30,24 @@ the SOAP server endpoint. Lets add configuration for this in Citrus:
 ```java
 @Bean
 public JmsEndpoint newsJmsEndpoint() {
-    return CitrusEndpoints.jms()
+    return CitrusEndpoints
+        .jms()
             .asynchronous()
             .timeout(5000)
             .destination("JMS.Queue.News")
             .connectionFactory(connectionFactory())
-            .build();
+        .build();
 }
 
 @Bean
 public WebServiceServer newsServer() {
-    return CitrusEndpoints.soap()
+    return CitrusEndpoints
+        .soap()
             .server()
             .autoStart(true)
             .timeout(10000)
             .port(18009)
-            .build();
+        .build();
 }
 ```
        
@@ -52,24 +55,35 @@ The components above are used in a Citrus test case.
      
 ```java
 @Test
-public class NewsFeedIT extends TestNGCitrusTestDesigner {
+public class NewsFeedIT extends TestNGCitrusTestRunner {
+
+    @Autowired
+    private JmsEndpoint newsJmsEndpoint;
+
+    @Autowired
+    private WebServiceServer newsServer;
 
     @CitrusTest(name = "NewsFeed_Ok_IT")
-    public void newsFeed_Ok_Test() {
-        send("newsJmsEndpoint")
-                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
-                            "<nf:Message>Citrus rocks!</nf:Message>" +
-                        "</nf:News>");
+    public void newsFeed_Ok_1_Test() {
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(newsJmsEndpoint)
+            .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                        "<nf:Message>Citrus rocks!</nf:Message>" +
+                    "</nf:News>"));
 
-        receive("newsServer")
-                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
-                            "<nf:Message>Citrus rocks!</nf:Message>" +
-                        "</nf:News>")
-                .header(SoapMessageHeaders.SOAP_ACTION, "newsFeed");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(newsServer)
+            .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                        "<nf:Message>Citrus rocks!</nf:Message>" +
+                    "</nf:News>")
+            .header(SoapMessageHeaders.SOAP_ACTION, "newsFeed"));
 
-        send("newsServer")
-                .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200");
+        send(sendMessageBuilder -> sendMessageBuilder
+                .endpoint(newsServer)
+                .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200"));
     }
+    
+    [...]
 }
 ```       
        

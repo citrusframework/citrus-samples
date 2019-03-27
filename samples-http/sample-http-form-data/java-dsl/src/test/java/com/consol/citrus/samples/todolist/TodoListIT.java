@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.http.model.*;
 import com.consol.citrus.http.server.HttpServer;
@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
@@ -45,30 +45,30 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/api/todo")
             .fork(true)
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}");
+            .payload("title=${todoName}&description=${todoDescription}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .server(todoListServer)
             .receive()
             .post("/api/todo")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .messageType(MessageType.PLAINTEXT)
-            .payload("{description=[${todoDescription}], title=[${todoName}]}");
+            .payload("{description=[${todoDescription}], title=[${todoName}]}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .server(todoListServer)
-            .respond(HttpStatus.OK);
+            .respond(HttpStatus.OK));
         
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
     @Test
@@ -77,30 +77,30 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/api/todo")
             .fork(true)
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}");
+            .payload("title=${todoName}&description=${todoDescription}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .server(todoListServer)
             .receive()
             .post("/api/todo")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .messageType(FormUrlEncodedMessageValidator.MESSAGE_TYPE)
-            .payload(getFormData(), new FormMarshaller());
+            .payload(getFormData(), new FormMarshaller()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .server(todoListServer)
-            .respond(HttpStatus.OK);
+            .respond(HttpStatus.OK));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
     private FormData getFormData() {
@@ -128,15 +128,15 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/api/todo")
             .fork(true)
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}");
+            .payload("title=${todoName}&description=${todoDescription}"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .server(todoListServer)
             .receive()
             .post("/api/todo")
@@ -153,16 +153,16 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                                 "<value>${todoName}</value>" +
                             "</control>" +
                         "</controls>" +
-                    "</form-data>");
+                    "</form-data>"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .server(todoListServer)
-            .respond(HttpStatus.OK);
+            .respond(HttpStatus.OK));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
     }
 
 }

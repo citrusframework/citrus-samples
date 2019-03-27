@@ -49,21 +49,23 @@ public class EndpointConfig {
     
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("http://localhost:8080")
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("http://localhost:8080")
+            .build();
     }
 
     @Bean
     public HttpServer todoListServer() throws Exception {
-        return CitrusEndpoints.http()
+        return CitrusEndpoints
+            .http()
                 .server()
                 .port(8080)
                 .endpointAdapter(dispatchingEndpointAdapter())
                 .timeout(10000)
                 .autoStart(true)
-                .build();
+            .build();
     }
 
     @Bean

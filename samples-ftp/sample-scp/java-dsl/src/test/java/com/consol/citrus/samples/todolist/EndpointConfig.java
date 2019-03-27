@@ -30,24 +30,26 @@ public class EndpointConfig {
 
     @Bean
     public ScpClient scpClient() {
-        return CitrusEndpoints.scp()
+        return CitrusEndpoints
+            .scp()
                 .client()
                 .port(2222)
                 .username("citrus")
                 .password("admin")
                 .privateKeyPath("classpath:ssh/citrus.priv")
-                .build();
+            .build();
     }
 
     @Bean
     public SftpServer sftpServer() {
-        return CitrusEndpoints.sftp()
+        return CitrusEndpoints
+            .sftp()
                 .server()
                 .port(2222)
                 .autoStart(true)
                 .user("citrus")
                 .password("admin")
                 .allowedKeyPath("classpath:ssh/citrus_pub.pem")
-                .build();
+            .build();
     }
 }

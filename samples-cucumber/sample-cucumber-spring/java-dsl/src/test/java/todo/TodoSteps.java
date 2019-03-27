@@ -35,6 +35,9 @@ import java.net.URLEncoder;
  */
 @SuppressWarnings("SpringJavaAutowiringInspection")
 @ContextConfiguration(classes = CitrusSpringConfig.class)
+// TODO: mbu
+// this class cannot (easily) be refactored to use TestRunner. Doing so will result in undefined
+// scenarios
 public class TodoSteps {
 
     /** Test designer filled with actions by step definitions */

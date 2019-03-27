@@ -31,15 +31,17 @@ public class EndpointConfig {
 
     @Bean
     public RmiClient rmiClient() {
-        return CitrusEndpoints.rmi()
+        return CitrusEndpoints
+            .rmi()
                 .client()
                 .serverUrl("rmi://localhost:1099/todoService")
-                .build();
+            .build();
     }
 
     @Bean
     public RmiServer rmiServer() {
-        return CitrusEndpoints.rmi()
+        return CitrusEndpoints
+            .rmi()
                 .server()
                 .autoStart(true)
                 .host("localhost")
@@ -47,6 +49,6 @@ public class EndpointConfig {
                 .remoteInterfaces(TodoListService.class)
                 .binding("todoService")
                 .createRegistry(true)
-                .build();
+            .build();
     }
 }

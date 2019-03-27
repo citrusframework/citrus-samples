@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.message.MessageType;
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private HttpClient todoClient;
@@ -53,22 +53,23 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        send(todoJmsEndpoint)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoJmsEndpoint)
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
-            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
     }
 
     @Test
@@ -78,41 +79,43 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        send(todoJmsEndpoint)
-                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-                .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoJmsEndpoint)
+            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
         echo("Set todo entry status to done");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .put("/api/todo/${todoId}")
             .queryParam("done", "true")
-            .accept(MediaType.APPLICATION_JSON_VALUE);
+            .accept(MediaType.APPLICATION_JSON_VALUE));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
 
         echo("Trigger Jms report");
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/api/jms/report/done")
-            .accept(MediaType.APPLICATION_JSON_VALUE);
+            .accept(MediaType.APPLICATION_JSON_VALUE));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK);
+            .response(HttpStatus.OK));
 
-        receive(todoReportEndpoint)
-                .messageType(MessageType.JSON)
-                .payload("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
-                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(todoReportEndpoint)
+            .messageType(MessageType.JSON)
+            .payload("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
+            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry"));
     }
 
     @Test
@@ -121,25 +124,27 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        send(todoJmsSyncEndpoint)
-                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-                .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(todoJmsSyncEndpoint)
+            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
-        receive(todoJmsSyncEndpoint)
-                .payload("\"Message received\"");
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(todoJmsSyncEndpoint)
+            .payload("\"Message received\""));
 
-        http()
-                .client(todoClient)
-                .send()
-                .get("/todolist")
-                .accept(MediaType.TEXT_HTML_VALUE);
+        http(httpActionBuilder -> httpActionBuilder
+            .client(todoClient)
+            .send()
+            .get("/todolist")
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        http()
-                .client(todoClient)
-                .receive()
-                .response(HttpStatus.OK)
-                .messageType(MessageType.XHTML)
-                .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+        http(httpActionBuilder -> httpActionBuilder
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.XHTML)
+            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
     }
 
 }

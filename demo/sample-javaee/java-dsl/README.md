@@ -182,55 +182,74 @@ public class EmployeeResourceTest {
     }
 
     @Test
+    @InSequence(1)
     @CitrusTest
-    public void testPostAndGet(@CitrusResource TestDesigner citrus) {
-        citrus.http().client(serviceUri)
-                .post()
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=Penny&age=20");
+    public void testPostAndGet(@CitrusResource TestRunner citrus) {
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .post()
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .payload("name=Penny&age=20"));
 
-        citrus.http().client(serviceUri)
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .post()
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=Leonard&age=21");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .post()
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .payload("name=Leonard&age=21"));
 
-        citrus.http().client(serviceUri)
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .post()
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .payload("name=Sheldon&age=22");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .post()
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .payload("name=Sheldon&age=22"));
 
-        citrus.http().client(serviceUri)
-                .response(HttpStatus.NO_CONTENT);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.NO_CONTENT));
 
-        citrus.http().client(serviceUri)
-                .get()
-                .accept(MediaType.APPLICATION_XML);
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .send()
+            .get()
+            .accept(MediaType.APPLICATION_XML));
 
-        citrus.http().client(serviceUri)
-                .response(HttpStatus.OK)
-                .payload("<employees>" +
-                            "<employee>" +
-                                "<age>20</age>" +
-                                "<name>Penny</name>" +
-                            "</employee>" +
-                            "<employee>" +
-                                "<age>21</age>" +
-                                "<name>Leonard</name>" +
-                            "</employee>" +
-                            "<employee>" +
-                                "<age>22</age>" +
-                                "<name>Sheldon</name>" +
-                            "</employee>" +
-                        "</employees>");
+        citrus.http(httpActionBuilder-> httpActionBuilder
+            .client(serviceUri)
+            .receive()
+            .response(HttpStatus.OK)
+            .payload("<employees>" +
+                       "<employee>" +
+                         "<age>20</age>" +
+                         "<name>Penny</name>" +
+                        "</employee>" +
+                        "<employee>" +
+                          "<age>21</age>" +
+                          "<name>Leonard</name>" +
+                        "</employee>" +
+                        "<employee>" +
+                          "<age>22</age>" +
+                          "<name>Sheldon</name>" +
+                        "</employee>" +
+                      "</employees>"));
 
         citrusFramework.run(citrus.getTestCase());
     }
+    
+    [...]
 }
 ```
 

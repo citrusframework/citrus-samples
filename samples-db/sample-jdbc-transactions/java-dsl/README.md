@@ -15,22 +15,23 @@ The database server and its datasource are configured in the endpoint configurat
 ```java
 @Bean
 public JdbcServer jdbcServer() {
-    return CitrusEndpoints.jdbc()
+    return CitrusEndpoints
+        .jdbc()
             .server()
             .host("localhost")
             .databaseName("testdb")
-            .port(3306)
+            .port(13306)
             .timeout(10000L)
             .autoStart(true)
             .autoTransactionHandling(false)
-            .build();
+        .build();
 }
 
 @Bean
 public SingleConnectionDataSource dataSource() {
     SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
     dataSource.setDriverClassName(JdbcDriver.class.getName());
-    dataSource.setUrl("jdbc:citrus:http://localhost:3306/testdb");
+    dataSource.setUrl("jdbc:citrus:http://localhost:13306/testdb");
     dataSource.setUsername("sa");
     dataSource.setPassword("");
     return dataSource;
@@ -43,25 +44,29 @@ by setting `.autoTransactionHandling(false)`.
 In the test case we can now verify the transactional behavior of our application if a client request hits our API. 
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
     .post("/todolist")
     .fork(true)
     .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    .payload("title=${todoName}&description=${todoDescription}");
+    .payload("title=${todoName}&description=${todoDescription}"));
 
-receive(jdbcServer)
-    .message(JdbcCommand.startTransaction());
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(jdbcServer)
+    .message(JdbcMessage.startTransaction()));
 
-receive(jdbcServer)
-    .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(jdbcServer)
+    .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
 
-send(jdbcServer)
-        .message(JdbcMessage.result().rowsUpdated(1));
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(jdbcServer)
+    .message(JdbcMessage.success().rowsUpdated(1)));
 
-receive(jdbcServer)
-    .message(JdbcCommand.commitTransaction());
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(jdbcServer)
+    .message(JdbcMessage.commitTransaction()));
 ```
 
 Run

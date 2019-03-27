@@ -16,21 +16,22 @@
 
 package com.consol.citrus.samples.kubernetes;
 
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IHookCallBack;
 import org.testng.ITestResult;
 import org.testng.annotations.BeforeSuite;
 
-import java.util.concurrent.*;
-
 /**
  * @author Christoph Deppisch
  */
-public class AbstractKubernetesIT extends TestNGCitrusTestDesigner {
+public class AbstractKubernetesIT extends TestNGCitrusTestRunner {
 
     /** Logger */
     private static Logger log = LoggerFactory.getLogger(AbstractKubernetesIT.class);

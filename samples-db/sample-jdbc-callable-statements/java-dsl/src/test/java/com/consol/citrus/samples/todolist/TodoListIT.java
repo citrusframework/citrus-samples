@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
@@ -27,7 +27,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private JdbcServer jdbcServer;
@@ -49,31 +49,35 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("api/todolist/1")
-            .fork(true);
+            .fork(true));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}")));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)")));
 
-        send(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.success().dataSet("[ {" +
-                        "\"id\": \"${todoId}\"," +
-                        "\"title\": \"${todoName}\"," +
-                        "\"description\": \"${todoDescription}\"," +
-                        "\"done\": \"false\"" +
-                        "} ]"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.success().dataSet("[ {" +
+                    "\"id\": \"${todoId}\"," +
+                    "\"title\": \"${todoName}\"," +
+                    "\"description\": \"${todoDescription}\"," +
+                    "\"done\": \"false\"" +
+                    "} ]")));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.closeStatement());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.closeStatement()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
@@ -82,7 +86,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                         "\"title\": \"${todoName}\"," +
                         "\"description\": \"${todoDescription}\"," +
                         "\"done\": false" +
-                    "} ]");
+                    "} ]"));
     }
 
     @Test
@@ -99,34 +103,38 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("api/todolist/1")
-            .fork(true);
+            .fork(true));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}")));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)")));
 
-        send(jdbcServer)
-                .messageType(MessageType.XML)
-                .message(JdbcMessage.success().dataSet("" +
-                        "<dataset>" +
-                            "<row>" +
-                                "<id>${todoId}</id>"+
-                                "<title>${todoName}</title>"+
-                                "<description>${todoDescription}</description>" +
-                                "<done>false</done>" +
-                             "</row>" +
-                        "</dataset>"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.XML)
+            .message(JdbcMessage.success().dataSet("" +
+                    "<dataset>" +
+                        "<row>" +
+                            "<id>${todoId}</id>"+
+                            "<title>${todoName}</title>"+
+                            "<description>${todoDescription}</description>" +
+                            "<done>false</done>" +
+                         "</row>" +
+                    "</dataset>")));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.closeStatement());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.closeStatement()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
@@ -135,7 +143,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                     "\"title\": \"${todoName}\"," +
                     "\"description\": \"${todoDescription}\"," +
                     "\"done\": false" +
-                    "} ]");
+                    "} ]"));
     }
 
     @Test
@@ -148,28 +156,32 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
         
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("api/todolist/1")
-            .fork(true);
+            .fork(true));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}")));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)")));
 
-        send(jdbcServer)
-                .message(JdbcMessage.error().exception("Error in called procedure"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.error().exception("Error in called procedure")));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.closeStatement());
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.closeStatement()));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.INTERNAL_SERVER_ERROR);
+            .response(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @Test
@@ -182,21 +194,23 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("api/todolist/1")
-            .fork(true);
+            .fork(true));
 
-        receive(jdbcServer)
-                .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}")));
 
-        send(jdbcServer)
-                .message(JdbcMessage.error().exception("Could not find procedure 'limitedToDoList'"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.error().exception("Could not find procedure 'limitedToDoList'")));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.INTERNAL_SERVER_ERROR);
+            .response(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

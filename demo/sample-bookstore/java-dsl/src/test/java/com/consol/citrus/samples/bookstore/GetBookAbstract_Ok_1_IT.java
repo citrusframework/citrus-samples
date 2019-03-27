@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.bookstore;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * @author Christoph Deppisch
  */
 @Test
-public class GetBookAbstract_Ok_1_IT extends TestNGCitrusTestDesigner {
+public class GetBookAbstract_Ok_1_IT extends TestNGCitrusTestRunner {
 
     @Autowired
     private WebServiceClient bookStoreClient;
@@ -41,7 +41,7 @@ public class GetBookAbstract_Ok_1_IT extends TestNGCitrusTestDesigner {
 
         variable("isbn", "978-1933988999");
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(bookStoreClient)
             .send()
             .soapAction("addBook")
@@ -52,24 +52,24 @@ public class GetBookAbstract_Ok_1_IT extends TestNGCitrusTestDesigner {
                             "<bkr:isbn>${isbn}</bkr:isbn>" +
                             "<bkr:year>2007</bkr:year>" +
                         "</bkr:book>" +
-                    "</bkr:AddBookRequestMessage>");
+                    "</bkr:AddBookRequestMessage>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(bookStoreClient)
             .receive()
             .payload("<bkr:AddBookResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
                         "<bkr:success>true</bkr:success>" +
-                    "</bkr:AddBookResponseMessage>");
+                    "</bkr:AddBookResponseMessage>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(bookStoreClient)
             .send()
             .soapAction("getBookAbstract")
             .payload("<bkr:GetBookAbstractRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
                         "<bkr:isbn>${isbn}</bkr:isbn>" +
-                    "</bkr:GetBookAbstractRequestMessage>");
+                    "</bkr:GetBookAbstractRequestMessage>"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(bookStoreClient)
             .receive()
             .payload("<bkr:GetBookAbstractResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
@@ -83,7 +83,7 @@ public class GetBookAbstract_Ok_1_IT extends TestNGCitrusTestDesigner {
                         "</bkr:book>" +
                     "</bkr:GetBookAbstractResponseMessage>")
             .attachment("book-abstract", "text/plain", new ClassPathResource("book-abstract.txt", CitrusEndpointConfig.class))
-            .extractFromPayload("/bkr:GetBookAbstractResponseMessage/bkr:book/bkr:id", "bookId");
+            .extractFromPayload("/bkr:GetBookAbstractResponseMessage/bkr:book/bkr:id", "bookId"));
     }
 
 }

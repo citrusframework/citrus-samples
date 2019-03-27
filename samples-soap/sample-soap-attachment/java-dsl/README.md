@@ -46,10 +46,11 @@ public SoapMessageFactory messageFactory() {
 
 @Bean
 public WebServiceClient todoClient() {
-    return CitrusEndpoints.soap()
-                        .client()
-                        .defaultUri("http://localhost:8080/services/ws/todolist")
-                        .build();
+    return CitrusEndpoints
+        .soap()
+            .client()
+            .defaultUri("http://localhost:8080/services/ws/todolist")
+        .build();
 }
 ```
     
@@ -59,16 +60,17 @@ responsible for creating the SOAP envelope.
 Now we can use the web service client in the Citrus test.
     
 ```java
-soap()
+soap(soapActionBuilder -> soapActionBuilder
     .client(todoClient)
     .send()
     .soapAction("addTodoEntry")
-    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"));
-    
-soap()
+    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"))
+    .attachment("myAttachment", "text/plain", "This is my attachment"));
+
+soap(soapActionBuilder -> soapActionBuilder
     .client(todoClient)
     .receive()
-    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml"));
+    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));
 ```
         
 The Citrus test sends a request and validates the SOAP response message. The message payload is loaded from external file resources.        

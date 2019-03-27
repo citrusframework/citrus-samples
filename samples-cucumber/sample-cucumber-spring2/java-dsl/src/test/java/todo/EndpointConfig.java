@@ -37,9 +37,10 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoListClient() {
-        return CitrusEndpoints.http()
+        return CitrusEndpoints
+            .http()
                 .client()
                 .requestUrl("http://localhost:8080")
-                .build();
+            .build();
     }
 }

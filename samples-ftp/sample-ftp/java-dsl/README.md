@@ -17,28 +17,31 @@ First of all let us setup the necessary components in the Spring bean configurat
 ```java
 @Bean
 public FtpClient ftpClient() {
-    return CitrusEndpoints.ftp()
+    return CitrusEndpoints
+        .ftp()
             .client()
             .autoReadFiles(true)
             .port(22222)
             .username("citrus")
             .password("admin")
             .timeout(10000L)
-            .build();
+        .build();
 }
 
 @Bean
 public FtpServer ftpListServer() {
-    return CitrusEndpoints.ftp()
+    return CitrusEndpoints
+        .ftp()
             .server()
             .port(22222)
             .autoLogin(true)
             .autoStart(true)
             .autoHandleCommands(Stream.of(FTPCmd.MKD.getCommand(),
                                           FTPCmd.PORT.getCommand(),
+                                          FTPCmd.PASV.getCommand(),
                                           FTPCmd.TYPE.getCommand()).collect(Collectors.joining(",")))
             .userManagerProperties(new ClassPathResource("citrus.ftp.user.properties"))
-            .build();
+        .build();
 }
 ```
 
@@ -81,12 +84,13 @@ In a sample test we first create a new subdirectory in that user home directory.
 ```java
 echo("Create new directory on server");
 
-send(ftpClient)
-    .fork(true)
-    .message(FtpMessage.command(FTPCmd.MKD).arguments("todo"));
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(ftpClient)
+    .message(FtpMessage.command(FTPCmd.MKD).arguments("todo")));
 
-receive(ftpClient)
-    .message(FtpMessage.result(getMkdirsCommandResult("todo")));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(ftpClient)
+    .message(FtpMessage.result(getMkdirsCommandResult("todo"))));
 ```
 
 As you can see the client is passing a `MKD` signal to the server. The user login procedure is done automatically and the directory creation is also
@@ -95,13 +99,16 @@ dome automatically on the FTP server. This is because we added the `MKD` signal 
 ```java
 @Bean
 public FtpServer ftpListServer() {
-    return CitrusEndpoints.ftp()
+    return CitrusEndpoints
+        .ftp()
             .server()
             [...]
-            .autoLogin(true)
-            .autoHandleCommands(Stream.of(FTPCmd.MKD.getCommand(),
-                                          FTPCmd.PORT.getCommand(),
-                                          FTPCmd.TYPE.getCommand()).collect(Collectors.joining(",")))
+               .autoLogin(true)
+               .autoStart(true)
+               .autoHandleCommands(Stream.of(FTPCmd.MKD.getCommand(),
+                                             FTPCmd.PORT.getCommand(),
+                                             FTPCmd.PASV.getCommand(),
+                                             FTPCmd.TYPE.getCommand()).collect(Collectors.joining(",")))
             [...]
             .build();
 }
@@ -112,18 +119,22 @@ This tells the FTP server to automatically handle the user login as well as the 
 ```java
 echo("Store file to directory");
 
-send(ftpClient)
-        .fork(true)
-        .message(FtpMessage.put("todo/entry.json", DataType.ASCII).arguments(""));
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(ftpClient)
+    .fork(true)
+    .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII)));
 
-receive(ftpServer)
-        .message(FtpMessage.command(FTPCmd.STOR).arguments("todo/entry.json"));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(ftpServer)
+    .message(FtpMessage.command(FTPCmd.STOR).arguments("todo/todo.json")));
 
-send(ftpServer)
-        .message(FtpMessage.success());
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(ftpServer)
+    .message(FtpMessage.success()));
 
-receive(ftpClient)
-        .message(FtpMessage.result(getStoreFileCommandResult()));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(ftpClient)
+    .message(FtpMessage.result(getStoreFileCommandResult())));
 ```
 
 Now we have both client and server interaction in the same test case. This requires us to use `fork=true` option on all client
@@ -138,18 +149,22 @@ Now we should be also able to list the files in that directory:
 ```java
 echo("List files in directory");
 
-send(ftpClient)
-        .fork(true)
-        .message(FtpMessage.list("todo").arguments("todo"));
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(ftpClient)
+    .fork(true)
+    .message(FtpMessage.list("todo")));
 
-receive(ftpServer)
-        .message(FtpMessage.command(FTPCmd.LIST).arguments("todo"));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(ftpServer)
+    .message(FtpMessage.command(FTPCmd.LIST).arguments("todo")));
 
-send(ftpServer)
-        .message(FtpMessage.success());
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(ftpServer)
+    .message(FtpMessage.success()));
 
-receive(ftpClient)
-        .message(FtpMessage.result(getListCommandResult("entry.json")));
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(ftpClient)
+    .message(FtpMessage.result(getListCommandResult("todo.json"))));
 ```
 
 ```java
@@ -178,31 +193,42 @@ Now we can also retrieve the file from the server by calling the `RETR` operatio
 ```java
 echo("Retrieve file from server");
 
-send(ftpClient)
+    send(sendMessageBuilder -> sendMessageBuilder
+        .endpoint(ftpClient)
         .fork(true)
-        .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII));
+        .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII)));
 
-receive(ftpServer)
-        .message(FtpMessage.command(FTPCmd.RETR).arguments("todo/todo.json"));
+    receive(receiveMessageBuilder -> receiveMessageBuilder
+        .endpoint(ftpServer)
+        .message(FtpMessage.command(FTPCmd.RETR).arguments("todo/todo.json")));
 
-send(ftpServer)
-        .message(FtpMessage.success());
+    send(sendMessageBuilder -> sendMessageBuilder
+        .endpoint(ftpServer)
+        .message(FtpMessage.success()));
 
-receive(ftpClient)
-        .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
+    receive(receiveMessageBuilder -> receiveMessageBuilder
+        .endpoint(ftpClient)
+        .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json")))));
 ```
 
 ```java
-private GetCommandResult getRetrieveFileCommandResult(String path, Resource content) throws IOException {
+private GetCommandResult getRetrieveFileCommandResult(String path, Resource content) {
+    // TODO: mbu
+    // We should take a look at this. Since we use this method within a lambda, it must be pure,
+    // Whether the presented solution is "the way to go" is up for debate.
     GetCommandResult result = new GetCommandResult();
-    result.setSuccess(true);
-    result.setReplyCode(String.valueOf(226));
-    result.setReplyString("@contains('Transfer complete')@");
+    try {
+        result.setSuccess(true);
+        result.setReplyCode(String.valueOf(226));
+        result.setReplyString("@contains('Transfer complete')@");
 
-    GetCommandResult.File entryResult = new GetCommandResult.File();
-    entryResult.setPath(path);
-    entryResult.setData(FileUtils.readToString(content));
-    result.setFile(entryResult);
+        GetCommandResult.File entryResult = new GetCommandResult.File();
+        entryResult.setPath(path);
+        entryResult.setData(FileUtils.readToString(content));
+        result.setFile(entryResult);
+    } catch (IOException e) {
+        log.error(e.toString());
+    }
 
     return result;
 }

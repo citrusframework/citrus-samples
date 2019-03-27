@@ -23,7 +23,8 @@ a lookup registry. Citrus can do this with the server component:
 ```java
 @Bean
 public RmiServer rmiServer() {
-    return CitrusEndpoints.rmi()
+    return CitrusEndpoints
+        .rmi()
             .server()
             .autoStart(true)
             .host("localhost")
@@ -31,7 +32,7 @@ public RmiServer rmiServer() {
             .remoteInterfaces(TodoListService.class)
             .binding("todoService")
             .createRegistry(true)
-            .build();
+        .build();
 }
 ```
                      
@@ -49,10 +50,11 @@ Lets create a client component that uses this service url:
 ```java
 @Bean
 public RmiClient rmiClient() {
-    return CitrusEndpoints.rmi()
+    return CitrusEndpoints
+        .rmi()
             .client()
             .serverUrl("rmi://localhost:1099/todoService")
-            .build();
+        .build();
 }
 ```
     
@@ -64,23 +66,27 @@ tests as usual with the Citrus Java DSL.
 @Test
 @CitrusTest
 public void testAddTodo() {
-    send(todoRmiClient)
+    send(sendMessageBuilder -> sendMessageBuilder
+        .endpoint(todoRmiClient)
         .fork(true)
         .message(RmiMessage.invocation(TodoListService.class, "addTodo")
                 .argument("todo-star")
-                .argument("Star me on github"));
+                .argument("Star me on github")));
 
-    receive(todoRmiServer)
+    receive(receiveMessageBuilder -> receiveMessageBuilder
+        .endpoint(todoRmiServer)
         .message(RmiMessage.invocation(TodoListService.class, "addTodo")
                 .argument("todo-star")
-                .argument("Star me on github"));
+                .argument("Star me on github")));
 
-    send(todoRmiServer)
-        .message(RmiMessage.result());
+    send(sendMessageBuilder -> sendMessageBuilder
+        .endpoint(todoRmiServer)
+        .message(RmiMessage.result()));
 
-    receive(todoRmiClient)
-        .message(RmiMessage.result());
-}    
+    receive(receiveMessageBuilder -> receiveMessageBuilder
+        .endpoint(todoRmiClient)
+        .message(RmiMessage.result()));
+}  
 ```
     
 The test method above calls the **addTodo** operation on the remote service. The operation defines arguments that
@@ -97,23 +103,27 @@ Lets also test the second operation in this remote interface **getTodos**.
 @Test
 @CitrusTest
 public void testGetTodos() {
-    send(todoRmiClient)
-            .fork(true)
-            .message(RmiMessage.invocation(TodoListService.class, "getTodos"));
+    send(sendMessageBuilder -> sendMessageBuilder
+        .endpoint(todoRmiClient)
+        .fork(true)
+        .message(RmiMessage.invocation(TodoListService.class, "getTodos")));
 
-    receive(todoRmiServer)
-            .message(RmiMessage.invocation(TodoListService.class, "getTodos"));
+    receive(receiveMessageBuilder -> receiveMessageBuilder
+        .endpoint(todoRmiServer)
+        .message(RmiMessage.invocation(TodoListService.class, "getTodos")));
 
-    send(todoRmiServer)
-            .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
-                        "<object type=\"java.util.Map\" value=\"{todo-follow=Follow us on github}\"/>" +
-                    "</service-result>");
+    send(sendMessageBuilder -> sendMessageBuilder
+        .endpoint(todoRmiServer)
+        .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+                    "<object type=\"java.util.Map\" value=\"{todo-follow=Follow us on github}\"/>" +
+                "</service-result>"));
 
-    receive(todoRmiClient)
-            .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
-                        "<object type=\"java.util.LinkedHashMap\" value=\"{todo-follow=Follow us on github}\"/>" +
-                    "</service-result>");
-}    
+    receive(receiveMessageBuilder -> receiveMessageBuilder
+        .endpoint(todoRmiClient)
+        .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+                    "<object type=\"java.util.LinkedHashMap\" value=\"{todo-follow=Follow us on github}\"/>" +
+                "</service-result>"));
+}
 ```
     
 In this sample test we see that Citrus is finding a way to generify the service invocation as well as the service result.

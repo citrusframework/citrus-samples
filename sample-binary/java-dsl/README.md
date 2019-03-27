@@ -13,8 +13,12 @@ The Citrus project needs a JMS connection factory that is defined in the Spring 
 
 ```java
 @Bean
-public ConnectionFactory connectionFactory() {
-    return new ActiveMQConnectionFactory("tcp://localhost:61616");
+public JmsEndpoint todoEndpoint() {
+    return CitrusEndpoints.jms()
+            .asynchronous()
+            .destination("jms.todo.inbound")
+            .connectionFactory(connectionFactory())
+            .build();
 }
 ```
     
@@ -24,7 +28,8 @@ started with the Maven build lifecycle.
 No we can send some content as binary message to the JMS queue destination.
 
 ```java
-send(todoJmsEndpoint)
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(todoJmsEndpoint)
     .messageType(MessageType.BINARY)
     .message(new DefaultMessage("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}".getBytes()));
 ```
@@ -37,8 +42,8 @@ by marking the message type as `BINARY`. As binary content is not comparable we 
 binary content to a String representation for comparison.
 
 ```java
-receive(todoJmsEndpoint)
-    .messageType(MessageType.BINARY)
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(todoJmsEndpoint)
     .validator(new BinaryMessageValidator())
     .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 ```
@@ -47,11 +52,12 @@ The binary message validator implementation is very simple and performs String e
 
 ```java
 private class BinaryMessageValidator extends AbstractMessageValidator<DefaultValidationContext> {
+
     @Override
     public void validateMessage(Message receivedMessage, Message controlMessage,
                                 TestContext context, DefaultValidationContext validationContext) {
         Assert.isTrue(new String(receivedMessage.getPayload(byte[].class))
-                .equals(new String(controlMessage.getPayload(byte[].class))), "Binary message validation failed!");
+            .equals(new String(controlMessage.getPayload(byte[].class))), "Binary message validation failed!");
     }
 
     @Override
@@ -72,8 +78,8 @@ We can also use base64 encoding for handling binary data in Citrus. The base64 e
 with basic comparison in `BINARY_BASE64` message validator:
 
 ```java
-receive(todoJmsEndpoint)
-    .messageType(MessageType.BINARY_BASE64)
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(todoJmsEndpoint)
     .payload("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }')");
 ```
         

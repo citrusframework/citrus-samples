@@ -15,11 +15,12 @@ We need a special Soap client configuration:
 ```java
 @Bean
 public WebServiceClient todoClient() {
-    return CitrusEndpoints.soap()
-                        .client()
-                        .defaultUri(String.format("https://localhost:%s/services/ws/todolist", securePort))
-                        .messageSender(sslRequestMessageSender())
-                        .build();
+    return CitrusEndpoints
+        .soap()
+            .client()
+            .defaultUri(String.format("https://localhost:%s/services/ws/todolist", securePort))
+            .messageSender(sslRequestMessageSender())
+        .build();
 }
 ```
     
@@ -30,7 +31,8 @@ Java Spring configuration class simply because it is way more comfortable to do 
 @Bean
 public HttpClient httpClient() {
     try {
-        SSLContext sslcontext = SSLContexts.custom()
+        SSLContext sslcontext = SSLContexts
+            .custom()
                 .loadTrustMaterial(new ClassPathResource("keys/citrus.jks").getFile(), "secret".toCharArray(),
                         new TrustSelfSignedStrategy())
                 .build();
@@ -38,11 +40,12 @@ public HttpClient httpClient() {
         SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
                 sslcontext, NoopHostnameVerifier.INSTANCE);
 
-        return HttpClients.custom()
+        return HttpClients
+            .custom()
                 .setSSLSocketFactory(sslSocketFactory)
                 .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
                 .addInterceptorFirst(new HttpComponentsMessageSender.RemoveSoapHeadersInterceptor())
-                .build();
+            .build();
     } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
         throw new BeanCreationException("Failed to create http client for ssl connection", e);
     }
@@ -62,16 +65,17 @@ As you can see we load the keystore file **keys/citrus.jks** in order to setup t
 sending messages to the server.
 
 ```java
-soap()
+soap(soapActionBuilder -> soapActionBuilder
     .client(todoClient)
     .send()
+    .fork(true)
     .soapAction("addTodoEntry")
-    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"));
+    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml")));
 
-soap()
+soap(soapActionBuilder -> soapActionBuilder
     .client(todoClient)
     .receive()
-    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml"));    
+    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));    
 ```
         
 On the server side the configuration looks like follows:
@@ -79,12 +83,13 @@ On the server side the configuration looks like follows:
 ```java
 @Bean
 public WebServiceServer todoSslServer() {
-    return CitrusEndpoints.soap()
+    return CitrusEndpoints
+        .soap()
             .server()
             .connector(sslConnector())
             .timeout(5000)
             .autoStart(true)
-            .build();
+        .build();
 }
 
 @Bean
@@ -110,24 +115,7 @@ private SslContextFactory sslContextFactory() {
     contextFactory.setKeyStorePath(sslKeyStorePath);
     contextFactory.setKeyStorePassword("secret");
     return contextFactory;
-}        
-```
-        
-That is a lot of Spring bean configuration, but it works! The server component references a special **sslConnector** bean
-that defines the certificates and on the secure port **8443**. Client now have to use the certificate in order to connect.
-       
-In the test case we can receive the requests and provide proper response messages as usual.
-
-```java
-soap()
-    .server(todoServer)
-    .receive()
-    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"));
-
-soap()
-    .server(todoServer)
-    .send()
-    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml"));
+}
 ```
        
 Run

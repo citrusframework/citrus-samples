@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.ws.server.WebServiceServer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private WebServiceClient todoClient;
@@ -41,51 +41,51 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .send()
             .fork(true)
             .soapAction("addTodoEntry")
-            .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"));
+            .payload(new ClassPathResource("templates/addTodoEntryRequest.xml")));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(todoServer)
             .receive()
             .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"))
-            .header(new ClassPathResource("templates/soapWsAddressingHeader.xml"));
+            .header(new ClassPathResource("templates/soapWsAddressingHeader.xml")));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(todoServer)
             .send()
-            .payload(new ClassPathResource("templates/addTodoEntryResponse.xml"));
+            .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .receive()
-            .payload(new ClassPathResource("templates/addTodoEntryResponse.xml"));
+            .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .send()
             .fork(true)
             .soapAction("getTodoList")
-            .payload(new ClassPathResource("templates/getTodoListRequest.xml"));
+            .payload(new ClassPathResource("templates/getTodoListRequest.xml")));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(todoServer)
             .receive()
             .payload(new ClassPathResource("templates/getTodoListRequest.xml"))
-            .header(new ClassPathResource("templates/soapWsAddressingHeader.xml"));
+            .header(new ClassPathResource("templates/soapWsAddressingHeader.xml")));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .server(todoServer)
             .send()
-            .payload(new ClassPathResource("templates/getTodoListResponse.xml"));
+            .payload(new ClassPathResource("templates/getTodoListResponse.xml")));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .receive()
-            .payload(new ClassPathResource("templates/getTodoListResponse.xml"));
+            .payload(new ClassPathResource("templates/getTodoListResponse.xml")));
     }
 
 }

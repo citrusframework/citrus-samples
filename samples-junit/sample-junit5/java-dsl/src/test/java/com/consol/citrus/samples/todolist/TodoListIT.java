@@ -17,7 +17,6 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.*;
-import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.dsl.junit.jupiter.CitrusExtension;
 import com.consol.citrus.dsl.runner.TestRunner;
 import com.consol.citrus.http.client.HttpClient;
@@ -38,14 +37,14 @@ public class TodoListIT {
 
     @Test
     @CitrusTest
-    void testGet(@CitrusResource TestDesigner designer) {
-        designer.http()
+    void testGet(@CitrusResource TestRunner runner) {
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todolist")
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        designer.http()
+        runner.http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
@@ -56,7 +55,7 @@ public class TodoListIT {
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                         "<head>@ignore@</head>" +
                         "<body>@ignore@</body>" +
-                    "</html>");
+                    "</html>"));
     }
 
     @Test

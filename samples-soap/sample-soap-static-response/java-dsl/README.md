@@ -16,13 +16,14 @@ should provide different response messages. we can do this in Citrus with a litt
 ```java
 @Bean
 public WebServiceServer todoListServer() throws Exception {
-    return CitrusEndpoints.soap()
+    return CitrusEndpoints
+        .soap()
             .server()
             .port(8080)
             .endpointAdapter(dispatchingEndpointAdapter())
             .timeout(10000)
             .autoStart(true)
-            .build();
+        .build();
 }
 
 @Bean

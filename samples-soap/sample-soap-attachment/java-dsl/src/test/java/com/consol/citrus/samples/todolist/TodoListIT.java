@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private WebServiceClient todoClient;
@@ -37,28 +37,28 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .send()
             .soapAction("addTodoEntry")
             .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"))
-            .attachment("myAttachment", "text/plain", "This is my attachment");
+            .attachment("myAttachment", "text/plain", "This is my attachment"));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .receive()
-            .payload(new ClassPathResource("templates/addTodoEntryResponse.xml"));
+            .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .send()
             .soapAction("getTodoList")
-            .payload(new ClassPathResource("templates/getTodoListRequest.xml"));
+            .payload(new ClassPathResource("templates/getTodoListRequest.xml")));
 
-        soap()
+        soap(soapActionBuilder -> soapActionBuilder
             .client(todoClient)
             .receive()
-            .payload(new ClassPathResource("templates/getTodoListResponse.xml"));
+            .payload(new ClassPathResource("templates/getTodoListResponse.xml")));
     }
 
 }

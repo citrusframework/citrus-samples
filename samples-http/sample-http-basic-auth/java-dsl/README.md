@@ -9,12 +9,12 @@ Objectives
 In this sample project we want to configure both Http client and server to use basic authentication. On client side we can add the basic authentication header manually in each send operation.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
-    .get("/todo")
+    .get("/todo/")
     .accept(ContentType.APPLICATION_XML.getMimeType())
-    .header("Authorization", "Basic citrus:encodeBase64('citrus:secr3t')");
+    .header("Authorization", "Basic citrus:encodeBase64('citrus:secr3t')"));
 ```
         
 The `Authorization` header is holding the username password combination as base64 encoded string. We need to add this header manually to the send operation. The server will verify the username password
@@ -25,11 +25,12 @@ Fortunately we can also add the basic authentication to the client component. So
 ```java
 @Bean
 public HttpClient todoBasicAuthClient() throws Exception {
-    return CitrusEndpoints.http()
-                        .client()
-                        .requestUrl("http://localhost:" + port)
-                        .requestFactory(basicAuthRequestFactory())
-                        .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://localhost:" + port)
+            .requestFactory(basicAuthRequestFactory())
+        .build();
 }
 
 @Bean
@@ -58,14 +59,15 @@ On the server side the configuration looks like follows:
 ```java
 @Bean
 public HttpServer basicAuthHttpServer() throws Exception {
-    return CitrusEndpoints.http()
+    return CitrusEndpoints
+        .http()
             .server()
             .port(port)
             .endpointAdapter(staticEndpointAdapter())
             .securityHandler(basicAuthSecurityHandler())
             .autoStart(true)
-            .build();
-}        
+        .build();
+}     
 
 @Bean
 public SecurityHandlerFactory basicAuthSecurityHandlerFactoryBean() {

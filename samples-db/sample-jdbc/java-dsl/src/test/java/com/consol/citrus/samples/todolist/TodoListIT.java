@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
@@ -32,7 +32,7 @@ import java.util.UUID;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestDesigner {
+public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Autowired
     private JdbcServer jdbcServer;
@@ -56,27 +56,29 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todolist")
             .fork(true)
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries")));
 
-        send(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.success().dataSet("[ {" +
-                            "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
-                            "\"title\": \"${todoName}\"," +
-                            "\"description\": \"${todoDescription}\"," +
-                            "\"done\": \"false\"" +
-                        "} ]"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.success().dataSet("[ {" +
+                        "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
+                        "\"title\": \"${todoName}\"," +
+                        "\"description\": \"${todoDescription}\"," +
+                        "\"done\": \"false\"" +
+                    "} ]")));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
@@ -106,7 +108,7 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                           "</div>" +
                         "</div>" +
                       "</body>" +
-                    "</html>");
+                    "</html>"));
     }
 
     @Test
@@ -122,52 +124,56 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/todolist")
             .fork(true)
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}");
+            .payload("title=${todoName}&description=${todoDescription}"));
 
-        receive(jdbcServer)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
             .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
 
-        send(jdbcServer)
-            .message(JdbcMessage.success().rowsUpdated(1));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.success().rowsUpdated(1)));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND);
+            .response(HttpStatus.FOUND));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .get("/todolist")
             .fork(true)
-            .accept(MediaType.TEXT_HTML_VALUE);
+            .accept(MediaType.TEXT_HTML_VALUE));
 
-        receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries")));
 
-        send(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.success().dataSet("[ {" +
-                            "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
-                            "\"title\": \"${todoName}\"," +
-                            "\"description\": \"${todoDescription}\"," +
-                            "\"done\": \"false\"" +
-                        "} ]"));
+        send(sendMessageBuilder-> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.success().dataSet("[ {" +
+                        "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
+                        "\"title\": \"${todoName}\"," +
+                        "\"description\": \"${todoDescription}\"," +
+                        "\"done\": \"false\"" +
+                    "} ]")));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.XHTML)
-            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
     }
 
     @Test
@@ -183,25 +189,27 @@ public class TodoListIT extends TestNGCitrusTestDesigner {
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
             .post("/todolist")
             .fork(true)
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}");
+            .payload("title=${todoName}&description=${todoDescription}"));
 
-        receive(jdbcServer)
-                .messageType(MessageType.JSON)
-                .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@"));
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(jdbcServer)
+            .messageType(MessageType.JSON)
+            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
 
-        send(jdbcServer)
-                .message(JdbcMessage.error().exception("Something went wrong"));
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(jdbcServer)
+            .message(JdbcMessage.error().exception("Something went wrong")));
 
-        http()
+        http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.INTERNAL_SERVER_ERROR);
+            .response(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
 }

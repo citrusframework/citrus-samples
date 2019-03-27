@@ -14,14 +14,14 @@ the todo application Citrus saves all messages to a local message store.
 You can access the message store at any time in the test case using message store functions.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
     .post("/api/todolist")
     .name("todoRequest")
     .messageType(MessageType.JSON)
     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-    .payload("{\"id\": \"citrus:randomUUID()\", \"title\": \"citrus:concat('todo_', citrus:randomNumber(4))\", \"description\": \"ToDo Description\", \"done\": false}");
+    .payload("{\"id\": \"citrus:randomUUID()\", \"title\": \"citrus:concat('todo_', citrus:randomNumber(4))\", \"description\": \"ToDo Description\", \"done\": false}"));
 
 echo("citrus:message(todoRequest)");
 ```
@@ -43,12 +43,12 @@ The echo expression above makes access to the local store reading the message na
 `$.title` path expression. The result is the title of the todo entry that has been sent before.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
     .messageType(MessageType.PLAINTEXT)
-    .payload("citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')");
+    .payload("citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')"));
 ```
         
 The receive operation has a special message payload which accesses the message store during validation and reads the dynamic todo entry id   that was created in the `todoRequest` message.

@@ -62,19 +62,21 @@ public class EndpointConfig {
 
     @Bean
     public WebServiceClient imageClient() {
-        return CitrusEndpoints.soap()
-                            .client()
-                            .defaultUri("http://localhost:8080/services/image")
-                            .build();
+        return CitrusEndpoints
+            .soap()
+                .client()
+                .defaultUri("http://localhost:8080/services/image")
+            .build();
     }
 
     @Bean
     public WebServiceServer imageServer() {
-        return CitrusEndpoints.soap()
+        return CitrusEndpoints
+            .soap()
                 .server()
                 .port(8080)
                 .autoStart(true)
-                .build();
+            .build();
     }
 
 }

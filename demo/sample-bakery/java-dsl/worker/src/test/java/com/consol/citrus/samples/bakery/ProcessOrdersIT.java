@@ -18,7 +18,7 @@ package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.functions.Functions;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  * @since 2.4
  */
 @Test
-public class ProcessOrdersIT extends TestNGCitrusTestDesigner {
+public class ProcessOrdersIT extends TestNGCitrusTestRunner {
 
     @Autowired
     @Qualifier("factoryOrderEndpoint")
@@ -45,18 +45,21 @@ public class ProcessOrdersIT extends TestNGCitrusTestDesigner {
     public void processOrderWithReporting() {
         variable("orderId", Functions.randomNumber(10L, null));
 
-        send(factoryOrderEndpoint)
-            .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>");
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(factoryOrderEndpoint)
+            .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>"));
 
-        http().server(reportingServer)
+        http(httpActionBuilder -> httpActionBuilder
+            .server(reportingServer)
             .receive()
             .put("/report/services/reporting")
                 .header("id", "${orderId}")
                 .header("name", "chocolate")
                 .header("amount", "1")
-                .timeout(10000L);
+                .timeout(10000L));
 
-        http().server(reportingServer)
-            .respond(HttpStatus.OK);
+        http(httpActionBuilder -> httpActionBuilder
+            .server(reportingServer)
+            .respond(HttpStatus.OK));
     }
 }

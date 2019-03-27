@@ -55,11 +55,12 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoClient() {
-        return CitrusEndpoints.http()
-                            .client()
-                            .requestUrl("https://localhost:" + securePort)
-                            .requestFactory(sslRequestFactory())
-                            .build();
+        return CitrusEndpoints
+            .http()
+                .client()
+                .requestUrl("https://localhost:" + securePort)
+                .requestFactory(sslRequestFactory())
+            .build();
     }
 
     @Bean
@@ -70,18 +71,20 @@ public class EndpointConfig {
     @Bean
     public org.apache.http.client.HttpClient httpClient() {
         try {
-            SSLContext sslcontext = SSLContexts.custom()
+            SSLContext sslcontext = SSLContexts
+                .custom()
                     .loadTrustMaterial(new ClassPathResource("keys/citrus.jks").getFile(), "secret".toCharArray(),
                             new TrustSelfSignedStrategy())
-                    .build();
+                .build();
 
             SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
                     sslcontext, NoopHostnameVerifier.INSTANCE);
 
-            return HttpClients.custom()
+            return HttpClients
+                .custom()
                     .setSSLSocketFactory(sslSocketFactory)
                     .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                    .build();
+                .build();
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             throw new BeanCreationException("Failed to create http client for ssl connection", e);
         }
@@ -89,13 +92,14 @@ public class EndpointConfig {
 
     @Bean
     public HttpServer todoSslServer() throws Exception {
-        return CitrusEndpoints.http()
+        return CitrusEndpoints
+            .http()
                 .server()
                 .port(8080)
                 .endpointAdapter(staticEndpointAdapter())
                 .connector(sslConnector())
                 .autoStart(true)
-                .build();
+            .build();
     }
 
     @Bean

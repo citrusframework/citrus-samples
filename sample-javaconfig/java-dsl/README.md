@@ -22,10 +22,11 @@ This tells Spring to load the configuration from the Java class ***EndpointConfi
 ```java
 @Bean
 public HttpClient todoClient() {
-    return CitrusEndpoints.http()
-                .client()
-                .requestUrl("http://localhost:8080")
-                .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://localhost:8080")
+        .build();
 }
 ```
     
@@ -40,11 +41,11 @@ private HttpClient todoClient;
 As usual we are able to reference this endpoint in any send and receive operation in Citrus Java fluent API.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
     .get("/todolist")
-    .accept(MediaType.TEXT_HTML_VALUE);
+    .accept(MediaType.TEXT_HTML_VALUE));
 ```
         
 Citrus and Spring framework automatically injects the endpoint with respective configuration for `requestUrl = http://localhost:8080`.    

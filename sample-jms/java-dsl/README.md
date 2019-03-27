@@ -27,11 +27,12 @@ We can use that connection factory in a JMS endpoint configuration:
 ```java
 @Bean
 public JmsEndpoint todoJmsEndpoint() {
-    return CitrusEndpoints.jms()
+    return CitrusEndpoints.
+        jms()
             .asynchronous()
             .connectionFactory(connectionFactory())
             .destination("jms.todo.inbound")
-            .build();
+        .build();
 }
 ```
 
@@ -41,9 +42,10 @@ The endpoint defines the connection factory and the JMS destination. In our exam
 No we can add a new todo entry by sending a JSON message to the JMS queue destination.
     
 ```java
-send(todoJmsEndpoint)
+send(sendMessageBuilder -> sendMessageBuilder
+    .endpoint(todoJmsEndpoint)
     .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-    .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+    .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 ```
         
 We have to add a special message header **_type** which is required by the system under test for message conversion. The message payload
@@ -58,37 +60,27 @@ You can read about http and XPath validation features in the sample [xhtml](../s
 In order to demonstrate the receive operation on a JMS queue in Citrus we can trigger a JMS report message on the todo-app server via Http.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .send()
-    .get("/api/jms/report/done")
-    .accept(MediaType.APPLICATION_JSON_VALUE);
+    .get("/todolist")
+    .accept(MediaType.TEXT_HTML_VALUE));
 
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .receive()
-    .response(HttpStatus.OK);
+    .response(HttpStatus.OK));
 ```
 
 The Http GET request triggers a JMS report generation on the todo-app SUT. The report is sent to a JMS queue destination `jms.todo.report`. We can receive that message within Citrus
 with a normal `receive` operation on a JMS endpoint.
 
 ```java
-@Bean
-public JmsEndpoint todoReportEndpoint() {
-    return CitrusEndpoints.jms()
-            .asynchronous()
-            .connectionFactory(connectionFactory())
-            .destination("jms.todo.report")
-            .build();
-}
-```
-
-```java
-receive(todoReportEndpoint)
-                .messageType(MessageType.JSON)
-                .payload("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
-                .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry");
+receive(receiveMessageBuilder -> receiveMessageBuilder
+    .endpoint(todoReportEndpoint)
+    .messageType(MessageType.JSON)
+    .payload("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
+    .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry"));
 ```
 
 The action receives the report message from that JMS queue and validates the message content (payload and header).

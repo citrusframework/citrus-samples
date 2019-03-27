@@ -26,11 +26,12 @@ public NamespaceContextBuilder namespaceContextBuilder() {
 Now we can use the XHTML validation feature in the Citrus test.
     
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
+    .receive()
     .response(HttpStatus.OK)
     .messageType(MessageType.XHTML)
-    .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}");
+    .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
 ```
         
 In a Http client response we can set the message type to XHTML. Citrus automatically converts the HTML response to

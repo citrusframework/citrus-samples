@@ -76,22 +76,24 @@ public class EndpointConfig {
 
     @Bean
     public JmsEndpoint newsJmsEndpoint() {
-        return CitrusEndpoints.jms()
+        return CitrusEndpoints
+            .jms()
                 .asynchronous()
                 .timeout(5000)
                 .destination("JMS.Queue.News")
                 .connectionFactory(connectionFactory())
-                .build();
+            .build();
     }
 
     @Bean
     public WebServiceServer newsServer() {
-        return CitrusEndpoints.soap()
+        return CitrusEndpoints
+            .soap()
                 .server()
                 .autoStart(true)
                 .timeout(10000)
                 .port(18009)
-                .build();
+            .build();
     }
 
     @Bean
@@ -104,9 +106,10 @@ public class EndpointConfig {
     @Bean
     public CamelContext camelContext() throws Exception {
         SpringCamelContext context = new SpringCamelContext();
-        context.addRouteDefinition(new RouteDefinition().from("jms:queue:JMS.Queue.News")
-                                                    .to("log:com.consol.citrus.camel?level=INFO")
-                                                    .to("spring-ws:http://localhost:18009?soapAction=newsFeed"));
+        context.addRouteDefinition(new RouteDefinition()
+            .from("jms:queue:JMS.Queue.News")
+            .to("log:com.consol.citrus.camel?level=INFO")
+            .to("spring-ws:http://localhost:18009?soapAction=newsFeed"));
         return context;
     }
 }

@@ -13,34 +13,35 @@ server endpoint.
 In this sample we use dynamic endpoint uri instead.
     
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client("http://localhost:8080")
     .send()
     .post("/api/todolist")
     .messageType(MessageType.JSON)
     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 ```
         
 As you can see the send test action defines the Http request uri as endpoint. Citrus will automatically create a Http client
 component out of this endpoint uri. Also you can use this approach when receiving the response:
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client("http://localhost:8080")
     .receive()
     .response(HttpStatus.OK)
-    .messageType(MessageType.JSON)
-    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+    .messageType(MessageType.PLAINTEXT)
+    .payload("${todoId}"));
 ```
 
 The endpoint uri can hold any Citrus endpoint type and is also capable of handling endpoint properties. Let us use that in an
 JMS dynamic endpoint.
 
 ```java
-send("jms:queue:jms.todo.inbound?connectionFactory=activeMqConnectionFactory")
+send(httpActionBuilder -> httpActionBuilder
+    .endpoint("jms:queue:jms.todo.inbound?connectionFactory=activeMqConnectionFactory")
     .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");    
+    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));    
 ```
         
 The JMS endpoint uri defines the queue name and a connection factory as uri parameter. This connection factory is defined 

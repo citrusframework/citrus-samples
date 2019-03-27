@@ -12,7 +12,7 @@ We call this API and receive Json message structures for validation in our test 
 This time the validation is done using Hamcrest matcher implementations in combination with JsonPath expression evaluation.
 
 ```java
-http()
+http(httpActionBuilder -> httpActionBuilder
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
@@ -21,7 +21,7 @@ http()
     .validate("$.id", equalTo(todoId))
     .validate("$.title", allOf(startsWith("todo_"), endsWith(todoId)))
     .validate("$.description", anyOf(startsWith("Description:"), nullValue()))
-    .validate("$.done", not(true));
+    .validate("$.done", not(true)));
 ```
 
 As you can see we are able to provide Hamcrest matcher instances as expected JsonPath value. The hamcrest matcher is evaluated with the
@@ -39,20 +39,20 @@ public void testHamcrestCondition() {
             createVariable("todoId", "citrus:randomUUID()"),
             createVariable("todoName", "todo_${i}"),
             createVariable("todoDescription", "Description: ${todoName}"),
-            http()
+            http(httpActionBuilder -> httpActionBuilder
                 .client(todoClient)
                 .send()
                 .post("/api/todolist")
                 .messageType(MessageType.JSON)
                 .contentType(ContentType.APPLICATION_JSON.getMimeType())
-                .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"),
+                .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}")),
 
-            http()
+            http(httpActionBuilder -> httpActionBuilder
                 .client(todoClient)
                 .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
-                .payload("${todoId}")
+                .payload("${todoId}"))
     );
 }
 ```

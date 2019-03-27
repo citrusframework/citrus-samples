@@ -18,7 +18,7 @@ package com.consol.citrus.samples.bookstore;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.samples.bookstore.model.*;
 import com.consol.citrus.validation.xml.XmlMarshallingValidationCallback;
 import com.consol.citrus.ws.client.WebServiceClient;
@@ -35,7 +35,7 @@ import java.util.Map;
  * @author Christoph Deppisch
  */
 @Test
-public class AddBook_Ok_2_IT extends TestNGCitrusTestDesigner {
+public class AddBook_Ok_2_IT extends TestNGCitrusTestRunner {
 
     @Autowired
     @Qualifier("bookStoreClient")
@@ -48,17 +48,19 @@ public class AddBook_Ok_2_IT extends TestNGCitrusTestDesigner {
     public void addBookTest() {
         String isbn = "978-citrus:randomNumber(10)";
         
-        send(bookStoreClient)
+        send(sendMessageBuilder -> sendMessageBuilder
+            .endpoint(bookStoreClient)
             .payload(createAddBookRequestMessage(isbn), marshaller)
-            .header("citrus_soap_action", "addBook");
+            .header("citrus_soap_action", "addBook"));
         
-        receive(bookStoreClient)
+        receive(receiveMessageBuilder -> receiveMessageBuilder
+            .endpoint(bookStoreClient)
             .validationCallback(new XmlMarshallingValidationCallback<AddBookResponseMessage>() {
                 @Override
                 public void validate(AddBookResponseMessage response, Map<String, Object> headers, TestContext context) {
                     Assert.isTrue(response.isSuccess(), "Unexpected add book response");
                 }
-            });
+            }));
     }
     
     /**

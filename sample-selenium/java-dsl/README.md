@@ -18,10 +18,11 @@ First of all we add a Selenium browser component as Spring bean.
 ```java
 @Bean
 public SeleniumBrowser browser() {
-    return CitrusEndpoints.selenium()
+    return CitrusEndpoints
+        .selenium()
             .browser()
             .type(BrowserType.CHROME)
-            .build();
+        .build();
 }
 ```
 
@@ -33,10 +34,11 @@ In addition to that basic browser component we add a normal Http client componen
 ```java
 @Bean
 public HttpClient todoClient() {
-    return CitrusEndpoints.http()
-                        .client()
-                        .requestUrl("http://localhost:8080")
-                        .build();
+    return CitrusEndpoints
+        .http()
+            .client()
+            .requestUrl("http://localhost:8080")
+        .build();
 }
 ```
 
@@ -78,49 +80,51 @@ public void testAddEntry() {
     variable("todoName", "todo_citrus:randomNumber(4)");
     variable("todoDescription", "Description: ${todoName}");
 
-    http()
+    http(httpActionBuilder -> httpActionBuilder
         .client(todoClient)
         .send()
-        .delete("/api/todolist");
+        .delete("/api/todolist"));
 
-    http()
+    http(httpActionBuilder -> httpActionBuilder
         .client(todoClient)
         .receive()
-        .response(HttpStatus.OK);
+        .response(HttpStatus.OK));
 
-    selenium()
-            .browser(browser)
-            .start();
+    selenium(seleniumActionBuilder -> seleniumActionBuilder
+        .browser(browser)
+        .start());
 
-    selenium()
-            .navigate(todoClient.getEndpointConfiguration().getRequestUrl() + "/todolist");
+    selenium(seleniumActionBuilder -> seleniumActionBuilder
+        .navigate(todoClient.getEndpointConfiguration().getRequestUrl() + "/todolist"));
 
-    selenium()
-            .find()
-            .element(By.xpath("(//li[@class='list-group-item'])[last()]"))
-            .text("No todos found");
+    selenium(seleniumActionBuilder -> seleniumActionBuilder
+        .find()
+        .element(By.xpath("(//li[@class='list-group-item'])[last()]"))
+        .text("No todos found"));
 
-    selenium()
-            .setInput("${todoName}")
-            .element(By.name("title"));
+    selenium(seleniumActionBuilder -> seleniumActionBuilder
+        .setInput("${todoName}")
+        .element(By.name("title")));
 
-    selenium()
-            .setInput("${todoDescription}")
-            .element(By.name("description"));
+    selenium(seleniumActionBuilder -> seleniumActionBuilder
+        .setInput("${todoDescription}")
+        .element(By.name("description"))
+    );
 
-    selenium().click()
-            .element(By.tagName("button"));
+    selenium(seleniumActionBuilder -> seleniumActionBuilder
+        .click()
+        .element(By.tagName("button")));
 
-    selenium()
-            .waitUntil()
-            .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
-            .timeout(2000L)
-            .visible();
+    selenium(seleniumActionBuilder -> seleniumActionBuilder
+        .waitUntil()
+        .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
+        .timeout(2000L)
+        .visible());
 
-    selenium()
-            .find()
-            .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
-            .text("${todoName}");
+    selenium(seleniumActionBuilder -> seleniumActionBuilder
+        .find()
+        .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
+        .text("${todoName}"));
 }
 ```
 
@@ -185,15 +189,15 @@ public void testAddEntry() {
 
     TodoPage todoPage = new TodoPage();
 
-    selenium()
-        .page(todoPage)
-        .validate();
+     selenium(seleniumActionBuilder -> seleniumActionBuilder
+         .page(todoPage)
+         .validate());
 
-    selenium()
-        .page(todoPage)
-        .argument("${todoName}")
-        .argument("${todoDescription}")
-        .execute("submit");
+     selenium(seleniumActionBuilder -> seleniumActionBuilder
+         .page(todoPage)
+         .argument("${todoName}")
+         .argument("${todoDescription}")
+         .execute("submit"));
 
     [...]
 }

@@ -18,7 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.TestCaseMetaInfo;
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.exceptions.CitrusRuntimeException;
 import org.testng.annotations.Test;
 
@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
  * @author Christoph Deppisch
  */
 @Test
-public class SimpleSampleIT extends TestNGCitrusTestDesigner {
+public class SimpleSampleIT extends TestNGCitrusTestRunner {
 
     @CitrusTest
     public void testSuccessFirst() {
