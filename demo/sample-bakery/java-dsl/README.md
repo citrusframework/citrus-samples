@@ -18,7 +18,7 @@ The bakery sample application uses several services that are exchanging data ove
 to one of the worker instances. After the worker has processed the order it will add an entry to the central reporting server. The reporting collects
 all events and gives a total order processing overview to clients.
 
-![Architecture](src/images/architecture.png)
+![Architecture](../images/architecture.png)
 
 Using Docker
 ---------
@@ -26,7 +26,7 @@ Using Docker
 This sample is using Docker as infrastructure for starting up the services in separate containers. If you are not able to use Docker please
 continue with the embedded Jetty infrastructure described later in this README. Now back to the Docker infrastructure.
 
-![Infrastructure](src/images/infrastructure.png)
+![Infrastructure](../images/infrastructure.png)
 
 As a prerequisite to using this infrastructure you must have Docker locally installed. You can build the Docker containers 
 with the famous fabric8-maven-plugin by calling
