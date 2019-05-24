@@ -51,7 +51,7 @@ jobs:
     - stage: it-citrus-java-sample-camel-context
       script:
       - mvn verify -Dembedded -pl :citrus-java-sample-camel-context
-    - stage: it-citrus-java-sample-disctionaries
+    - stage: it-citrus-java-sample-dictionaries
       script:
       - mvn verify -Dembedded -pl :citrus-java-sample-dictionaries
     - stage: it-citrus-java-sample-docker
@@ -219,7 +219,7 @@ stages:
   - it-citrus-java-sample-behaviors
   - it-citrus-java-sample-binary
   - it-citrus-java-sample-camel-context
-  - it-citrus-java-sample-disctionaries
+  - it-citrus-java-sample-dictionaries
   - it-citrus-java-sample-docker
   - it-citrus-java-sample-dynamic-endpoints
   - it-citrus-java-sample-hamcrest
