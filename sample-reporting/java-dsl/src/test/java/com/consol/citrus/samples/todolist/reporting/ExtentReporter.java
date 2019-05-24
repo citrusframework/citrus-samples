@@ -22,33 +22,32 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.consol.citrus.TestCase;
 import com.consol.citrus.TestCaseMetaInfo;
-import com.consol.citrus.report.AbstractTestListener;
+import com.consol.citrus.report.AbstractTestReporter;
 import com.consol.citrus.report.TestReporter;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author Christoph Deppisch
  */
-public class ExtentReporter extends AbstractTestListener implements TestReporter, InitializingBean {
+public class ExtentReporter extends AbstractTestReporter implements TestReporter, InitializingBean {
 
-    private ExtentHtmlReporter extentHtmlReporter;
     private ExtentReports extentReports;
 
     @Override
-    public void onTestSuccess(TestCase test) {
-        ExtentTest extentTest = extentReports.createTest(test.getName());
+    public void onTestSuccess(final TestCase test) {
+        final ExtentTest extentTest = extentReports.createTest(test.getName());
         extentTest.pass(getTestDetails(test.getMetaInfo()));
     }
 
     @Override
-    public void onTestSkipped(TestCase test) {
-        ExtentTest extentTest = extentReports.createTest(test.getName());
+    public void onTestSkipped(final TestCase test) {
+        final ExtentTest extentTest = extentReports.createTest(test.getName());
         extentTest.skip(getTestDetails(test.getMetaInfo()));
     }
 
     @Override
-    public void onTestFailure(TestCase test, Throwable cause) {
-        ExtentTest extentTest = extentReports.createTest(test.getName());
+    public void onTestFailure(final TestCase test, final Throwable cause) {
+        final ExtentTest extentTest = extentReports.createTest(test.getName());
         extentTest.fail(cause);
     }
 
@@ -58,12 +57,7 @@ public class ExtentReporter extends AbstractTestListener implements TestReporter
     }
 
     @Override
-    public void clearTestResults() {
-        initializeExtentReports();
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         initializeExtentReports();
     }
 
@@ -71,7 +65,7 @@ public class ExtentReporter extends AbstractTestListener implements TestReporter
      * Initialize reports.
      */
     private void initializeExtentReports() {
-        extentHtmlReporter = new ExtentHtmlReporter("target/citrus-reports/extent-reports.html");
+        final ExtentHtmlReporter extentHtmlReporter = new ExtentHtmlReporter("target/citrus-reports/extent-reports.html");
         extentHtmlReporter.config().setDocumentTitle("ExtentReports - Created by Citrus TestListener");
         extentHtmlReporter.config().setReportName("ExtentReports - Created by Citrus TestListener");
         extentHtmlReporter.config().setTheme(Theme.STANDARD);
@@ -86,7 +80,7 @@ public class ExtentReporter extends AbstractTestListener implements TestReporter
      * @param metaInfo
      * @return
      */
-    private String getTestDetails(TestCaseMetaInfo metaInfo) {
+    private String getTestDetails(final TestCaseMetaInfo metaInfo) {
         return String.format("details: author:%s, creationDate:%s, status:%s", metaInfo.getAuthor(), metaInfo.getCreationDate(), metaInfo.getStatus());
     }
 
