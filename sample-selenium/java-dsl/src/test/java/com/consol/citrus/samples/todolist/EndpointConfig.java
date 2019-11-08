@@ -19,15 +19,21 @@ package com.consol.citrus.samples.todolist;
 import com.consol.citrus.container.SequenceAfterSuite;
 import com.consol.citrus.container.SequenceAfterTest;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.dsl.runner.*;
+import com.consol.citrus.dsl.runner.TestRunner;
+import com.consol.citrus.dsl.runner.TestRunnerAfterSuiteSupport;
+import com.consol.citrus.dsl.runner.TestRunnerAfterTestSupport;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.selenium.endpoint.SeleniumBrowser;
 import org.openqa.selenium.remote.BrowserType;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Christoph Deppisch
  */
+@Import(TodoAppAutoConfiguration.class)
 @Configuration
 public class EndpointConfig {
 

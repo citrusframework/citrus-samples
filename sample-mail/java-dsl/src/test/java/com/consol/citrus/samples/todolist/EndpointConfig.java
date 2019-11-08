@@ -21,10 +21,12 @@ import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.mail.server.MailServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Christoph Deppisch
  */
+@Import(TodoAppAutoConfiguration.class)
 @Configuration
 public class EndpointConfig {
 

@@ -29,8 +29,12 @@
     <server.stop.port>18100</server.stop.port>
     <jetty.embedded.disabled>true</jetty.embedded.disabled>
     <activemq.embedded.disabled>true</activemq.embedded.disabled>
-    <application.server>fabric8/tomcat-8</application.server>
-    <message.broker>consol/activemq-5.12</message.broker>
+    <activemq.server.port>61616</activemq.server.port>
+    <activemq.admin.port>8161</activemq.admin.port>
+    <bakery.server.port>18001</bakery.server.port>
+    <report.server.port>18002</report.server.port>
+    <mail.server.port>2222</mail.server.port>
+    <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
   <build>
@@ -160,12 +164,6 @@
             <daemon>false</daemon>
             <reload>manual</reload>
           </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>io.fabric8</groupId>
-          <artifactId>docker-maven-plugin</artifactId>
-          <version>0.26.0</version>
         </plugin>
 
         <plugin>
@@ -392,7 +390,8 @@
       <id>bakery-embedded</id>
       <activation>
         <property>
-          <name>embedded</name>
+          <name>system.under.test.mode</name>
+          <value>embedded</value>
         </property>
       </activation>
       <build>
@@ -424,7 +423,7 @@
               </execution>
             </executions>
           </plugin>
-          
+
           <plugin>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
@@ -458,57 +457,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>bakery-container</id>
-      <activation>
-        <property>
-          <name>docker</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>start</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>build</goal>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>fixed-server-ports</id>
-      <activation>
-        <property>
-          <!-- use -DuseDynamicPorts in CMD LINE to use dynamic ports -->
-          <name>!useDynamicPorts</name>
-        </property>
-      </activation>
-      <properties>
-        <activemq.server.port>61616</activemq.server.port>
-        <activemq.admin.port>8161</activemq.admin.port>
-        <bakery.server.port>18001</bakery.server.port>
-        <report.server.port>18002</report.server.port>
-        <mail.server.port>2222</mail.server.port>
-      </properties>
     </profile>
   </profiles>
 </project>

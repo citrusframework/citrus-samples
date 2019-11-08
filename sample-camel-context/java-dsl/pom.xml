@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-java-sample-camel-context</artifactId>
   <version>2.8.0</version>
@@ -17,6 +17,7 @@
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.14.3</testng.version>
     <citrus.version>2.8.0</citrus.version>
+    <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
   <build>
@@ -75,43 +76,6 @@
               <value>log4j.properties</value>
             </property>
           </systemProperties>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <version>0.26.0</version>
-        <configuration>
-          <logDate>default</logDate>
-          <verbose>true</verbose>
-          <images>
-            <image>
-              <alias>activemq-broker</alias>
-              <name>consol/activemq-5.12:latest</name>
-              <run>
-                <namingStrategy>alias</namingStrategy>
-                <ports>
-                  <port>61616:61616</port>
-                  <port>8161:8161</port>
-                </ports>
-                <wait>
-                  <log>Broker startup</log>
-                  <http>
-                    <url>http://localhost:8161</url>
-                    <method>GET</method>
-                    <status>200</status>
-                  </http>
-                  <time>60000</time>
-                  <shutdown>500</shutdown>
-                </wait>
-                <log>
-                  <enabled>true</enabled>
-                  <color>green</color>
-                </log>
-              </run>
-            </image>
-          </images>
         </configuration>
       </plugin>
     </plugins>
@@ -283,43 +247,11 @@
 
   <profiles>
     <profile>
-      <id>activemq-container</id>
-      <activation>
-        <property>
-          <name>docker</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>start</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>stop</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
       <id>activemq-embedded</id>
       <activation>
         <property>
-          <name>embedded</name>
+          <name>system.under.test.mode</name>
+          <value>embedded</value>
         </property>
       </activation>
       <build>

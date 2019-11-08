@@ -16,17 +16,19 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.util.Collections;
+
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Collections;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Christoph Deppisch
  */
+@Import(TodoAppAutoConfiguration.class)
 @Configuration
 public class EndpointConfig {
 
@@ -45,5 +47,4 @@ public class EndpointConfig {
                 .requestUrl("http://localhost:8080")
             .build();
     }
-
 }

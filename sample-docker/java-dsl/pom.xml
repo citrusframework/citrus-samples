@@ -13,7 +13,7 @@
     <slf4j.version>1.7.25</slf4j.version>
     <testng.version>6.14.3</testng.version>
     <citrus.version>2.8.0</citrus.version>
-    <todo.app.version>1.1.0</todo.app.version>
+    <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
   <build>
@@ -66,7 +66,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>0.26.0</version>
+        <version>0.31.0</version>
         <configuration>
           <logDate>default</logDate>
           <verbose>true</verbose>
@@ -74,7 +74,7 @@
           <images>
             <image>
               <alias>todo-app</alias>
-              <name>citrusframework/todo-demo-app:${todo.app.version}</name>
+              <name>citrusframework/todo-app:${project.version}</name>
               <watch>
                 <mode>none</mode>
               </watch>
@@ -100,7 +100,7 @@
             </image>
             <image>
               <alias>todo-app-tests</alias>
-              <name>citrus/todo-app-tests:${project.version}</name>
+              <name>citrusframework/todo-app-tests:${project.version}</name>
               <build>
                 <from>maven:3.5.0-jdk-8</from>
                 <assembly>
@@ -212,7 +212,8 @@
       <id>todo-app-container</id>
       <activation>
         <property>
-          <name>docker</name>
+          <name>system.under.test.mode</name>
+          <value>docker</value>
         </property>
       </activation>
       <properties>

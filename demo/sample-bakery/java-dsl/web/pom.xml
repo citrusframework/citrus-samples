@@ -113,9 +113,7 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <activemq.server.host>localhost</activemq.server.host>
             <activemq.server.port>${activemq.server.port}</activemq.server.port>
-            <bakery.server.host>localhost</bakery.server.host>
             <bakery.server.port>${bakery.server.port}</bakery.server.port>
           </systemPropertyVariables>
         </configuration>
@@ -135,98 +133,10 @@
           </httpConnector>
           <systemProperties>
             <systemProperty>
-              <name>ACTIVEMQ_PORT_61616_TCP_ADDR</name>
-              <value>localhost</value>
-            </systemProperty>
-            <systemProperty>
-              <name>ACTIVEMQ_PORT_61616_TCP_PORT</name>
+              <name>ACTIVEMQ_BROKER_PORT</name>
               <value>${activemq.server.port}</value>
             </systemProperty>
           </systemProperties>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>io.fabric8</groupId>
-        <artifactId>docker-maven-plugin</artifactId>
-        <configuration>
-          <watchInterval>500</watchInterval>
-          <logDate>default</logDate>
-          <verbose>true</verbose>
-          <images>
-            <image>
-              <alias>activemq-broker</alias>
-              <name>${message.broker}:latest</name>
-              <run>
-                <namingStrategy>alias</namingStrategy>
-                <ports>
-                  <port>${activemq.server.port}:61616</port>
-                  <port>${activemq.admin.port}:8161</port>
-                </ports>
-                <wait>
-                  <log>Broker startup</log>
-                  <http>
-                    <url>http://localhost:${activemq.admin.port}</url>
-                    <method>GET</method>
-                    <status>200</status>
-                  </http>
-                  <time>60000</time>
-                  <shutdown>500</shutdown>
-                </wait>
-                <log>
-                  <enabled>true</enabled>
-                  <color>green</color>
-                </log>
-              </run>
-            </image>
-            <image>
-              <alias>bakery-web-server</alias>
-              <name>${application.server}:latest</name>
-              <run>
-                <namingStrategy>alias</namingStrategy>
-                <volumes>
-                  <from>
-                    <image>application</image>
-                  </from>
-                </volumes>
-                <links>
-                  <link>activemq-broker:activemq</link>
-                </links>
-                <env>
-                  <CATALINA_OPTS>-Xmx64m</CATALINA_OPTS>
-                </env>
-                <ports>
-                  <port>${bakery.server.port}:8080</port>
-                </ports>
-                <wait>
-                  <log>Server startup</log>
-                  <http>
-                    <url>http://localhost:${bakery.server.port}/bakery/jolokia</url>
-                    <method>GET</method>
-                    <status>200</status>
-                  </http>
-                  <time>60000</time>
-                  <shutdown>500</shutdown>
-                </wait>
-                <log>
-                  <enabled>true</enabled>
-                  <color>green</color>
-                </log>
-              </run>
-            </image>
-            <image>
-              <alias>application</alias>
-              <name>citrus/bakery-web:${project.version}</name>
-              <build>
-                <tags>
-                  <tag>latest</tag>
-                </tags>
-                <assembly>
-                  <descriptorRef>artifact</descriptorRef>
-                </assembly>
-              </build>
-            </image>
-          </images>
         </configuration>
       </plugin>
     </plugins>

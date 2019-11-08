@@ -24,11 +24,13 @@ import com.consol.citrus.http.config.annotation.HttpClientConfig;
 import com.consol.citrus.message.MessageType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
  */
+@ContextConfiguration(classes = { TodoAppAutoConfiguration.class })
 public class TodoListIT extends TestNGCitrusTestRunner {
 
     @CitrusEndpoint
@@ -58,5 +60,4 @@ public class TodoListIT extends TestNGCitrusTestRunner {
                         "<body>@ignore@</body>" +
                     "</html>"));
     }
-
 }

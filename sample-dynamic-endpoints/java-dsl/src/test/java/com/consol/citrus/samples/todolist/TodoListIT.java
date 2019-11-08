@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 /**
  * @author Christoph Deppisch
  */
-@ContextConfiguration(classes = JmsConfig.class)
+@ContextConfiguration(classes = EndpointConfig.class)
 public class TodoListIT extends TestNGCitrusTestRunner {
 
     @Test

@@ -16,6 +16,8 @@
 
 package com.consol.citrus.samples.bakery;
 
+import javax.jms.ConnectionFactory;
+
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
@@ -27,8 +29,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 
-import javax.jms.ConnectionFactory;
-
 /**
  * @author Christoph Deppisch
  */
@@ -36,14 +36,8 @@ import javax.jms.ConnectionFactory;
 @PropertySource(value = "citrus.properties")
 public class CitrusEndpointConfig {
 
-    @Value("${activemq.server.host}")
-    public String activemqServerHost;
-
     @Value("${activemq.server.port}")
     public int activemqServerPort;
-
-    @Value("${bakery.server.host}")
-    public String bakeryServerHost;
 
     @Value("${bakery.server.port}")
     public int bakeryServerPort;
@@ -62,7 +56,7 @@ public class CitrusEndpointConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(String.format("tcp://%s:%s", activemqServerHost, activemqServerPort));
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(String.format("tcp://localhost:%s", activemqServerPort));
         connectionFactory.setWatchTopicAdvisories(false);
         return connectionFactory;
     }
@@ -71,7 +65,7 @@ public class CitrusEndpointConfig {
     public HttpClient bakeryClient() {
         return CitrusEndpoints.http()
                 .client()
-                .requestUrl(String.format("http://%s:%s/bakery/services", bakeryServerHost, bakeryServerPort))
+                .requestUrl(String.format("http://localhost:%s/bakery/services", bakeryServerPort))
                 .build();
     }
 

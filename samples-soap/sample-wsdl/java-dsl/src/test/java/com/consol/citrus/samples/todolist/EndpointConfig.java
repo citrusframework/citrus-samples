@@ -16,6 +16,8 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.util.Collections;
+
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.xml.XsdSchemaRepository;
@@ -23,15 +25,15 @@ import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import com.consol.citrus.xml.schema.WsdlXsdSchema;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 
-import java.util.Collections;
-
 /**
  * @author Christoph Deppisch
  */
+@Import(TodoAppAutoConfiguration.class)
 @Configuration
 public class EndpointConfig {
 
@@ -67,5 +69,4 @@ public class EndpointConfig {
                 .defaultUri("http://localhost:8080/services/ws/todolist")
             .build();
     }
-
 }

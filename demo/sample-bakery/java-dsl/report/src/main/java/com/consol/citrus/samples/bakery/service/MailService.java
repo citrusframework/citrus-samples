@@ -16,15 +16,20 @@
 
 package com.consol.citrus.samples.bakery.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author Christoph Deppisch
@@ -35,10 +40,7 @@ public class MailService {
     /** Logger */
     private static Logger log = LoggerFactory.getLogger(MailService.class);
 
-    @Value("${MAIL_PORT_2222_TCP_ADDR:localhost}")
-    private String mailServerHost;
-
-    @Value("${MAIL_PORT_2222_TCP_PORT:2222}")
+    @Value("${MAIL_SERVER_PORT:2222}")
     private String mailServerPort;
 
     private String from = "cookie-report@example.com";
@@ -53,7 +55,7 @@ public class MailService {
      */
     public void sendMail(String to, String subject, String body) {
         Properties props = new Properties();
-        props.put("mail.smtp.host", mailServerHost);
+        props.put("mail.smtp.host", "localhost");
         props.put("mail.smtp.port", mailServerPort);
         props.put("mail.smtp.auth", true);
 

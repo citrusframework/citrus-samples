@@ -16,6 +16,8 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.util.Collections;
+
 import com.consol.citrus.db.driver.JdbcDriver;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
@@ -23,15 +25,17 @@ import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-
-import java.util.Collections;
 
 /**
  * @author Christoph Deppisch
  */
+@Import(TodoAppAutoConfiguration.class)
 @Configuration
 public class EndpointConfig {
+
+    private static final int DB_SERVER_PORT = 13306;
 
     @Bean
     public HttpClient todoClient() {
@@ -56,7 +60,7 @@ public class EndpointConfig {
                 .server()
                 .host("localhost")
                 .databaseName("testdb")
-                .port(13306)
+                .port(DB_SERVER_PORT)
                 .timeout(10000L)
                 .autoStart(true)
                 .autoTransactionHandling(false)
@@ -67,7 +71,7 @@ public class EndpointConfig {
     public SingleConnectionDataSource dataSource() {
         SingleConnectionDataSource dataSource = new SingleConnectionDataSource();
         dataSource.setDriverClassName(JdbcDriver.class.getName());
-        dataSource.setUrl("jdbc:citrus:http://localhost:13306/testdb");
+        dataSource.setUrl(String.format("jdbc:citrus:http://localhost:%s/testdb", DB_SERVER_PORT));
         dataSource.setUsername("sa");
         dataSource.setPassword("");
         return dataSource;

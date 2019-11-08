@@ -34,10 +34,7 @@ public class FactoryWorkerRoute extends RouteBuilder {
     @Value("${FACTORY_COSTS:1000}")
     private String factoryCosts;
 
-    @Value("${REPORT_PORT_8080_TCP_ADDR:localhost}")
-    private String reportServerHost;
-
-    @Value("${REPORT_PORT_8080_TCP_PORT:18002}")
+    @Value("${REPORT_SERVER_PORT:18002}")
     private String reportServerPort;
 
     @Override
@@ -49,6 +46,6 @@ public class FactoryWorkerRoute extends RouteBuilder {
             .delay(constant(factoryCosts))
             .setHeader(Exchange.HTTP_METHOD, constant("PUT"))
             .setBody(constant(""))
-            .to("http://" + reportServerHost + ":" + reportServerPort + "/report/services/reporting");
+            .to(String.format("http://localhost:%s/report/services/reporting", reportServerPort));
     }
 }

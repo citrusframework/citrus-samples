@@ -11,7 +11,7 @@
             <Ref refid="Server"/>
           </Arg>
           <Set name="port">
-            <SystemProperty name="REPORT_PORT_8080_TCP_PORT"/>
+            <SystemProperty name="REPORT_SERVER_PORT"/>
           </Set>
           <Set name="name">instance_report</Set>
         </New>

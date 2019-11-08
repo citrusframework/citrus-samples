@@ -47,7 +47,7 @@ Run
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
  
-     mvn clean verify -Dembedded
+     mvn clean verify -Dsystem.under.test.mode=embedded
     
 This executes the complete Maven build lifecycle. The embedded option automatically starts a Jetty web
 container before the integration test phase. The todo-list system under test is automatically deployed in this phase.

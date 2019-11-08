@@ -16,6 +16,8 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.util.Collections;
+
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.kafka.embedded.EmbeddedKafkaServer;
@@ -24,14 +26,16 @@ import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Collections;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Christoph Deppisch
  */
+@Import(TodoAppAutoConfiguration.class)
 @Configuration
 public class EndpointConfig {
+
+    private static final int KAFKA_BROKER_PORT = 9092;
 
     @Bean
     public HttpClient todoClient() {
@@ -52,7 +56,7 @@ public class EndpointConfig {
     @Bean
     public EmbeddedKafkaServer embeddedKafkaServer() {
         return new EmbeddedKafkaServerBuilder()
-                .kafkaServerPort(9092)
+                .kafkaServerPort(KAFKA_BROKER_PORT)
                 .topics("todo.inbound", "todo.report")
             .build();
     }
@@ -62,7 +66,7 @@ public class EndpointConfig {
         return CitrusEndpoints
             .kafka()
                 .asynchronous()
-                .server("localhost:9092")
+                .server(String.format("localhost:%s", KAFKA_BROKER_PORT))
                 .topic("todo.inbound")
             .build();
     }
@@ -72,7 +76,7 @@ public class EndpointConfig {
         return CitrusEndpoints
             .kafka()
                 .asynchronous()
-                .server("localhost:9092")
+                .server(String.format("localhost:%s", KAFKA_BROKER_PORT))
                 .topic("todo.report")
                 .offsetReset("earliest")
             .build();

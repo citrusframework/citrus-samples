@@ -37,9 +37,6 @@ public class CitrusEndpointConfig {
     @Value("${mail.server.port}")
     public int mailServerPort;
 
-    @Value("${report.server.host}")
-    public String reportServerHost;
-
     @Value("${report.server.port}")
     public int reportServerPort;
 
@@ -60,7 +57,7 @@ public class CitrusEndpointConfig {
         return CitrusEndpoints.http()
                     .client()
                     .requestMethod(HttpMethod.GET)
-                    .requestUrl(String.format("http://%s:%s/report/services", reportServerHost, reportServerPort))
+                    .requestUrl(String.format("http://localhost:%s/report/services", reportServerPort))
                     .build();
     }
 

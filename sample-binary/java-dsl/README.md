@@ -92,7 +92,7 @@ Run
 The sample application uses Maven as build tool. So you can compile, package and test the sample with Maven.
 
 ```
-mvn clean verify -Dembedded
+mvn clean verify -Dsystem.under.test.mode=embedded
 ```
     
 This executes the Maven build lifecycle until phase `verify` which includes the `integration-test` and its `pre-` and `post-` phases. The `embedded` option automatically starts a in-memory ActiveMQ message broker during the `pre-integration-test` phase. This is everything we need for this sample as Citrus is both message producer and consumer at the same time.

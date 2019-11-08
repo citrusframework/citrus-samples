@@ -16,20 +16,23 @@
 
 package com.consol.citrus.samples.todolist;
 
+import javax.jms.ConnectionFactory;
+import java.util.Collections;
+
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.springframework.context.annotation.*;
-
-import javax.jms.ConnectionFactory;
-import java.util.Collections;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * @author Christoph Deppisch
  */
+@Import(TodoAppAutoConfiguration.class)
 @Configuration
 public class EndpointConfig {
 
