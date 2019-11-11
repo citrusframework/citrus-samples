@@ -10,200 +10,200 @@ jobs:
   include:
     - stage: it-citrus-demo-bakery-worker
       script:
-      - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-java-bakery-worker
+      - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-bakery-worker
     - stage: it-citrus-demo-bakery-web
       script:
-      - mvn clean install -Dsystem.under.test.mode=embedded -pl :citrus-java-bakery-web
+      - mvn clean install -Dsystem.under.test.mode=embedded -pl :citrus-bakery-web
     - stage: it-citrus-demo-bakery-report
       script:
-      - mvn clean install -Dsystem.under.test.mode=embedded -pl :citrus-java-bakery-report
+      - mvn clean install -Dsystem.under.test.mode=embedded -pl :citrus-bakery-report
     - stage: it-citrus-demo-bakery-integration
       script:
-      - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-java-bakery-integration
+      - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-bakery-integration
     - stage: it-citrus-demo-bookstore
       script:
-      - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-bookstore
+      - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-bookstore
     - stage: it-citrus-demo-flightbooking
       script:
-        - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-flightbooking
+        - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-flightbooking
     - stage: it-citrus-demo-greeting
       script:
-        - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-greeting
+        - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-greeting
     - stage: it-citrus-demo-incident
       script:
-        - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-incident
+        - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-incident
 #    TODO: cannot find org.apache.cxf:cxf-rt-frontend-jaxws:jar:3.1.9
 #    - stage: it-citrus-demo-javaee
 #      script:
-#      - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-javaee
+#      - mvn clean verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-javaee
     - stage: install-todo-app
       script:
       - mvn clean install -pl :citrus-sample-todo
-    - stage: it-citrus-java-sample-annotation-config
+    - stage: it-citrus-sample-annotation-config
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-annotation-config
-    - stage: it-citrus-java-sample-behaviors
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-annotation-config
+    - stage: it-citrus-sample-behaviors
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-behaviors
-    - stage: it-citrus-java-sample-binary
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-behaviors
+    - stage: it-citrus-sample-binary
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-binary
-    - stage: it-citrus-java-sample-camel-context
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-binary
+    - stage: it-citrus-sample-camel-context
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-camel-context
-    - stage: it-citrus-java-sample-dictionaries
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-camel-context
+    - stage: it-citrus-sample-dictionaries
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-dictionaries
-    - stage: it-citrus-java-sample-docker
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dictionaries
+    - stage: it-citrus-sample-docker
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-docker
-    - stage: it-citrus-java-sample-dynamic-endpoints
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-docker
+    - stage: it-citrus-sample-dynamic-endpoints
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-dynamic-endpoints
-    - stage: it-citrus-java-sample-hamcrest
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dynamic-endpoints
+    - stage: it-citrus-sample-hamcrest
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-hamcrest
-    - stage: it-citrus-java-sample-javaconfig
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-hamcrest
+    - stage: it-citrus-sample-javaconfig
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-javaconfig
-    - stage: it-citrus-java-sample-jms
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-javaconfig
+    - stage: it-citrus-sample-jms
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-jms
-    - stage: it-citrus-java-sample-kafka
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-jms
+    - stage: it-citrus-sample-kafka
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-kafka
-    - stage: it-citrus-java-sample-kubernetes
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-kafka
+    - stage: it-citrus-sample-kubernetes
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-kubernetes
-    - stage: it-citrus-java-sample-mail
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-kubernetes
+    - stage: it-citrus-sample-mail
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-mail
-    - stage: it-citrus-java-sample-message-store
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-mail
+    - stage: it-citrus-sample-message-store
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-message-store
-    - stage: it-citrus-java-sample-reporting
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-message-store
+    - stage: it-citrus-sample-reporting
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-reporting
-    - stage: it-citrus-java-sample-rmi
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-reporting
+    - stage: it-citrus-sample-rmi
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-rmi
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-rmi
 #   TODO: get selenium running on travis
-#    - stage: it-citrus-java-sample-selenium
+#    - stage: it-citrus-sample-selenium
 #      script:
-#      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-selenium
-    - stage: it-citrus-java-sample-cucumber
+#      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-selenium
+    - stage: it-citrus-sample-cucumber
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-cucumber
-    - stage: it-citrus-java-sample-cucumber-spring
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-cucumber
+    - stage: it-citrus-sample-cucumber-spring
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-cucumber-spring
-    - stage: it-citrus-java-sample-cucumber2
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-cucumber-spring
+    - stage: it-citrus-sample-cucumber2
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-cucumber-spring2
-    - stage: it-citrus-java-sample-jdbc
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-cucumber-spring2
+    - stage: it-citrus-sample-jdbc
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-jdbc
-    - stage: it-citrus-java-sample-jdbc-callable-statements
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-jdbc
+    - stage: it-citrus-sample-jdbc-callable-statements
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-jdbc-callable-statements
-    - stage: it-citrus-java-sample-jdbc-transactions
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-jdbc-callable-statements
+    - stage: it-citrus-sample-jdbc-transactions
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-jdbc-transactions
-    - stage: it-citrus-java-sample-sql
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-jdbc-transactions
+    - stage: it-citrus-sample-sql
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-sql
-    - stage: it-citrus-java-sample-ftp
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-sql
+    - stage: it-citrus-sample-ftp
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-ftp
-    - stage: it-citrus-java-sample-scp
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-ftp
+    - stage: it-citrus-sample-scp
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-scp
-    - stage: it-citrus-java-sample-sftp
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-scp
+    - stage: it-citrus-sample-sftp
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-sftp
-    - stage: it-citrus-java-sample-http
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-sftp
+    - stage: it-citrus-sample-http
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-http
-    - stage: it-citrus-java-sample-http-basic-auth
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-http
+    - stage: it-citrus-sample-http-basic-auth
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-http-basic-auth
-    - stage: it-citrus-java-sample-http-form-data
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-http-basic-auth
+    - stage: it-citrus-sample-http-form-data
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-http-form-data
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-http-form-data
 #    TODO: throws ConcurrentModificationException
-#    - stage: it-citrus-java-sample-http-loadtest
+#    - stage: it-citrus-sample-http-loadtest
 #      script:
-#      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-http-loadtest
-    - stage: it-citrus-java-sample-http-query-param
+#      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-http-loadtest
+    - stage: it-citrus-sample-http-query-param
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-http-query-param
-    - stage: it-citrus-java-sample-http-static-response
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-http-query-param
+    - stage: it-citrus-sample-http-static-response
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-http-static-response
-    - stage: it-citrus-java-sample-https
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-http-static-response
+    - stage: it-citrus-sample-https
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-https
-    - stage: it-citrus-java-sample-swagger
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-https
+    - stage: it-citrus-sample-swagger
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-swagger
-    - stage: it-citrus-java-sample-databind
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-swagger
+    - stage: it-citrus-sample-databind
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-databind
-    - stage: it-citrus-java-sample-json
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-databind
+    - stage: it-citrus-sample-json
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-json
-    - stage: it-citrus-java-sample-junit
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-json
+    - stage: it-citrus-sample-junit
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-junit
-    - stage: it-citrus-java-sample-junit5
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-junit
+    - stage: it-citrus-sample-junit5
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-junit5
-    - stage: it-citrus-java-sample-test-jar
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-junit5
+    - stage: it-citrus-sample-test-jar
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-test-jar
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-test-jar
 #    TODO: The jetty-plugin is not properly configured, the server returns a 404 on every request
-#    - stage: it-citrus-java-sample-test-war
+#    - stage: it-citrus-sample-test-war
 #      script:
-#      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-test-war
-    - stage: it-citrus-java-sample-soap
+#      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-test-war
+    - stage: it-citrus-sample-soap
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-soap
-    - stage: it-citrus-java-sample-soap-attachment
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-soap
+    - stage: it-citrus-sample-soap-attachment
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-soap-attachment
-    - stage: it-citrus-java-sample-soap-mtom
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-soap-attachment
+    - stage: it-citrus-sample-soap-mtom
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-soap-mtom
-    - stage: it-citrus-java-sample-soap-ssl
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-soap-mtom
+    - stage: it-citrus-sample-soap-ssl
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-soap-ssl
-    - stage: it-citrus-java-sample-soap-static-response
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-soap-ssl
+    - stage: it-citrus-sample-soap-static-response
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-soap-static-response
-    - stage: it-citrus-java-sample-soap-wsaddressing
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-soap-static-response
+    - stage: it-citrus-sample-soap-wsaddressing
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-soap-wsaddressing
-    - stage: it-citrus-java-sample-soap-wssecurity
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-soap-wsaddressing
+    - stage: it-citrus-sample-soap-wssecurity
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-soap-wssecurity
-    - stage: it-citrus-java-sample-wsdl
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-soap-wssecurity
+    - stage: it-citrus-sample-wsdl
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-wsdl
-    - stage: it-citrus-java-sample-dataprovider
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-wsdl
+    - stage: it-citrus-sample-dataprovider
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-dataprovider
-    - stage: it-citrus-java-sample-testng
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dataprovider
+    - stage: it-citrus-sample-testng
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-testng
-    - stage: it-citrus-java-sample-oxm
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-testng
+    - stage: it-citrus-sample-oxm
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-oxm
-    - stage: it-citrus-java-sample-xhtml
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-oxm
+    - stage: it-citrus-sample-xhtml
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-xhtml
-    - stage: it-citrus-java-sample-xml
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-xhtml
+    - stage: it-citrus-sample-xml
       script:
-      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-java-sample-xml
+      - mvn verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-xml
 stages:
   - it-citrus-demo-bakery-worker
   - it-citrus-demo-bakery-web
@@ -215,60 +215,60 @@ stages:
   - it-citrus-demo-incident
 #  - it-citrus-demo-javaee
   - install-todo-app
-  - it-citrus-java-sample-annotation-config
-  - it-citrus-java-sample-behaviors
-  - it-citrus-java-sample-binary
-  - it-citrus-java-sample-camel-context
-  - it-citrus-java-sample-dictionaries
-  - it-citrus-java-sample-docker
-  - it-citrus-java-sample-dynamic-endpoints
-  - it-citrus-java-sample-hamcrest
-  - it-citrus-java-sample-javaconfig
-  - it-citrus-java-sample-jms
-  - it-citrus-java-sample-kafka
-  - it-citrus-java-sample-kubernetes
-  - it-citrus-java-sample-mail
-  - it-citrus-java-sample-message-store
-  - it-citrus-java-sample-reporting
-  - it-citrus-java-sample-rmi
-#  - it-citrus-java-sample-selenium
-  - it-citrus-java-sample-cucumber
-  - it-citrus-java-sample-cucumber-spring
-  - it-citrus-java-sample-cucumber2
-  - it-citrus-java-sample-jdbc
-  - it-citrus-java-sample-jdbc-callable-statements
-  - it-citrus-java-sample-jdbc-transactions
-  - it-citrus-java-sample-sql
-  - it-citrus-java-sample-ftp
-  - it-citrus-java-sample-scp
-  - it-citrus-java-sample-sftp
-  - it-citrus-java-sample-http
-  - it-citrus-java-sample-http-basic-auth
-  - it-citrus-java-sample-http-form-data
-#  - it-citrus-java-sample-http-loadtest
-  - it-citrus-java-sample-http-query-param
-  - it-citrus-java-sample-http-static-response
-  - it-citrus-java-sample-https
-  - it-citrus-java-sample-swagger
-  - it-citrus-java-sample-databind
-  - it-citrus-java-sample-json
-  - it-citrus-java-sample-junit
-  - it-citrus-java-sample-junit5
-  - it-citrus-java-sample-test-jar
-#  - it-citrus-java-sample-test-war
-  - it-citrus-java-sample-soap
-  - it-citrus-java-sample-soap-attachment
-  - it-citrus-java-sample-soap-mtom
-  - it-citrus-java-sample-soap-ssl
-  - it-citrus-java-sample-soap-static-response
-  - it-citrus-java-sample-soap-wsaddressing
-  - it-citrus-java-sample-soap-wssecurity
-  - it-citrus-java-sample-wsdl
-  - it-citrus-java-sample-dataprovider
-  - it-citrus-java-sample-testng
-  - it-citrus-java-sample-oxm
-  - it-citrus-java-sample-xhtml
-  - it-citrus-java-sample-xml
+  - it-citrus-sample-annotation-config
+  - it-citrus-sample-behaviors
+  - it-citrus-sample-binary
+  - it-citrus-sample-camel-context
+  - it-citrus-sample-dictionaries
+  - it-citrus-sample-docker
+  - it-citrus-sample-dynamic-endpoints
+  - it-citrus-sample-hamcrest
+  - it-citrus-sample-javaconfig
+  - it-citrus-sample-jms
+  - it-citrus-sample-kafka
+  - it-citrus-sample-kubernetes
+  - it-citrus-sample-mail
+  - it-citrus-sample-message-store
+  - it-citrus-sample-reporting
+  - it-citrus-sample-rmi
+#  - it-citrus-sample-selenium
+  - it-citrus-sample-cucumber
+  - it-citrus-sample-cucumber-spring
+  - it-citrus-sample-cucumber2
+  - it-citrus-sample-jdbc
+  - it-citrus-sample-jdbc-callable-statements
+  - it-citrus-sample-jdbc-transactions
+  - it-citrus-sample-sql
+  - it-citrus-sample-ftp
+  - it-citrus-sample-scp
+  - it-citrus-sample-sftp
+  - it-citrus-sample-http
+  - it-citrus-sample-http-basic-auth
+  - it-citrus-sample-http-form-data
+#  - it-citrus-sample-http-loadtest
+  - it-citrus-sample-http-query-param
+  - it-citrus-sample-http-static-response
+  - it-citrus-sample-https
+  - it-citrus-sample-swagger
+  - it-citrus-sample-databind
+  - it-citrus-sample-json
+  - it-citrus-sample-junit
+  - it-citrus-sample-junit5
+  - it-citrus-sample-test-jar
+#  - it-citrus-sample-test-war
+  - it-citrus-sample-soap
+  - it-citrus-sample-soap-attachment
+  - it-citrus-sample-soap-mtom
+  - it-citrus-sample-soap-ssl
+  - it-citrus-sample-soap-static-response
+  - it-citrus-sample-soap-wsaddressing
+  - it-citrus-sample-soap-wssecurity
+  - it-citrus-sample-wsdl
+  - it-citrus-sample-dataprovider
+  - it-citrus-sample-testng
+  - it-citrus-sample-oxm
+  - it-citrus-sample-xhtml
+  - it-citrus-sample-xml
 
 cache:
   directories:
