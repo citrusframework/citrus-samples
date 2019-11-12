@@ -29,7 +29,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * @author Christoph Deppisch
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+        "com.consol.citrus.samples.todolist.dao",
+        "com.consol.citrus.samples.todolist.jms",
+        "com.consol.citrus.samples.todolist.kafka",
+        "com.consol.citrus.samples.todolist.service",
+        "com.consol.citrus.samples.todolist.soap",
+        "com.consol.citrus.samples.todolist.web"
+})
 @EnableSwagger2
 public class TodoApplication {
 

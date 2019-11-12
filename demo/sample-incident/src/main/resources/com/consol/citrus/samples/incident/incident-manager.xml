@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:oxm="http://www.springframework.org/schema/oxm"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
+            http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <!-- ActiveMQ connection factory-->
+    <bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+      <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+
+    <!-- Http inbound endpoint for incoming incident requests -->
+    <jaxws:endpoint id="httpIncidentEndpoint" implementor="com.consol.citrus.samples.incident.service.IncidentManagerService"
+                    address="/IncidentManager/v1">
+      <jaxws:properties>
+        <entry key="schema-validation-enabled" value="true"/>
+      </jaxws:properties>
+      <jaxws:inInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+      </jaxws:inInterceptors>
+      <jaxws:outInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+      </jaxws:outInterceptors>
+    </jaxws:endpoint>
+
+    <!-- JMS inbound endpoint for incoming incident requests -->
+    <jaxws:endpoint id="jmsIncidentEndpoint" implementor="com.consol.citrus.samples.incident.service.IncidentManagerService"
+            address="jms://">
+      <jaxws:properties>
+        <entry key="schema-validation-enabled" value="true"/>
+      </jaxws:properties>
+      <jaxws:features>
+        <bean class="org.apache.cxf.transport.jms.JMSConfigFeature">
+          <property name="jmsConfig">
+            <bean class="org.apache.cxf.transport.jms.JMSConfiguration">
+              <property name="connectionFactory" ref="activemqConnectionFactory"/>
+              <property name="targetDestination" value="JMS.Citrus.v1.IncidentManager"/>
+              <property name="sessionTransacted" value="true"/>
+            </bean>
+          </property>
+        </bean>
+      </jaxws:features>
+      <jaxws:inInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+      </jaxws:inInterceptors>
+      <jaxws:outInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+      </jaxws:outInterceptors>
+    </jaxws:endpoint>
+
+    <!-- Network Http client service -->
+    <bean class="com.consol.citrus.samples.incident.service.NetworkServiceImpl">
+      <property name="serviceUri" value="http://#{systemEnvironment['NETWORK_SERVER_PORT_18002_TCP_ADDR']?:'localhost'}:18002/network/NetworkService/v1/"/>
+      <property name="restTemplate">
+        <bean class="org.springframework.web.client.RestTemplate">
+          <property name="messageConverters">
+            <list>
+              <bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+                <property name="marshaller" ref="jaxb2Marshaller"/>
+                <property name="unmarshaller" ref="jaxb2Marshaller"/>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </property>
+    </bean>
+
+    <!-- FieldForce management -->
+    <bean id="fieldForceService" class="com.consol.citrus.samples.incident.service.FieldForceServiceImpl"/>
+
+    <!-- Jms client sending field force messages to destination -->
+    <bean id="fieldForceClient" class="com.consol.citrus.samples.incident.service.FieldForceJmsClient">
+      <constructor-arg>
+        <bean class="org.springframework.jms.core.JmsTemplate">
+          <constructor-arg ref="activemqConnectionFactory"/>
+          <property name="defaultDestinationName" value="JMS.Citrus.v1.FieldForceOrder"/>
+        </bean>
+      </constructor-arg>
+    </bean>
+
+    <!-- Message Driven POJO for incoming notification messages -->
+    <bean id="fieldForceNotificationConsumer" class="com.consol.citrus.samples.incident.service.FieldForceJmsConsumer" />
+
+    <!-- JMS message listener container -->
+    <bean id="fieldForceNotificationListener" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+      <property name="connectionFactory" ref="activemqConnectionFactory"/>
+      <property name="destinationName" value="JMS.Citrus.v1.FieldForceNotification"/>
+      <property name="messageListener" ref="fieldForceNotificationConsumer" />
+    </bean>
+
+    <!-- Sms gateway service -->
+    <bean id="smsService" class="com.consol.citrus.samples.incident.service.SmsServiceImpl"/>
+
+    <jaxws:client xmlns:sms="http://www.citrusframework.org/schema/samples/SmsGateway/v1"
+                  id="smsGatewayClient"
+                  serviceClass="org.citrusframework.schema.samples.smsgateway.v1.SmsGateway"
+                  serviceName="sms:SmsGateway"
+                  endpointName="sms:SmsGatewayHTTP"
+                  address="http://#{systemEnvironment['SMS_GATEWAY_PORT_18005_TCP_ADDR']?:'localhost'}:18005/sms/SmsGateway/v1">
+      <jaxws:properties>
+        <entry key="schema-validation-enabled" value="true"/>
+      </jaxws:properties>
+      <jaxws:inInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+      </jaxws:inInterceptors>
+      <jaxws:outInterceptors>
+        <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+      </jaxws:outInterceptors>
+    </jaxws:client>
+
+    <oxm:jaxb2-marshaller id="jaxb2Marshaller">
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.incidentmanager.v1.OpenIncident"/>
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.incidentmanager.v1.OpenIncidentResponse"/>
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.networkservice.v1.AnalyseIncident"/>
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResponse"/>
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.fieldforceservice.v1.OrderRequest"/>
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.fieldforceservice.v1.OrderNotification"/>
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.smsgateway.v1.SendSmsRequest"/>
+      <oxm:class-to-be-bound name="org.citrusframework.schema.samples.smsgateway.v1.SendSmsResponse"/>
+    </oxm:jaxb2-marshaller>
+</beans>
