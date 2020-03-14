@@ -23,13 +23,15 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.consol.citrus.TestCase;
 import com.consol.citrus.TestCaseMetaInfo;
 import com.consol.citrus.report.AbstractTestReporter;
+import com.consol.citrus.report.TestListener;
 import com.consol.citrus.report.TestReporter;
+import com.consol.citrus.report.TestResults;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
  * @author Christoph Deppisch
  */
-public class ExtentReporter extends AbstractTestReporter implements TestReporter, InitializingBean {
+public class ExtentReporter extends AbstractTestReporter implements TestReporter, TestListener, InitializingBean {
 
     private ExtentReports extentReports;
 
@@ -52,7 +54,17 @@ public class ExtentReporter extends AbstractTestReporter implements TestReporter
     }
 
     @Override
-    public void generateTestResults() {
+    public void onTestStart(TestCase test) {
+        // do nothing
+    }
+
+    @Override
+    public void onTestFinish(TestCase test) {
+        // do nothing
+    }
+
+    @Override
+    public void generate(TestResults results) {
         extentReports.flush();
     }
 

@@ -42,7 +42,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .name("todoRequest")
+            .messageName("todoRequest")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload("{\"id\": \"citrus:randomUUID()\", \"title\": \"citrus:concat('todo_', citrus:randomNumber(4))\", \"description\": \"ToDo Description\", \"done\": false}"));
@@ -66,7 +66,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .name("todoResponse")
+            .messageName("todoResponse")
             .messageType(MessageType.JSON)
             .validate("$.id", "citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')"));
 
@@ -80,7 +80,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .name("todoRequest")
+            .messageName("todoRequest")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .payload("{\"id\":\"citrus:randomUUID()\",\"title\":\"citrus:concat('todo_',citrus:randomNumber(4))\",\"description\":\"ToDo Description\",\"done\":false}"));
@@ -104,7 +104,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .name("todoResponse")
+            .messageName("todoResponse")
             .messageType(MessageType.JSON)
             .validationCallback((message, context) -> {
                 Message todoRequest = context.getMessageStore().getMessage("todoRequest");

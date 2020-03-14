@@ -16,9 +16,15 @@
 
 package com.consol.citrus.samples.javaee.employee;
 
+import javax.ws.rs.core.MediaType;
+import java.net.URL;
+
 import com.consol.citrus.Citrus;
-import com.consol.citrus.annotations.*;
-import com.consol.citrus.dsl.runner.TestRunner;
+import com.consol.citrus.TestCaseRunner;
+import com.consol.citrus.annotations.CitrusEndpoint;
+import com.consol.citrus.annotations.CitrusFramework;
+import com.consol.citrus.annotations.CitrusResource;
+import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.samples.javaee.Deployments;
 import com.consol.citrus.ws.server.WebServiceServer;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -32,8 +38,9 @@ import org.junit.runner.RunWith;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 
-import javax.ws.rs.core.MediaType;
-import java.net.URL;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 @RunWith(Arquillian.class)
 @RunAsClient
@@ -62,12 +69,12 @@ public class EmployeeSmsGatewayTest {
 
     @Test
     @CitrusTest
-    public void testPostWithWelcomeEmail(@CitrusResource TestRunner citrus) {
+    public void testPostWithWelcomeEmail(@CitrusResource TestCaseRunner citrus) {
         citrus.variable("employee.name", "Bernadette");
         citrus.variable("employee.age", "24");
         citrus.variable("employee.mobile", "4915199999999");
 
-        citrus.http(httpActionBuilder -> httpActionBuilder
+        citrus.run(http()
             .client(serviceUri)
             .send()
             .post()
@@ -75,26 +82,26 @@ public class EmployeeSmsGatewayTest {
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
             .payload("name=${employee.name}&age=${employee.age}&mobile=${employee.mobile}"));
 
-        citrus.receive(receiveMessageBuilder -> receiveMessageBuilder
+        citrus.run(receive()
             .endpoint(smsGatewayServer)
             .payload(new ClassPathResource("templates/send-sms-request.xml")));
 
-        citrus.send(sendMessageBuilder -> sendMessageBuilder
+        citrus.run(send()
             .endpoint(smsGatewayServer)
                 .payload(new ClassPathResource("templates/send-sms-response.xml")));
 
-        citrus.http(httpActionBuilder -> httpActionBuilder
+        citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        citrus.http(httpActionBuilder -> httpActionBuilder
+        citrus.run(http()
             .client(serviceUri)
             .send()
             .get()
             .accept(MediaType.APPLICATION_XML));
 
-        citrus.http(httpActionBuilder -> httpActionBuilder
+        citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
@@ -105,7 +112,5 @@ public class EmployeeSmsGatewayTest {
                          "<mobile>${employee.mobile}</mobile>" +
                        "</employee>" +
                      "</employees>"));
-
-        citrusFramework.run(citrus.getTestCase());
     }
 }

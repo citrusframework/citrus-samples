@@ -111,7 +111,7 @@ we have included the respective Maven dependency to the project:
 Secondly we choose Citrus Spring object factory in *cucumber.properties* in order to enable Cucumber Spring support in all tests.
     
 ```properties
-cucumber.api.java.ObjectFactory=cucumber.runtime.java.spring.CitrusSpringObjectFactory
+cucumber.object-factory=com.consol.citrus.cucumber.backend.spring.CitrusSpringObjectFactory
 ```
     
 These two steps are required to make Citrus work with Cucumber Spring features.

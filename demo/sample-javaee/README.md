@@ -245,8 +245,6 @@ public class EmployeeResourceTest {
                           "<name>Sheldon</name>" +
                         "</employee>" +
                       "</employees>"));
-
-        citrusFramework.run(citrus.getTestCase());
     }
     
     [...]

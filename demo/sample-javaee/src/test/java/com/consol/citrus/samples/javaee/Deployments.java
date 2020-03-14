@@ -33,7 +33,7 @@ import org.smsgateway.schema.smsgateway.v1.SmsGateway;
  */
 public class Deployments {
 
-    private static final String CXF_VERSION = "3.1.9";
+    private static final String CXF_VERSION = "3.1.14";
     private static final String CXF_GROUP_ID = "org.apache.cxf";
 
     /**

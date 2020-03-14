@@ -16,33 +16,36 @@
 
 package todo;
 
-import com.consol.citrus.annotations.CitrusResource;
-import com.consol.citrus.dsl.runner.TestRunner;
-import com.consol.citrus.message.MessageType;
-import cucumber.api.java.en.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-/**designer
+import com.consol.citrus.TestCaseRunner;
+import com.consol.citrus.annotations.CitrusResource;
+import com.consol.citrus.message.MessageType;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
+/**
  * @author Christoph Deppisch
  */
 public class TodoSteps {
 
-    /** Test runner filled with actions by step definitions */
     @CitrusResource
-    private TestRunner runner;
+    private TestCaseRunner runner;
 
     @Given("^Todo list is empty$")
     public void empty_todos() {
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.given(http()
             .client("todoListClient")
             .send()
             .delete("/api/todolist"));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.then(http()
             .client("todoListClient")
             .receive()
             .response(HttpStatus.OK));
@@ -50,14 +53,14 @@ public class TodoSteps {
 
     @When("^(?:I|user) adds? entry \"([^\"]*)\"$")
     public void add_entry(String todoName) {
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.when(http()
             .client("todoListClient")
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .payload("title=" + todoName));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.then(http()
             .client("todoListClient")
             .receive()
             .response(HttpStatus.FOUND));
@@ -65,13 +68,12 @@ public class TodoSteps {
 
     @When("^(?:I|user) removes? entry \"([^\"]*)\"$")
     public void remove_entry(String todoName) throws UnsupportedEncodingException{
-        String encoding = URLEncoder.encode(todoName, "UTF-8");
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.when(http()
             .client("todoListClient")
             .send()
-            .delete("/api/todo?title=" + encoding));
+            .delete("/api/todo?title=" + URLEncoder.encode(todoName, "UTF-8")));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.then(http()
             .client("todoListClient")
             .receive()
             .response(HttpStatus.OK)
@@ -80,12 +82,12 @@ public class TodoSteps {
 
     @Then("^(?:the )?number of todo entries should be (\\d+)$")
     public void verify_todos(int todoCnt) {
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.then(http()
             .client("todoListClient")
             .send()
             .get("/api/todolist/count"));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.and(http()
             .client("todoListClient")
             .receive()
             .response(HttpStatus.OK)

@@ -16,92 +16,92 @@
 
 package todo;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.config.CitrusSpringConfig;
-import com.consol.citrus.dsl.design.TestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
-import cucumber.api.java.en.*;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
  */
 @SuppressWarnings("SpringJavaAutowiringInspection")
 @ContextConfiguration(classes = CitrusSpringConfig.class)
-// TODO: mbu
-// this class cannot (easily) be refactored to use TestRunner. Doing so will result in undefined
-// scenarios
 public class TodoSteps {
 
-    /** Test designer filled with actions by step definitions */
     @CitrusResource
-    private TestDesigner designer;
+    private TestCaseRunner runner;
 
     @Autowired
     private HttpClient todoListClient;
 
     @Given("^Todo list is empty$")
     public void empty_todos() {
-        designer.http()
+        runner.given(http()
                 .client(todoListClient)
                 .send()
-                .delete("/api/todolist");
+                .delete("/api/todolist"));
 
-        designer.http()
+        runner.then(http()
                 .client(todoListClient)
                 .receive()
-                .response(HttpStatus.OK);
+                .response(HttpStatus.OK));
     }
 
     @When("^(?:I|user) adds? entry \"([^\"]*)\"$")
     public void add_entry(String todoName) {
-        designer.http()
+        runner.when(http()
                 .client(todoListClient)
                 .send()
                 .post("/todolist")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .payload("title=" + todoName);
+                .payload("title=" + todoName));
 
-        designer.http()
+        runner.then(http()
                 .client(todoListClient)
                 .receive()
-                .response(HttpStatus.FOUND);
+                .response(HttpStatus.FOUND));
     }
 
     @When("^(?:I|user) removes? entry \"([^\"]*)\"$")
     public void remove_entry(String todoName) throws UnsupportedEncodingException {
-        designer.http()
+        runner.when(http()
                 .client(todoListClient)
                 .send()
-                .delete("/api/todo?title=" + URLEncoder.encode(todoName, "UTF-8"));
+                .delete("/api/todo?title=" + URLEncoder.encode(todoName, "UTF-8")));
 
-        designer.http()
+        runner.then(http()
                 .client(todoListClient)
                 .receive()
                 .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT);
+                .messageType(MessageType.PLAINTEXT));
     }
 
     @Then("^(?:the )?number of todo entries should be (\\d+)$")
     public void verify_todos(int todoCnt) {
-        designer.http()
+        runner.then(http()
                 .client(todoListClient)
                 .send()
-                .get("/api/todolist/count");
+                .get("/api/todolist/count"));
 
-        designer.http()
+        runner.and(http()
                 .client(todoListClient)
                 .receive()
                 .response(HttpStatus.OK)
                 .messageType(MessageType.PLAINTEXT)
-                .payload(String.valueOf(todoCnt));
+                .payload(String.valueOf(todoCnt)));
     }
 
     @Then("^(?:the )?todo list should be empty$")

@@ -16,6 +16,18 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.util.UUID;
+
+import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
+import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.message.MessageType;
+import org.apache.http.entity.ContentType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.testng.annotations.Test;
+
+import static com.consol.citrus.container.HamcrestConditionExpression.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
@@ -25,16 +37,6 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
-
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.message.MessageType;
-import java.util.UUID;
-import org.apache.http.entity.ContentType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.testng.annotations.Test;
 
 /**
  * @author Christoph Deppisch
@@ -90,7 +92,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @CitrusTest
     public void testHamcrestCondition() {
         iterate()
-            .condition(lessThanOrEqualTo(5))
+            .condition(assertThat(lessThanOrEqualTo(5)))
             .actions(
                 createVariable("todoId", "citrus:randomUUID()"),
                 createVariable("todoName", "todo_${i}"),

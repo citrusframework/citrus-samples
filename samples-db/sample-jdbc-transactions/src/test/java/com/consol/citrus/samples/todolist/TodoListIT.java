@@ -42,9 +42,9 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoDescription", "Description: ${todoName}");
 
         waitFor().http()
-                .status(HttpStatus.OK)
-                .method(HttpMethod.GET)
-                .ms(20000L)
+                .status(HttpStatus.OK.value())
+                .method(HttpMethod.GET.name())
+                .milliseconds(20000L)
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
@@ -85,9 +85,9 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoDescription", "Description: ${todoName}");
 
         waitFor().http()
-                .status(HttpStatus.OK)
-                .method(HttpMethod.GET)
-                .ms(20000L)
+                .status(HttpStatus.OK.value())
+                .method(HttpMethod.GET.name())
+                .milliseconds(20000L)
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
@@ -130,9 +130,9 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         jdbcServer.getEndpointConfiguration().setAutoTransactionHandling(true);
 
         waitFor().http()
-                .status(HttpStatus.OK)
-                .method(HttpMethod.GET)
-                .ms(20000L)
+                .status(HttpStatus.OK.value())
+                .method(HttpMethod.GET.name())
+                .milliseconds(20000L)
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 

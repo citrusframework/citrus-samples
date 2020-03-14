@@ -16,11 +16,17 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.consol.citrus.context.TestContextFactory;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.endpoint.EndpointAdapter;
 import com.consol.citrus.endpoint.adapter.RequestDispatchingEndpointAdapter;
 import com.consol.citrus.endpoint.adapter.StaticResponseEndpointAdapter;
-import com.consol.citrus.endpoint.adapter.mapping.*;
+import com.consol.citrus.endpoint.adapter.mapping.HeaderMappingKeyExtractor;
+import com.consol.citrus.endpoint.adapter.mapping.SimpleMappingStrategy;
+import com.consol.citrus.endpoint.adapter.mapping.SoapActionMappingKeyExtractor;
 import com.consol.citrus.variable.GlobalVariables;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.ws.server.WebServiceServer;
@@ -28,9 +34,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Christoph Deppisch
@@ -62,22 +65,22 @@ public class EndpointConfig {
     }
 
     @Bean
-    public WebServiceServer todoListServer() {
+    public WebServiceServer todoListServer(TestContextFactory contextFactory) {
         return CitrusEndpoints
             .soap()
                 .server()
                 .port(8080)
-                .endpointAdapter(dispatchingEndpointAdapter())
+                .endpointAdapter(dispatchingEndpointAdapter(contextFactory))
                 .timeout(10000)
                 .autoStart(true)
             .build();
     }
 
     @Bean
-    public RequestDispatchingEndpointAdapter dispatchingEndpointAdapter() {
+    public RequestDispatchingEndpointAdapter dispatchingEndpointAdapter(TestContextFactory contextFactory) {
         RequestDispatchingEndpointAdapter dispatchingEndpointAdapter = new RequestDispatchingEndpointAdapter();
         dispatchingEndpointAdapter.setMappingKeyExtractor(mappingKeyExtractor());
-        dispatchingEndpointAdapter.setMappingStrategy(mappingStrategy());
+        dispatchingEndpointAdapter.setMappingStrategy(mappingStrategy(contextFactory));
         return dispatchingEndpointAdapter;
     }
 
@@ -87,20 +90,20 @@ public class EndpointConfig {
     }
 
     @Bean
-    public SimpleMappingStrategy mappingStrategy() {
+    public SimpleMappingStrategy mappingStrategy(TestContextFactory contextFactory) {
         SimpleMappingStrategy mappingStrategy = new SimpleMappingStrategy();
 
         Map<String, EndpointAdapter> mappings = new HashMap<>();
 
-        mappings.put("getTodo", todoResponseAdapter());
-        mappings.put("getTodoList", todoListResponseAdapter());
+        mappings.put("getTodo", todoResponseAdapter(contextFactory));
+        mappings.put("getTodoList", todoListResponseAdapter(contextFactory));
 
         mappingStrategy.setAdapterMappings(mappings);
         return mappingStrategy;
     }
 
     @Bean
-    public EndpointAdapter todoResponseAdapter() {
+    public EndpointAdapter todoResponseAdapter(TestContextFactory contextFactory) {
         StaticResponseEndpointAdapter endpointAdapter = new StaticResponseEndpointAdapter();
         endpointAdapter.setMessagePayload("<getTodoResponse xmlns=\"http://citrusframework.org/samples/todolist\">" +
                     "<todoEntry xmlns=\"http://citrusframework.org/samples/todolist\">" +
@@ -110,11 +113,12 @@ public class EndpointConfig {
                         "<done>false</done>" +
                     "</todoEntry>" +
                 "</getTodoResponse>");
+        endpointAdapter.setTestContextFactory(contextFactory);
         return endpointAdapter;
     }
 
     @Bean
-    public EndpointAdapter todoListResponseAdapter() {
+    public EndpointAdapter todoListResponseAdapter(TestContextFactory contextFactory) {
         StaticResponseEndpointAdapter endpointAdapter = new StaticResponseEndpointAdapter();
         endpointAdapter.setMessagePayload("<getTodoListResponse xmlns=\"http://citrusframework.org/samples/todolist\">" +
                     "<list>" +
@@ -126,6 +130,7 @@ public class EndpointConfig {
                         "</todoEntry>" +
                     "</list>" +
                 "</getTodoListResponse>");
+        endpointAdapter.setTestContextFactory(contextFactory);
         return endpointAdapter;
     }
 

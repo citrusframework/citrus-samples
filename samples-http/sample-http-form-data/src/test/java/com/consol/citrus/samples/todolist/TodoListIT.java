@@ -59,12 +59,12 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .post("/api/todo")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .messageType(MessageType.PLAINTEXT)
-            .payload("{description=[${todoDescription}], title=[${todoName}]}"));
+            .payload("{title=[${todoName}], description=[${todoDescription}]}"));
 
         http(httpActionBuilder -> httpActionBuilder
             .server(todoListServer)
             .respond(HttpStatus.OK));
-        
+
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
@@ -109,15 +109,15 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         formData.setAction("/api/todo");
         formData.setContentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE);
 
-        Control description = new Control();
-        description.setName("description");
-        description.setValue("@ignore@");
-        formData.addControl(description);
-
         Control title = new Control();
         title.setName("title");
         title.setValue("${todoName}");
         formData.addControl(title);
+
+        Control description = new Control();
+        description.setName("description");
+        description.setValue("@ignore@");
+        formData.addControl(description);
 
         return formData;
     }
@@ -146,11 +146,11 @@ public class TodoListIT extends TestNGCitrusTestRunner {
                         "<content-type>application/x-www-form-urlencoded</content-type>" +
                         "<action>/api/todo</action>" +
                         "<controls>" +
-                            "<control name=\"description\">" +
-                                "<value>${todoDescription}</value>" +
-                            "</control>" +
                             "<control name=\"title\">" +
                                 "<value>${todoName}</value>" +
+                            "</control>" +
+                            "<control name=\"description\">" +
+                                "<value>${todoDescription}</value>" +
                             "</control>" +
                         "</controls>" +
                     "</form-data>"));

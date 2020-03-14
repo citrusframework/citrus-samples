@@ -16,6 +16,10 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.consol.citrus.context.TestContextFactory;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.endpoint.EndpointAdapter;
 import com.consol.citrus.endpoint.adapter.RequestDispatchingEndpointAdapter;
@@ -28,9 +32,6 @@ import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.variable.GlobalVariables;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Christoph Deppisch
@@ -46,7 +47,7 @@ public class EndpointConfig {
         variables.getVariables().put("todoDescription", "Description: todo_1871");
         return variables;
     }
-    
+
     @Bean
     public HttpClient todoClient() {
         return CitrusEndpoints
@@ -57,22 +58,22 @@ public class EndpointConfig {
     }
 
     @Bean
-    public HttpServer todoListServer() throws Exception {
+    public HttpServer todoListServer(TestContextFactory contextFactory) throws Exception {
         return CitrusEndpoints
             .http()
                 .server()
                 .port(8080)
-                .endpointAdapter(dispatchingEndpointAdapter())
+                .endpointAdapter(dispatchingEndpointAdapter(contextFactory))
                 .timeout(10000)
                 .autoStart(true)
             .build();
     }
 
     @Bean
-    public RequestDispatchingEndpointAdapter dispatchingEndpointAdapter() {
+    public RequestDispatchingEndpointAdapter dispatchingEndpointAdapter(TestContextFactory contextFactory) {
         RequestDispatchingEndpointAdapter dispatchingEndpointAdapter = new RequestDispatchingEndpointAdapter();
         dispatchingEndpointAdapter.setMappingKeyExtractor(mappingKeyExtractor());
-        dispatchingEndpointAdapter.setMappingStrategy(mappingStrategy());
+        dispatchingEndpointAdapter.setMappingStrategy(mappingStrategy(contextFactory));
         return dispatchingEndpointAdapter;
     }
 
@@ -84,20 +85,20 @@ public class EndpointConfig {
     }
 
     @Bean
-    public SimpleMappingStrategy mappingStrategy() {
+    public SimpleMappingStrategy mappingStrategy(TestContextFactory contextFactory) {
         SimpleMappingStrategy mappingStrategy = new SimpleMappingStrategy();
 
         Map<String, EndpointAdapter> mappings = new HashMap<>();
 
-        mappings.put("/api/todo", todoResponseAdapter());
-        mappings.put("/api/todolist", todoListResponseAdapter());
+        mappings.put("/api/todo", todoResponseAdapter(contextFactory));
+        mappings.put("/api/todolist", todoListResponseAdapter(contextFactory));
 
         mappingStrategy.setAdapterMappings(mappings);
         return mappingStrategy;
     }
 
     @Bean
-    public EndpointAdapter todoResponseAdapter() {
+    public EndpointAdapter todoResponseAdapter(TestContextFactory contextFactory) {
         StaticResponseEndpointAdapter endpointAdapter = new StaticResponseEndpointAdapter();
         endpointAdapter.setMessagePayload("{" +
                             "\"id\": \"${todoId}\"," +
@@ -105,11 +106,12 @@ public class EndpointConfig {
                             "\"description\": \"${todoDescription}\"," +
                             "\"done\": false" +
                         "}");
+        endpointAdapter.setTestContextFactory(contextFactory);
         return endpointAdapter;
     }
 
     @Bean
-    public EndpointAdapter todoListResponseAdapter() {
+    public EndpointAdapter todoListResponseAdapter(TestContextFactory contextFactory) {
         StaticResponseEndpointAdapter endpointAdapter = new StaticResponseEndpointAdapter();
         endpointAdapter.setMessagePayload("[" +
                             "{" +
@@ -119,6 +121,7 @@ public class EndpointConfig {
                                 "\"done\": false" +
                             "}" +
                         "]");
+        endpointAdapter.setTestContextFactory(contextFactory);
         return endpointAdapter;
     }
 }

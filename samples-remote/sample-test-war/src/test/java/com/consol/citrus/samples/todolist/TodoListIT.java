@@ -38,8 +38,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @CitrusTest
     public void testJsonPayloadValidation() {
         variable("todoId", "citrus:randomUUID()");
-        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
-        variable("todoDescription", "Description: ${todoName}");
+        variable("todoName", "Sample task");
+        variable("todoDescription", "Sample description");
         variable("done", "false");
 
         http(httpActionBuilder -> httpActionBuilder
@@ -48,12 +48,13 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
+            .header("X-TodoId", "${todoId}")
             .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK)
+            .response(HttpStatus.CREATED)
             .messageType(MessageType.PLAINTEXT)
             .payload("${todoId}"));
 
@@ -61,6 +62,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .header("X-TodoId", "${todoId}")
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
         http(httpActionBuilder -> httpActionBuilder
@@ -75,8 +77,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @CitrusTest
     public void testJsonValidationWithFileResource() {
         variable("todoId", "citrus:randomUUID()");
-        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
-        variable("todoDescription", "Description: ${todoName}");
+        variable("todoName", "Sample task");
+        variable("todoDescription", "Sample description");
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
@@ -84,12 +86,13 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
+            .header("X-TodoId", "${todoId}")
             .payload(new ClassPathResource("templates/todo.json")));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK)
+            .response(HttpStatus.CREATED)
             .messageType(MessageType.PLAINTEXT)
             .payload("${todoId}"));
 
@@ -97,6 +100,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .header("X-TodoId", "${todoId}")
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
         http(httpActionBuilder -> httpActionBuilder
@@ -111,8 +115,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @CitrusTest
     public void testJsonPathValidation() {
         variable("todoId", "citrus:randomUUID()");
-        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
-        variable("todoDescription", "Description: ${todoName}");
+        variable("todoName", "Sample task");
+        variable("todoDescription", "Sample description");
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
@@ -120,12 +124,13 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .post("/api/todolist")
             .messageType(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
+            .header("X-TodoId", "${todoId}")
             .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK)
+            .response(HttpStatus.CREATED)
             .messageType(MessageType.PLAINTEXT)
             .payload("${todoId}"));
 
@@ -133,6 +138,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .header("X-TodoId", "${todoId}")
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
         http(httpActionBuilder -> httpActionBuilder

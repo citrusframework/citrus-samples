@@ -20,7 +20,6 @@ import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.http.validation.FormUrlEncodedMessageValidator;
-import com.consol.citrus.validation.MessageValidatorRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -51,9 +50,7 @@ public class EndpointConfig {
     }
 
     @Bean
-    public FormUrlEncodedMessageValidator formUrlEncodedMessageValidator(MessageValidatorRegistry messageValidatorRegistry) {
-        FormUrlEncodedMessageValidator messageValidator = new FormUrlEncodedMessageValidator();
-        messageValidatorRegistry.getMessageValidators().add(messageValidator);
-        return messageValidator;
+    public FormUrlEncodedMessageValidator formUrlEncodedMessageValidator() {
+        return new FormUrlEncodedMessageValidator();
     }
 }

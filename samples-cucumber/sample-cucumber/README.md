@@ -91,7 +91,7 @@ Configuration
 In order to enable Citrus Cucumber support we need to specify a special object factory in *cucumber.properties*.
     
 ```properties
-cucumber.api.java.ObjectFactory=cucumber.runtime.java.CitrusObjectFactory
+cucumber.object-factory=com.consol.citrus.cucumber.backend.CitrusObjectFactory
 ```
     
 The object factory takes care on creating all step definition instances. The object factory is able to inject *@CitrusResource*

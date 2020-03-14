@@ -16,11 +16,18 @@
 
 package com.consol.citrus.samples.javaee.employee.jms;
 
+import javax.annotation.Resource;
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
+import java.io.IOException;
+
 import com.consol.citrus.Citrus;
-import com.consol.citrus.annotations.*;
+import com.consol.citrus.TestCaseRunner;
+import com.consol.citrus.annotations.CitrusFramework;
+import com.consol.citrus.annotations.CitrusResource;
+import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.arquillian.shrinkwrap.CitrusArchiveBuilder;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.dsl.runner.TestRunner;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.Deployments;
@@ -28,15 +35,15 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.impl.base.path.BasicPath;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jms.connection.SingleConnectionFactory;
 
-import javax.annotation.Resource;
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
-import java.io.IOException;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
 
 @RunWith(Arquillian.class)
 public class EmployeeJmsTest {
@@ -74,20 +81,18 @@ public class EmployeeJmsTest {
 
     @Test
     @CitrusTest
-    public void testAdd(@CitrusResource TestRunner citrus) {
-        citrus.send(sendMessageBuilder -> sendMessageBuilder
+    public void testAdd(@CitrusResource TestCaseRunner citrus) {
+        citrus.run(send()
             .endpoint(employeeJmsEndpoint)
             .messageType(MessageType.PLAINTEXT)
             .header("name", "Amy")
             .header("age", 20));
 
-        citrus.receive(receiveMessageBuilder -> receiveMessageBuilder
+        citrus.run(receive()
             .endpoint(employeeJmsEndpoint)
             .messageType(MessageType.PLAINTEXT)
             .payload("Successfully created employee: Amy(20)")
             .header("success", true));
-
-        citrusFramework.run(citrus.getTestCase());
     }
 
     private void closeConnections() {

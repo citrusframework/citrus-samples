@@ -16,6 +16,9 @@
 
 package com.consol.citrus.samples.todolist;
 
+import javax.sql.DataSource;
+import java.util.UUID;
+
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
@@ -23,11 +26,10 @@ import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
-
-import javax.sql.DataSource;
-import java.util.UUID;
 
 /**
  * @author Christoph Deppisch
@@ -50,9 +52,9 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoDescription", "Description: ${todoName}");
 
         waitFor().http()
-                .status(HttpStatus.OK)
-                .method(HttpMethod.GET)
-                .ms(20000L)
+                .status(HttpStatus.OK.value())
+                .method(HttpMethod.GET.name())
+                .milliseconds(20000L)
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
@@ -118,9 +120,9 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoDescription", "Description: ${todoName}");
 
         waitFor().http()
-                .status(HttpStatus.OK)
-                .method(HttpMethod.GET)
-                .ms(20000L)
+                .status(HttpStatus.OK.value())
+                .method(HttpMethod.GET.name())
+                .milliseconds(20000L)
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
@@ -183,9 +185,9 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoDescription", "Description: ${todoName}");
 
         waitFor().http()
-                .status(HttpStatus.OK)
-                .method(HttpMethod.GET)
-                .ms(20000L)
+                .status(HttpStatus.OK.value())
+                .method(HttpMethod.GET.name())
+                .milliseconds(20000L)
                 .interval(1000L)
                 .url(todoClient.getEndpointConfiguration().getRequestUrl());
 
