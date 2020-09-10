@@ -16,16 +16,18 @@
 
 package todo;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.http.client.HttpClientBuilder;
 import com.consol.citrus.variable.GlobalVariables;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * @author Christoph Deppisch
  */
 @Configuration
-@PropertySource("citrus.properties")
+@PropertySource("classpath:citrus.properties")
 public class EndpointConfig {
 
     @Bean
@@ -37,9 +39,7 @@ public class EndpointConfig {
 
     @Bean
     public HttpClient todoListClient() {
-        return CitrusEndpoints
-            .http()
-                .client()
+        return new HttpClientBuilder()
                 .requestUrl("http://localhost:8080")
             .build();
     }
