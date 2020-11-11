@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-samples-ftp</artifactId>
-  <version>3.0.0-M1</version>
+  <version>3.0.0-M2</version>
   <name>Citrus Samples:: FTP Samples</name>
   <packaging>pom</packaging>
 

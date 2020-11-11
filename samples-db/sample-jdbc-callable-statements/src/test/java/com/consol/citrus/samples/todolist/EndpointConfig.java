@@ -61,7 +61,7 @@ public class EndpointConfig {
                 .host("localhost")
                 .databaseName("testdb")
                 .port(DB_SERVER_PORT)
-                .timeout(10000L)
+                .timeout(2000L)
                 .autoStart(true)
                 .autoCreateStatement(false)
             .build();

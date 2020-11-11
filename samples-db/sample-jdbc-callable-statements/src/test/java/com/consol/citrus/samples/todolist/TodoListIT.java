@@ -65,13 +65,13 @@ public class TodoListIT extends TestNGCitrusTestRunner {
 
         send(sendMessageBuilder -> sendMessageBuilder
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
             .message(JdbcMessage.success().dataSet("[ {" +
                     "\"id\": \"${todoId}\"," +
                     "\"title\": \"${todoName}\"," +
                     "\"description\": \"${todoDescription}\"," +
                     "\"done\": \"false\"" +
-                    "} ]")));
+                    "} ]"))
+            .messageType(MessageType.JSON));
 
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
@@ -119,8 +119,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
 
         send(sendMessageBuilder -> sendMessageBuilder
             .endpoint(jdbcServer)
-            .messageType(MessageType.XML)
-            .message(JdbcMessage.success().dataSet("" +
+            .message(JdbcMessage.success().dataSet(
                     "<dataset>" +
                         "<row>" +
                             "<id>${todoId}</id>"+
@@ -128,7 +127,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
                             "<description>${todoDescription}</description>" +
                             "<done>false</done>" +
                          "</row>" +
-                    "</dataset>")));
+                    "</dataset>"))
+            .messageType(MessageType.XML));
 
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)

@@ -20,11 +20,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.dsl.builder.HttpClientResponseActionBuilder;
 import com.consol.citrus.dsl.runner.AbstractTestBehavior;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
-import com.consol.citrus.http.actions.HttpActionBuilder;
-import com.consol.citrus.http.actions.HttpClientRequestActionBuilder;
-import com.consol.citrus.http.actions.HttpClientResponseActionBuilder;
+import com.consol.citrus.dsl.builder.HttpActionBuilder;
+import com.consol.citrus.dsl.builder.HttpClientRequestActionBuilder;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
 import org.apache.http.entity.ContentType;

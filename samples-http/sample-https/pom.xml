@@ -5,14 +5,14 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-https</artifactId>
   <name>Citrus Samples:: Https</name>
-  <version>3.0.0-M1</version>
+  <version>3.0.0-M2</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.1.0</testng.version>
-    <citrus.version>3.0.0-M1</citrus.version>
+    <citrus.version>3.0.0-M2</citrus.version>
   </properties>
 
   <build>

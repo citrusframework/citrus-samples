@@ -5,18 +5,18 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-todo</artifactId>
   <name>Citrus Samples:: Todo App</name>
-  <version>3.0.0-M1</version>
+  <version>3.0.0-M2</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.2.4.RELEASE</spring.version>
-    <spring.boot.version>2.2.5.RELEASE</spring.boot.version>
-    <spring.kafka.version>2.4.3.RELEASE</spring.kafka.version>
-    <activemq.version>5.15.11</activemq.version>
-    <citrus.version>3.0.0-M1</citrus.version>
+    <spring.version>5.2.10.RELEASE</spring.version>
+    <spring.boot.version>2.3.5.RELEASE</spring.boot.version>
+    <spring.kafka.version>2.6.2</spring.kafka.version>
+    <activemq.version>5.16.0</activemq.version>
+    <citrus.version>3.0.0-M2</citrus.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <jackson.version>2.10.3</jackson.version>
+    <jackson.version>2.11.3</jackson.version>
     <skipJaxb>true</skipJaxb>
   </properties>
 
