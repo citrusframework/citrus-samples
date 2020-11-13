@@ -1,0 +1,92 @@
+# ---------------------------------------------------------------------------
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ---------------------------------------------------------------------------
+
+name: build
+
+on:
+  pull_request:
+    branches:
+      - master
+      - 3.x
+      - 3.x-vintage
+    paths-ignore:
+      - '**.adoc'
+      - '**.md'
+      - 'KEYS'
+      - 'LICENSE'
+      - 'NOTICE'
+  push:
+    branches:
+      - master
+      - 3.x
+      - 3.x-vintage
+    paths-ignore:
+      - '**.adoc'
+      - '**.md'
+      - 'KEYS'
+      - 'LICENSE'
+      - 'NOTICE'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set Up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build Todo App
+        run: |
+          ./mvnw --no-transfer-progress -pl :citrus-sample-todo install
+      - name: Run Demos
+        run: |
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-demo
+      - name: Run Samples
+        run: |
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-annotation-config
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-behaviors
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-binary
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-camel-context
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dictionaries
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dynamic-endpoints
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-hamcrest
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-javaconfig
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-jms
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-kafka
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-mail
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-message-store
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-reporting
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-rmi
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-cucumber
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-db
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-ftp
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-http
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-json
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-junit
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-remote
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-soap
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-testng
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-xml
