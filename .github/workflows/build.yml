@@ -63,7 +63,11 @@ jobs:
           ./mvnw --no-transfer-progress -pl :citrus-sample-todo install
       - name: Run Demos
         run: |
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-demo
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-bakery
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-bookstore
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-flightbooking
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-greeting
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-incident
       - name: Run Samples
         run: |
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-annotation-config
@@ -80,13 +84,13 @@ jobs:
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-message-store
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-reporting
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-rmi
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-cucumber
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-db
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-ftp
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-http
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-json
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-junit
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-remote
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-soap
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-testng
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-samples-xml
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-cucumber
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-db
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-ftp
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-http
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-json
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-junit
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-remote
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-soap
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-testng
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-xml

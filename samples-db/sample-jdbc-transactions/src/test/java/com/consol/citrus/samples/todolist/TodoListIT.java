@@ -60,6 +60,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .endpoint(jdbcServer)
             .message(JdbcMessage.startTransaction()));
 
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
+
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
@@ -71,6 +73,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.commitTransaction()));
+
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
@@ -103,6 +107,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .endpoint(jdbcServer)
             .message(JdbcMessage.startTransaction()));
 
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
+
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
@@ -114,6 +120,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.rollbackTransaction()));
+
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
