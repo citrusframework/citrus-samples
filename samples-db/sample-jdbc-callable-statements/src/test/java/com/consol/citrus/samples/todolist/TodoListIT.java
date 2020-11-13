@@ -59,6 +59,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .endpoint(jdbcServer)
             .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}")));
 
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
+
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)")));
@@ -76,6 +78,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.closeStatement()));
+
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
@@ -113,6 +117,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .endpoint(jdbcServer)
             .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}")));
 
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
+
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)")));
@@ -133,6 +139,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.closeStatement()));
+
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
@@ -166,6 +174,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .endpoint(jdbcServer)
             .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}")));
 
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
+
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)")));
@@ -177,6 +187,8 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(jdbcServer)
             .message(JdbcMessage.closeStatement()));
+
+        send(sendMessageBuilder -> sendMessageBuilder.endpoint(jdbcServer).message(JdbcMessage.success()));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
