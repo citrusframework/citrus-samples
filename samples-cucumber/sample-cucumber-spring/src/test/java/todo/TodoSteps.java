@@ -27,6 +27,7 @@ import com.consol.citrus.message.MessageType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,6 +39,7 @@ import static com.consol.citrus.http.actions.HttpActionBuilder.http;
  * @author Christoph Deppisch
  */
 @SuppressWarnings("SpringJavaAutowiringInspection")
+@CucumberContextConfiguration
 @ContextConfiguration(classes = CitrusSpringConfig.class)
 public class TodoSteps {
 
@@ -66,8 +68,9 @@ public class TodoSteps {
                 .client(todoListClient)
                 .send()
                 .post("/todolist")
+                .message()
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .payload("title=" + todoName));
+                .body("title=" + todoName));
 
         runner.then(http()
                 .client(todoListClient)
@@ -86,7 +89,8 @@ public class TodoSteps {
                 .client(todoListClient)
                 .receive()
                 .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT));
+                .message()
+                .type(MessageType.PLAINTEXT));
     }
 
     @Then("^(?:the )?number of todo entries should be (\\d+)$")
@@ -100,8 +104,9 @@ public class TodoSteps {
                 .client(todoListClient)
                 .receive()
                 .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT)
-                .payload(String.valueOf(todoCnt)));
+                .message()
+                .type(MessageType.PLAINTEXT)
+                .body(String.valueOf(todoCnt)));
     }
 
     @Then("^(?:the )?todo list should be empty$")

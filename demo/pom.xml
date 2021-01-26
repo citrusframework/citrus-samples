@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-demo</artifactId>
-  <version>3.0.0-M2</version>
+  <version>3.0.0-M3</version>
   <name>Citrus Samples:: Demos</name>
   <packaging>pom</packaging>
 

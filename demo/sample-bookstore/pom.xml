@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-bookstore</artifactId>
   <name>Citrus Samples:: Bookstore</name>
-  <version>3.0.0-M2</version>
+  <version>3.0.0-M3</version>
   <packaging>war</packaging>
 
   <properties>
@@ -17,7 +17,7 @@
     <activemq.version>5.16.0</activemq.version>
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.1.0</testng.version>
-    <citrus.version>3.0.0-M2</citrus.version>
+    <citrus.version>3.0.0-M3</citrus.version>
     <jetty.version>9.4.34.v20201102</jetty.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>

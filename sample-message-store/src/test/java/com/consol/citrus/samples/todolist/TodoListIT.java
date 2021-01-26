@@ -54,12 +54,12 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.PLAINTEXT)
-            .payload("citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')"));
+            .payload("citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
-            .get("/api/todo/citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')")
+            .get("/api/todo/citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')")
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
         http(httpActionBuilder -> httpActionBuilder
@@ -68,7 +68,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .response(HttpStatus.OK)
             .messageName("todoResponse")
             .messageType(MessageType.JSON)
-            .validate("$.id", "citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')"));
+            .validate("$.id", "citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"));
 
         echo("citrus:message(todoResponse)");
     }
@@ -92,12 +92,12 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .receive()
             .response(HttpStatus.OK)
             .messageType(MessageType.PLAINTEXT)
-            .payload("citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')"));
+            .payload("citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(todoClient)
             .send()
-            .get("/api/todo/citrus:jsonPath(citrus:message(todoRequest.payload()), '$.id')")
+            .get("/api/todo/citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')")
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
         http(httpActionBuilder -> httpActionBuilder

@@ -84,14 +84,16 @@ public class EmployeeJmsTest {
     public void testAdd(@CitrusResource TestCaseRunner citrus) {
         citrus.run(send()
             .endpoint(employeeJmsEndpoint)
-            .messageType(MessageType.PLAINTEXT)
+            .message()
+            .type(MessageType.PLAINTEXT)
             .header("name", "Amy")
             .header("age", 20));
 
         citrus.run(receive()
             .endpoint(employeeJmsEndpoint)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("Successfully created employee: Amy(20)")
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("Successfully created employee: Amy(20)")
             .header("success", true));
     }
 

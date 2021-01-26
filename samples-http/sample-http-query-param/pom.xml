@@ -5,14 +5,14 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-http-query-param</artifactId>
   <name>Citrus Samples:: Http Query Parameter</name>
-  <version>3.0.0-M2</version>
+  <version>3.0.0-M3</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.1.0</testng.version>
-    <citrus.version>3.0.0-M2</citrus.version>
+    <citrus.version>3.0.0-M3</citrus.version>
   </properties>
 
   <build>

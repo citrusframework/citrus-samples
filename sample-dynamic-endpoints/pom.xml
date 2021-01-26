@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-dynamic-endpoints</artifactId>
   <name>Citrus Samples:: Dynamic Endpoints</name>
-  <version>3.0.0-M2</version>
+  <version>3.0.0-M3</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,7 +13,7 @@
     <spring.boot.version>2.3.5.RELEASE</spring.boot.version>
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.1.0</testng.version>
-    <citrus.version>3.0.0-M2</citrus.version>
+    <citrus.version>3.0.0-M3</citrus.version>
     <activemq.version>5.16.0</activemq.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>

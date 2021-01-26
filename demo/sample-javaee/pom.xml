@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-javaee</artifactId>
   <name>Citrus Samples:: Java EE</name>
-  <version>3.0.0-M2</version>
+  <version>3.0.0-M3</version>
   <packaging>war</packaging>
 
   <properties>
@@ -14,7 +14,7 @@
     <apache.cxf.version>3.1.14</apache.cxf.version>
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.1.0</testng.version>
-    <citrus.version>3.0.0-M2</citrus.version>
+    <citrus.version>3.0.0-M3</citrus.version>
     <jee.api.version>7.0</jee.api.version>
     <junit.version>4.13</junit.version>
     <arquillian.version>1.6.0.Final</arquillian.version>

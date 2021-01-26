@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-junit</artifactId>
   <name>Citrus Samples:: JUnit</name>
-  <version>3.0.0-M2</version>
+  <version>3.0.0-M3</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,7 +13,7 @@
     <spring.boot.version>2.3.5.RELEASE</spring.boot.version>
     <slf4j.version>1.7.30</slf4j.version>
     <junit.version>4.13</junit.version>
-    <citrus.version>3.0.0-M2</citrus.version>
+    <citrus.version>3.0.0-SNAPSHOT</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 

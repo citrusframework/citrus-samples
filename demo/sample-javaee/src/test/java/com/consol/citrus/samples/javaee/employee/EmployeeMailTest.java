@@ -80,19 +80,22 @@ public class EmployeeMailTest {
             .send()
             .post()
             .fork(true)
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .payload("name=${employee.name}&age=${employee.age}&email=${employee.email}"));
+            .body("name=${employee.name}&age=${employee.age}&email=${employee.email}"));
 
         citrus.run(receive()
             .endpoint(mailServer)
-            .payload(new ClassPathResource("templates/welcome-mail.xml"))
+            .message()
+            .body(new ClassPathResource("templates/welcome-mail.xml"))
             .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Welcome new employee")
             .header(CitrusMailMessageHeaders.MAIL_FROM, "employee-registry@example.com")
             .header(CitrusMailMessageHeaders.MAIL_TO, "${employee.email}"));
 
         citrus.run(send()
             .endpoint(mailServer)
-            .payload(new ClassPathResource("templates/welcome-mail-response.xml")));
+            .message()
+            .body(new ClassPathResource("templates/welcome-mail-response.xml")));
 
         citrus.run(http()
             .client(serviceUri)
@@ -103,13 +106,15 @@ public class EmployeeMailTest {
             .client(serviceUri)
             .send()
             .get()
+            .message()
             .accept(MediaType.APPLICATION_XML));
 
         citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
-            .payload("<employees>" +
+            .message()
+            .body("<employees>" +
                        "<employee>" +
                          "<age>${employee.age}</age>" +
                          "<name>${employee.name}</name>" +

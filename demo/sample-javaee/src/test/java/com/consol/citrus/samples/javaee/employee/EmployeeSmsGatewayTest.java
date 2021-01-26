@@ -79,16 +79,19 @@ public class EmployeeSmsGatewayTest {
             .send()
             .post()
             .fork(true)
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .payload("name=${employee.name}&age=${employee.age}&mobile=${employee.mobile}"));
+            .body("name=${employee.name}&age=${employee.age}&mobile=${employee.mobile}"));
 
         citrus.run(receive()
             .endpoint(smsGatewayServer)
-            .payload(new ClassPathResource("templates/send-sms-request.xml")));
+            .message()
+            .body(new ClassPathResource("templates/send-sms-request.xml")));
 
         citrus.run(send()
             .endpoint(smsGatewayServer)
-                .payload(new ClassPathResource("templates/send-sms-response.xml")));
+                .message()
+                .body(new ClassPathResource("templates/send-sms-response.xml")));
 
         citrus.run(http()
             .client(serviceUri)
@@ -99,13 +102,15 @@ public class EmployeeSmsGatewayTest {
             .client(serviceUri)
             .send()
             .get()
+            .message()
             .accept(MediaType.APPLICATION_XML));
 
         citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
-            .payload("<employees>" +
+            .message()
+            .body("<employees>" +
                        "<employee>" +
                          "<age>${employee.age}</age>" +
                          "<name>${employee.name}</name>" +

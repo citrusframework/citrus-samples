@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-incident</artifactId>
   <name>Citrus Samples:: Incident</name>
-  <version>3.0.0-M2</version>
+  <version>3.0.0-M3</version>
   <packaging>war</packaging>
 
   <properties>
@@ -18,7 +18,7 @@
     <apache.cxf.version>3.4.1</apache.cxf.version>
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.1.0</testng.version>
-    <citrus.version>3.0.0-M2</citrus.version>
+    <citrus.version>3.0.0-M3</citrus.version>
     <jetty.version>9.4.34.v20201102</jetty.version>
     <jackson.version>2.11.3</jackson.version>
     <server.port>18001</server.port>

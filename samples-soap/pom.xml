@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-samples-soap</artifactId>
-  <version>3.0.0-M2</version>
+  <version>3.0.0-M3</version>
   <name>Citrus Samples:: SOAP Samples</name>
   <packaging>pom</packaging>
 

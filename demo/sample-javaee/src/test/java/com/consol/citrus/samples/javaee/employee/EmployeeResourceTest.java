@@ -70,8 +70,9 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .send()
             .post()
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .payload("name=Penny&age=20"));
+            .body("name=Penny&age=20"));
 
         citrus.run(http()
             .client(serviceUri)
@@ -82,8 +83,9 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .send()
             .post()
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .payload("name=Leonard&age=21"));
+            .body("name=Leonard&age=21"));
 
         citrus.run(http()
             .client(serviceUri)
@@ -94,8 +96,9 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .send()
             .post()
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .payload("name=Sheldon&age=22"));
+            .body("name=Sheldon&age=22"));
 
         citrus.run(http()
             .client(serviceUri)
@@ -106,13 +109,15 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .send()
             .get()
+            .message()
             .accept(MediaType.APPLICATION_XML));
 
         citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
-            .payload("<employees>" +
+            .message()
+            .body("<employees>" +
                        "<employee>" +
                          "<age>20</age>" +
                          "<name>Penny</name>" +
@@ -136,13 +141,15 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .send()
             .get("/1")
+             .message()
             .accept(MediaType.APPLICATION_XML));
 
         citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
-            .payload("<employee>" +
+            .message()
+            .body("<employee>" +
                        "<age>21</age>" +
                        "<name>Leonard</name>" +
                      "</employee>"));
@@ -157,8 +164,9 @@ public class EmployeeResourceTest {
             .send()
             .put()
             .fork(true)
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .payload("name=Howard&age=21&email=howard@example.com"));
+            .body("name=Howard&age=21&email=howard@example.com"));
 
         citrus.run(http()
             .client(serviceUri)
@@ -169,13 +177,15 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .send()
             .get()
+            .message()
             .accept(MediaType.APPLICATION_XML));
 
         citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
-            .payload("<employees>" +
+            .message()
+            .body("<employees>" +
                        "<employee>" +
                          "<age>20</age>" +
                          "<name>Penny</name>" +
@@ -214,13 +224,15 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .send()
             .get()
+            .message()
             .accept(MediaType.APPLICATION_XML));
 
         citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
-            .payload("<employees>" +
+            .message()
+            .body("<employees>" +
                        "<employee>" +
                          "<age>20</age>" +
                          "<name>Penny</name>" +
@@ -245,14 +257,16 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .send()
             .get()
+            .message()
             .accept(MediaType.APPLICATION_JSON));
 
         citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{\"employee\":[" +
+            .message()
+            .type(MessageType.JSON)
+            .body("{\"employee\":[" +
                        "{\"name\":\"Penny\",\"age\":20,\"email\":null,\"mobile\":null}," +
                        "{\"name\":\"Sheldon\",\"age\":22,\"email\":null,\"mobile\":null}," +
                        "{\"name\":\"Howard\",\"age\":21,\"email\":\"howard@example.com\",\"mobile\":null}" +
@@ -277,13 +291,15 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .send()
             .get()
+            .message()
             .accept(MediaType.APPLICATION_XML));
 
         citrus.run(http()
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
-            .payload("<employees></employees>"));
+            .message()
+            .body("<employees></employees>"));
     }
 
 }
