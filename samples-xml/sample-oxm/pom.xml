@@ -10,11 +10,10 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <spring.version>5.3.3</spring.version>
     <spring.boot.version>2.4.2</spring.boot.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <testng.version>7.3.0</testng.version>
     <citrus.version>3.0.0-SNAPSHOT</citrus.version>
-    <spring.version>5.3.3</spring.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
@@ -106,36 +105,54 @@
       <scope>provided</scope>
     </dependency>
 
-    <!-- Test scoped dependencies -->
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>${testng.version}</version>
-      <scope>test</scope>
-    </dependency>
+    <!-- Spring Framework -->
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-oxm</artifactId>
+      <artifactId>spring-test</artifactId>
       <version>${spring.version}</version>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Citrus -->
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-core</artifactId>
+      <artifactId>citrus-base</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-java-dsl</artifactId>
+      <artifactId>citrus-spring</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-endpoint-catalog</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-testng</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-http</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-validation-xml</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-validation-text</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>

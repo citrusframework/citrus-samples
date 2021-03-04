@@ -17,7 +17,6 @@
     <spring.integration.version>5.4.3</spring.integration.version>
     <activemq.version>5.16.0</activemq.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <testng.version>7.3.0</testng.version>
     <citrus.version>3.0.0-SNAPSHOT</citrus.version>
     <jetty.version>9.4.36.v20210114</jetty.version>
     <jackson.version>2.12.1</jackson.version>
@@ -315,28 +314,46 @@
       <version>${spring.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>${testng.version}</version>
-    </dependency>
-
     <!-- Citrus -->
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-core</artifactId>
+      <artifactId>citrus-base</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-java-dsl</artifactId>
+      <artifactId>citrus-spring</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-endpoint-catalog</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-testng</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-spring-integration</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-jms</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-validation-xml</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>

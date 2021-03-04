@@ -17,22 +17,28 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
 import com.consol.citrus.kafka.message.KafkaMessage;
 import com.consol.citrus.kafka.message.KafkaMessageHeaders;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.dsl.XpathSupport.xpath;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -51,23 +57,27 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(todoKafkaEndpoint)
+            .message()
             .header(KafkaMessageHeaders.MESSAGE_KEY, "${todoName}")
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
+            .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/todolist")
+            .message()
             .accept(MediaType.TEXT_HTML_VALUE));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
+            .message()
+            .type(MessageType.XHTML)
+            .validate(xpath()
+                        .expression("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}")));
     }
 
     @Test
@@ -77,42 +87,45 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(todoKafkaEndpoint)
+            .message()
             .header(KafkaMessageHeaders.MESSAGE_KEY, "${todoName}")
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
-        echo("Set todo entry status to done");
+        $(echo("Set todo entry status to done"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .put("/api/todo/${todoId}")
             .queryParam("done", "true")
+            .message()
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK));
 
-        echo("Trigger Kafka report");
+        $(echo("Trigger Kafka report"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/kafka/report/done")
+            .message()
             .accept(MediaType.APPLICATION_JSON_VALUE));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(todoReportEndpoint)
-            .messageType(MessageType.JSON)
             .message(new KafkaMessage("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
-                .messageKey("todo.entries.done")));
+                    .messageKey("todo.entries.done"))
+            .type(MessageType.JSON));
     }
 }

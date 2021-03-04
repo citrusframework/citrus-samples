@@ -17,25 +17,31 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.functions.Functions;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
 import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.actions.SleepAction.Builder.sleep;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class PlaceBulkOrderIT extends TestNGCitrusTestRunner {
+public class PlaceBulkOrderIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")
@@ -51,43 +57,47 @@ public class PlaceBulkOrderIT extends TestNGCitrusTestRunner {
 
     @CitrusTest
     public void placeBulkCookieOrder() {
-        echo("Add 1000+ order and receive mail");
+        $(echo("Add 1000+ order and receive mail"));
 
         variable("orderType", "chocolate");
         variable("orderId", Functions.randomNumber(10L, null));
         variable("amount", 1001L);
 
-        sleep();
+        $(sleep().milliseconds(5000L));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(bakeryOrderEndpoint)
-            .payload("<order><type>${orderType}</type><id>${orderId}</id><amount>${amount}</amount></order>"));
+            .message()
+            .body("<order><type>${orderType}</type><id>${orderId}</id><amount>${amount}</amount></order>"));
 
-        echo("Receive report mail for 1000+ order");
+        $(echo("Receive report mail for 1000+ order"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(mailServer)
-            .payload(new ClassPathResource("templates/mail.xml"))
+            .message()
+            .body(new ClassPathResource("templates/mail.xml"))
             .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Congratulations!")
             .header(CitrusMailMessageHeaders.MAIL_FROM, "cookie-report@example.com")
             .header(CitrusMailMessageHeaders.MAIL_TO, "stakeholders@example.com"));
 
-        send(sendMesageBuilder -> sendMesageBuilder
+        $(send()
             .endpoint(mailServer)
-            .payload(new ClassPathResource("templates/mail_response.xml")));
+            .message()
+            .body(new ClassPathResource("templates/mail_response.xml")));
 
-        echo("Receive report with 1000+ order");
+        $(echo("Receive report with 1000+ order"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/json"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(1000)@\"}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(1000)@\"}"));
     }
 }

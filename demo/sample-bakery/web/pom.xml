@@ -79,11 +79,19 @@
     <!-- Citrus -->
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-core</artifactId>
+      <artifactId>citrus-base</artifactId>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-java-dsl</artifactId>
+      <artifactId>citrus-spring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-endpoint-catalog</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-testng</artifactId>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
@@ -91,11 +99,15 @@
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-ws</artifactId>
+      <artifactId>citrus-jms</artifactId>
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-jms</artifactId>
+      <artifactId>citrus-validation-json</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-validation-xml</artifactId>
     </dependency>
   </dependencies>
 

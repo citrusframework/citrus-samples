@@ -17,22 +17,27 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
 import com.consol.citrus.mail.message.MailMessage;
 import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -49,29 +54,31 @@ public class TodoListIT extends TestNGCitrusTestRunner {
 
         clearTodoList();
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"));
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/reporting/mail"));
 
-        echo("Receive reporting mail");
+        $(echo("Receive reporting mail"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(mailServer)
             .message(MailMessage.request()
                 .from("todo-report@example.org")
@@ -82,11 +89,11 @@ public class TodoListIT extends TestNGCitrusTestRunner {
                 .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
             .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(mailServer)
             .message(MailMessage.response(250, "OK")));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK));
@@ -103,40 +110,44 @@ public class TodoListIT extends TestNGCitrusTestRunner {
 
         clearTodoList();
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"));
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
         variable("entryCount", "1");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/reporting/mail"));
 
-        echo("Receive reporting mail");
+        $(echo("Receive reporting mail"));
 
-        receive(receiveMesageBuilder -> receiveMesageBuilder
+        $(receive()
             .endpoint(mailServer)
-            .payload(new ClassPathResource("templates/mail.xml"))
+            .message()
+            .body(new ClassPathResource("templates/mail.xml"))
             .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(mailServer)
-            .payload(new ClassPathResource("templates/mail-response.xml")));
+            .message()
+            .body(new ClassPathResource("templates/mail-response.xml")));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK));
@@ -153,41 +164,45 @@ public class TodoListIT extends TestNGCitrusTestRunner {
 
         clearTodoList();
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"));
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\"}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
         variable("entryCount", "1");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/reporting/mail"));
 
-        echo("Receive reporting mail");
+        $(echo("Receive reporting mail"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(mailServer)
-            .messageType(MessageType.JSON)
-            .payload(new ClassPathResource("templates/mail.json"))
+            .message()
+            .type(MessageType.JSON)
+            .body(new ClassPathResource("templates/mail.json"))
             .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(mailServer)
-            .payload(new ClassPathResource("templates/mail-response.json")));
+            .message()
+            .body(new ClassPathResource("templates/mail-response.json")));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK));
@@ -197,12 +212,12 @@ public class TodoListIT extends TestNGCitrusTestRunner {
      * Remove all entries from todolist.
      */
     private void clearTodoList() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .delete("/todolist"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.FOUND));

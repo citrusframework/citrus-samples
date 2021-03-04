@@ -33,7 +33,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Christoph Deppisch
  */
 @ContextConfiguration
-@PropertySource(value = "citrus.properties")
+@PropertySource(value = "classpath:citrus.properties")
 public class CitrusEndpointConfig {
 
     @Value("${activemq.server.port}")

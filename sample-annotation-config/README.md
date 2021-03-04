@@ -24,7 +24,7 @@ In contrast to adding the bean to the Spring application context we define the e
 able to reference this endpoint in any send and receive operation in Citrus Java fluent API.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .get("/todolist")

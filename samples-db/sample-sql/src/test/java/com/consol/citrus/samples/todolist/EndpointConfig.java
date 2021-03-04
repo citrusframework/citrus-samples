@@ -18,18 +18,19 @@ package com.consol.citrus.samples.todolist;
 
 import java.util.Collections;
 
+import com.consol.citrus.container.AfterSuite;
+import com.consol.citrus.container.BeforeSuite;
 import com.consol.citrus.container.SequenceAfterSuite;
 import com.consol.citrus.container.SequenceBeforeSuite;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.dsl.runner.TestRunner;
-import com.consol.citrus.dsl.runner.TestRunnerAfterSuiteSupport;
-import com.consol.citrus.dsl.runner.TestRunnerBeforeSuiteSupport;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import static com.consol.citrus.actions.ExecuteSQLAction.Builder.sql;
 
 /**
  * @author Christoph Deppisch
@@ -55,27 +56,20 @@ public class EndpointConfig {
     }
 
     @Bean
-    public SequenceBeforeSuite beforeSuite() {
-        return new TestRunnerBeforeSuiteSupport() {
-            @Override
-            public void beforeSuite(TestRunner runner) {
-                runner.sql(executeSQLBuilder -> executeSQLBuilder
-                    .dataSource(todoListDataSource())
-                    .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"));
-            }
-        };
+    public BeforeSuite beforeSuite(BasicDataSource todoListDataSource) {
+        return new SequenceBeforeSuite.Builder()
+                .actions(sql(todoListDataSource)
+                        .statement("CREATE TABLE IF NOT EXISTS todo_entries " +
+                                "(id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"))
+                .build();
     }
 
     @Bean
-    public SequenceAfterSuite afterSuite() {
-        return new TestRunnerAfterSuiteSupport() {
-            @Override
-            public void afterSuite(TestRunner runner) {
-                runner.sql(executeSQLBuilder -> executeSQLBuilder
-                    .dataSource(todoListDataSource())
-                    .statement("DELETE FROM todo_entries"));
-            }
-        };
+    public AfterSuite afterSuite(BasicDataSource todoListDataSource) {
+        return new SequenceAfterSuite.Builder()
+                .actions(sql(todoListDataSource)
+                        .statement("DELETE FROM todo_entries"))
+                .build();
     }
 
     @Bean(destroyMethod = "close")

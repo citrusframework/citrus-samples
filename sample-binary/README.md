@@ -28,9 +28,9 @@ started with the Maven build lifecycle.
 No we can send some content as binary message to the JMS queue destination.
 
 ```java
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(todoJmsEndpoint)
-    .messageType(MessageType.BINARY)
+    .type(MessageType.BINARY)
     .message(new DefaultMessage("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}".getBytes()));
 ```
 
@@ -42,10 +42,10 @@ by marking the message type as `BINARY`. As binary content is not comparable we 
 binary content to a String representation for comparison.
 
 ```java
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(todoJmsEndpoint)
     .validator(new BinaryMessageValidator())
-    .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+    .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 ```
         
 The binary message validator implementation is very simple and performs String equals for validation:
@@ -78,9 +78,9 @@ We can also use base64 encoding for handling binary data in Citrus. The base64 e
 with basic comparison in `BINARY_BASE64` message validator:
 
 ```java
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(todoJmsEndpoint)
-    .payload("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }')");
+    .body("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }')");
 ```
         
 Just use the `encodeBase64` function in Citrus to provide the expected payload content. Citrus will automatically convert the received 

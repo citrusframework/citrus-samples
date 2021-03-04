@@ -16,42 +16,49 @@
 
 package com.consol.citrus.samples.todolist;
 
+import com.consol.citrus.TestActionRunner;
+import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.runner.TestRunner;
-import com.consol.citrus.dsl.testng.TestNGCitrusTest;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.testng.annotations.*;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Test;
+
+import static com.consol.citrus.dsl.XpathSupport.xpath;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTest {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
 
     @Test
-    @Parameters("runner")
     @CitrusTest
-    public void testGet(@Optional @CitrusResource TestRunner runner) {
-        runner.http(httpActionBuilder -> httpActionBuilder
+    public void testGet(@Optional @CitrusResource TestActionRunner actions) {
+        actions.$(http()
             .client(todoClient)
             .send()
             .get("/todolist")
+            .message()
             .accept(MediaType.TEXT_HTML_VALUE));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        actions.$(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("//xh:h1", "TODO list")
-            .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
+            .message()
+            .type(MessageType.XHTML)
+            .validate(xpath()
+                        .expression("//xh:h1", "TODO list"))
+            .body("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
                     "\"org/w3/xhtml/xhtml1-transitional.dtd\">" +
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                         "<head>@ignore@</head>" +
@@ -60,19 +67,19 @@ public class TodoListIT extends TestNGCitrusTest {
     }
 
     @Test
-    @Parameters("runner")
     @CitrusTest
-    public void testPost(@Optional @CitrusResource TestRunner runner) {
-        runner.variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
-        runner.variable("todoDescription", "Description: ${todoName}");
+    public void testPost(@Optional @CitrusResource TestCaseRunner test) {
+        test.variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        test.variable("todoDescription", "Description: ${todoName}");
 
-        runner.http(action -> action.client(todoClient)
+        test.$(http().client(todoClient)
             .send()
             .post("/todolist")
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}"));
+            .body("title=${todoName}&description=${todoDescription}"));
 
-        runner.http(action -> action.client(todoClient)
+        test.$(http().client(todoClient)
             .receive()
             .response(HttpStatus.FOUND));
     }

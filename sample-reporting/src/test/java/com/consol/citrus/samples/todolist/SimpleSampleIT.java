@@ -18,47 +18,50 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.TestCaseMetaInfo;
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.exceptions.CitrusRuntimeException;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.testng.annotations.Test;
+
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.actions.FailAction.Builder.fail;
 
 /**
  * @author Christoph Deppisch
  */
 @Test
-public class SimpleSampleIT extends TestNGCitrusTestRunner {
+public class SimpleSampleIT extends TestNGCitrusSpringSupport {
 
     @CitrusTest
     public void testSuccessFirst() {
-        echo("1st test successful");
+        $(echo("1st test successful"));
     }
 
     @CitrusTest
     public void testSuccessSecond() {
-        echo("2nd test successful");
+        $(echo("2nd test successful"));
     }
 
     @CitrusTest
     public void testSuccessThird() {
-        echo("3rd test successful");
+        $(echo("3rd test successful"));
     }
 
     @Test(expectedExceptions = CitrusRuntimeException.class)
     @CitrusTest
     public void testFail() {
-        fail("This test should fail!");
+        $(fail("This test should fail!"));
     }
 
     @Test(expectedExceptions = CitrusRuntimeException.class)
     @CitrusTest
     public void testAnotherFail() {
-        fail("Another test should fail!");
+        $(fail("Another test should fail!"));
     }
 
     @CitrusTest
     public void testSkipped() {
         status(TestCaseMetaInfo.Status.DISABLED);
-        echo("This test is skipped");
+        $(echo("This test is skipped"));
     }
 
 }

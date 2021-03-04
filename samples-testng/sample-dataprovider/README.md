@@ -33,13 +33,14 @@ in the Citrus test with some annotation magic.
 public void testProvider(String todoName, String todoDescription, boolean done) {
     variable("todoId", "citrus:randomUUID()");
 
-    http(httpActionBuilder -> httpActionBuilder
+    $(http()
         .client(todoClient)
         .send()
         .post("/api/todolist")
-        .messageType(MessageType.JSON)
+        .message()
+        .type(MessageType.JSON)
         .contentType(ContentType.APPLICATION_JSON.getMimeType())
-        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+        .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     
     [...]    
 }            

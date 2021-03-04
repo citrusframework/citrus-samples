@@ -17,21 +17,24 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class RouteMessagesHttpIT extends TestNGCitrusTestRunner {
+public class RouteMessagesHttpIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("bakeryClient")
@@ -51,70 +54,78 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestRunner {
 
     @CitrusTest
     public void routeMessagesContentBased() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(bakeryClient)
             .send()
             .post("/order")
+            .message()
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"order\": { \"type\": \"chocolate\", \"id\": citrus:randomNumber(10), \"amount\": 1}}"));
+            .body("{ \"order\": { \"type\": \"chocolate\", \"id\": citrus:randomNumber(10), \"amount\": 1}}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(bakeryClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        receive(httpActionBuilder -> httpActionBuilder
+        $(receive()
             .endpoint(workerChocolateEndpoint)
-            .payload("<order><type>chocolate</type><id>@ignore@</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>chocolate</type><id>@ignore@</id><amount>1</amount></order>"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(bakeryClient)
             .send()
             .post("/order")
+            .message()
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"order\": { \"type\": \"caramel\", \"id\": citrus:randomNumber(10), \"amount\": 1}}"));
+            .body("{ \"order\": { \"type\": \"caramel\", \"id\": citrus:randomNumber(10), \"amount\": 1}}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(bakeryClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(workerCaramelEndpoint)
-            .payload("<order><type>caramel</type><id>@ignore@</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>caramel</type><id>@ignore@</id><amount>1</amount></order>"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(bakeryClient)
             .send()
             .post("/order")
+            .message()
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"order\": { \"type\": \"blueberry\", \"id\": citrus:randomNumber(10), \"amount\": 1}}"));
+            .body("{ \"order\": { \"type\": \"blueberry\", \"id\": citrus:randomNumber(10), \"amount\": 1}}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(bakeryClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(workerBlueberryEndpoint)
-            .payload("<order><type>blueberry</type><id>@ignore@</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>blueberry</type><id>@ignore@</id><amount>1</amount></order>"));
     }
 
     @CitrusTest
     public void routeUnknownOrderType() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(bakeryClient)
             .send()
             .post("/order")
-            .payload("{ \"order\": { \"type\": \"brownie\", \"id\": citrus:randomNumber(10), \"amount\": 1}}"));
+            .message()
+            .body("{ \"order\": { \"type\": \"brownie\", \"id\": citrus:randomNumber(10), \"amount\": 1}}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(bakeryClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint("jms:factory.unknown.inbound")
-            .payload("<order><type>brownie</type><id>@ignore@</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>brownie</type><id>@ignore@</id><amount>1</amount></order>"));
     }
 }

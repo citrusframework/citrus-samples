@@ -66,24 +66,24 @@ tests as usual with the Citrus Java DSL.
 @Test
 @CitrusTest
 public void testAddTodo() {
-    send(sendMessageBuilder -> sendMessageBuilder
+    $(send()
         .endpoint(todoRmiClient)
         .fork(true)
         .message(RmiMessage.invocation(TodoListService.class, "addTodo")
                 .argument("todo-star")
                 .argument("Star me on github")));
 
-    receive(receiveMessageBuilder -> receiveMessageBuilder
+    $(receive()
         .endpoint(todoRmiServer)
         .message(RmiMessage.invocation(TodoListService.class, "addTodo")
                 .argument("todo-star")
                 .argument("Star me on github")));
 
-    send(sendMessageBuilder -> sendMessageBuilder
+    $(send()
         .endpoint(todoRmiServer)
         .message(RmiMessage.result()));
 
-    receive(receiveMessageBuilder -> receiveMessageBuilder
+    $(receive()
         .endpoint(todoRmiClient)
         .message(RmiMessage.result()));
 }  
@@ -103,24 +103,24 @@ Lets also test the second operation in this remote interface **getTodos**.
 @Test
 @CitrusTest
 public void testGetTodos() {
-    send(sendMessageBuilder -> sendMessageBuilder
+    $(send()
         .endpoint(todoRmiClient)
         .fork(true)
         .message(RmiMessage.invocation(TodoListService.class, "getTodos")));
 
-    receive(receiveMessageBuilder -> receiveMessageBuilder
+    $(receive()
         .endpoint(todoRmiServer)
         .message(RmiMessage.invocation(TodoListService.class, "getTodos")));
 
-    send(sendMessageBuilder -> sendMessageBuilder
+    $(send()
         .endpoint(todoRmiServer)
-        .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+        .body("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
                     "<object type=\"java.util.Map\" value=\"{todo-follow=Follow us on github}\"/>" +
                 "</service-result>"));
 
-    receive(receiveMessageBuilder -> receiveMessageBuilder
+    $(receive()
         .endpoint(todoRmiClient)
-        .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+        .body("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
                     "<object type=\"java.util.LinkedHashMap\" value=\"{todo-follow=Follow us on github}\"/>" +
                 "</service-result>"));
 }

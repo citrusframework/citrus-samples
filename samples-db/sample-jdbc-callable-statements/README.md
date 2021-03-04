@@ -50,23 +50,23 @@ variable("todoDescription", "Description: ${todoName}");
 
 [...]
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .get("api/todolist/1")
     .fork(true));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(jdbcServer)
     .message(JdbcMessage.createCallableStatement("{CALL limitedToDoList(?)}")));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(jdbcServer)
     .message(JdbcMessage.execute("{CALL limitedToDoList(?)} - (1)")));
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(jdbcServer)
-    .messageType(MessageType.JSON)
+    .type(MessageType.JSON)
     .message(JdbcMessage.success().dataSet("[ {" +
             "\"id\": \"${todoId}\"," +
             "\"title\": \"${todoName}\"," +
@@ -74,15 +74,15 @@ send(sendMessageBuilder -> sendMessageBuilder
             "\"done\": \"false\"" +
             "} ]")));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(jdbcServer)
     .message(JdbcMessage.closeStatement()));
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .payload("[ {" +
+    .body("[ {" +
                 "\"id\": \"${todoId}\"," +
                 "\"title\": \"${todoName}\"," +
                 "\"description\": \"${todoDescription}\"," +

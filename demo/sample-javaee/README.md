@@ -190,7 +190,7 @@ public class EmployeeResourceTest {
             .send()
             .post()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .payload("name=Penny&age=20"));
+            .body("name=Penny&age=20"));
 
         citrus.http(httpActionBuilder-> httpActionBuilder
             .client(serviceUri)
@@ -202,7 +202,7 @@ public class EmployeeResourceTest {
             .send()
             .post()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .payload("name=Leonard&age=21"));
+            .body("name=Leonard&age=21"));
 
         citrus.http(httpActionBuilder-> httpActionBuilder
             .client(serviceUri)
@@ -214,7 +214,7 @@ public class EmployeeResourceTest {
             .send()
             .post()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .payload("name=Sheldon&age=22"));
+            .body("name=Sheldon&age=22"));
 
         citrus.http(httpActionBuilder-> httpActionBuilder
             .client(serviceUri)
@@ -231,7 +231,7 @@ public class EmployeeResourceTest {
             .client(serviceUri)
             .receive()
             .response(HttpStatus.OK)
-            .payload("<employees>" +
+            .body("<employees>" +
                        "<employee>" +
                          "<age>20</age>" +
                          "<name>Penny</name>" +

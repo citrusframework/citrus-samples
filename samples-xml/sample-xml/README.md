@@ -30,12 +30,12 @@ public XsdSchemaRepository schemaRepository() {
 That is all for configuration, now we can use XML as message payload in the test cases.
     
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .post("/api/todolist")
     .contentType(ContentType.APPLICATION_XML.getMimeType())
-    .payload("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
+    .body("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
                 "<id>${todoId}</id>" +
                 "<title>${todoName}</title>" +
                 "<description>${todoDescription}</description>" +
@@ -47,29 +47,29 @@ action we are able to use an expected XML message payload. Citrus performs a XML
 the expected values.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .messageType(MessageType.PLAINTEXT)
-    .payload("${todoId}"));
+    .type(MessageType.PLAINTEXT)
+    .body("${todoId}"));
 ```
 
 The XMl message payload can be difficult to read when used as String concatenation. Fortunately we can also use file resources as message
 payloads.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .payload(new ClassPathResource("templates/todo.xml")));    
+    .body(new ClassPathResource("templates/todo.xml")));    
 ```
         
 An alternative approach would be to use Xpath expressions when validating incoming XML messages.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
@@ -95,7 +95,7 @@ This makes sure that the Xpath expressions are able to find the elements with co
 namespace context for each receive action individually.       
         
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)

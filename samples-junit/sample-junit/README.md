@@ -45,7 +45,7 @@ public class TodoListRunnerIT extends JUnit4CitrusTestRunner {
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}"));
+            .body("title=${todoName}&description=${todoDescription}"));
 
         http(action -> action.client(todoClient)
             .receive()
@@ -78,7 +78,7 @@ public class TodoListIT extends JUnit4CitrusTest {
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}"));
+            .body("title=${todoName}&description=${todoDescription}"));
 
         runner.http(action -> action.client(todoClient)
             .receive()

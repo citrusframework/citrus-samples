@@ -78,20 +78,20 @@ public class CitrusEndpointConfig {
     }
 
     @Bean
-    public JmsEndpoint bakeryOrderEndpoint() {
+    public JmsEndpoint bakeryOrderEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
                 .asynchronous()
                 .destination("bakery.order.inbound")
-                .connectionFactory(connectionFactory())
+                .connectionFactory(connectionFactory)
                 .build();
     }
 
     @Bean
-    public JmsEndpoint unknownOrderEndpoint() {
+    public JmsEndpoint unknownOrderEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
                 .asynchronous()
                 .destination("factory.unknown.inbound")
-                .connectionFactory(connectionFactory())
+                .connectionFactory(connectionFactory)
                 .build();
     }
 

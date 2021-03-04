@@ -80,12 +80,12 @@ public void testAddEntry() {
     variable("todoName", "todo_citrus:randomNumber(4)");
     variable("todoDescription", "Description: ${todoName}");
 
-    http(httpActionBuilder -> httpActionBuilder
+    $(http()
         .client(todoClient)
         .send()
         .delete("/api/todolist"));
 
-    http(httpActionBuilder -> httpActionBuilder
+    $(http()
         .client(todoClient)
         .receive()
         .response(HttpStatus.OK));

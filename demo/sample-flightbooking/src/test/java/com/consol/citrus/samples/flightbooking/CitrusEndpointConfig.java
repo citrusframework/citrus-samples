@@ -16,10 +16,12 @@
 
 package com.consol.citrus.samples.flightbooking;
 
+import javax.jms.ConnectionFactory;
+import java.util.Collections;
+
+import com.consol.citrus.container.BeforeTest;
 import com.consol.citrus.container.SequenceBeforeTest;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.dsl.runner.TestRunner;
-import com.consol.citrus.dsl.runner.TestRunnerBeforeTestSupport;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.variable.GlobalVariables;
@@ -31,12 +33,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
-import org.xml.sax.SAXException;
 
-import javax.jms.ConnectionFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.Collections;
+import static com.consol.citrus.jms.actions.PurgeJmsQueuesAction.Builder.purgeQueues;
 
 /**
  * @author Christoph Deppisch
@@ -111,38 +109,38 @@ public class CitrusEndpointConfig {
     }
 
     @Bean
-    public JmsEndpoint travelAgencyBookingRequestEndpoint() {
+    public JmsEndpoint travelAgencyBookingRequestEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
             .asynchronous()
             .destination(travelAgencyRequestQueue)
-            .connectionFactory(connectionFactory())
+            .connectionFactory(connectionFactory)
             .build();
     }
 
     @Bean
-    public JmsEndpoint travelAgencyBookingResponseEndpoint() {
+    public JmsEndpoint travelAgencyBookingResponseEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
             .asynchronous()
             .destination(travelAgencyResponseQueue)
-            .connectionFactory(connectionFactory())
+            .connectionFactory(connectionFactory)
             .build();
     }
 
     @Bean
-    public JmsEndpoint smartAirlineBookingRequestEndpoint() {
+    public JmsEndpoint smartAirlineBookingRequestEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
             .asynchronous()
             .destination(smartAirlineBookingRequestEndpoint)
-            .connectionFactory(connectionFactory())
+            .connectionFactory(connectionFactory)
             .build();
     }
 
     @Bean
-    public JmsEndpoint smartAirlineBookingResponseEndpoint() {
+    public JmsEndpoint smartAirlineBookingResponseEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
             .asynchronous()
             .destination(smartAirlineBookingResponseEndpoint)
-            .connectionFactory(connectionFactory())
+            .connectionFactory(connectionFactory)
             .build();
     }
 
@@ -160,17 +158,14 @@ public class CitrusEndpointConfig {
     }
 
     @Bean
-    public SequenceBeforeTest beforeTest() {
-        return new TestRunnerBeforeTestSupport() {
-            @Override
-            public void beforeTest(TestRunner testRunner) {
-                testRunner.purgeQueues(purgeJmsQueryBuilder -> purgeJmsQueryBuilder
-                    .connectionFactory(connectionFactory())
+    public BeforeTest beforeTest(ConnectionFactory connectionFactory) {
+        return new SequenceBeforeTest.Builder()
+                .actions(purgeQueues()
+                    .connectionFactory(connectionFactory)
                     .queue(travelAgencyRequestQueue)
                     .queue(travelAgencyResponseQueue)
                     .queue(smartAirlineBookingRequestEndpoint)
-                    .queue(smartAirlineBookingResponseEndpoint));
-            }
-        };
+                    .queue(smartAirlineBookingResponseEndpoint))
+            .build();
     }
 }

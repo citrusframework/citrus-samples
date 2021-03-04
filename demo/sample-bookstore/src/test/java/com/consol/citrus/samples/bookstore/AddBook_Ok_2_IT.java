@@ -16,11 +16,16 @@
 
 package com.consol.citrus.samples.bookstore;
 
+import java.util.Calendar;
+import java.util.Map;
+
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
-import com.consol.citrus.samples.bookstore.model.*;
-import com.consol.citrus.validation.xml.XmlMarshallingValidationCallback;
+import com.consol.citrus.samples.bookstore.model.AddBookRequestMessage;
+import com.consol.citrus.samples.bookstore.model.AddBookResponseMessage;
+import com.consol.citrus.samples.bookstore.model.Book;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import com.consol.citrus.validation.xml.XmlMarshallingValidationProcessor;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,41 +33,43 @@ import org.springframework.oxm.Marshaller;
 import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 
-import java.util.Calendar;
-import java.util.Map;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch
  */
 @Test
-public class AddBook_Ok_2_IT extends TestNGCitrusTestRunner {
+public class AddBook_Ok_2_IT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("bookStoreClient")
     private WebServiceClient bookStoreClient;
-    
+
     @Autowired
     private Marshaller marshaller;
 
     @CitrusTest(name = "AddBook_Ok_2_IT")
     public void addBookTest() {
         String isbn = "978-citrus:randomNumber(10)";
-        
-        send(sendMessageBuilder -> sendMessageBuilder
+
+        $(send()
             .endpoint(bookStoreClient)
-            .payload(createAddBookRequestMessage(isbn), marshaller)
+            .message()
+            .body(marshal(createAddBookRequestMessage(isbn), marshaller))
             .header("citrus_soap_action", "addBook"));
-        
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+
+        $(receive()
             .endpoint(bookStoreClient)
-            .validationCallback(new XmlMarshallingValidationCallback<AddBookResponseMessage>() {
+            .validate(new XmlMarshallingValidationProcessor<AddBookResponseMessage>() {
                 @Override
                 public void validate(AddBookResponseMessage response, Map<String, Object> headers, TestContext context) {
                     Assert.isTrue(response.isSuccess(), "Unexpected add book response");
                 }
             }));
     }
-    
+
     /**
      * @param isbn
      * @return

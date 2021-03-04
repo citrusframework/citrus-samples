@@ -80,24 +80,24 @@ attachment.setContentType("image/png");
 attachment.setCharsetName("utf-8");
 attachment.setContentResourcePath("image/logo.png");
 
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .client(imageClient)
     .send()
     .fork(true)
     .soapAction("addImage")
-    .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+    .body("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
             "<image:id>logo</image:id>" +
             "<image:image>cid:IMAGE</image:image>" +
             "</image:addImage>")
     .attachment(attachment)
     .mtomEnabled(true));
 
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .server(imageServer)
     .receive()
     .soapAction("addImage")
     .schemaValidation(false)
-    .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+    .body("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                 "<image:id>logo</image:id>" +
                 "<image:image>" +
                     "<xop:Include xmlns:xop=\"http://www.w3.org/2004/08/xop/include\" href=\"cid:IMAGE\"/>" +
@@ -134,23 +134,23 @@ attachment.setCharsetName("utf-8");
 attachment.setContentResourcePath("image/logo.png");
 attachment.setMtomInline(true);
 
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .client(imageClient)
     .send()
     .fork(true)
     .soapAction("addImage")
-    .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+    .body("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                 "<image:id>logo</image:id>" +
                 "<image:image>cid:IMAGE</image:image>" +
             "</image:addImage>")
     .attachment(attachment)
     .mtomEnabled(true));
 
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .server(imageServer)
     .receive()
     .soapAction("addImage")
-    .payload("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
+    .body("<image:addImage xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                 "<image:id>logo</image:id>" +
                 "<image:image>citrus:readFile(image/logo.base64)</image:image>" +
             "</image:addImage>"));

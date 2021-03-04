@@ -80,7 +80,7 @@ public class TodoSteps {
                 .send()
                 .post("/todolist")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .payload("title=" + todoName);
+                .body("title=" + todoName);
 
         designer.http()
                 .client(todoListClient)

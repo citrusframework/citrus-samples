@@ -17,15 +17,18 @@
 package com.consol.citrus.samples.bookstore;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.ws.actions.AssertSoapFault.Builder.assertSoapFault;
+import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+
 /**
  * @author Christoph Deppisch
  */
-public class GetBookDetails_Error_1_IT extends TestNGCitrusTestRunner {
+public class GetBookDetails_Error_1_IT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private WebServiceClient bookStoreClient;
@@ -38,19 +41,20 @@ public class GetBookDetails_Error_1_IT extends TestNGCitrusTestRunner {
 
         variable("isbn", "000-0000000000");
         variable("faultCode", "{http://www.consol.com/citrus/samples/errorcodes}CITRUS:1002");
-        
-        assertSoapFault()
+
+        $(assertSoapFault()
                 .faultCode("${faultCode}")
                 .faultString("Book(isbn:'${isbn}') not available in registry")
                 .when(
-                    soap(soapActionBuilder -> soapActionBuilder
+                    soap()
                         .client(bookStoreClient)
                         .send()
+                        .message()
                         .soapAction("getBookDetails")
-                        .payload("<bkr:GetBookDetailsRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        .body("<bkr:GetBookDetailsRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
                                     "<bkr:isbn>${isbn}</bkr:isbn>" +
                                 "</bkr:GetBookDetailsRequestMessage>"))
                 );
     }
-    
+
 }

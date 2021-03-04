@@ -17,19 +17,22 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static com.consol.citrus.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -42,35 +45,39 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoDescription", "Sample description");
         variable("done", "false");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .header("X-TodoId", "${todoId}")
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.CREATED)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .message()
             .header("X-TodoId", "${todoId}")
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }
 
     @Test
@@ -80,35 +87,39 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "Sample task");
         variable("todoDescription", "Sample description");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .header("X-TodoId", "${todoId}")
-            .payload(new ClassPathResource("templates/todo.json")));
+            .body(new ClassPathResource("templates/todo.json")));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.CREATED)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .message()
             .header("X-TodoId", "${todoId}")
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload(new ClassPathResource("templates/todo.json")));
+            .message()
+            .type(MessageType.JSON)
+            .body(new ClassPathResource("templates/todo.json")));
     }
 
     @Test
@@ -118,38 +129,43 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "Sample task");
         variable("todoDescription", "Sample description");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
             .header("X-TodoId", "${todoId}")
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.CREATED)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .message()
             .header("X-TodoId", "${todoId}")
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .validate("$.id", "${todoId}")
-            .validate("$.title", "${todoName}")
-            .validate("$.description", "${todoDescription}")
-            .validate("$.done", false));
+            .message()
+            .type(MessageType.JSON)
+            .validate(jsonPath()
+                    .expression("$.id", "${todoId}")
+                    .expression("$.title", "${todoName}")
+                    .expression("$.description", "${todoDescription}")
+                    .expression("$.done", false)));
     }
 
 }

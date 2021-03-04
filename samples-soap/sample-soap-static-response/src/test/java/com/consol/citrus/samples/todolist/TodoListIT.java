@@ -17,15 +17,17 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private WebServiceClient todoClient;
@@ -33,16 +35,18 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testTodo() {
-        soap(soapActionBuilder -> soapActionBuilder
+        $(soap()
             .client(todoClient)
             .send()
+            .message()
             .soapAction("getTodo")
-            .payload("<todo:getTodoRequest xmlns:todo=\"http://citrusframework.org/samples/todolist\"></todo:getTodoRequest>"));
+            .body("<todo:getTodoRequest xmlns:todo=\"http://citrusframework.org/samples/todolist\"></todo:getTodoRequest>"));
 
-        soap(soapActionBuilder -> soapActionBuilder
+        $(soap()
             .client(todoClient)
             .receive()
-            .payload("<getTodoResponse xmlns=\"http://citrusframework.org/samples/todolist\">" +
+            .message()
+            .body("<getTodoResponse xmlns=\"http://citrusframework.org/samples/todolist\">" +
                         "<todoEntry>" +
                             "<id>${todoId}</id>" +
                             "<title>${todoName}</title>" +
@@ -55,16 +59,18 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testTodoList() {
-        soap(soapActionBuilder -> soapActionBuilder
+        $(soap()
             .client(todoClient)
             .send()
+            .message()
             .soapAction("getTodoList")
-            .payload("<todo:getTodoListRequest xmlns:todo=\"http://citrusframework.org/samples/todolist\"></todo:getTodoListRequest>"));
+            .body("<todo:getTodoListRequest xmlns:todo=\"http://citrusframework.org/samples/todolist\"></todo:getTodoListRequest>"));
 
-        soap(soapActionBuilder -> soapActionBuilder
+        $(soap()
             .client(todoClient)
             .receive()
-            .payload("<getTodoListResponse xmlns=\"http://citrusframework.org/samples/todolist\">" +
+            .message()
+            .body("<getTodoListResponse xmlns=\"http://citrusframework.org/samples/todolist\">" +
                         "<list>" +
                             "<todoEntry>" +
                                 "<id>${todoId}</id>" +

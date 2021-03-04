@@ -17,15 +17,18 @@
 package com.consol.citrus.samples.bookstore;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.ws.actions.AssertSoapFault.Builder.assertSoapFault;
+import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+
 /**
  * @author Christoph Deppisch
  */
-public class SchemaValidation_Error_1_IT extends TestNGCitrusTestRunner {
+public class SchemaValidation_Error_1_IT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private WebServiceClient bookStoreClient;
@@ -39,15 +42,16 @@ public class SchemaValidation_Error_1_IT extends TestNGCitrusTestRunner {
         variable("isbn", "978-0596517335");
         variable("faultCode", "{http://www.consol.com/citrus/samples/errorcodes}CITRUS:999");
 
-        assertSoapFault()
+        $(assertSoapFault()
                 .faultCode("${faultCode}")
                 .faultString("Client sent invalid request!")
                 .when(
-                    soap(soapActionBuilder -> soapActionBuilder
+                    soap()
                         .client(bookStoreClient)
                         .send()
+                        .message()
                         .soapAction("addBook")
-                        .payload("<bkr:AddBookRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+                        .body("<bkr:AddBookRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
                                     "<bkr:book>" +
                                         "<bkr:title>Maven: The Definitive Guide</bkr:title>" +
                                         "<bkr:author>Mike Loukides, Sonatype</bkr:author>" +
@@ -57,5 +61,5 @@ public class SchemaValidation_Error_1_IT extends TestNGCitrusTestRunner {
                                 "</bkr:AddBookRequestMessage>"))
                 );
     }
-    
+
 }

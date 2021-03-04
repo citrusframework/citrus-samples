@@ -17,18 +17,21 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.rmi.client.RmiClient;
 import com.consol.citrus.rmi.message.RmiMessage;
 import com.consol.citrus.rmi.server.RmiServer;
 import com.consol.citrus.samples.todolist.remote.TodoListService;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
+
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private RmiClient todoRmiClient;
@@ -39,24 +42,24 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testAddTodo() {
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(todoRmiClient)
             .fork(true)
             .message(RmiMessage.invocation(TodoListService.class, "addTodo")
                     .argument("todo-star")
                     .argument("Star me on github")));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(todoRmiServer)
             .message(RmiMessage.invocation(TodoListService.class, "addTodo")
                     .argument("todo-star")
                     .argument("Star me on github")));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(todoRmiServer)
             .message(RmiMessage.result()));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(todoRmiClient)
             .message(RmiMessage.result()));
     }
@@ -64,24 +67,26 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testGetTodos() {
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(todoRmiClient)
             .fork(true)
             .message(RmiMessage.invocation(TodoListService.class, "getTodos")));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(todoRmiServer)
             .message(RmiMessage.invocation(TodoListService.class, "getTodos")));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(todoRmiServer)
-            .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+            .message()
+            .body("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
                         "<object type=\"java.util.Map\" value=\"{todo-follow=Follow us on github}\"/>" +
                     "</service-result>"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(todoRmiClient)
-            .payload("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
+            .message()
+            .body("<service-result xmlns=\"http://www.citrusframework.org/schema/rmi/message\">" +
                         "<object type=\"java.util.LinkedHashMap\" value=\"{todo-follow=Follow us on github}\"/>" +
                     "</service-result>"));
     }

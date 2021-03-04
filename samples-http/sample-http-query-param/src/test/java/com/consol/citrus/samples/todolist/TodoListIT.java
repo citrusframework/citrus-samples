@@ -16,20 +16,22 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.util.UUID;
+
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.http.server.HttpServer;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import java.util.UUID;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -40,7 +42,7 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testAddTodo() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo")
@@ -49,18 +51,18 @@ public class TodoListIT extends TestNGCitrusTestRunner {
             .queryParam("title", "todo_0001")
             .queryParam("description", null));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .server(todoListServer)
             .receive()
             .get("/api/todo")
             .queryParam("title", "todo_0001")
             .queryParam("description", "@ignore@"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .server(todoListServer)
             .respond(HttpStatus.FOUND));
-        
-        http(httpActionBuilder -> httpActionBuilder
+
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.FOUND));

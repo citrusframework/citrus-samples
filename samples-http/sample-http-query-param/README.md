@@ -39,7 +39,7 @@ or Citrus would consume requests as a server from a system under test. In this s
 request message sending as client.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .get("/api/todo")
@@ -48,18 +48,18 @@ http(httpActionBuilder -> httpActionBuilder
     .queryParam("title", "todo_0001")
     .queryParam("description", null));
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .server(todoListServer)
     .receive()
     .get("/api/todo")
     .queryParam("title", "todo_0001")
     .queryParam("description", "@ignore@"));
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .server(todoListServer)
     .respond(HttpStatus.FOUND));
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.FOUND));

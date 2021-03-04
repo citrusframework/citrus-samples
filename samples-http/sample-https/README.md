@@ -59,13 +59,13 @@ As you can see we load the keystore file **keys/citrus.jks** in order to setup t
 sending messages to the server.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .get("/todo")
     .accept(ContentType.APPLICATION_XML.getMimeType()));
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK));    

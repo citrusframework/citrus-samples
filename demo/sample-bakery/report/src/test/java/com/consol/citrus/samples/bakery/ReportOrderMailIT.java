@@ -17,23 +17,28 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
 import com.consol.citrus.mail.server.MailServer;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class ReportOrderMailIT extends TestNGCitrusTestRunner {
+public class ReportOrderMailIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("reportingClient")
@@ -45,11 +50,11 @@ public class ReportOrderMailIT extends TestNGCitrusTestRunner {
 
      @CitrusTest
     public void shouldSendMail() {
-         echo("Add 1000+ order and receive mail");
+         $(echo("Add 1000+ order and receive mail"));
 
          variable("orderType", "chocolate");
 
-         http(httpActionBuilder -> httpActionBuilder
+         $(http()
              .client(reportingClient)
              .send()
              .put("/reporting")
@@ -57,36 +62,39 @@ public class ReportOrderMailIT extends TestNGCitrusTestRunner {
              .queryParam("name", "${orderType}")
              .queryParam("amount", "1001"));
 
-         http(httpActionBuilder -> httpActionBuilder
+         $(http()
              .client(reportingClient)
              .receive()
              .response(HttpStatus.NO_CONTENT));
 
-         echo("Receive report mail for 1000+ order");
+         $(echo("Receive report mail for 1000+ order"));
 
-         receive(receiveMessageBuilder -> receiveMessageBuilder
+         $(receive()
              .endpoint(mailServer)
-             .payload(new ClassPathResource("templates/mail.xml"))
+             .message()
+             .body(new ClassPathResource("templates/mail.xml"))
              .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "Congratulations!")
              .header(CitrusMailMessageHeaders.MAIL_FROM, "cookie-report@example.com")
              .header(CitrusMailMessageHeaders.MAIL_TO, "stakeholders@example.com"));
 
-         send(sendMessageBuilder -> sendMessageBuilder
+         $(send()
              .endpoint(mailServer)
-             .payload(new ClassPathResource("templates/mail_response.xml")));
+             .message()
+             .body(new ClassPathResource("templates/mail_response.xml")));
 
-         echo("Receive report with 1000+ order");
+         $(echo("Receive report with 1000+ order"));
 
-         http(httpActionBuilder -> httpActionBuilder
+         $(http()
              .client(reportingClient)
              .send()
              .get("/reporting/json"));
 
-         http(httpActionBuilder -> httpActionBuilder
+         $(http()
              .client(reportingClient)
              .receive()
              .response(HttpStatus.OK)
-             .messageType(MessageType.JSON)
-             .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(1000)@\"}"));
+             .message()
+             .type(MessageType.JSON)
+             .body("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(1000)@\"}"));
      }
 }

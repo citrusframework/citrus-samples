@@ -65,17 +65,17 @@ As you can see we load the keystore file **keys/citrus.jks** in order to setup t
 sending messages to the server.
 
 ```java
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .client(todoClient)
     .send()
     .fork(true)
     .soapAction("addTodoEntry")
-    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml")));
+    .body(new ClassPathResource("templates/addTodoEntryRequest.xml")));
 
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .client(todoClient)
     .receive()
-    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));    
+    .body(new ClassPathResource("templates/addTodoEntryResponse.xml")));    
 ```
         
 On the server side the configuration looks like follows:

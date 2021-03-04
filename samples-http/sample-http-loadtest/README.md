@@ -47,14 +47,14 @@ public class TodoListLoadTestIT extends TestNGCitrusTest {
     @Parameters( { "runner" })
     @CitrusTest
     public void testAddTodo(@Optional @CitrusResource TestRunner runner) {
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.$(http()
             .client(todoClient)
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=citrus:concat('todo_', citrus:randomNumber(10))"));
+            .body("title=citrus:concat('todo_', citrus:randomNumber(10))"));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.$(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.FOUND));
@@ -63,13 +63,13 @@ public class TodoListLoadTestIT extends TestNGCitrusTest {
     @Parameters( { "runner" })
     @CitrusTest
     public void testListTodos(@Optional @CitrusResource TestRunner runner) {
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.$(http()
             .client(todoClient)
             .send()
             .get("/todolist")
             .accept(MediaType.TEXT_HTML_VALUE));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.$(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK));

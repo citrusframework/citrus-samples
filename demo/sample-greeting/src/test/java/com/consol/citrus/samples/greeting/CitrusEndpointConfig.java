@@ -16,23 +16,27 @@
 
 package com.consol.citrus.samples.greeting;
 
+import javax.jms.ConnectionFactory;
+import java.util.Collections;
+
 import com.consol.citrus.channel.ChannelEndpoint;
+import com.consol.citrus.container.BeforeTest;
 import com.consol.citrus.container.SequenceBeforeTest;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.dsl.runner.TestRunner;
-import com.consol.citrus.dsl.runner.TestRunnerBeforeTestSupport;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.variable.GlobalVariables;
 import com.consol.citrus.xml.XsdSchemaRepository;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 
-import javax.jms.ConnectionFactory;
-import java.util.Collections;
+import static com.consol.citrus.jms.actions.PurgeJmsQueuesAction.Builder.purgeQueues;
 
 /**
  * @author Christoph Deppisch
@@ -119,15 +123,14 @@ public class CitrusEndpointConfig {
     }
 
     @Bean
-    public SequenceBeforeTest beforeTest() {
-        return new TestRunnerBeforeTestSupport() {
-            @Override
-            public void beforeTest(TestRunner testRunner) {
-                testRunner.purgeQueues(purgeJmsQueueBuilder -> purgeJmsQueueBuilder
-                    .connectionFactory(connectionFactory())
+    public BeforeTest beforeTest(ConnectionFactory connectionFactory) {
+        return new SequenceBeforeTest.Builder()
+            .actions(
+                purgeQueues()
+                    .connectionFactory(connectionFactory)
                     .queue(greetingRequestQueue)
-                    .queue(greetingResponseQueue));
-            }
-        };
+                    .queue(greetingResponseQueue)
+            )
+            .build();
     }
 }

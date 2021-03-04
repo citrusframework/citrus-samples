@@ -17,20 +17,23 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
+
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class ReportSummaryIT extends TestNGCitrusTestRunner {
+public class ReportSummaryIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("reportingClient")
@@ -38,36 +41,38 @@ public class ReportSummaryIT extends TestNGCitrusTestRunner {
 
     @CitrusTest
     public void getJsonReport() {
-        echo("Receive Json report");
+        $(echo("Receive Json report"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/json"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{\"caramel\": \"@isNumber()@\",\"blueberry\": \"@isNumber()@\",\"chocolate\": \"@isNumber()@\"}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{\"caramel\": \"@isNumber()@\",\"blueberry\": \"@isNumber()@\",\"chocolate\": \"@isNumber()@\"}"));
     }
 
     @CitrusTest
     public void getHtmlReport() {
-        echo("Receive Html report");
+        $(echo("Receive Html report"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType("xhtml")
-            .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"org/w3/xhtml/xhtml1-strict.dtd\">\n" +
+            .message()
+            .type(MessageType.XHTML)
+            .body("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"org/w3/xhtml/xhtml1-strict.dtd\">\n" +
                      "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                          "<head>\n" +
                              "<title></title>\n" +
@@ -88,9 +93,9 @@ public class ReportSummaryIT extends TestNGCitrusTestRunner {
 
     @CitrusTest
     public void resetReport() {
-        echo("Add some 'chocolate', 'caramel' and 'blueberry' orders");
+        $(echo("Add some 'chocolate', 'caramel' and 'blueberry' orders"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .put("/reporting")
@@ -98,12 +103,12 @@ public class ReportSummaryIT extends TestNGCitrusTestRunner {
             .queryParam("name", "chocolate")
             .queryParam("amount", "10"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .put("/reporting")
@@ -111,12 +116,12 @@ public class ReportSummaryIT extends TestNGCitrusTestRunner {
             .queryParam("name", "caramel")
             .queryParam("amount", "100"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .put("/reporting")
@@ -124,49 +129,51 @@ public class ReportSummaryIT extends TestNGCitrusTestRunner {
             .queryParam("name", "blueberry")
             .queryParam("amount", "5"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        echo("Receive report with changed data");
+        $(echo("Receive report with changed data"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/json"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{\"caramel\": \"@greaterThan(0)@\",\"blueberry\": \"@greaterThan(0)@\",\"chocolate\": \"@greaterThan(0)@\"}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{\"caramel\": \"@greaterThan(0)@\",\"blueberry\": \"@greaterThan(0)@\",\"chocolate\": \"@greaterThan(0)@\"}"));
 
-        echo("Reset report data");
+        $(echo("Reset report data"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/reset"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK));
 
-        echo("Receive empty report data");
+        $(echo("Receive empty report data"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/json"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{\"caramel\": 0,\"blueberry\": 0,\"chocolate\": 0}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{\"caramel\": 0,\"blueberry\": 0,\"chocolate\": 0}"));
     }
 }

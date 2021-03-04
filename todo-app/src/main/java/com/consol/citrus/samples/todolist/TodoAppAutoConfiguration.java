@@ -1,7 +1,7 @@
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.runner.TestRunner;
-import com.consol.citrus.dsl.runner.TestRunnerBeforeSuiteSupport;
+import com.consol.citrus.container.BeforeSuite;
+import com.consol.citrus.container.SequenceBeforeSuite;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -15,12 +15,9 @@ public class TodoAppAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "system.under.test.mode", havingValue = "embedded")
-    public TestRunnerBeforeSuiteSupport embeddedTodoApp() {
-        return new TestRunnerBeforeSuiteSupport() {
-            @Override
-            public void beforeSuite(TestRunner runner) {
-                SpringApplication.run(TodoApplication.class);
-            }
-        };
+    public BeforeSuite embeddedTodoApp() {
+        return new SequenceBeforeSuite.Builder()
+                .actions(context -> SpringApplication.run(TodoApplication.class))
+                .build();
     }
 }

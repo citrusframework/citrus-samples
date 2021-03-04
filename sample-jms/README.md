@@ -42,10 +42,10 @@ The endpoint defines the connection factory and the JMS destination. In our exam
 No we can add a new todo entry by sending a JSON message to the JMS queue destination.
     
 ```java
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(todoJmsEndpoint)
     .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-    .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
+    .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 ```
         
 We have to add a special message header **_type** which is required by the system under test for message conversion. The message payload
@@ -60,13 +60,13 @@ You can read about http and XPath validation features in the sample [xhtml](../s
 In order to demonstrate the receive operation on a JMS queue in Citrus we can trigger a JMS report message on the todo-app server via Http.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .get("/todolist")
     .accept(MediaType.TEXT_HTML_VALUE));
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK));
@@ -76,10 +76,10 @@ The Http GET request triggers a JMS report generation on the todo-app SUT. The r
 with a normal `receive` operation on a JMS endpoint.
 
 ```java
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(todoReportEndpoint)
-    .messageType(MessageType.JSON)
-    .payload("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
+    .type(MessageType.JSON)
+    .body("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
     .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry"));
 ```
 

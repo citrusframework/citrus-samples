@@ -17,18 +17,20 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -36,35 +38,39 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testTodo() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo")
+            .message()
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
     }
 
     @Test
     @CitrusTest
     public void testTodoList() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todolist")
+            .message()
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("[ { \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false} ]"));
+            .message()
+            .type(MessageType.JSON)
+            .body("[ { \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false} ]"));
     }
 
 }

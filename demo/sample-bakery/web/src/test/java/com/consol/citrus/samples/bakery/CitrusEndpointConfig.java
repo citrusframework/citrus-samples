@@ -33,7 +33,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Christoph Deppisch
  */
 @ContextConfiguration
-@PropertySource(value = "citrus.properties")
+@PropertySource(value = "classpath:citrus.properties")
 public class CitrusEndpointConfig {
 
     @Value("${activemq.server.port}")
@@ -70,38 +70,38 @@ public class CitrusEndpointConfig {
     }
 
     @Bean
-    public JmsEndpoint bakeryOrderEndpoint() {
+    public JmsEndpoint bakeryOrderEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
                 .asynchronous()
                 .destination("bakery.order.inbound")
-                .connectionFactory(connectionFactory())
+                .connectionFactory(connectionFactory)
                 .build();
     }
 
     @Bean
-    public JmsEndpoint workerCaramelEndpoint() {
+    public JmsEndpoint workerCaramelEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
                 .asynchronous()
                 .destination("factory.caramel.inbound")
-                .connectionFactory(connectionFactory())
+                .connectionFactory(connectionFactory)
                 .build();
     }
 
     @Bean
-    public JmsEndpoint workerBlueberryEndpoint() {
+    public JmsEndpoint workerBlueberryEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
                 .asynchronous()
                 .destination("factory.blueberry.inbound")
-                .connectionFactory(connectionFactory())
+                .connectionFactory(connectionFactory)
                 .build();
     }
 
     @Bean
-    public JmsEndpoint workerChocolateEndpoint() {
+    public JmsEndpoint workerChocolateEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
                 .asynchronous()
                 .destination("factory.chocolate.inbound")
-                .connectionFactory(connectionFactory())
+                .connectionFactory(connectionFactory)
                 .build();
     }
 }

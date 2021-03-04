@@ -278,33 +278,33 @@ public void testTodoService() {
     variable("todoDescription", "Description: ${todoName}");
     variable("done", "false");
 
-    http(httpActionBuilder -> httpActionBuilder
+    $(http()
         .client(todoClient)
         .send()
         .post("/api/todolist")
-        .messageType(MessageType.JSON)
+        .type(MessageType.JSON)
         .contentType(ContentType.APPLICATION_JSON.getMimeType())
-        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+        .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-    http(httpActionBuilder -> httpActionBuilder
+    $(http()
         .client(todoClient)
         .receive()
         .response(HttpStatus.OK)
-        .messageType(MessageType.PLAINTEXT)
-        .payload("${todoId}"));
+        .type(MessageType.PLAINTEXT)
+        .body("${todoId}"));
 
-    http(httpActionBuilder -> httpActionBuilder
+    $(http()
         .client(todoClient)
         .send()
         .get("/api/todo/${todoId}")
         .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-    http(httpActionBuilder -> httpActionBuilder
+    $(http()
         .client(todoClient)
         .receive()
         .response(HttpStatus.OK)
-        .messageType(MessageType.JSON)
-        .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+        .type(MessageType.JSON)
+        .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 }
 ```
 

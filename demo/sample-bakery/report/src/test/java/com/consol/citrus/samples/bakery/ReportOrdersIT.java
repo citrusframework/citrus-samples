@@ -20,23 +20,26 @@ import java.util.Map;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.functions.Functions;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
-import com.consol.citrus.validation.callback.AbstractValidationCallback;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import com.consol.citrus.validation.AbstractValidationProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class ReportOrdersIT extends TestNGCitrusTestRunner {
+public class ReportOrdersIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("reportingClient")
@@ -47,28 +50,29 @@ public class ReportOrdersIT extends TestNGCitrusTestRunner {
         final String orderId = Functions.randomNumber(10L, null);
         variable("orderId", orderId);
 
-        echo("First check order id not present");
+        $(echo("First check order id not present"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/orders"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .validationCallback(new AbstractValidationCallback<String>() {
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .validate(new AbstractValidationProcessor<String>() {
                 @Override
-                public void validate(String payload, Map headers, TestContext context) {
-                    Assert.assertFalse(payload.contains(orderId));
+                public void validate(String body, Map headers, TestContext context) {
+                    Assert.assertFalse(body.contains(orderId));
                 }
             }));
 
-        echo("Add some 'blueberry' order with id");
+        $(echo("Add some 'blueberry' order with id"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .put("/reporting")
@@ -76,50 +80,52 @@ public class ReportOrdersIT extends TestNGCitrusTestRunner {
             .queryParam("name", "blueberry")
             .queryParam("amount", "1"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        echo("Receive order id in list of produced goods");
+        $(echo("Receive order id in list of produced goods"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/orders"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .validationCallback(new AbstractValidationCallback<String>() {
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .validate(new AbstractValidationProcessor<String>() {
                 @Override
-                public void validate(String payload, Map headers, TestContext context) {
-                    Assert.assertTrue(payload.contains(orderId));
+                public void validate(String body, Map headers, TestContext context) {
+                    Assert.assertTrue(body.contains(orderId));
                 }
             }));
     }
 
     @CitrusTest
     public void addOrders() {
-        echo("First receive report and save current amount of produced chocolate cookies to variable");
+        $(echo("First receive report and save current amount of produced chocolate cookies to variable"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/json"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@variable('producedCookies')@\"}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@variable('producedCookies')@\"}"));
 
-        echo("Add some 'chocolate' orders");
+        $(echo("Add some 'chocolate' orders"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .put("/reporting")
@@ -127,48 +133,50 @@ public class ReportOrdersIT extends TestNGCitrusTestRunner {
             .queryParam("name", "chocolate")
             .queryParam("amount", "10"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        echo("Receive report with changed data");
+        $(echo("Receive report with changed data"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/json"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(${producedCookies})@\"}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{\"caramel\": \"@ignore@\",\"blueberry\": \"@ignore@\",\"chocolate\": \"@greaterThan(${producedCookies})@\"}"));
     }
 
     @CitrusTest
     public void getOrderStatus() {
         variable("orderId", Functions.randomNumber(10L, null));
 
-        echo("First receive negative order status");
+        $(echo("First receive negative order status"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/order")
             .queryParam("id", "${orderId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{\"status\": false}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{\"status\": false}"));
 
-        echo("Add some 'caramel' order with id");
+        $(echo("Add some 'caramel' order with id"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .put("/reporting")
@@ -176,24 +184,25 @@ public class ReportOrdersIT extends TestNGCitrusTestRunner {
             .queryParam("name", "caramel")
             .queryParam("amount", "1"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.NO_CONTENT));
 
-        echo("Receive report positive status for order id");
+        $(echo("Receive report positive status for order id"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .send()
             .get("/reporting/order")
             .queryParam("id", "${orderId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(reportingClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{\"status\": true}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{\"status\": true}"));
     }
 }

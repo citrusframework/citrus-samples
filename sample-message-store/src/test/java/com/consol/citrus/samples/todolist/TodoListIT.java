@@ -17,20 +17,24 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.Message;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.dsl.JsonPathSupport.jsonPath;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -38,75 +42,84 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testMessageStoreValidation() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageName("todoRequest")
-            .messageType(MessageType.JSON)
+            .message()
+            .name("todoRequest")
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{\"id\": \"citrus:randomUUID()\", \"title\": \"citrus:concat('todo_', citrus:randomNumber(4))\", \"description\": \"ToDo Description\", \"done\": false}"));
+            .body("{\"id\": \"citrus:randomUUID()\", \"title\": \"citrus:concat('todo_', citrus:randomNumber(4))\", \"description\": \"ToDo Description\", \"done\": false}"));
 
-        echo("citrus:message(todoRequest)");
+        $(echo("citrus:message(todoRequest)"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo/citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')")
+            .message()
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageName("todoResponse")
-            .messageType(MessageType.JSON)
-            .validate("$.id", "citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"));
+            .message()
+            .name("todoResponse")
+            .type(MessageType.JSON)
+            .validate(jsonPath()
+                        .expression("$.id", "citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')")));
 
-        echo("citrus:message(todoResponse)");
+        $(echo("citrus:message(todoResponse)"));
     }
 
     @Test
     @CitrusTest
     public void testMessageStoreValidationCallback() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageName("todoRequest")
-            .messageType(MessageType.JSON)
+            .message()
+            .name("todoRequest")
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{\"id\":\"citrus:randomUUID()\",\"title\":\"citrus:concat('todo_',citrus:randomNumber(4))\",\"description\":\"ToDo Description\",\"done\":false}"));
+            .body("{\"id\":\"citrus:randomUUID()\",\"title\":\"citrus:concat('todo_',citrus:randomNumber(4))\",\"description\":\"ToDo Description\",\"done\":false}"));
 
-        echo("citrus:message(todoRequest)");
+        $(echo("citrus:message(todoRequest)"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo/citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')")
+            .message()
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageName("todoResponse")
-            .messageType(MessageType.JSON)
-            .validationCallback((message, context) -> {
+            .message()
+            .name("todoResponse")
+            .type(MessageType.JSON)
+            .validate((message, context) -> {
                 Message todoRequest = context.getMessageStore().getMessage("todoRequest");
                 Assert.assertEquals(message.getPayload(), todoRequest.getPayload());
             }));

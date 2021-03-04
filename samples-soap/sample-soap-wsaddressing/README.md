@@ -96,16 +96,16 @@ public EndpointInterceptor soapMustUnderstandEndpointInterceptor() {
 The server is now ready to receive the request and validate the WSAddressing header information. 
 
 ```java
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .server(todoServer)
     .receive()
-    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml"))
+    .body(new ClassPathResource("templates/addTodoEntryRequest.xml"))
     .header(new ClassPathResource("templates/soapWsAddressingHeader.xml")));
 
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .server(todoServer)
     .send()
-    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));
+    .body(new ClassPathResource("templates/addTodoEntryResponse.xml")));
 ```
         
 We do this by adding the complete SOAP header as expected XML structure. The header information is loaded from external file resource.
@@ -133,13 +133,13 @@ simply because this is a generated UUID value that is newly generated on the cli
 In general we can overwrite WSAddressing header information in each send operation by setting the special WSAddressing message headers.
 
 ```java
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .client(todoClient)
     .send()
     .soapAction("addTodoEntry")
     .header(WsAddressingMessageHeaders.ACTION, "http://citrusframework.org/samples/todolist/addTodoEntry")
     .header(WsAddressingMessageHeaders.MESSAGE_ID, "urn:uuid:citrus:randomUUID()")
-    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml")));
+    .body(new ClassPathResource("templates/addTodoEntryRequest.xml")));
 ```
         
 Run

@@ -19,14 +19,14 @@ package com.consol.citrus.samples.todolist;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.consol.citrus.TestActionRunner;
+import com.consol.citrus.TestBehavior;
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.builder.HttpClientResponseActionBuilder;
-import com.consol.citrus.dsl.runner.AbstractTestBehavior;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
-import com.consol.citrus.dsl.builder.HttpActionBuilder;
-import com.consol.citrus.dsl.builder.HttpClientRequestActionBuilder;
+import com.consol.citrus.http.actions.HttpClientRequestActionBuilder;
+import com.consol.citrus.http.actions.HttpClientResponseActionBuilder;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -35,10 +35,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static com.consol.citrus.validation.xml.XpathMessageValidationContext.Builder.xpath;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -92,34 +95,37 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     /**
      * Adds new entry via Http POST request
      */
-    private class AddTodoBehavior extends AbstractTestBehavior {
+    private class AddTodoBehavior implements TestBehavior {
 
         private String payloadData;
         private Resource resource;
 
         @Override
-        public void apply() {
+        public void apply(TestActionRunner runner) {
 
-            HttpClientRequestActionBuilder request = new HttpActionBuilder()
+            HttpClientRequestActionBuilder.HttpMessageBuilderSupport requestAction = http()
                 .client(todoClient)
                 .send()
                 .post("/api/todolist")
-                .messageType(MessageType.JSON)
+                .message()
+                .type(MessageType.JSON)
                 .contentType(ContentType.APPLICATION_JSON.getMimeType());
 
             if (StringUtils.hasText(payloadData)) {
-                request.payload(payloadData);
+                requestAction.body(payloadData);
             } else if (resource != null) {
-                request.payload(resource);
+                requestAction.body(resource);
             }
-            run(request.build());
 
-            http(httpActionBuilder -> httpActionBuilder
+            runner.$(requestAction);
+
+            runner.$(http()
                 .client(todoClient)
                 .receive()
                 .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT)
-                .payload("${todoId}"));
+                .message()
+                .type(MessageType.PLAINTEXT)
+                .body("${todoId}"));
         }
 
         AddTodoBehavior withPayloadData(String payload) {
@@ -136,39 +142,43 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     /**
      * Gets entry via identifier as Http GET request.
      */
-    private class GetTodoBehavior extends AbstractTestBehavior {
+    private class GetTodoBehavior implements TestBehavior {
 
-        private String todoId;
+        private final String todoId;
         private String payloadData;
         private Resource resource;
 
-        private Map<String, Object> validateExpressions = new LinkedHashMap<>();
+        private final Map<String, Object> validateExpressions = new LinkedHashMap<>();
 
         public GetTodoBehavior(String todoId) {
             this.todoId = todoId;
         }
 
         @Override
-        public void apply() {
-            http(httpActionBuilder -> httpActionBuilder
+        public void apply(TestActionRunner runner) {
+            runner.$(http()
                 .client(todoClient)
                 .send()
                 .get("/api/todo/" + todoId)
+                .message()
                 .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-            HttpClientResponseActionBuilder response = new HttpActionBuilder()
+            HttpClientResponseActionBuilder.HttpMessageBuilderSupport responseAction = http()
                 .client(todoClient)
                 .receive()
                 .response(HttpStatus.OK)
-                .messageType(MessageType.JSON);
+                .message()
+                .type(MessageType.JSON);
 
             if (StringUtils.hasText(payloadData)) {
-                response.payload(payloadData);
+                responseAction.body(payloadData);
             } else if (resource != null) {
-                response.payload(resource);
+                responseAction.body(resource);
             }
 
-            validateExpressions.forEach(response::validate);
+            responseAction.validate(xpath().expressions(validateExpressions));
+
+            runner.$(responseAction);
         }
 
         GetTodoBehavior validate(String payload) {

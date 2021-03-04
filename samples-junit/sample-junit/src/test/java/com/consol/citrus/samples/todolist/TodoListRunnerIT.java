@@ -17,19 +17,22 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.junit.JUnit4CitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.junit.spring.JUnit4CitrusSpringSupport;
 import com.consol.citrus.message.MessageType;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static com.consol.citrus.validation.xml.XpathMessageValidationContext.Builder.xpath;
+
 /**
  * @author Christoph Deppisch
  */
 
-public class TodoListRunnerIT extends JUnit4CitrusTestRunner {
+public class TodoListRunnerIT extends JUnit4CitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -37,19 +40,21 @@ public class TodoListRunnerIT extends JUnit4CitrusTestRunner {
     @Test
     @CitrusTest
     public void testGet() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/todolist")
+            .message()
             .accept(MediaType.TEXT_HTML_VALUE));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("//xh:h1", "TODO list")
-            .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
+            .message()
+            .type(MessageType.XHTML)
+            .validate(xpath().expression("//xh:h1", "TODO list"))
+            .body("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
                     "\"org/w3/xhtml/xhtml1-transitional.dtd\">" +
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                         "<head>@ignore@</head>" +
@@ -63,13 +68,16 @@ public class TodoListRunnerIT extends JUnit4CitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        http(action -> action.client(todoClient)
+        $(http()
+            .client(todoClient)
             .send()
             .post("/todolist")
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}"));
+            .body("title=${todoName}&description=${todoDescription}"));
 
-        http(action -> action.client(todoClient)
+        $(http()
+            .client(todoClient)
             .receive()
             .response(HttpStatus.FOUND));
     }

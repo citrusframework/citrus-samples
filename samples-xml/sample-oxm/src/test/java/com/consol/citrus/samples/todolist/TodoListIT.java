@@ -16,13 +16,16 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.util.Map;
+import java.util.UUID;
+
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
-import com.consol.citrus.validation.xml.XmlMarshallingValidationCallback;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import com.consol.citrus.validation.xml.XmlMarshallingValidationProcessor;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,13 +33,13 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.Map;
-import java.util.UUID;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static com.consol.citrus.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -52,31 +55,34 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
+            .message()
             .contentType(ContentType.APPLICATION_XML.getMimeType())
-            .payload(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), marshaller));
+            .body(marshal(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), marshaller)));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .message()
             .accept(ContentType.APPLICATION_XML.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .validationCallback(new XmlMarshallingValidationCallback<TodoEntry>(marshaller) {
+            .validate(new XmlMarshallingValidationProcessor<TodoEntry>(marshaller) {
                 @Override
                 public void validate(TodoEntry todoEntry, Map<String, Object> headers, TestContext context) {
                     Assert.assertNotNull(todoEntry);

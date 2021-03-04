@@ -19,15 +19,19 @@ package com.consol.citrus.samples.todolist;
 import java.util.UUID;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.CreateVariablesAction.Builder.createVariable;
 import static com.consol.citrus.container.HamcrestConditionExpression.assertThat;
+import static com.consol.citrus.container.Iterate.Builder.iterate;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static com.consol.citrus.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
@@ -41,7 +45,7 @@ import static org.hamcrest.Matchers.startsWith;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -55,62 +59,68 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "todo_${todoId}");
         variable("todoDescription", "Description: ${todoName}");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .message()
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .validate("$.keySet()", hasItems("id", "title", "description", "done"))
-            .validate("$.id", equalTo(todoId))
-            .validate("$.title", allOf(startsWith("todo_"), endsWith(todoId)))
-            .validate("$.description", anyOf(startsWith("Description:"), nullValue()))
-            .validate("$.done", not(true)));
+            .message()
+            .type(MessageType.JSON)
+            .validate(jsonPath()
+                    .expression("$.keySet()", hasItems("id", "title", "description", "done"))
+                    .expression("$.id", equalTo(todoId))
+                    .expression("$.title", allOf(startsWith("todo_"), endsWith(todoId)))
+                    .expression("$.description", anyOf(startsWith("Description:"), nullValue()))
+                    .expression("$.done", not(true))));
     }
 
     @Test
     @CitrusTest
     public void testHamcrestCondition() {
-        iterate()
+        $(iterate()
             .condition(assertThat(lessThanOrEqualTo(5)))
             .actions(
                 createVariable("todoId", "citrus:randomUUID()"),
                 createVariable("todoName", "todo_${i}"),
                 createVariable("todoDescription", "Description: ${todoName}"),
-                http(httpActionBuilder -> httpActionBuilder
+                http()
                     .client(todoClient)
                     .send()
                     .post("/api/todolist")
-                    .messageType(MessageType.JSON)
+                    .message()
+                    .type(MessageType.JSON)
                     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-                    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}")),
-
-                http(httpActionBuilder -> httpActionBuilder
+                    .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"),
+                http()
                     .client(todoClient)
                     .receive()
                     .response(HttpStatus.OK)
-                    .messageType(MessageType.PLAINTEXT)
-                    .payload("${todoId}"))
-        );
+                    .message()
+                    .type(MessageType.PLAINTEXT)
+                    .body("${todoId}")
+        ));
     }
 }

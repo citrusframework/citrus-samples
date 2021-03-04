@@ -39,28 +39,29 @@ of the communication. In a real world scenario you may just have one side client
 So lets start writing a client request that uses form urlencoded message content:
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .post("/api/todo")
     .fork(true)
     .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    .payload("title=${todoName}&description=${todoDescription}"));
+    .body("title=${todoName}&description=${todoDescription}"));
 ```
 
 As you can see we are using a Http `POST` request with form urlencoded message body. The form data uses two fields `title` and `description` with respective values. On the server side we are able 
 to receive this form data for validation:
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .server(todoListServer)
     .receive()
     .post("/api/todo")
     .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    .messageType(MessageType.PLAINTEXT)
-    .payload("{description=[${todoDescription}], title=[${todoName}]}"));
+    .message()
+    .type(MessageType.PLAINTEXT)
+    .body("{description=[${todoDescription}], title=[${todoName}]}"));
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .server(todoListServer)
     .respond(HttpStatus.OK));
 ```
@@ -82,15 +83,15 @@ public FormUrlEncodedMessageValidator formUrlEncodedMessageValidator(MessageVali
 The `com.consol.citrus.http.validation.FormUrlEncodedMessageValidator` validator implementation provides convenient form data marshalling that we can use in our test cases when expecting form urlencoded message content.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .server(todoListServer)
     .receive()
     .post("/api/todo")
     .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    .messageType(FormUrlEncodedMessageValidator.MESSAGE_TYPE)
-    .payload(getFormData(), new FormMarshaller()));
+    .type(FormUrlEncodedMessageValidator.MESSAGE_TYPE)
+    .body(getFormData(), new FormMarshaller()));
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .server(todoListServer)
     .respond(HttpStatus.OK));
 ```

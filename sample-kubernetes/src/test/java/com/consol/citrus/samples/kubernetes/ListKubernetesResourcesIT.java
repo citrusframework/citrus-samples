@@ -23,6 +23,8 @@ import org.springframework.util.CollectionUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.kubernetes.actions.KubernetesExecuteAction.Builder.kubernetes;
+
 /**
  * @author Christoph Deppisch
  */
@@ -34,7 +36,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     @Test
     @CitrusTest
     public void testListNodes() {
-        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+        $(kubernetes()
             .client(k8sClient)
             .nodes()
             .list()
@@ -46,7 +48,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     @Test
     @CitrusTest
     public void testListNamespaces() {
-        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+        $(kubernetes()
             .client(k8sClient)
             .namespaces()
             .list()
@@ -58,7 +60,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     @Test
     @CitrusTest
     public void testListEndpoints() {
-        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+        $(kubernetes()
             .client(k8sClient)
             .endpoints()
             .list()
@@ -71,7 +73,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     @Test
     @CitrusTest
     public void testListServices() {
-        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+        $(kubernetes()
             .client(k8sClient)
             .services()
             .list()
@@ -84,7 +86,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     @Test
     @CitrusTest
     public void testListPods() {
-        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+        $(kubernetes()
             .client(k8sClient)
             .pods()
             .list()
@@ -97,7 +99,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     @Test
     @CitrusTest
     public void testListReplicationControllers() {
-        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+        $(kubernetes()
             .client(k8sClient)
             .replicationControllers()
             .list()

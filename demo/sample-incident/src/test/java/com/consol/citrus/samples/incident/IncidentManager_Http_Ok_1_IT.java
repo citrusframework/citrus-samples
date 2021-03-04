@@ -17,8 +17,8 @@
 package com.consol.citrus.samples.incident;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.server.HttpServer;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
 import org.apache.http.entity.ContentType;
@@ -26,11 +26,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.dsl.XpathSupport.xpath;
+
 /**
  * @author Christoph Deppisch
  * @since 2.6
  */
-public class IncidentManager_Http_Ok_1_IT extends TestNGCitrusTestRunner {
+public class IncidentManager_Http_Ok_1_IT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("incidentHttpClient")
@@ -49,12 +54,13 @@ public class IncidentManager_Http_Ok_1_IT extends TestNGCitrusTestRunner {
         variable("ticketId","citrus:randomUUID()");
         variable("customerId", "citrus:randomNumber(6)");
 
-        echo("Step 1: Send OpenIncident request message to IncidentManager via Http SOAP interface");
+        $(echo("Step 1: Send OpenIncident request message to IncidentManager via Http SOAP interface"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(incidentHttpClient)
             .fork(true)
-            .payload("<im:OpenIncident xmlns:im=\"http://www.citrusframework.org/schema/samples/IncidentManager/v1\">" +
+            .message()
+            .body("<im:OpenIncident xmlns:im=\"http://www.citrusframework.org/schema/samples/IncidentManager/v1\">" +
                        "<im:incident>" +
                          "<im:ticketId>${ticketId}</im:ticketId>" +
                          "<im:captured>citrus:currentDate('yyyy-MM-dd'T'00:00:00')</im:captured>" +
@@ -71,11 +77,12 @@ public class IncidentManager_Http_Ok_1_IT extends TestNGCitrusTestRunner {
                      "</im:OpenIncident>")
             .header(SoapMessageHeaders.SOAP_ACTION, "/IncidentManager/openIncident"));
 
-        echo("Step 2: Receive AnalyseIncident request message as NetworkService application via Http SOAP interface");
+        $(echo("Step 2: Receive AnalyseIncident request message as NetworkService application via Http SOAP interface"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(networkHttpServer)
-            .payload("<net:AnalyseIncident xmlns:net=\"http://www.citrusframework.org/schema/samples/NetworkService/v1\">" +
+            .message()
+            .body("<net:AnalyseIncident xmlns:net=\"http://www.citrusframework.org/schema/samples/NetworkService/v1\">" +
                        "<net:incident>" +
                          "<net:ticketId>${ticketId}</net:ticketId>" +
                          "<net:description>Something went wrong with the software!</net:description>" +
@@ -86,14 +93,16 @@ public class IncidentManager_Http_Ok_1_IT extends TestNGCitrusTestRunner {
                          "<net:connection>@ignore@</net:connection>" +
                        "</net:network>" +
                      "</net:AnalyseIncident>")
-            .extractFromPayload("net:AnalyseIncident/net:network/net:lineId", "lineId")
-            .extractFromPayload("net:AnalyseIncident/net:network/net:connection" ,"connectionId"));
+            .extract(xpath()
+                    .expression("net:AnalyseIncident/net:network/net:lineId", "lineId")
+                    .expression("net:AnalyseIncident/net:network/net:connection" ,"connectionId")));
 
-        echo("Step:3 Send AnalyseIncidentResponse message as result of the NetworkService call");
+        $(echo("Step:3 Send AnalyseIncidentResponse message as result of the NetworkService call"));
 
-        send(receiveMessageBuilder -> receiveMessageBuilder
+        $(send()
             .endpoint(networkHttpServer)
-            .payload("<net:AnalyseIncidentResponse xmlns:net=\"http://www.citrusframework.org/schema/samples/NetworkService/v1\">" +
+            .message()
+            .body("<net:AnalyseIncidentResponse xmlns:net=\"http://www.citrusframework.org/schema/samples/NetworkService/v1\">" +
                        "<net:ticketId>${ticketId}</net:ticketId>" +
                        "<net:result>" +
                          "<net:lineId>${lineId}</net:lineId>" +
@@ -107,11 +116,12 @@ public class IncidentManager_Http_Ok_1_IT extends TestNGCitrusTestRunner {
                      "</net:AnalyseIncidentResponse>")
             .header("Content-Type", ContentType.APPLICATION_XML.getMimeType()));
 
-        echo("Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application");
+        $(echo("Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(incidentHttpClient)
-            .payload("<im:OpenIncidentResponse xmlns:im=\"http://www.citrusframework.org/schema/samples/IncidentManager/v1\">" +
+            .message()
+            .body("<im:OpenIncidentResponse xmlns:im=\"http://www.citrusframework.org/schema/samples/IncidentManager/v1\">" +
                        "<im:ticketId>${ticketId}</im:ticketId>" +
                        "<im:scheduled>@ignore@</im:scheduled>" +
                      "</im:OpenIncidentResponse>"));

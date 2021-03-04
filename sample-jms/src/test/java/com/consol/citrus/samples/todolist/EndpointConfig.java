@@ -58,29 +58,29 @@ public class EndpointConfig {
     }
 
     @Bean
-    public JmsEndpoint todoJmsEndpoint() {
+    public JmsEndpoint todoJmsEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.
             jms()
                 .asynchronous()
-                .connectionFactory(connectionFactory())
+                .connectionFactory(connectionFactory)
                 .destination("jms.todo.inbound")
             .build();
     }
 
     @Bean
-    public JmsEndpoint todoReportEndpoint() {
+    public JmsEndpoint todoReportEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
                 .asynchronous()
-                .connectionFactory(connectionFactory())
+                .connectionFactory(connectionFactory)
                 .destination("jms.todo.report")
                 .build();
     }
 
     @Bean
-    public JmsSyncEndpoint todoJmsSyncEndpoint() {
+    public JmsSyncEndpoint todoJmsSyncEndpoint(ConnectionFactory connectionFactory) {
         return CitrusEndpoints.jms()
                 .synchronous()
-                .connectionFactory(connectionFactory())
+                .connectionFactory(connectionFactory)
                 .destination("jms.todo.inbound.sync")
                 .replyDestination("jms.todo.inbound.sync.reply")
                 .build();

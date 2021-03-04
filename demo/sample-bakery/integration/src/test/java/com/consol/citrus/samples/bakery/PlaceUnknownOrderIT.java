@@ -17,18 +17,21 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
+
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class PlaceUnknownOrderIT extends TestNGCitrusTestRunner {
+public class PlaceUnknownOrderIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")
@@ -40,12 +43,14 @@ public class PlaceUnknownOrderIT extends TestNGCitrusTestRunner {
 
     @CitrusTest
     public void placeUnknownOrderType() {
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(bakeryOrderEndpoint)
-            .payload("<order><type>brownie</type><id>999</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>brownie</type><id>999</id><amount>1</amount></order>"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(unknownOrderEndpoint)
-            .payload("<order><type>brownie</type><id>999</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>brownie</type><id>999</id><amount>1</amount></order>"));
     }
 }

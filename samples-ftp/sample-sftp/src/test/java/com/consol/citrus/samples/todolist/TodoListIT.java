@@ -16,13 +16,15 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.io.IOException;
+
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.ftp.client.SftpClient;
 import com.consol.citrus.ftp.message.FtpMessage;
 import com.consol.citrus.ftp.model.GetCommandResult;
 import com.consol.citrus.ftp.model.ListCommandResult;
 import com.consol.citrus.ftp.server.SftpServer;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.util.FileUtils;
 import org.apache.commons.net.ftp.FTPCmd;
 import org.apache.ftpserver.ftplet.DataType;
@@ -31,12 +33,15 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.actions.FailAction.Builder.fail;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private SftpClient sftpClient;
@@ -51,74 +56,74 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        echo("Remove ftp user directory if present");
+        $(echo("Remove ftp user directory if present"));
 
-        run(new ClearUserHomeDirAction(String.format("target/%s/home/%s/todo", sftpServer.getName(), sftpServer.getUser())));
+        $(new ClearUserHomeDirAction(String.format("target/%s/home/%s/todo", sftpServer.getName(), sftpServer.getUser())));
 
-        echo("Create new directory on server");
+        $(echo("Create new directory on server"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(sftpClient)
             .message(FtpMessage.command(FTPCmd.MKD).arguments("todo")));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(sftpClient)
             .message(FtpMessage.success(257, "Pathname created")));
 
-        echo("Directory 'todo' created on SFTP server");
-        echo("Store file to directory");
+        $(echo("Directory 'todo' created on SFTP server"));
+        $(echo("Store file to directory"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(sftpClient)
             .fork(true)
             .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII)));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(sftpServer)
             .message(FtpMessage.put("@ignore@", "/todo/todo.json", DataType.ASCII)));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(sftpServer)
             .message(FtpMessage.success()));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(sftpClient)
             .message(FtpMessage.putResult(226, "@contains(Transfer complete)@", true)));
 
-        echo("List files in directory");
+        $(echo("List files in directory"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(sftpClient)
             .message(FtpMessage.list("todo")));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(sftpClient)
             .message(FtpMessage.result(getListCommandResult("todo.json"))));
 
-        echo("Retrieve file from server");
+        $(echo("Retrieve file from server"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(sftpClient)
             .fork(true)
             .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII)));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(sftpServer)
             .message(FtpMessage.get("/todo/todo.json", "@ignore@", DataType.ASCII)));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(sftpServer)
             .message(FtpMessage.success()));
 
-        receive(receiveMessageBuilder -> {
-            try {
-                receiveMessageBuilder
-                .endpoint(sftpClient)
-                .message(FtpMessage.result(
-                    getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json"))));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }});
+        try {
+            FtpMessage fileCommandResult = FtpMessage.result(
+                    getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json")));
+
+            $(receive().endpoint(sftpClient)
+                    .message(fileCommandResult));
+        } catch (IOException e) {
+            $(fail(e.getMessage()));
+        }
     }
 
     private ListCommandResult getListCommandResult(String ... fileNames) {

@@ -55,7 +55,7 @@ The components above are used in a Citrus test case.
      
 ```java
 @Test
-public class NewsFeedIT extends TestNGCitrusTestRunner {
+public class NewsFeedIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private JmsEndpoint newsJmsEndpoint;
@@ -65,20 +65,20 @@ public class NewsFeedIT extends TestNGCitrusTestRunner {
 
     @CitrusTest(name = "NewsFeed_Ok_IT")
     public void newsFeed_Ok_1_Test() {
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(newsJmsEndpoint)
-            .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+            .body("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
                         "<nf:Message>Citrus rocks!</nf:Message>" +
                     "</nf:News>"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(newsServer)
-            .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+            .body("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
                         "<nf:Message>Citrus rocks!</nf:Message>" +
                     "</nf:News>")
             .header(SoapMessageHeaders.SOAP_ACTION, "newsFeed"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
                 .endpoint(newsServer)
                 .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200"));
     }

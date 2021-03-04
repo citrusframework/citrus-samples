@@ -17,21 +17,25 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.functions.Functions;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
+
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.actions.SleepAction.Builder.sleep;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class ProcessOrdersIT extends TestNGCitrusTestRunner {
+public class ProcessOrdersIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("factoryOrderEndpoint")
@@ -45,22 +49,24 @@ public class ProcessOrdersIT extends TestNGCitrusTestRunner {
     public void processOrderWithReporting() {
         variable("orderId", Functions.randomNumber(10L, null));
 
-        sleep();
+        $(sleep().milliseconds(5000L));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(factoryOrderEndpoint)
-            .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .server(reportingServer)
             .receive()
             .put("/report/services/reporting")
+                .message()
                 .header("id", "${orderId}")
                 .header("name", "chocolate")
                 .header("amount", "1")
                 .timeout(10000L));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .server(reportingServer)
             .respond(HttpStatus.OK));
     }

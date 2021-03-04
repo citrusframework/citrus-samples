@@ -16,22 +16,23 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.nio.charset.StandardCharsets;
+
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.message.Message;
 import com.consol.citrus.message.MessageType;
-import com.consol.citrus.validation.AbstractMessageValidator;
-import com.consol.citrus.validation.context.DefaultValidationContext;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.testng.annotations.Test;
+
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.validation.interceptor.BinaryMessageProcessor.Builder.toBinary;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private JmsEndpoint todoJmsEndpoint;
@@ -43,17 +44,19 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoDescription", "Description: ${todoName}");
         variable("done", "false");
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(todoJmsEndpoint)
+            .message()
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-            .messageType(MessageType.BINARY)
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+            .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")
+            .process(toBinary().encoding(StandardCharsets.UTF_8)));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(todoJmsEndpoint)
+            .message()
+            .type(MessageType.BINARY_BASE64)
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-            .messageType(MessageType.BINARY_BASE64)
-            .payload("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}')"));
+            .body("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}')"));
     }
 
     @Test
@@ -63,41 +66,19 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoDescription", "Description: ${todoName}");
         variable("done", "false");
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(todoJmsEndpoint)
+            .message()
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-            .messageType(MessageType.BINARY)
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+            .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")
+            .process(toBinary().encoding(StandardCharsets.UTF_8)));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(todoJmsEndpoint)
+            .message()
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
-            .messageType(MessageType.BINARY)
-            .validator(new BinaryMessageValidator())
-            .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
-    }
-
-    /**
-     * Validates binary message content.
-     */
-    private class BinaryMessageValidator extends AbstractMessageValidator<DefaultValidationContext> {
-
-        @Override
-        public void validateMessage(Message receivedMessage, Message controlMessage,
-                                    TestContext context, DefaultValidationContext validationContext) {
-            Assert.isTrue(new String(receivedMessage.getPayload(byte[].class))
-                .equals(new String(controlMessage.getPayload(byte[].class))), "Binary message validation failed!");
-        }
-
-        @Override
-        public boolean supportsMessageType(String messageType, Message message) {
-            return messageType.equalsIgnoreCase(MessageType.BINARY.name());
-        }
-
-        @Override
-        protected Class getRequiredValidationContextType() {
-            return DefaultValidationContext.class;
-        }
+            .type(MessageType.BINARY)
+            .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }
 
 }

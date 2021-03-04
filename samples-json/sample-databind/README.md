@@ -14,19 +14,19 @@ structures but use the model objects directly in our test cases.
 In test cases we can use the model objects directly as message payload.
     
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .post("/api/todolist")
     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-    .payload(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), objectMapper));
+    .body(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), objectMapper));
 ```
         
 As you can see we are able to send the model object. Citrus will automatically convert the object to a **application/json** message content 
 as **POST** request. In a receive action we are able to use a mapping validation callback in order to get access to the model objects of an incoming message payload.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)

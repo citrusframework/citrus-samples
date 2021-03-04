@@ -18,6 +18,7 @@ package todo;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusResource;
@@ -72,7 +73,7 @@ public class TodoSteps {
         runner.when(http()
             .client("todoListClient")
             .send()
-            .delete("/api/todo?title=" + URLEncoder.encode(todoName, "UTF-8")));
+            .delete("/api/todo?title=" + URLEncoder.encode(todoName, StandardCharsets.UTF_8)));
 
         runner.then(http()
             .client("todoListClient")

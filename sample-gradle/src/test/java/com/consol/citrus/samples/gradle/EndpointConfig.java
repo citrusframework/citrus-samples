@@ -16,9 +16,11 @@
 
 package com.consol.citrus.samples.gradle;
 
-import com.consol.citrus.channel.*;
+import com.consol.citrus.endpoint.direct.DirectEndpoint;
+import com.consol.citrus.endpoint.direct.DirectEndpointConfiguration;
+import com.consol.citrus.message.DefaultMessageQueue;
+import com.consol.citrus.message.MessageQueue;
 import org.springframework.context.annotation.Bean;
-import org.springframework.messaging.MessageChannel;
 
 /**
  * @author Christoph Deppisch
@@ -26,14 +28,14 @@ import org.springframework.messaging.MessageChannel;
 public class EndpointConfig {
 
     @Bean
-    public ChannelEndpoint testChannelEndpoint() {
-        ChannelEndpointConfiguration endpointConfiguration = new ChannelEndpointConfiguration();
-        endpointConfiguration.setChannel(testChannel());
-        return new ChannelEndpoint(endpointConfiguration);
+    public DirectEndpoint testEndpoint(MessageQueue testQueue) {
+        DirectEndpointConfiguration endpointConfiguration = new DirectEndpointConfiguration();
+        endpointConfiguration.setQueue(testQueue);
+        return new DirectEndpoint(endpointConfiguration);
     }
 
     @Bean
-    private MessageChannel testChannel() {
-        return new MessageSelectingQueueChannel();
+    private MessageQueue testQueue() {
+        return new DefaultMessageQueue("testQueue");
     }
 }

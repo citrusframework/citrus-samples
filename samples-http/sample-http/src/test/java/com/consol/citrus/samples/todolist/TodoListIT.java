@@ -17,15 +17,19 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
-public class TodoListIT extends TestNGCitrusTestRunner {
+import static com.consol.citrus.dsl.XpathSupport.xpath;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static com.consol.citrus.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
+
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -33,19 +37,22 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testGet() {
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/todolist")
+            .message()
             .accept(MediaType.TEXT_HTML_VALUE));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("//xh:h1", "TODO list")
-            .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
+            .message()
+            .type(MessageType.XHTML)
+            .validate(xpath()
+                        .expression("//xh:h1", "TODO list"))
+            .body("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
                     "\"org/w3/xhtml/xhtml1-transitional.dtd\">" +
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                         "<head>@ignore@</head>" +
@@ -59,14 +66,15 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/todolist")
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}"));
+            .body("title=${todoName}&description=${todoDescription}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.FOUND));
@@ -80,44 +88,50 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoDescription", "Description: ${todoName}");
 
         //Create
-        http(http -> http.client(todoClient)
+        $(http().client(todoClient)
                 .send()
                 .post("/api/todolist")
-                .messageType(MessageType.JSON)
+                .message()
+                .type(MessageType.JSON)
                 .contentType("application/json")
-                .payload("{ \"id\": \"${todoId}\", " +
+                .body("{ \"id\": \"${todoId}\", " +
                         "\"title\": \"${todoName}\", " +
                         "\"description\": \"${todoDescription}\", " +
                         "\"done\": false}"));
 
-        http(http -> http.client(todoClient)
+        $(http().client(todoClient)
                 .receive()
                 .response(HttpStatus.OK)
-                .messageType(MessageType.PLAINTEXT)
-                .payload("${todoId}"));
+                .message()
+                .type(MessageType.PLAINTEXT)
+                .body("${todoId}"));
 
         //Verify existence
-        http(http -> http.client(todoClient)
+        $(http().client(todoClient)
                 .send()
                 .get("/api/todo/${todoId}")
+                .message()
                 .accept("application/json"));
 
-        http(http -> http.client(todoClient)
+        $(http().client(todoClient)
                 .receive()
                 .response(HttpStatus.OK)
-                .messageType(MessageType.JSON)
-                .validate("$.id", "${todoId}")
-                .validate("$.title", "${todoName}")
-                .validate("$.description", "${todoDescription}")
-                .validate("$.done", false));
+                .message()
+                .type(MessageType.JSON)
+                .validate(jsonPath()
+                        .expression("$.id", "${todoId}")
+                        .expression("$.title", "${todoName}")
+                        .expression("$.description", "${todoDescription}")
+                        .expression("$.done", false)));
 
         //Delete
-        http(http -> http.client(todoClient)
+        $(http().client(todoClient)
                 .send()
                 .delete("/api/todo/${todoId}")
+                .message()
                 .accept("application/json"));
 
-        http(http -> http.client(todoClient)
+        $(http().client(todoClient)
                 .receive()
                 .response(HttpStatus.OK));
     }

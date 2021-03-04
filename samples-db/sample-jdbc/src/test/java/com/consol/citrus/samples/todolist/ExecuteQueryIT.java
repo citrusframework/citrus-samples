@@ -16,20 +16,27 @@
 
 package com.consol.citrus.samples.todolist;
 
+import javax.sql.DataSource;
+
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
-import javax.sql.DataSource;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.ExecuteSQLAction.Builder.sql;
+import static com.consol.citrus.actions.ExecuteSQLQueryAction.Builder.query;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.container.Async.Builder.async;
+
 /**
  * @author Christoph Deppisch
  */
-public class ExecuteQueryIT extends TestNGCitrusTestRunner {
+public class ExecuteQueryIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private JdbcServer jdbcServer;
@@ -40,17 +47,18 @@ public class ExecuteQueryIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testCreateTable() {
-        async()
-            .actions(sql(executeSQLbuilder -> executeSQLbuilder
-                .dataSource(dataSource)
-                .statement("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)")));
+        $(async()
+            .actions(sql(dataSource)
+                .statement("CREATE TABLE IF NOT EXISTS todo_entries " +
+                        "(id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)")));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute("CREATE TABLE IF NOT EXISTS todo_entries (id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)")));
+            .message(JdbcMessage.execute("CREATE TABLE IF NOT EXISTS todo_entries " +
+                    "(id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"))
+            .type(MessageType.JSON));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(jdbcServer)
             .message(JdbcMessage.success()));
     }
@@ -62,24 +70,23 @@ public class ExecuteQueryIT extends TestNGCitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        async()
-            .actions(query(exeucteSQLBuilder-> exeucteSQLBuilder
-                .dataSource(dataSource)
+        $(async()
+            .actions(query(dataSource)
                 .statement("SELECT id, title, description FROM todo_entries")
                 .validate("id", "${todoId}")
                 .validate("title", "${todoName}")
                 .validate("description", "${todoDescription}")));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries")));
+            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"))
+            .type(MessageType.JSON));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
             .message(JdbcMessage.success()
-                                .dataSet(new ClassPathResource("dataset.json"))));
+                                .dataSet(new ClassPathResource("dataset.json")))
+            .type(MessageType.JSON));
     }
 
     @Test
@@ -87,17 +94,16 @@ public class ExecuteQueryIT extends TestNGCitrusTestRunner {
     public void testDelete() {
         String sql = "DELETE FROM todo_entries";
 
-        async()
-            .actions(sql(executeSQLbuilder -> executeSQLbuilder
-                .dataSource(dataSource)
+        $(async()
+            .actions(sql(dataSource)
                 .statement(sql)));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute(sql)));
+            .message(JdbcMessage.execute(sql))
+            .type(MessageType.JSON));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(jdbcServer)
             .message(JdbcMessage.success().rowsUpdated(10)));
     }
@@ -107,17 +113,16 @@ public class ExecuteQueryIT extends TestNGCitrusTestRunner {
     public void testDropTable() {
         String sql = "DROP TABLE todo_entries";
 
-        async()
-            .actions(sql(exeucteSQLBuilder -> exeucteSQLBuilder
-                .dataSource(dataSource)
+        $(async()
+            .actions(sql(dataSource)
                 .statement(sql)));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute(sql)));
+            .message(JdbcMessage.execute(sql))
+            .type(MessageType.JSON));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(jdbcServer)
             .message(JdbcMessage.success()));
     }

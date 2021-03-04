@@ -17,9 +17,9 @@ http()
     .client(todoClient)
     .send()
     .post("/api/todolist")
-    .messageType(MessageType.JSON)
+    .type(MessageType.JSON)
     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+    .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 ```
         
 As you can see we are able to send the Json data as payload. You can add test variables in message payloads. In a receive 
@@ -31,8 +31,8 @@ http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .messageType(MessageType.JSON)
-    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+    .type(MessageType.JSON)
+    .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
 ```
 
 The Json message payload can be difficult to read when used as String concatenation. Fortunately we can also use file resources as message
@@ -43,8 +43,8 @@ http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .messageType(MessageType.JSON)
-    .payload(new ClassPathResource("templates/todo.json"));    
+    .type(MessageType.JSON)
+    .body(new ClassPathResource("templates/todo.json"));    
 ```
         
 An alternative approach would be to use JsonPath expressions when validating incoming Json messages.
@@ -54,7 +54,7 @@ http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .messageType(MessageType.JSON)
+    .type(MessageType.JSON)
     .validate("$.id", "${todoId}")
     .validate("$.title", "${todoName}")
     .validate("$.description", "${todoDescription}");

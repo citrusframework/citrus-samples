@@ -17,21 +17,24 @@
 package com.consol.citrus;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.testng.CitrusParameters;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.ws.message.SoapMessageHeaders;
 import com.consol.citrus.ws.server.WebServiceServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+
 /**
  * @author Christoph Deppisch
  * @since 2.1
  */
 @Test
-public class NewsFeedParameterIT extends TestNGCitrusTestRunner {
+public class NewsFeedParameterIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private JmsEndpoint newsJmsEndpoint;
@@ -43,24 +46,27 @@ public class NewsFeedParameterIT extends TestNGCitrusTestRunner {
     @CitrusParameters({ "message" })
     @Test(dataProvider = "messageDataProvider")
     public void newsFeed_DataProvider_Ok_Test(String message) {
-        send(sendActionBuilder -> sendActionBuilder
-                .endpoint(newsJmsEndpoint)
-                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
-                            "<nf:Message>${message}</nf:Message>" +
-                        "</nf:News>"));
+        $(send()
+            .endpoint(newsJmsEndpoint)
+            .message()
+            .body("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                        "<nf:Message>${message}</nf:Message>" +
+                    "</nf:News>"));
 
-        soap(soapActionBuilder -> soapActionBuilder
-                .server(newsServer)
-                .receive()
-                .soapAction("newsFeed")
-                .payload("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
-                            "<nf:Message>" + message + "</nf:Message>" +
-                        "</nf:News>"));
+        $(soap()
+            .server(newsServer)
+            .receive()
+            .message()
+            .soapAction("newsFeed")
+            .body("<nf:News xmlns:nf=\"http://citrusframework.org/schemas/samples/news\">" +
+                        "<nf:Message>" + message + "</nf:Message>" +
+                    "</nf:News>"));
 
-        soap(soapActionBuilder -> soapActionBuilder
-                .server(newsServer)
-                .send()
-                .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200"));
+        $(soap()
+            .server(newsServer)
+            .send()
+            .message()
+            .header(SoapMessageHeaders.HTTP_STATUS_CODE, "200"));
     }
 
     @DataProvider

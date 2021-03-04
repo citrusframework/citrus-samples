@@ -16,25 +16,30 @@
 
 package com.consol.citrus.samples.todolist;
 
-import javax.sql.DataSource;
 import java.util.UUID;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jdbc.message.JdbcMessage;
 import com.consol.citrus.jdbc.server.JdbcServer;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.container.Wait.Builder.waitFor;
+import static com.consol.citrus.dsl.XpathSupport.xpath;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private JdbcServer jdbcServer;
@@ -42,51 +47,51 @@ public class TodoListIT extends TestNGCitrusTestRunner {
     @Autowired
     private HttpClient todoClient;
 
-    @Autowired
-    private DataSource todoDataSource;
-
     @Test
     @CitrusTest
     public void testIndexPage() {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http()
+        $(waitFor().http()
                 .status(HttpStatus.OK.value())
                 .method(HttpMethod.GET.name())
                 .milliseconds(20000L)
                 .interval(1000L)
-                .url(todoClient.getEndpointConfiguration().getRequestUrl());
+                .url(todoClient.getEndpointConfiguration().getRequestUrl()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/todolist")
             .fork(true)
+            .message()
             .accept(MediaType.TEXT_HTML_VALUE));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries")));
+            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"))
+            .type(MessageType.JSON));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
             .message(JdbcMessage.success().dataSet("[ {" +
                         "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
                         "\"title\": \"${todoName}\"," +
                         "\"description\": \"${todoDescription}\"," +
                         "\"done\": \"false\"" +
-                    "} ]")));
+                    "} ]"))
+            .type(MessageType.JSON));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("//xh:h1", "TODO list")
-            .payload("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
+            .message()
+            .type(MessageType.XHTML)
+            .validate(xpath()
+                        .expression("//xh:h1", "TODO list"))
+            .body("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
                     "\"org/w3/xhtml/xhtml1-transitional.dtd\">" +
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
                       "<head>@ignore@</head>" +
@@ -119,63 +124,68 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http()
+        $(waitFor().http()
                 .status(HttpStatus.OK.value())
                 .method(HttpMethod.GET.name())
                 .milliseconds(20000L)
                 .interval(1000L)
-                .url(todoClient.getEndpointConfiguration().getRequestUrl());
+                .url(todoClient.getEndpointConfiguration().getRequestUrl()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/todolist")
             .fork(true)
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}"));
+            .body("title=${todoName}&description=${todoDescription}"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
+            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries " +
+                    "(id, title, description, done) VALUES (?, ?, ?, ?)')@"))
+            .type(MessageType.JSON));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(jdbcServer)
             .message(JdbcMessage.success().rowsUpdated(1)));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.FOUND));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/todolist")
             .fork(true)
+            .message()
             .accept(MediaType.TEXT_HTML_VALUE));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries")));
+            .message(JdbcMessage.execute("SELECT id, title, description FROM todo_entries"))
+            .type(MessageType.JSON));
 
-        send(sendMessageBuilder-> sendMessageBuilder
+        $(send()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
             .message(JdbcMessage.success().dataSet("[ {" +
                         "\"id\": \"" + UUID.randomUUID().toString() + "\"," +
                         "\"title\": \"${todoName}\"," +
                         "\"description\": \"${todoDescription}\"," +
                         "\"done\": \"false\"" +
-                    "} ]")));
+                    "} ]"))
+            .type(MessageType.JSON));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.XHTML)
-            .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
+            .message()
+            .type(MessageType.XHTML)
+            .validate(xpath()
+                        .expression("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}")));
     }
 
     @Test
@@ -184,31 +194,33 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        waitFor().http()
+        $(waitFor().http()
                 .status(HttpStatus.OK.value())
                 .method(HttpMethod.GET.name())
                 .milliseconds(20000L)
                 .interval(1000L)
-                .url(todoClient.getEndpointConfiguration().getRequestUrl());
+                .url(todoClient.getEndpointConfiguration().getRequestUrl()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/todolist")
             .fork(true)
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}"));
+            .body("title=${todoName}&description=${todoDescription}"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(jdbcServer)
-            .messageType(MessageType.JSON)
-            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
+            .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries " +
+                    "(id, title, description, done) VALUES (?, ?, ?, ?)')@"))
+            .type(MessageType.JSON));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(jdbcServer)
             .message(JdbcMessage.error().exception("Something went wrong")));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.INTERNAL_SERVER_ERROR));

@@ -16,14 +16,17 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+
 import com.consol.citrus.actions.AbstractTestAction;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.exceptions.CitrusRuntimeException;
 import com.consol.citrus.ftp.client.ScpClient;
 import com.consol.citrus.ftp.message.FtpMessage;
 import com.consol.citrus.ftp.server.SftpServer;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.util.FileUtils;
 import org.apache.ftpserver.ftplet.DataType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +34,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.nio.file.Paths;
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusTestRunner {
+public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private ScpClient scpClient;
@@ -52,45 +56,45 @@ public class TodoListIT extends TestNGCitrusTestRunner {
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        echo("Store file via SCP");
+        $(echo("Store file via SCP"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(scpClient)
             .fork(true)
             .message(FtpMessage.put("classpath:todo/entry.json", "todo.json", DataType.ASCII)));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(sftpServer)
             .message(FtpMessage.put("@ignore@", "todo.json", DataType.ASCII)));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(sftpServer)
             .message(FtpMessage.success()));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(scpClient)
             .message(FtpMessage.success()));
 
-        echo("Retrieve file from server");
+        $(echo("Retrieve file from server"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(scpClient)
             .fork(true)
             .message(FtpMessage.get("todo.json", "file:target/scp/todo.json", DataType.ASCII)));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(sftpServer)
             .message(FtpMessage.get("/todo.json", "@ignore@", DataType.ASCII)));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(sftpServer)
             .message(FtpMessage.success()));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(scpClient)
             .message(FtpMessage.success()));
 
-        run(new AbstractTestAction() {
+        $(new AbstractTestAction() {
             @Override
             public void doExecute(TestContext context) {
                 try {

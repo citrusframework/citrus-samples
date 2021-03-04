@@ -55,12 +55,12 @@ public class TodoSteps {
 
     @Given("^Todo list is empty$")
     public void empty_todos() {
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.$(http()
             .client("todoListClient")
             .send()
             .delete("/api/todolist"));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.$(http()
             .client("todoListClient")
             .receive()
             .response(HttpStatus.OK));
@@ -68,14 +68,14 @@ public class TodoSteps {
 
     @When("^(?:I|user) adds? entry \"([^\"]*)\"$")
     public void add_entry(String todoName) {
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.$(http()
             .client("todoListClient")
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=" + todoName));
+            .body("title=" + todoName));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        runner.$(http()
             .client("todoListClient")
             .receive()
             .response(HttpStatus.FOUND));

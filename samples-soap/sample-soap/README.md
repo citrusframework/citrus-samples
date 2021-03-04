@@ -59,16 +59,16 @@ responsible for creating the SOAP envelope.
 Now we can use the web service client in the Citrus test with SOAP request and attachment.
     
 ```java
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .client(todoClient)
     .send()
     .soapAction("addTodoEntry")
-    .payload(new ClassPathResource("templates/addTodoEntryRequest.xml")));
+    .body(new ClassPathResource("templates/addTodoEntryRequest.xml")));
 
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .client(todoClient)
     .receive()
-    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));
+    .body(new ClassPathResource("templates/addTodoEntryResponse.xml")));
 ```
         
 The Citrus test sends a request with attachment data. The attachment is transmitted as text data via Http to the server. 
@@ -76,16 +76,16 @@ The todo-list WebService endpoint will recognize the attamchent data and add it 
 the list of todo entries.
         
 ```java
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .client(todoClient)
     .receive()
-    .payload(new ClassPathResource("templates/addTodoEntryResponse.xml")));
+    .body(new ClassPathResource("templates/addTodoEntryResponse.xml")));
 
-soap(soapActionBuilder -> soapActionBuilder
+$(soap()
     .client(todoClient)
     .send()
     .soapAction("getTodoList")
-    .payload(new ClassPathResource("templates/getTodoListRequest.xml")));
+    .body(new ClassPathResource("templates/getTodoListRequest.xml")));
 ```
             
 And in the expected message payload we validate the attachment data returned by the server.

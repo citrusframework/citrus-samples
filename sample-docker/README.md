@@ -256,20 +256,22 @@ As you can see the client will be able to resolve the hostname *todo-app* via Do
 add new todo items.
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .post("/api/todolist")
-    .messageType(MessageType.JSON)
+    .message()
+    .type(MessageType.JSON)
     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+    .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .messageType(MessageType.PLAINTEXT)
-    .payload("${todoId}"));
+    .message()
+    .type(MessageType.PLAINTEXT)
+    .body("${todoId}"));
 ```
 
 In addition to that the Citrus configuration also defines a Docker client component:

@@ -26,11 +26,11 @@ public NamespaceContextBuilder namespaceContextBuilder() {
 Now we can use the XHTML validation feature in the Citrus test.
     
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .messageType(MessageType.XHTML)
+    .type(MessageType.XHTML)
     .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
 ```
         

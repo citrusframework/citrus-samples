@@ -56,20 +56,20 @@ In our test we can now start to upload a file using SCP.
 ```java
 echo("Store file via SCP");
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(scpClient)
     .fork(true)
     .message(FtpMessage.put("classpath:todo/entry.json", "todo.json", DataType.ASCII)));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(sftpServer)
     .message(FtpMessage.put("@ignore@", "todo.json", DataType.ASCII)));
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(sftpServer)
     .message(FtpMessage.success()));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(scpClient)
     .message(FtpMessage.success()));
 
@@ -87,20 +87,20 @@ Lets download that very same file in another SCP file transfer:
 ```java
 echo("Retrieve file from server");
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(scpClient)
     .fork(true)
     .message(FtpMessage.get("todo.json", "file:target/scp/todo.json", DataType.ASCII)));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(sftpServer)
     .message(FtpMessage.get("/todo.json", "@ignore@", DataType.ASCII)));
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(sftpServer)
     .message(FtpMessage.success()));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(scpClient)
     .message(FtpMessage.success()));
 ```

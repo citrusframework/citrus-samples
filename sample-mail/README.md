@@ -28,7 +28,7 @@ public MailServer mailServer() {
 Now we can receive the mail in the test case.
     
 ```java
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(mailServer)
     .message(MailMessage.request()
         .from("todo-report@example.org")
@@ -39,7 +39,7 @@ receive(receiveMessageBuilder -> receiveMessageBuilder
         .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
     .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(mailServer)
     .message(MailMessage.response(250, "OK")));            
 ```

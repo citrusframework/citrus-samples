@@ -37,10 +37,10 @@ public KafkaEndpoint todoKafkaEndpoint() {
 The endpoint connects to the server cluster and uses the topic `todo.inbound`. We can now place new todo entries to that topic in our test.
     
 ```java
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(todoKafkaEndpoint)
     .header(KafkaMessageHeaders.MESSAGE_KEY, "${todoName}")
-    .payload("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
+    .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 ```
         
 We can add a special message header **KafkaMessageHeaders.MESSAGE_KEY** which is the Kafka producer record message key. The message key is automatically serialized/deserialized as String value. 
@@ -69,9 +69,9 @@ As you can see you can also skip the `server` property on the endpoint when the 
 records on that topic in the test case. 
 
 ```java
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(todoReportEndpoint)
-    .messageType(MessageType.JSON)
+    .type(MessageType.JSON)
     .message(new KafkaMessage("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
         .messageKey("todo.entries.done")));
 ```

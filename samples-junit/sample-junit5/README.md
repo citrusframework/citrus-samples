@@ -40,7 +40,7 @@ public class TodoListIT {
             .send()
             .post("/todolist")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=${todoName}&description=${todoDescription}"));
+            .body("title=${todoName}&description=${todoDescription}"));
             
         http(action -> action.client(todoClient)
             .receive()

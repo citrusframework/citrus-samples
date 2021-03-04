@@ -17,38 +17,43 @@
 package com.consol.citrus.samples.gradle;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.channel.ChannelEndpoint;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
+import com.consol.citrus.endpoint.direct.DirectEndpoint;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.Test;
+
+import static com.consol.citrus.actions.EchoAction.Builder.echo;
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
  */
 @ContextConfiguration(classes = { EndpointConfig.class })
-public class MessagingTest extends TestNGCitrusTestRunner {
+public class MessagingTest extends TestNGCitrusSpringSupport {
 
     @Autowired
-    private ChannelEndpoint testChannelEndpoint;
+    private DirectEndpoint testEndpoint;
 
     @Test
     @CitrusTest
     public void testMessaging() {
-        echo("Test simple message send and receive");
+        $(echo("Test simple message send and receive"));
 
-        send(sendMessageBuilder -> sendMessageBuilder
-            .endpoint(testChannelEndpoint)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("Hello Citrus!"));
+        $(send()
+            .endpoint(testEndpoint)
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("Hello Citrus!"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
-            .endpoint(testChannelEndpoint)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("Hello Citrus!"));
+        $(receive()
+            .endpoint(testEndpoint)
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("Hello Citrus!"));
 
-        echo("Successful send and receive");
+        $(echo("Successful send and receive"));
     }
 }

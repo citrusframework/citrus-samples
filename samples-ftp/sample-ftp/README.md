@@ -84,11 +84,11 @@ In a sample test we first create a new subdirectory in that user home directory.
 ```java
 echo("Create new directory on server");
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(ftpClient)
     .message(FtpMessage.command(FTPCmd.MKD).arguments("todo")));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(ftpClient)
     .message(FtpMessage.result(getMkdirsCommandResult("todo"))));
 ```
@@ -119,20 +119,20 @@ This tells the FTP server to automatically handle the user login as well as the 
 ```java
 echo("Store file to directory");
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(ftpClient)
     .fork(true)
     .message(FtpMessage.put("classpath:todo/entry.json", "todo/todo.json", DataType.ASCII)));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(ftpServer)
     .message(FtpMessage.command(FTPCmd.STOR).arguments("todo/todo.json")));
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(ftpServer)
     .message(FtpMessage.success()));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(ftpClient)
     .message(FtpMessage.result(getStoreFileCommandResult())));
 ```
@@ -149,20 +149,20 @@ Now we should be also able to list the files in that directory:
 ```java
 echo("List files in directory");
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(ftpClient)
     .fork(true)
     .message(FtpMessage.list("todo")));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(ftpServer)
     .message(FtpMessage.command(FTPCmd.LIST).arguments("todo")));
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(ftpServer)
     .message(FtpMessage.success()));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(ftpClient)
     .message(FtpMessage.result(getListCommandResult("todo.json"))));
 ```
@@ -193,20 +193,20 @@ Now we can also retrieve the file from the server by calling the `RETR` operatio
 ```java
 echo("Retrieve file from server");
 
-    send(sendMessageBuilder -> sendMessageBuilder
+    $(send()
         .endpoint(ftpClient)
         .fork(true)
         .message(FtpMessage.get("todo/todo.json", "target/todo/todo.json", DataType.ASCII)));
 
-    receive(receiveMessageBuilder -> receiveMessageBuilder
+    $(receive()
         .endpoint(ftpServer)
         .message(FtpMessage.command(FTPCmd.RETR).arguments("todo/todo.json")));
 
-    send(sendMessageBuilder -> sendMessageBuilder
+    $(send()
         .endpoint(ftpServer)
         .message(FtpMessage.success()));
 
-    receive(receiveMessageBuilder -> receiveMessageBuilder
+    $(receive()
         .endpoint(ftpClient)
         .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json")))));
 ```

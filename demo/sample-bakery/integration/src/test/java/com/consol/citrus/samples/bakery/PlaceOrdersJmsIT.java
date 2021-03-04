@@ -17,22 +17,26 @@
 package com.consol.citrus.samples.bakery;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.functions.Functions;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.message.MessageType;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
+
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.container.RepeatOnErrorUntilTrue.Builder.repeatOnError;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class PlaceOrdersJmsIT extends TestNGCitrusTestRunner {
+public class PlaceOrdersJmsIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")
@@ -46,25 +50,27 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestRunner {
     public void placeChocolateCookieOrder() {
         variable("orderId", Functions.randomNumber(10L, null));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(bakeryOrderEndpoint)
-            .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>"));
 
-        repeatOnError()
+        $(repeatOnError()
             .until((index, context) -> index > 20)
             .autoSleep(500L)
             .actions(
-                http(httpActionBuilder -> httpActionBuilder
+                http()
                     .client(reportingClient)
                     .send()
                     .get("/reporting/order")
-                    .queryParam("id", "${orderId}")),
-                http(httpActionBuilder -> httpActionBuilder
+                    .queryParam("id", "${orderId}"),
+                http()
                     .client(reportingClient)
                     .receive()
                     .response(HttpStatus.OK)
-                    .messageType(MessageType.JSON)
-                    .payload("{\"status\": true}"))
+                    .message()
+                    .type(MessageType.JSON)
+                    .body("{\"status\": true}"))
             );
     }
 
@@ -72,25 +78,27 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestRunner {
     public void placeCaramelCookieOrder() {
         variable("orderId", Functions.randomNumber(10L, null));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(bakeryOrderEndpoint)
-            .payload("<order><type>caramel</type><id>${orderId}</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>caramel</type><id>${orderId}</id><amount>1</amount></order>"));
 
-        repeatOnError()
+        $(repeatOnError()
             .until((index, context) -> index > 20)
             .autoSleep(500L)
             .actions(
-                http(httpActionBuilder -> httpActionBuilder
+                http()
                     .client(reportingClient)
                     .send()
                     .get("/reporting/order")
-                    .queryParam("id", "${orderId}")),
-                http(httpActionBuilder -> httpActionBuilder
+                    .queryParam("id", "${orderId}"),
+                http()
                     .client(reportingClient)
                     .receive()
                     .response(HttpStatus.OK)
-                    .messageType(MessageType.JSON)
-                    .payload("{\"status\": true}"))
+                    .message()
+                    .type(MessageType.JSON)
+                    .body("{\"status\": true}"))
             );
     }
 
@@ -98,25 +106,27 @@ public class PlaceOrdersJmsIT extends TestNGCitrusTestRunner {
     public void placeBlueberryCookieOrder() {
         variable("orderId", Functions.randomNumber(10L, null));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(bakeryOrderEndpoint)
-            .payload("<order><type>blueberry</type><id>${orderId}</id><amount>1</amount></order>"));
+            .message()
+            .body("<order><type>blueberry</type><id>${orderId}</id><amount>1</amount></order>"));
 
-        repeatOnError()
+        $(repeatOnError()
             .until((index, context) -> index > 20)
             .autoSleep(500L)
             .actions(
-                http(httpActionBuilder -> httpActionBuilder
+                http()
                     .client(reportingClient)
                     .send()
                     .get("/reporting/order")
-                    .queryParam("id", "${orderId}")),
-                http(httpActionBuilder -> httpActionBuilder
+                    .queryParam("id", "${orderId}"),
+                http()
                     .client(reportingClient)
                     .receive()
                     .response(HttpStatus.OK)
-                    .messageType(MessageType.JSON)
-                    .payload("{\"status\": true}"))
+                    .message()
+                    .type(MessageType.JSON)
+                    .body("{\"status\": true}"))
             );
     }
 }

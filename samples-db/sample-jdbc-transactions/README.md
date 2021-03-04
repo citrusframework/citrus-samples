@@ -44,27 +44,27 @@ by setting `.autoTransactionHandling(false)`.
 In the test case we can now verify the transactional behavior of our application if a client request hits our API. 
 
 ```java
-http(httpActionBuilder -> httpActionBuilder
+$(http()
     .client(todoClient)
     .send()
     .post("/todolist")
     .fork(true)
     .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    .payload("title=${todoName}&description=${todoDescription}"));
+    .body("title=${todoName}&description=${todoDescription}"));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(jdbcServer)
     .message(JdbcMessage.startTransaction()));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(jdbcServer)
     .message(JdbcMessage.execute("@startsWith('INSERT INTO todo_entries (id, title, description, done) VALUES (?, ?, ?, ?)')@")));
 
-send(sendMessageBuilder -> sendMessageBuilder
+$(send()
     .endpoint(jdbcServer)
     .message(JdbcMessage.success().rowsUpdated(1)));
 
-receive(receiveMessageBuilder -> receiveMessageBuilder
+$(receive()
     .endpoint(jdbcServer)
     .message(JdbcMessage.commitTransaction()));
 ```

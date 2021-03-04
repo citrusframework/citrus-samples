@@ -17,19 +17,25 @@
 package com.consol.citrus.samples.flightbooking;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.server.HttpServer;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
+import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.dsl.MessageSupport.MessageHeaderSupport.fromHeaders;
+import static com.consol.citrus.dsl.XmlSupport.xml;
+import static com.consol.citrus.dsl.XpathSupport.xpath;
+
 /**
  * @author Christoph Deppisch
  */
 @Test
-public class FlightBookingIT extends TestNGCitrusTestRunner {
+public class FlightBookingIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     @Qualifier("travelAgencyBookingRequestEndpoint")
@@ -55,46 +61,60 @@ public class FlightBookingIT extends TestNGCitrusTestRunner {
         variable("correlationId", "citrus:concat('Lx1x', 'citrus:randomNumber(10)')");
         variable("customerId", "citrus:concat('Mx1x', citrus:randomNumber(10))");
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(travelAgencyBookingRequestEndpoint)
-            .payload(new ClassPathResource("templates/TravelBookingRequest.xml"))
+            .message()
+            .body(new ClassPathResource("templates/TravelBookingRequest.xml"))
                 .header("bookingCorrelationId", "${correlationId}"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(royalAirlineServer)
-            .payload(new ClassPathResource("templates/RoyalAirlineBookingRequest.xml"))
-            .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId")
+            .message()
+            .body(new ClassPathResource("templates/RoyalAirlineBookingRequest.xml"))
             .header("bookingCorrelationId", "${correlationId}")
-            .extractFromHeader("X-sequenceNumber", "${sequenceNumber}")
-            .extractFromHeader("X-sequenceSize", "${sequenceSize}")
-            .extractFromPayload("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${royalAirlineBookingId}"));
+            .validate(xml()
+                        .xpath()
+                        .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId"))
+            .extract(fromHeaders()
+                        .expression("X-sequenceNumber", "${sequenceNumber}")
+                        .expression("X-sequenceSize", "${sequenceSize}"))
+            .extract(xpath()
+                    .expression("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${royalAirlineBookingId}")));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(royalAirlineServer)
-            .payload(new ClassPathResource("templates/RoyalAirlineBookingResponse.xml"))
+            .message()
+            .body(new ClassPathResource("templates/RoyalAirlineBookingResponse.xml"))
             .header("X-sequenceNumber", "${sequenceNumber}")
             .header("X-sequenceSize", "${sequenceSize}")
             .header("bookingCorrelationId", "${correlationId}"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(smartAirlineBookingRequestEndpoint)
-            .payload(new ClassPathResource("templates/SmartAirlineBookingRequest.xml"))
-            .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId")
+            .message()
+            .body(new ClassPathResource("templates/SmartAirlineBookingRequest.xml"))
+            .validate(xml()
+                        .xpath()
+                        .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId"))
             .header("bookingCorrelationId", "${correlationId}")
-            .extractFromHeader("sequenceNumber", "${sequenceNumber}")
-            .extractFromHeader("sequenceSize", "${sequenceSize}")
-            .extractFromPayload("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${smartAirlineBookingId}"));
+            .extract(fromHeaders()
+                        .expression("sequenceNumber", "${sequenceNumber}")
+                        .expression("sequenceSize", "${sequenceSize}"))
+            .extract(xpath()
+                        .expression("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${smartAirlineBookingId}")));
 
-        send(sendMessageBuilder -> sendMessageBuilder
+        $(send()
             .endpoint(smartAirlineBookingResponseEndpoint)
-            .payload(new ClassPathResource("templates/SmartAirlineBookingResponse.xml"))
+            .message()
+            .body(new ClassPathResource("templates/SmartAirlineBookingResponse.xml"))
             .header("sequenceNumber", "${sequenceNumber}")
             .header("sequenceSize", "${sequenceSize}")
             .header("bookingCorrelationId", "${correlationId}"));
 
-        receive(receiveMessageBuilder -> receiveMessageBuilder
+        $(receive()
             .endpoint(travelAgencyBookingResponseEndpoint)
-            .payload(new ClassPathResource("templates/TravelBookingResponse.xml"))
+            .message()
+            .body(new ClassPathResource("templates/TravelBookingResponse.xml"))
             .header("bookingCorrelationId", "${correlationId}"));
     }
 

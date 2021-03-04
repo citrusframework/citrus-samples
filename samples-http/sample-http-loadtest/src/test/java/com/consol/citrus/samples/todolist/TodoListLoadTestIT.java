@@ -16,55 +16,61 @@
 
 package com.consol.citrus.samples.todolist;
 
+import com.consol.citrus.TestActionRunner;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.runner.TestRunner;
-import com.consol.citrus.dsl.testng.TestNGCitrusTest;
 import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.testng.annotations.*;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Test;
+
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
  */
 
 @Test(invocationCount = 40, threadPoolSize = 8)
-public class TodoListLoadTestIT extends TestNGCitrusTest {
+public class TodoListLoadTestIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private HttpClient todoClient;
 
-    @Parameters( { "runner" })
     @CitrusTest
-    public void testAddTodo(@Optional @CitrusResource TestRunner runner) {
-        runner.http(httpActionBuilder -> httpActionBuilder
+    public void testAddTodo(@Optional @CitrusResource TestActionRunner actions) {
+        System.out.println("testAddTodo " + actions.toString());
+
+        actions.$(http()
             .client(todoClient)
             .send()
             .post("/todolist")
+            .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .payload("title=citrus:concat('todo_', citrus:randomNumber(10))"));
+            .body("title=citrus:concat('todo_', citrus:randomNumber(10))"));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        actions.$(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.FOUND));
     }
 
-    @Parameters( { "runner" })
     @CitrusTest
-    public void testListTodos(@Optional @CitrusResource TestRunner runner) {
-        runner.http(httpActionBuilder -> httpActionBuilder
+    public void testListTodos(@Optional @CitrusResource TestActionRunner actions) {
+        System.out.println("testListTodos " + actions.toString());
+
+        actions.$(http()
             .client(todoClient)
             .send()
             .get("/todolist")
+            .message()
             .accept(MediaType.TEXT_HTML_VALUE));
 
-        runner.http(httpActionBuilder -> httpActionBuilder
+        actions.$(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK));
     }
-
 }

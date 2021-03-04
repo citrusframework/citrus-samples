@@ -17,20 +17,23 @@
 package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.samples.todolist.page.TodoPage;
 import com.consol.citrus.samples.todolist.page.WelcomePage;
 import com.consol.citrus.selenium.endpoint.SeleniumBrowser;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import org.openqa.selenium.By;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static com.consol.citrus.selenium.actions.SeleniumActionBuilder.selenium;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoPagesIT extends TestNGCitrusTestRunner {
+public class TodoPagesIT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private SeleniumBrowser browser;
@@ -41,34 +44,34 @@ public class TodoPagesIT extends TestNGCitrusTestRunner {
     @Test
     @CitrusTest
     public void testIndexPage() {
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .browser(browser)
             .start());
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .navigate(todoClient.getEndpointConfiguration().getRequestUrl()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .delete("/api/todolist"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK));
 
         WelcomePage welcomePage = new WelcomePage();
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .page(welcomePage)
             .validate());
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .page(welcomePage)
             .execute("startApp"));
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .page(new TodoPage())
             .validate());
     }
@@ -79,42 +82,42 @@ public class TodoPagesIT extends TestNGCitrusTestRunner {
         variable("todoName", "todo_citrus:randomNumber(4)");
         variable("todoDescription", "Description: ${todoName}");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .delete("/api/todolist"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK));
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .browser(browser)
             .start());
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .navigate(todoClient.getEndpointConfiguration().getRequestUrl() + "/todolist"));
 
         TodoPage todoPage = new TodoPage();
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .page(todoPage)
             .validate());
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .page(todoPage)
             .argument("${todoName}")
             .argument("${todoDescription}")
             .execute("submit"));
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .waitUntil()
             .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
             .timeout(2000L)
             .visible());
 
-        selenium(seleniumActionBuilder -> seleniumActionBuilder
+        $(selenium()
             .find()
             .element(By.xpath("(//li[@class='list-group-item']/span)[last()]"))
             .text("${todoName}"));

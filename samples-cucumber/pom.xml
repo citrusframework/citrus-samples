@@ -11,6 +11,5 @@
   <modules>
     <module>sample-cucumber</module>
     <module>sample-cucumber-spring</module>
-    <module>sample-cucumber-spring2</module>
   </modules>
 </project>

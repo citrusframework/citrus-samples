@@ -61,21 +61,22 @@ public class AddTodoBehavior extends AbstractTestBehavior {
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType());
 
         if (StringUtils.hasText(payloadData)) {
-            request.payload(payloadData);
+            request.body(payloadData);
         } else if (resource != null) {
-            request.payload(resource);
+            request.body(resource);
         }
 
         http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}");
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}");
     }
 
     AddTodoBehavior withPayloadData(String payload) {
@@ -131,12 +132,13 @@ public class GetTodoBehavior extends AbstractTestBehavior {
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON);
+            .message()
+            .type(MessageType.JSON);
 
         if (StringUtils.hasText(payloadData)) {
-            response.payload(payloadData);
+            response.body(payloadData);
         } else if (resource != null) {
-            response.payload(resource);
+            response.body(resource);
         }
 
         validateExpressions.forEach(response::validate);

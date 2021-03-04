@@ -17,15 +17,19 @@
 package com.consol.citrus.samples.bookstore;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
+import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.dsl.XmlSupport.xml;
+import static com.consol.citrus.dsl.XpathSupport.xpath;
+import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+
 /**
  * @author Christoph Deppisch
  */
-public class GetBookDetails_Ok_1_IT extends TestNGCitrusTestRunner {
+public class GetBookDetails_Ok_1_IT extends TestNGCitrusSpringSupport {
 
     @Autowired
     private WebServiceClient bookStoreClient;
@@ -39,11 +43,12 @@ public class GetBookDetails_Ok_1_IT extends TestNGCitrusTestRunner {
 
         variable("isbn", "978-1933988139");
 
-        soap(soapActionBuilder -> soapActionBuilder
+        $(soap()
             .client(bookStoreClient)
             .send()
+            .message()
             .soapAction("addBook")
-            .payload("<bkr:AddBookRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+            .body("<bkr:AddBookRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
                         "<bkr:book>" +
                             "<bkr:title>Maven: The Definitive Guide</bkr:title>" +
                             "<bkr:author>Mike Loukides, Sonatype</bkr:author>" +
@@ -52,25 +57,28 @@ public class GetBookDetails_Ok_1_IT extends TestNGCitrusTestRunner {
                         "</bkr:book>" +
                     "</bkr:AddBookRequestMessage>"));
 
-        soap(soapActionBuilder -> soapActionBuilder
+        $(soap()
             .client(bookStoreClient)
             .receive()
-            .payload("<bkr:AddBookResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+            .message()
+            .body("<bkr:AddBookResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
                         "<bkr:success>true</bkr:success>" +
                     "</bkr:AddBookResponseMessage>"));
 
-        soap(soapActionBuilder -> soapActionBuilder
+        $(soap()
             .client(bookStoreClient)
             .send()
+            .message()
             .soapAction("getBookDetails")
-            .payload("<bkr:GetBookDetailsRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+            .body("<bkr:GetBookDetailsRequestMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
                         "<bkr:isbn>${isbn}</bkr:isbn>" +
                     "</bkr:GetBookDetailsRequestMessage>"));
 
-        soap(soapActionBuilder -> soapActionBuilder
+        $(soap()
             .client(bookStoreClient)
             .receive()
-            .payload("<bkr:GetBookDetailsResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
+            .message()
+            .body("<bkr:GetBookDetailsResponseMessage xmlns:bkr=\"http://www.consol.com/schemas/bookstore\">" +
                         "<bkr:book>" +
                             "<bkr:id>?</bkr:id>" +
                             "<bkr:title>Maven: The Definitive Guide</bkr:title>" +
@@ -80,9 +88,12 @@ public class GetBookDetails_Ok_1_IT extends TestNGCitrusTestRunner {
                             "<bkr:registration-date>?</bkr:registration-date>" +
                         "</bkr:book>" +
                     "</bkr:GetBookDetailsResponseMessage>")
-            .ignore("/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:id")
-            .ignore("/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:registration-date")
-            .extractFromPayload("/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:id", "bookId"));
+            .validate(xml()
+                        .xpath()
+                        .ignore("/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:id")
+                        .ignore("/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:registration-date"))
+            .extract(xpath()
+                        .expression("/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:id", "bookId")));
     }
 
 }

@@ -29,6 +29,14 @@ import org.springframework.util.CollectionUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static com.consol.citrus.actions.CreateVariablesAction.Builder.createVariable;
+import static com.consol.citrus.actions.SleepAction.Builder.sleep;
+import static com.consol.citrus.actions.StopTimerAction.Builder.stopTimer;
+import static com.consol.citrus.container.Parallel.Builder.parallel;
+import static com.consol.citrus.container.Timer.Builder.timer;
+import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static com.consol.citrus.kubernetes.actions.KubernetesExecuteAction.Builder.kubernetes;
+
 /**
  * @author Christoph Deppisch
  */
@@ -43,7 +51,7 @@ public class TodoListIT extends AbstractKubernetesIT {
     @Test
     @CitrusTest
     public void testDeploymentState() {
-        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+        $(kubernetes()
             .client(k8sClient)
             .pods()
             .list()
@@ -53,7 +61,7 @@ public class TodoListIT extends AbstractKubernetesIT {
                 Assert.assertFalse(CollectionUtils.isEmpty(pods.getResult().getItems()));
             }));
 
-        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+        $(kubernetes()
             .client(k8sClient)
             .services()
             .get("citrus-sample-todo-service")
@@ -68,42 +76,43 @@ public class TodoListIT extends AbstractKubernetesIT {
         variable("todoDescription", "Description: ${todoName}");
         variable("done", "false");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .message()
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }
 
     @Test
     @CitrusTest
     public void testTodoServiceReplication() {
-        // 8080
-        // bricht irgendwie aus dem Schema aus: warum hat der timer nicht denselben Build-Prozess wie
-        // der Rest?
-        timer()
+        $(timer()
             .timerId("createTodoItems")
             .fork(true)
             .delay(500L)
@@ -114,23 +123,24 @@ public class TodoListIT extends AbstractKubernetesIT {
                 createVariable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))"),
                 createVariable("todoDescription", "Description: ${todoName}"),
                 createVariable("done", "false"),
-                http(httpActionBuilder -> httpActionBuilder
+                http()
                     .client(todoClient)
                     .send()
                     .post("/api/todolist")
-                    .messageType(MessageType.JSON)
+                    .message()
+                    .type(MessageType.JSON)
                     .contentType(ContentType.APPLICATION_JSON.getMimeType())
-                    .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")),
-
-                http(httpActionBuilder -> httpActionBuilder
+                    .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"),
+                http()
                     .client(todoClient)
                     .receive()
                     .response(HttpStatus.OK)
-                    .messageType(MessageType.PLAINTEXT)
-                    .payload("${todoId}"))
-            );
+                    .message()
+                    .type(MessageType.PLAINTEXT)
+                    .body("${todoId}")
+            ));
 
-        kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+        $(kubernetes()
             .pods()
             .list()
             .label("app=todo")
@@ -140,57 +150,60 @@ public class TodoListIT extends AbstractKubernetesIT {
                 context.setVariable("todoPod", pods.getResult().getItems().get(0).getMetadata().getName());
             }));
 
-        // 8080
-        parallel()
+        $(parallel()
             .actions(
-                kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+                kubernetes()
                     .pods()
                     .watch()
                     .name("${todoPod}")
                     .namespace("default")
-                    .validate((result, context) -> Assert.assertEquals(((WatchEventResult) result).getAction(), Watcher.Action.MODIFIED))),
-                kubernetes(kubernetesActionBuilder -> kubernetesActionBuilder
+                    .validate((result, context) -> Assert.assertEquals(((WatchEventResult) result).getAction(), Watcher.Action.MODIFIED)),
+                kubernetes()
                     .pods()
                     .delete("${todoPod}")
                     .namespace("default")
-                    .validate((result, context) -> Assert.assertTrue(result.getResult().getSuccess())))
-            );
+                    .validate((result, context) -> Assert.assertTrue(result.getResult().getSuccess()))
+            ));
 
-        sleep(2000L);
+        $(sleep().milliseconds(2000L));
 
-        stopTimer("createTodoItems");
+        $(stopTimer("createTodoItems"));
 
         createVariable("todoId", "citrus:randomUUID()");
         createVariable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         createVariable("todoDescription", "Description: ${todoName}");
         createVariable("done", "false");
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .post("/api/todolist")
-            .messageType(MessageType.JSON)
+            .message()
+            .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT)
-            .payload("${todoId}"));
+            .message()
+            .type(MessageType.PLAINTEXT)
+            .body("${todoId}"));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .send()
             .get("/api/todo/${todoId}")
+            .message()
             .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-        http(httpActionBuilder -> httpActionBuilder
+        $(http()
             .client(todoClient)
             .receive()
             .response(HttpStatus.OK)
-            .messageType(MessageType.JSON)
-            .payload("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+            .message()
+            .type(MessageType.JSON)
+            .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }
 }
