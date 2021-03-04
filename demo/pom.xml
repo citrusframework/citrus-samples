@@ -4,13 +4,12 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-demo</artifactId>
-  <version>3.0.0-M3</version>
+  <version>3.0.0-SNAPSHOT</version>
   <name>Citrus Samples:: Demos</name>
   <packaging>pom</packaging>
 
   <modules>
     <module>sample-bakery</module>
-    <module>sample-javaee</module>
     <module>sample-flightbooking</module>
     <module>sample-greeting</module>
     <module>sample-bookstore</module>

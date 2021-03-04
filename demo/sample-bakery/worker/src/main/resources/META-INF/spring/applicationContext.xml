@@ -11,7 +11,7 @@
 
     <component-scan xmlns="http://www.springframework.org/schema/context" base-package="com.consol.citrus.samples.bakery.routes"/>
 
-    <bean id="jms" class="org.apache.activemq.camel.component.ActiveMQComponent">
+    <bean id="jms" class="org.apache.camel.component.activemq.ActiveMQComponent">
       <property name="brokerURL" value="failover:${jms.broker.url}"/>
     </bean>
 

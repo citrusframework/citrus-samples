@@ -101,7 +101,7 @@ public class ReportSummaryIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.OK));
+            .response(HttpStatus.NO_CONTENT));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(reportingClient)
@@ -114,7 +114,7 @@ public class ReportSummaryIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.OK));
+            .response(HttpStatus.NO_CONTENT));
 
         http(httpActionBuilder -> httpActionBuilder
             .client(reportingClient)
@@ -127,7 +127,7 @@ public class ReportSummaryIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.OK));
+            .response(HttpStatus.NO_CONTENT));
 
         echo("Receive report with changed data");
 

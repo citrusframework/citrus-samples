@@ -73,8 +73,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(bakeryClient)
             .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT));
+            .response(HttpStatus.NO_CONTENT));
     }
 
     @CitrusTest
@@ -108,8 +107,7 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(bakeryClient)
             .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT));
+            .response(HttpStatus.NO_CONTENT));
     }
 
     @CitrusTest
@@ -143,7 +141,6 @@ public class PlaceOrdersHttpIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(bakeryClient)
             .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT));
+            .response(HttpStatus.NO_CONTENT));
     }
 }

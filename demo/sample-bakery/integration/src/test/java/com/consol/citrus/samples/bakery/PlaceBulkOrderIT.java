@@ -57,6 +57,8 @@ public class PlaceBulkOrderIT extends TestNGCitrusTestRunner {
         variable("orderId", Functions.randomNumber(10L, null));
         variable("amount", 1001L);
 
+        sleep();
+
         send(sendMessageBuilder -> sendMessageBuilder
             .endpoint(bakeryOrderEndpoint)
             .payload("<order><type>${orderType}</type><id>${orderId}</id><amount>${amount}</amount></order>"));

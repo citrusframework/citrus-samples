@@ -60,7 +60,7 @@ public class ReportOrderMailIT extends TestNGCitrusTestRunner {
          http(httpActionBuilder -> httpActionBuilder
              .client(reportingClient)
              .receive()
-             .response(HttpStatus.OK));
+             .response(HttpStatus.NO_CONTENT));
 
          echo("Receive report mail for 1000+ order");
 

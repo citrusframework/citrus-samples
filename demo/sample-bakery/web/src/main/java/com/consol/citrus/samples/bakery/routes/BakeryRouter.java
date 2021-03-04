@@ -16,12 +16,15 @@
 
 package com.consol.citrus.samples.bakery.routes;
 
-import org.apache.camel.*;
+import java.util.Map;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.ExchangePattern;
+import org.apache.camel.Message;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * @author Christoph Deppisch
@@ -42,19 +45,21 @@ public class BakeryRouter extends RouteBuilder implements Processor {
             .consumes("application/json")
             .post().route().unmarshal().json(JsonLibrary.Jackson).process(this).to("direct:bakery");
 
-        from("jms:queue:bakery.order.inbound").routeId("bakery_jms_inbound")
+        from("jms:queue:bakery.order.inbound")
+            .routeId("bakery_jms_inbound")
             .to("direct:bakery");
 
-        from("direct:bakery").routeId("bakery")
+        from("direct:bakery")
+            .routeId("bakery")
             .choice()
                 .when(xpath("order/type/text() = 'blueberry'"))
-                    .inOnly("jms:queue:factory.blueberry.inbound")
+                    .to(ExchangePattern.InOnly, "jms:queue:factory.blueberry.inbound")
                 .when(xpath("order/type/text() = 'caramel'"))
-                    .inOnly("jms:queue:factory.caramel.inbound")
+                .to(ExchangePattern.InOnly, "jms:queue:factory.caramel.inbound")
                 .when(xpath("order/type/text() = 'chocolate'"))
-                    .inOnly("jms:queue:factory.chocolate.inbound")
+                .to(ExchangePattern.InOnly, "jms:queue:factory.chocolate.inbound")
                 .otherwise()
-                    .inOnly("jms:queue:factory.unknown.inbound")
+                .to(ExchangePattern.InOnly, "jms:queue:factory.unknown.inbound")
             .end()
             .setBody(simple(""));
     }

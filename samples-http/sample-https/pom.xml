@@ -5,14 +5,14 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-https</artifactId>
   <name>Citrus Samples:: Https</name>
-  <version>3.0.0-M3</version>
+  <version>3.0.0-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.7.30</slf4j.version>
-    <testng.version>7.1.0</testng.version>
-    <citrus.version>3.0.0-M3</citrus.version>
+    <testng.version>7.3.0</testng.version>
+    <citrus.version>3.0.0-SNAPSHOT</citrus.version>
   </properties>
 
   <build>
@@ -20,11 +20,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
 

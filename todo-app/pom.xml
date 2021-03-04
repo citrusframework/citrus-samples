@@ -5,18 +5,22 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-todo</artifactId>
   <name>Citrus Samples:: Todo App</name>
-  <version>3.0.0-M3</version>
+  <version>3.0.0-SNAPSHOT</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.2.10.RELEASE</spring.version>
-    <spring.boot.version>2.3.5.RELEASE</spring.boot.version>
-    <spring.kafka.version>2.6.2</spring.kafka.version>
+    <spring.version>5.3.3</spring.version>
+    <spring.boot.version>2.4.2</spring.boot.version>
+    <spring.kafka.version>2.6.6</spring.kafka.version>
     <activemq.version>5.16.0</activemq.version>
-    <citrus.version>3.0.0-M3</citrus.version>
+    <citrus.version>3.0.0-SNAPSHOT</citrus.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <jackson.version>2.11.3</jackson.version>
+    <jackson.version>2.12.1</jackson.version>
+    <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
+    <jakarta.mail.version>1.6.5</jakarta.mail.version>
+    <jakarta.jms-api.version>2.0.3</jakarta.jms-api.version>
+    <jakarta.validation.version>2.0.2</jakarta.validation.version>
     <skipJaxb>true</skipJaxb>
   </properties>
 
@@ -41,11 +45,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
 
@@ -73,7 +77,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
-        <version>2.2</version>
+        <version>2.5.0</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
@@ -99,12 +103,7 @@
           <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.12.0</version>
-          </dependency>
-          <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <version>1.4.01</version>
+            <version>2.12.1</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -234,13 +233,24 @@
 
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-jms</artifactId>
+      <artifactId>spring-context</artifactId>
       <version>${spring.version}</version>
     </dependency>
     <dependency>
-      <groupId>javax.jms</groupId>
-      <artifactId>javax.jms-api</artifactId>
-      <version>2.0.1</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-messaging</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jms</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.jms</groupId>
+      <artifactId>jakarta.jms-api</artifactId>
+      <version>${jakarta.jms-api.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.activemq</groupId>
@@ -267,15 +277,17 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- JaxB Bindings (API and implementation) -->
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>javax.mail-api</artifactId>
-      <version>1.6.1</version>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>${jakarta.xml.bind-api.version}</version>
     </dependency>
+
     <dependency>
       <groupId>com.sun.mail</groupId>
-      <artifactId>javax.mail</artifactId>
-      <version>1.6.1</version>
+      <artifactId>jakarta.mail</artifactId>
+      <version>${jakarta.mail.version}</version>
     </dependency>
 
     <dependency>
@@ -291,9 +303,9 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <version>2.0.1.Final</version>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>${jakarta.validation.version}</version>
     </dependency>
 
     <dependency>

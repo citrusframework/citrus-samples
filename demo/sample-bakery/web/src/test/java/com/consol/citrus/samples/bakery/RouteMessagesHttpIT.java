@@ -20,7 +20,6 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.message.MessageType;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -62,8 +61,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(bakeryClient)
             .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT));
+            .response(HttpStatus.NO_CONTENT));
 
         receive(httpActionBuilder -> httpActionBuilder
             .endpoint(workerChocolateEndpoint)
@@ -79,8 +77,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(bakeryClient)
             .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT));
+            .response(HttpStatus.NO_CONTENT));
 
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(workerCaramelEndpoint)
@@ -96,8 +93,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(bakeryClient)
             .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT));
+            .response(HttpStatus.NO_CONTENT));
 
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint(workerBlueberryEndpoint)
@@ -115,8 +111,7 @@ public class RouteMessagesHttpIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(bakeryClient)
             .receive()
-            .response(HttpStatus.OK)
-            .messageType(MessageType.PLAINTEXT));
+            .response(HttpStatus.NO_CONTENT));
 
         receive(receiveMessageBuilder -> receiveMessageBuilder
             .endpoint("jms:factory.unknown.inbound")

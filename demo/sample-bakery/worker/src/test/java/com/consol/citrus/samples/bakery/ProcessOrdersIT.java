@@ -45,6 +45,8 @@ public class ProcessOrdersIT extends TestNGCitrusTestRunner {
     public void processOrderWithReporting() {
         variable("orderId", Functions.randomNumber(10L, null));
 
+        sleep();
+
         send(sendMessageBuilder -> sendMessageBuilder
             .endpoint(factoryOrderEndpoint)
             .payload("<order><type>chocolate</type><id>${orderId}</id><amount>1</amount></order>"));

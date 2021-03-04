@@ -79,7 +79,7 @@ public class ReportOrdersIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.OK));
+            .response(HttpStatus.NO_CONTENT));
 
         echo("Receive order id in list of produced goods");
 
@@ -130,7 +130,7 @@ public class ReportOrdersIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.OK));
+            .response(HttpStatus.NO_CONTENT));
 
         echo("Receive report with changed data");
 
@@ -179,7 +179,7 @@ public class ReportOrdersIT extends TestNGCitrusTestRunner {
         http(httpActionBuilder -> httpActionBuilder
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.OK));
+            .response(HttpStatus.NO_CONTENT));
 
         echo("Receive report positive status for order id");
 

@@ -5,7 +5,7 @@
   <parent>
     <artifactId>citrus-sample-bakery</artifactId>
     <groupId>com.consol.citrus.samples</groupId>
-    <version>3.0.0-M3</version>
+    <version>3.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -30,7 +30,19 @@
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
+      <artifactId>camel-spring-main</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
       <artifactId>camel-http</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jms</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-activemq</artifactId>
     </dependency>
 
     <!-- Spring framework -->
@@ -49,16 +61,17 @@
 
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-camel</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-broker</artifactId>
     </dependency>
 
     <dependency>
       <groupId>org.jolokia</groupId>
       <artifactId>jolokia-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
     </dependency>
 
     <!-- Citrus -->
@@ -189,32 +202,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <configuration>
-          <mainClass>com.consol.citrus.samples.bakery.WorkerApp</mainClass>
-          <systemProperties>
-            <systemProperty>
-              <key>FACTORY_TYPE</key>
-              <value>${factory.type}</value>
-            </systemProperty>
-            <systemProperty>
-              <key>FACTORY_COSTS</key>
-              <value>${factory.costs}</value>
-            </systemProperty>
-            <systemProperty>
-              <key>ACTIVEMQ_BROKER_PORT</key>
-              <value>${activemq.server.port}</value>
-            </systemProperty>
-            <systemProperty>
-              <key>REPORT_SERVER_PORT</key>
-              <value>${report.server.port}</value>
-            </systemProperty>
-          </systemProperties>
-        </configuration>
       </plugin>
     </plugins>
   </build>

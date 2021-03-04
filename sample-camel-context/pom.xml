@@ -4,19 +4,20 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-camel-context</artifactId>
-  <version>3.0.0-M3</version>
+  <version>3.0.0-SNAPSHOT</version>
   <name>Citrus Samples:: Apache Camel Context</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.2.10.RELEASE</spring.version>
-    <spring.ws.version>3.0.8.RELEASE</spring.ws.version>
+    <spring.version>5.3.3</spring.version>
+    <spring.ws.version>3.0.10.RELEASE</spring.ws.version>
+    <spring.webflow.js.version>2.4.8.RELEASE</spring.webflow.js.version>
     <apache.camel.version>3.5.0</apache.camel.version>
     <activemq.version>5.16.0</activemq.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <testng.version>7.1.0</testng.version>
-    <citrus.version>3.0.0-M3</citrus.version>
+    <testng.version>7.3.0</testng.version>
+    <citrus.version>3.0.0-SNAPSHOT</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
@@ -25,11 +26,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
 
@@ -91,7 +92,7 @@
     <dependency>
       <groupId>org.springframework.webflow</groupId>
       <artifactId>spring-js</artifactId>
-      <version>2.4.6.RELEASE</version>
+      <version>${spring.webflow.js.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>

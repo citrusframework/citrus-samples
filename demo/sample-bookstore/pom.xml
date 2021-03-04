@@ -5,20 +5,25 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-bookstore</artifactId>
   <name>Citrus Samples:: Bookstore</name>
-  <version>3.0.0-M3</version>
+  <version>3.0.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.2.10.RELEASE</spring.version>
-    <spring.ws.version>3.0.8.RELEASE</spring.ws.version>
-    <spring.integration.version>5.2.4.RELEASE</spring.integration.version>
+    <spring.version>5.3.3</spring.version>
+    <spring.ws.version>3.0.10.RELEASE</spring.ws.version>
+    <spring.webflow.js.version>2.4.8.RELEASE</spring.webflow.js.version>
+    <spring.integration.version>5.4.3</spring.integration.version>
     <activemq.version>5.16.0</activemq.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <testng.version>7.1.0</testng.version>
-    <citrus.version>3.0.0-M3</citrus.version>
-    <jetty.version>9.4.34.v20201102</jetty.version>
+    <testng.version>7.3.0</testng.version>
+    <citrus.version>3.0.0-SNAPSHOT</citrus.version>
+    <jetty.version>9.4.36.v20210114</jetty.version>
+    <saaj.version>1.5.2</saaj.version>
+    <jaxb.version>2.3.2</jaxb.version>
+    <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
+    <jakarta.xml.soap-api.version>1.4.2</jakarta.xml.soap-api.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>
     <system.under.test.mode>embedded</system.under.test.mode>
@@ -29,11 +34,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
 
@@ -121,7 +126,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
-        <version>2.2</version>
+        <version>2.5.0</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
@@ -144,12 +149,7 @@
           <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.12.0</version>
-          </dependency>
-          <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <version>1.4.01</version>
+            <version>2.12.1</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -166,7 +166,7 @@
     <dependency>
       <groupId>org.springframework.webflow</groupId>
       <artifactId>spring-js</artifactId>
-      <version>2.4.4.RELEASE</version>
+      <version>${spring.webflow.js.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -227,7 +227,7 @@
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
-      <version>2.12.0</version>
+      <version>2.12.1</version>
     </dependency>
 
     <!-- Logging -->
@@ -246,6 +246,40 @@
       <artifactId>commons-logging</artifactId>
       <version>1.2</version>
       <scope>provided</scope>
+    </dependency>
+
+    <!-- JaxB Bindings (API and implementation) -->
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>${jakarta.xml.bind-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-core</artifactId>
+      <version>2.3.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.xml.bind</groupId>
+          <artifactId>jaxb-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>${jaxb.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>jakarta.xml.soap</groupId>
+      <artifactId>jakarta.xml.soap-api</artifactId>
+      <version>${jakarta.xml.soap-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.xml.messaging.saaj</groupId>
+      <artifactId>saaj-impl</artifactId>
+      <version>${saaj.version}</version>
     </dependency>
 
     <!-- Test scoped dependencies -->
