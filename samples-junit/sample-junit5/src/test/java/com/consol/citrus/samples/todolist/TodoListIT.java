@@ -21,13 +21,14 @@ import com.consol.citrus.TestCaseRunner;
 import com.consol.citrus.annotations.CitrusEndpoint;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.config.CitrusSpringConfig;
 import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.junit.jupiter.spring.CitrusSpringExtension;
+import com.consol.citrus.junit.jupiter.spring.CitrusSpringSupport;
 import com.consol.citrus.message.MessageType;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 import static com.consol.citrus.validation.xml.XpathMessageValidationContext.Builder.xpath;
@@ -35,7 +36,8 @@ import static com.consol.citrus.validation.xml.XpathMessageValidationContext.Bui
 /**
  * @author Christoph Deppisch
  */
-@ExtendWith(CitrusSpringExtension.class)
+@CitrusSpringSupport
+@ContextConfiguration(classes = {CitrusSpringConfig.class, EndpointConfig.class})
 public class TodoListIT {
 
     @CitrusEndpoint
