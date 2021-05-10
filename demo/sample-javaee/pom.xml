@@ -16,7 +16,7 @@
     <testng.version>7.3.0</testng.version>
     <citrus.version>3.0.0-M3</citrus.version>
     <jee.api.version>7.0</jee.api.version>
-    <junit.version>4.13</junit.version>
+    <junit.version>4.13.2</junit.version>
     <arquillian.version>1.6.0.Final</arquillian.version>
     <wildfly.version>10.0.0.Final</wildfly.version>
   </properties>

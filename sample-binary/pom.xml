@@ -13,7 +13,7 @@
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.3.0</testng.version>
     <citrus.version>3.0.0-SNAPSHOT</citrus.version>
-    <activemq.version>5.16.0</activemq.version>
+    <activemq.version>5.16.2</activemq.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 

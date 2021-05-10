@@ -10,9 +10,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.boot.version>2.4.2</spring.boot.version>
+    <spring.boot.version>2.4.5</spring.boot.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <junit.version>4.13</junit.version>
+    <junit.version>4.13.2</junit.version>
     <citrus.version>3.0.0-SNAPSHOT</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
