@@ -10,11 +10,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.3</spring.version>
+    <spring.version>5.3.6</spring.version>
     <spring.ws.version>3.0.10.RELEASE</spring.ws.version>
     <spring.webflow.js.version>2.4.8.RELEASE</spring.webflow.js.version>
-    <apache.camel.version>3.5.0</apache.camel.version>
-    <activemq.version>5.16.0</activemq.version>
+    <apache.camel.version>3.9.0</apache.camel.version>
+    <activemq.version>5.16.2</activemq.version>
     <slf4j.version>1.7.30</slf4j.version>
     <citrus.version>3.0.0-SNAPSHOT</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>

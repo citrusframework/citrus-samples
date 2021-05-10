@@ -18,14 +18,14 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.3</spring.version>
-    <apache.camel.version>3.7.0</apache.camel.version>
-    <activemq.version>5.16.0</activemq.version>
+    <spring.version>5.3.6</spring.version>
+    <apache.camel.version>3.9.0</apache.camel.version>
+    <activemq.version>5.16.2</activemq.version>
     <slf4j.version>1.7.30</slf4j.version>
     <citrus.version>3.0.0-SNAPSHOT</citrus.version>
-    <jetty.version>9.4.36.v20210114</jetty.version>
-    <jackson.version>2.12.1</jackson.version>
-    <jakarta.mail.version>1.6.5</jakarta.mail.version>
+    <jetty.version>9.4.40.v20210413</jetty.version>
+    <jackson.version>2.12.3</jackson.version>
+    <jakarta.mail.version>1.6.7</jakarta.mail.version>
     <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
     <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
     <server.port>18001</server.port>
@@ -195,6 +195,11 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-spring</artifactId>
+        <version>${apache.camel.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-spring-xml</artifactId>
         <version>${apache.camel.version}</version>
       </dependency>
       <dependency>
