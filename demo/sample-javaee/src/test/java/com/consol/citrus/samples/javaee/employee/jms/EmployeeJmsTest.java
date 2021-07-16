@@ -51,10 +51,10 @@ public class EmployeeJmsTest {
     @CitrusFramework
     private Citrus citrusFramework;
 
-    @Resource(mappedName = "jms/queue/employee")
+    @Resource(mappedName = "java:/jms/queue/employee")
     private Queue employeeQueue;
 
-    @Resource(mappedName = "/ConnectionFactory")
+    @Resource(mappedName = "java:/ConnectionFactory")
     private ConnectionFactory connectionFactory;
 
     private JmsSyncEndpoint employeeJmsEndpoint;

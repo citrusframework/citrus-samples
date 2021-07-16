@@ -16,21 +16,29 @@
 
 package com.consol.citrus.samples.javaee.employee.jms;
 
+import javax.annotation.Resource;
+import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
+import javax.ejb.MessageDriven;
+import javax.jms.Connection;
+import javax.jms.ConnectionFactory;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.MessageProducer;
+import javax.jms.Session;
+import javax.jms.TextMessage;
+
 import com.consol.citrus.samples.javaee.employee.EmployeeRepository;
 import com.consol.citrus.samples.javaee.employee.model.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Resource;
-import javax.ejb.*;
-import javax.jms.*;
 
 /**
  * @author Christoph Deppisch
  * @since 2.2
  */
 @MessageDriven(activationConfig = {
-        @ActivationConfigProperty( propertyName = "destination", propertyValue = "jms/queue/employee"),
+        @ActivationConfigProperty( propertyName = "destination", propertyValue = "java:/jms/queue/employee"),
         @ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.jms.Queue")
 })
 public class EmployeeJmsResource implements MessageListener {
