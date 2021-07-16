@@ -27,7 +27,7 @@ import com.consol.citrus.annotations.CitrusFramework;
 import com.consol.citrus.annotations.CitrusResource;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.arquillian.shrinkwrap.CitrusArchiveBuilder;
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
+import com.consol.citrus.jms.endpoint.JmsEndpoints;
 import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.javaee.Deployments;
@@ -51,10 +51,10 @@ public class EmployeeJmsTest {
     @CitrusFramework
     private Citrus citrusFramework;
 
-    @Resource(mappedName = "jms/queue/employee")
+    @Resource(mappedName = "java:/jms/queue/employee")
     private Queue employeeQueue;
 
-    @Resource(mappedName = "/ConnectionFactory")
+    @Resource(mappedName = "java:/ConnectionFactory")
     private ConnectionFactory connectionFactory;
 
     private JmsSyncEndpoint employeeJmsEndpoint;
@@ -68,7 +68,7 @@ public class EmployeeJmsTest {
 
     @Before
     public void setUp() {
-        employeeJmsEndpoint = CitrusEndpoints.jms().synchronous()
+        employeeJmsEndpoint = JmsEndpoints.jms().synchronous()
                                     .destination(employeeQueue)
                                     .connectionFactory(new SingleConnectionFactory(connectionFactory))
                                     .build();

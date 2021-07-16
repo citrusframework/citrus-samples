@@ -14,5 +14,6 @@
     <module>sample-greeting</module>
     <module>sample-bookstore</module>
     <module>sample-incident</module>
+    <module>sample-javaee</module>
   </modules>
 </project>

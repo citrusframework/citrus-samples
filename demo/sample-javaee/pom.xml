@@ -15,10 +15,10 @@
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.3.0</testng.version>
     <citrus.version>3.0.0-SNAPSHOT</citrus.version>
-    <jee.api.version>7.0</jee.api.version>
+    <jee.api.version>8.0.0</jee.api.version>
     <junit.version>4.13.2</junit.version>
     <arquillian.version>1.6.0.Final</arquillian.version>
-    <wildfly.version>10.0.0.Final</wildfly.version>
+    <wildfly.version>16.0.0.Final</wildfly.version>
   </properties>
 
   <build>
@@ -127,8 +127,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-api</artifactId>
       <version>${jee.api.version}</version>
       <scope>provided</scope>
     </dependency>
@@ -188,7 +188,19 @@
     <!-- Citrus -->
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-core</artifactId>
+      <artifactId>citrus-base</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-spring</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-testng</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
@@ -212,12 +224,6 @@
     </dependency>
     <dependency>
       <groupId>com.consol.citrus</groupId>
-      <artifactId>citrus-java-dsl</artifactId>
-      <version>${citrus.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-http</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
@@ -225,6 +231,18 @@
     <dependency>
       <groupId>com.consol.citrus</groupId>
       <artifactId>citrus-arquillian</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-validation-xml</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-validation-json</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
