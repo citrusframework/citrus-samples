@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-todo</artifactId>
   <name>Citrus Samples:: Todo App</name>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,7 +14,7 @@
     <spring.boot.version>2.4.5</spring.boot.version>
     <spring.kafka.version>2.7.0</spring.kafka.version>
     <activemq.version>5.16.2</activemq.version>
-    <citrus.version>3.0.0-SNAPSHOT</citrus.version>
+    <citrus.version>3.0.0</citrus.version>
     <slf4j.version>1.7.30</slf4j.version>
     <jackson.version>2.12.3</jackson.version>
     <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>

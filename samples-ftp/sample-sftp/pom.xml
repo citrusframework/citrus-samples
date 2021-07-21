@@ -5,14 +5,14 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-sftp</artifactId>
   <name>Citrus Samples:: SFTP</name>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.3.0</testng.version>
-    <citrus.version>3.0.0-SNAPSHOT</citrus.version>
+    <citrus.version>3.0.0</citrus.version>
   </properties>
 
   <build>
