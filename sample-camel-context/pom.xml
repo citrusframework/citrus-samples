@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-camel-context</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0</version>
   <name>Citrus Samples:: Apache Camel Context</name>
 
   <properties>
@@ -16,7 +16,7 @@
     <apache.camel.version>3.9.0</apache.camel.version>
     <activemq.version>5.16.2</activemq.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <citrus.version>3.0.0-SNAPSHOT</citrus.version>
+    <citrus.version>3.0.0</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 

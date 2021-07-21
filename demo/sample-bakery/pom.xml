@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-bakery</artifactId>
   <name>Citrus Samples:: Bakery</name>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -22,7 +22,7 @@
     <apache.camel.version>3.9.0</apache.camel.version>
     <activemq.version>5.16.2</activemq.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <citrus.version>3.0.0-SNAPSHOT</citrus.version>
+    <citrus.version>3.0.0</citrus.version>
     <jetty.version>9.4.40.v20210413</jetty.version>
     <jackson.version>2.12.3</jackson.version>
     <jakarta.mail.version>1.6.7</jakarta.mail.version>
