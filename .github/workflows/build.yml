@@ -20,7 +20,7 @@ name: build
 on:
   pull_request:
     branches:
-      - master
+      - main
       - 3.x
       - 3.x-vintage
     paths-ignore:
@@ -31,7 +31,7 @@ on:
       - 'NOTICE'
   push:
     branches:
-      - master
+      - main
       - 3.x
       - 3.x-vintage
     paths-ignore:
