@@ -13,7 +13,7 @@
     <spring.version>5.3.6</spring.version>
     <spring.boot.version>2.4.5</spring.boot.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <log4j2.version>2.15.0</log4j2.version>
+    <log4j2.version>2.16.0</log4j2.version>
     <junit.version>5.7.0</junit.version>
     <citrus.version>3.1.0</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
