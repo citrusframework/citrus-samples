@@ -14,7 +14,7 @@
     <jetty.version>9.4.43.v20210629</jetty.version>
     <spring.boot.version>2.4.5</spring.boot.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <log4j2.version>2.15.0</log4j2.version>
+    <log4j2.version>2.16.0</log4j2.version>
     <testng.version>7.3.0</testng.version>
     <citrus.version>3.1.0</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>

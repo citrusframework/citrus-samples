@@ -16,8 +16,9 @@ dependencies {
     testCompile group: 'com.consol.citrus', name: 'citrus-core', version: '3.1.0'
     testCompile group: 'com.consol.citrus', name: 'citrus-java-dsl', version: '3.1.0'
     testCompile group: 'org.testng', name: 'testng', version: '7.3.0'
+    testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
     testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.30'
-    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
+    testCompile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.16.0'
 }
 
 tasks.withType (JavaCompile) {
