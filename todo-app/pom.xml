@@ -16,6 +16,7 @@
     <activemq.version>5.16.2</activemq.version>
     <citrus.version>3.1.0</citrus.version>
     <slf4j.version>1.7.30</slf4j.version>
+    <log4j2.version>2.15.0</log4j2.version>
     <jackson.version>2.12.3</jackson.version>
     <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
     <jakarta.mail.version>1.6.7</jakarta.mail.version>
@@ -337,6 +338,11 @@
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
@@ -344,6 +350,16 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-to-slf4j</artifactId>
+      <version>${log4j2.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

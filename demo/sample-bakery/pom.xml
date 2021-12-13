@@ -22,6 +22,7 @@
     <apache.camel.version>3.9.0</apache.camel.version>
     <activemq.version>5.16.2</activemq.version>
     <slf4j.version>1.7.30</slf4j.version>
+    <log4j2.version>2.15.0</log4j2.version>
     <citrus.version>3.1.0</citrus.version>
     <jetty.version>9.4.43.v20210629</jetty.version>
     <jackson.version>2.12.3</jackson.version>
@@ -310,13 +311,20 @@
       <!-- Logging -->
       <dependency>
         <groupId>org.slf4j</groupId>
-        <artifactId>jcl-over-slf4j</artifactId>
+        <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-log4j12</artifactId>
+        <artifactId>jcl-over-slf4j</artifactId>
         <version>${slf4j.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>${log4j2.version}</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>commons-logging</groupId>
@@ -399,11 +407,15 @@
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

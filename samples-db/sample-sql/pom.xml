@@ -13,6 +13,7 @@
     <spring.version>5.3.6</spring.version>
     <spring.boot.version>2.4.5</spring.boot.version>
     <slf4j.version>1.7.30</slf4j.version>
+    <log4j2.version>2.15.0</log4j2.version>
     <citrus.version>3.1.0</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
@@ -102,14 +103,19 @@
     <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>${slf4j.version}</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>${log4j2.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
