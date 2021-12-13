@@ -5,14 +5,14 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-docker</artifactId>
   <name>Citrus Samples:: Docker</name>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>1.7.30</slf4j.version>
     <testng.version>7.3.0</testng.version>
-    <citrus.version>3.0.0</citrus.version>
+    <citrus.version>3.1.0</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
