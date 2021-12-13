@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-samples-json</artifactId>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
   <name>Citrus Samples:: Json Samples</name>
   <packaging>pom</packaging>
 

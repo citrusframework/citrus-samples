@@ -35,9 +35,9 @@ to add the ConSol Labs snapshot repository which is optional. Now lets move on w
     
 ```groovy
 dependencies {
- testCompile group: 'com.consol.citrus', name: 'citrus-base', version: '3.0.0'
- testCompile group: 'com.consol.citrus', name: 'citrus-spring', version: '3.0.0'
- testCompile group: 'com.consol.citrus', name: 'citrus-testng', version: '3.0.0'
+ testCompile group: 'com.consol.citrus', name: 'citrus-base', version: '3.1.0'
+ testCompile group: 'com.consol.citrus', name: 'citrus-spring', version: '3.1.0'
+ testCompile group: 'com.consol.citrus', name: 'citrus-testng', version: '3.1.0'
     [...]
 }
 ```
