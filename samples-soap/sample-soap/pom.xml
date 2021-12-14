@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-soap</artifactId>
   <name>Citrus Samples:: SOAP</name>
-  <version>3.1.0</version>
+  <version>3.1.1</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,7 +14,7 @@
     <spring.boot.version>2.4.5</spring.boot.version>
     <slf4j.version>1.7.30</slf4j.version>
     <log4j2.version>2.16.0</log4j2.version>
-    <citrus.version>3.1.0</citrus.version>
+    <citrus.version>3.1.1</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
