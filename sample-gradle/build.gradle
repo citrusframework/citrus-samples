@@ -1,5 +1,5 @@
 group 'com.consol.citrus.samples.java'
-version '3.1.0'
+version '3.1.1'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'com.consol.citrus', name: 'citrus-core', version: '3.1.0'
-    testCompile group: 'com.consol.citrus', name: 'citrus-java-dsl', version: '3.1.0'
+    testCompile group: 'com.consol.citrus', name: 'citrus-core', version: '3.1.1'
+    testCompile group: 'com.consol.citrus', name: 'citrus-java-dsl', version: '3.1.1'
     testCompile group: 'org.testng', name: 'testng', version: '7.3.0'
     testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
     testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.30'
