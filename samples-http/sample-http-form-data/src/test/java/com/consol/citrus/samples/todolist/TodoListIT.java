@@ -66,7 +66,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
             .type(MessageType.PLAINTEXT)
-            .body("{title=[${todoName}], description=[${todoDescription}]}"));
+            .body("{description=[${todoDescription}], title=[${todoName}]}"));
 
         $(http()
             .server(todoListServer)
@@ -121,12 +121,13 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
         Control title = new Control();
         title.setName("title");
         title.setValue("${todoName}");
-        formData.addControl(title);
 
         Control description = new Control();
         description.setName("description");
         description.setValue("@ignore@");
+
         formData.addControl(description);
+        formData.addControl(title);
 
         return formData;
     }
@@ -157,11 +158,11 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
                         "<content-type>application/x-www-form-urlencoded</content-type>" +
                         "<action>/api/todo</action>" +
                         "<controls>" +
-                            "<control name=\"title\">" +
-                                "<value>${todoName}</value>" +
-                            "</control>" +
                             "<control name=\"description\">" +
                                 "<value>${todoDescription}</value>" +
+                            "</control>" +
+                            "<control name=\"title\">" +
+                                "<value>${todoName}</value>" +
                             "</control>" +
                         "</controls>" +
                     "</form-data>"));

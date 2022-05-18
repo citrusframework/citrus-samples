@@ -5,7 +5,7 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-bakery</artifactId>
   <name>Citrus Samples:: Bakery</name>
-  <version>3.1.1</version>
+  <version>3.2.0</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -18,14 +18,14 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.6</spring.version>
-    <apache.camel.version>3.9.0</apache.camel.version>
-    <activemq.version>5.16.2</activemq.version>
-    <slf4j.version>1.7.30</slf4j.version>
-    <log4j2.version>2.16.0</log4j2.version>
-    <citrus.version>3.1.1</citrus.version>
-    <jetty.version>9.4.43.v20210629</jetty.version>
-    <jackson.version>2.12.3</jackson.version>
+    <spring.version>5.3.16</spring.version>
+    <apache.camel.version>3.14.0</apache.camel.version>
+    <activemq.version>5.16.3</activemq.version>
+    <slf4j.version>1.7.36</slf4j.version>
+    <log4j2.version>2.17.2</log4j2.version>
+    <citrus.version>3.2.0</citrus.version>
+    <jetty.version>9.4.44.v20210927</jetty.version>
+    <jackson.version>2.12.6</jackson.version>
     <jakarta.mail.version>1.6.7</jakarta.mail.version>
     <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
     <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>

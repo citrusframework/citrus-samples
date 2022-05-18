@@ -1,5 +1,5 @@
 group 'com.consol.citrus.samples.java'
-version '3.1.1'
+version '3.2.0'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -13,14 +13,14 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'com.consol.citrus', name: 'citrus-base', version: '3.1.1'
-    testCompile group: 'com.consol.citrus', name: 'citrus-spring', version: '3.1.1'
-    testCompile group: 'com.consol.citrus', name: 'citrus-endpoint-catalog', version: '3.1.1'
-    testCompile group: 'com.consol.citrus', name: 'citrus-testng', version: '3.1.1'
-    testCompile group: 'org.springframework', name: 'spring-test', version: '5.3.3'
-    testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
-    testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.30'
-    testCompile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.16.0'
+    testCompile group: 'com.consol.citrus', name: 'citrus-base', version: '3.2.0'
+    testCompile group: 'com.consol.citrus', name: 'citrus-spring', version: '3.2.0'
+    testCompile group: 'com.consol.citrus', name: 'citrus-endpoint-catalog', version: '3.2.0'
+    testCompile group: 'com.consol.citrus', name: 'citrus-testng', version: '3.2.0'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '5.3.16'
+    testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+    testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '1.7.36'
+    testCompile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.17.2'
 }
 
 tasks.withType (JavaCompile) {
