@@ -11,7 +11,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.16</spring.version>
+    <spring.version>5.3.19</spring.version>
     <spring.ws.version>3.1.2</spring.ws.version>
     <spring.webflow.js.version>2.4.8.RELEASE</spring.webflow.js.version>
     <spring.integration.version>5.5.9</spring.integration.version>
