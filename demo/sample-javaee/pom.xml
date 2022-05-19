@@ -14,8 +14,8 @@
     <apache.cxf.version>3.4.2</apache.cxf.version>
     <slf4j.version>1.7.36</slf4j.version>
     <log4j2.version>2.17.2</log4j2.version>
-    <testng.version>7.3.0</testng.version>
-    <citrus.version>3.2.1</citrus.version>
+    <testng.version>7.5</testng.version>
+    <citrus.version>3.3.0-SNAPSHOT</citrus.version>
     <jee.api.version>8.0.0</jee.api.version>
     <junit.version>4.13.2</junit.version>
     <arquillian.version>1.6.0.Final</arquillian.version>
@@ -255,17 +255,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
 
   <profiles>
     <profile>

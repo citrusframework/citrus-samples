@@ -16,25 +16,30 @@
 
 package com.consol.citrus.samples.bookstore;
 
+import java.util.Collections;
+import java.util.List;
+
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.report.MessageTracingTestListener;
 import com.consol.citrus.variable.GlobalVariables;
 import com.consol.citrus.ws.client.WebServiceClient;
 import com.consol.citrus.ws.interceptor.LoggingClientInterceptor;
-import com.consol.citrus.ws.validation.*;
+import com.consol.citrus.ws.validation.SimpleSoapAttachmentValidator;
+import com.consol.citrus.ws.validation.SimpleSoapFaultValidator;
+import com.consol.citrus.ws.validation.SoapAttachmentValidator;
+import com.consol.citrus.ws.validation.SoapFaultValidator;
+import com.consol.citrus.xml.Jaxb2Marshaller;
+import com.consol.citrus.xml.Marshaller;
 import com.consol.citrus.xml.XsdSchemaRepository;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.oxm.Marshaller;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.xml.xsd.SimpleXsdSchema;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Christoph Deppisch
@@ -105,8 +110,6 @@ public class CitrusEndpointConfig {
 
     @Bean
     public Marshaller jax2bMarshaller() {
-        Jaxb2Marshaller jaxb2Marshaller = new Jaxb2Marshaller();
-        jaxb2Marshaller.setContextPath("com.consol.citrus.samples.bookstore.model");
-        return jaxb2Marshaller;
+        return new Jaxb2Marshaller("com.consol.citrus.samples.bookstore.model");
     }
 }

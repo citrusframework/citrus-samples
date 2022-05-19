@@ -17,11 +17,15 @@
 package com.consol.citrus.samples.todolist.web;
 
 import com.consol.citrus.samples.todolist.service.ReportingService;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Christoph Deppisch
@@ -33,9 +37,9 @@ public class ReportingController {
     @Autowired
     private ReportingService reportingService;
 
-    @ApiOperation(notes = "Send mail reporting.", value = "Send mail reporting", nickname = "sendMailReport" )
+    @Operation(description = "Send mail reporting.", summary = "Send mail reporting", operationId = "sendMailReport" )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK")
+            @ApiResponse(responseCode = "200", description = "OK")
     })
     @RequestMapping(value = "/mail", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

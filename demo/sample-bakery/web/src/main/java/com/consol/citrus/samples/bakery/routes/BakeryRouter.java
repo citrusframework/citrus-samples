@@ -43,11 +43,18 @@ public class BakeryRouter extends RouteBuilder implements Processor {
 
         rest("/order")
             .consumes("application/json")
-            .post().route().unmarshal().json(JsonLibrary.Jackson).process(this).to("direct:bakery");
+            .post()
+            .to("direct:bakery-http");
 
         from("jms:queue:bakery.order.inbound")
             .routeId("bakery_jms_inbound")
             .to("direct:bakery");
+
+        from("direct:bakery-http")
+                .unmarshal()
+                .json(JsonLibrary.Jackson)
+                .process(this)
+                .to("direct:bakery");
 
         from("direct:bakery")
             .routeId("bakery")

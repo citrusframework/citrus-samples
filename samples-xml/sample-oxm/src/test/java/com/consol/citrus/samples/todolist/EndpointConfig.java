@@ -18,11 +18,11 @@ package com.consol.citrus.samples.todolist;
 
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.xml.Jaxb2Marshaller;
+import com.consol.citrus.xml.Marshaller;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.oxm.Marshaller;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 /**
  * @author Christoph Deppisch
@@ -42,8 +42,6 @@ public class EndpointConfig {
 
     @Bean
     public Marshaller marshaller() {
-        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setContextPath("com.consol.citrus.samples.todolist.model");
-        return marshaller;
+        return new Jaxb2Marshaller("com.consol.citrus.samples.todolist.model");
     }
 }

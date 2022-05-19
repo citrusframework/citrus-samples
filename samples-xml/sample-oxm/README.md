@@ -11,35 +11,23 @@ The [todo-list](../todo-app/README.md) sample application provides a REST API fo
 We call this API with object mapping in Citrus so that we do not need to write message payload JSON or XML
 structures but use the model objects directly in our test cases.
 
-We need to include the Spring oxm module in the dependencies:
-
-```xml
-<dependency>
-  <groupId>org.springframework</groupId>
-  <artifactId>spring-oxm</artifactId>
-  <version>${spring.version}</version>
-  <scope>test</scope>
-</dependency>
-```
-    
-Also we need to provide a marshaller component in our Spring configuration:
+First we need to provide a marshaller component in our Spring configuration:
     
 ```java
 @Bean
 public Marshaller marshaller() {
-    Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-    marshaller.setContextPath("com.consol.citrus.samples.todolist.model");
-    return marshaller;
+    return new Jaxb2Marshaller("com.consol.citrus.samples.todolist.model");
 }
 ```
     
-Please note that the marshaller supports model object classes in package **com.consol.citrus.samples.todolist.model**. 
+Citrus provides the Jaxb2 marshaller out-of-the-box. You can just use this in your tests to deal with XML payloads.
+Please note that the marshaller supports model object classes in package **com.consol.citrus.samples.todolist.model**.
 
 That is all for configuration, now we can use model objects as message payload in the test cases.
     
 ```java
 @Autowired
-private Jaxb2Marshaller marshaller;
+private Marshaller marshaller;
     
 $(http()
     .client(todoClient)
@@ -67,7 +55,36 @@ $(http()
 ```
         
 The validation callback gets the model object as first method parameter. You can now add some validation logic with assertions on the model object.        
-        
+
+Using Spring Oxm marshallers
+---------
+
+In case you want to use a different marshaller implementation for instance those provided by Spring Oxm module you can do so, too.
+
+We need to include the Spring oxm module in the dependencies:
+
+```xml
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-oxm</artifactId>
+  <version>${spring.version}</version>
+  <scope>test</scope>
+</dependency>
+```
+
+Then you are able to create a bean with the Spring Oxm marshaller.
+
+```java
+@Bean
+public Marshaller marshaller() {
+        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        marshaller.setContextPath("com.consol.citrus.samples.todolist.model");
+        return new MarshallerAdapter(marshaller);
+        }
+```
+
+The Citrus Spring module provides a marshaller adapter that you can use to wrap the Spring Oxm marshaller implementation in order to meet the Citrus marshaller type.    
+
 Run
 ---------
 

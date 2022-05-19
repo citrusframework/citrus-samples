@@ -16,12 +16,14 @@
 
 package com.consol.citrus.samples.todolist.web;
 
+import java.util.List;
+
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -31,8 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.util.List;
 
 /**
  * @author Christoph Deppisch
@@ -44,9 +44,9 @@ public class TodoListController {
     @Autowired
     private TodoListService todoListService;
 
-    @ApiOperation(notes = "Returns all available todo entries.", value = "List todo entries", nickname = "listTodoEntries" )
+    @Operation(description = "Returns all available todo entries.", summary = "List todo entries", operationId = "listTodoEntries" )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = TodoEntry[].class)
+            @ApiResponse(responseCode = "200", description = "OK")
     })
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
@@ -60,20 +60,20 @@ public class TodoListController {
         return todoListService.getAllEntries(limit);
     }
 
-    @ApiOperation(notes = "Adds new todo entry.", value = "Add todo entry", nickname = "addTodoEntry" )
+    @Operation(description = "Adds new todo entry.", summary = "Add todo entry", operationId = "addTodoEntry" )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = String.class)
+            @ApiResponse(responseCode = "200", description = "OK")
     })
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public String add(@ApiParam(value = "Todo entry to be added", required = true) @RequestBody TodoEntry entry) {
+    public String add(@Parameter(description = "Todo entry to be added", required = true) @RequestBody TodoEntry entry) {
         todoListService.addEntry(entry);
         return entry.getId().toString();
     }
 
-    @ApiOperation(notes = "Delete all todo entries.", value = "Delete all todo entries", nickname = "deleteTodoEntries" )
+    @Operation(description = "Delete all todo entries.", summary = "Delete all todo entries", operationId = "deleteTodoEntries" )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK")
+            @ApiResponse(responseCode = "200", description = "OK")
     })
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
@@ -81,9 +81,9 @@ public class TodoListController {
         todoListService.clear();
     }
 
-    @ApiOperation(notes = "Gets number of available todo entries.", value = "Gets number of todo entries", nickname = "getTodoEntryCount" )
+    @Operation(description = "Gets number of available todo entries.", summary = "Gets number of todo entries", operationId = "getTodoEntryCount" )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = Integer.class)
+            @ApiResponse(responseCode = "200", description = "OK")
     })
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     @ResponseBody

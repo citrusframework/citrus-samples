@@ -27,9 +27,9 @@ import com.consol.citrus.samples.bookstore.model.Book;
 import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.validation.xml.XmlMarshallingValidationProcessor;
 import com.consol.citrus.ws.client.WebServiceClient;
+import com.consol.citrus.xml.Marshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.oxm.Marshaller;
 import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 

@@ -18,14 +18,17 @@ package todo;
 
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.http.client.HttpClientBuilder;
+import com.consol.citrus.samples.todolist.TodoAppAutoConfiguration;
 import com.consol.citrus.variable.GlobalVariables;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 /**
  * @author Christoph Deppisch
  */
+@Import(TodoAppAutoConfiguration.class)
 @Configuration
 @PropertySource("classpath:citrus.properties")
 public class EndpointConfig {

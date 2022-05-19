@@ -39,26 +39,4 @@
     <module>samples-db</module>
     <module>samples-remote</module>
   </modules>
-
-  <repositories>
-    <repository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 </project>

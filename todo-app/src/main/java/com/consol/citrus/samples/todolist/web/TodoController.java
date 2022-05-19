@@ -16,15 +16,23 @@
 
 package com.consol.citrus.samples.todolist.web;
 
+import java.util.UUID;
+
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Christoph Deppisch
@@ -36,48 +44,48 @@ public class TodoController {
     @Autowired
     private TodoListService todoListService;
 
-    @ApiOperation(notes = "Returns a todo entry. Unknown todo id will simulate API error conditions", value = "Find todo entry by ID", nickname = "getEntryById" )
+    @Operation(description = "Returns a todo entry. Unknown todo id will simulate API error conditions", summary = "Find todo entry by ID", operationId = "getEntryById" )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK", response = TodoEntry.class),
-            @ApiResponse(code = 404, message = "Todo entry not found")
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Todo entry not found")
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public TodoEntry getEntry(@ApiParam(value = "ID of todo entry that needs to be fetched", required = true) @PathVariable(value = "id") UUID id) {
+    public TodoEntry getEntry(@Parameter(description = "ID of todo entry that needs to be fetched", required = true) @PathVariable(value = "id") UUID id) {
         return todoListService.getEntry(id);
     }
 
-    @ApiOperation(notes = "Sets todo entry status. Unknown todo id will simulate API error conditions", value = "Set todo entry status", nickname = "setEntryStatus" )
+    @Operation(description = "Sets todo entry status. Unknown todo id will simulate API error conditions", summary = "Set todo entry status", operationId = "setEntryStatus" )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "Todo entry not found")
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Todo entry not found")
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void setEntryStatus(@ApiParam(value = "ID of todo entry that needs to be updated", required = true) @PathVariable(value = "id") UUID id,
-                               @ApiParam(value = "Status to set", required = true) @RequestParam(value = "done") boolean done) {
+    public void setEntryStatus(@Parameter(description = "ID of todo entry that needs to be updated", required = true) @PathVariable(value = "id") UUID id,
+                               @Parameter(description = "Status to set", required = true) @RequestParam(value = "done") boolean done) {
         todoListService.setStatus(id, done);
     }
 
-    @ApiOperation(notes = "Delete todo entries identified by its title", value = "Delete todo entries by title", nickname = "deleteEntryByTitle" )
+    @Operation(description = "Delete todo entries identified by its title", summary = "Delete todo entries by title", operationId = "deleteEntryByTitle" )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK")
+            @ApiResponse(responseCode = "200", description = "OK")
     })
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteEntryByTitle(@ApiParam(value = "Title to identify entries that should be deleted", required = true) @RequestParam(value = "title") String title) {
+    public void deleteEntryByTitle(@Parameter(description = "Title to identify entries that should be deleted", required = true) @RequestParam(value = "title") String title) {
         todoListService.deleteEntry(title);
     }
 
-    @ApiOperation(notes = "Delete todo entry identified by given id. Unknown todo id will simulate API error conditions", value = "Delete todo entry by id", nickname = "deleteEntryById" )
+    @Operation(description = "Delete todo entry identified by given id. Unknown todo id will simulate API error conditions", summary = "Delete todo entry by id", operationId = "deleteEntryById" )
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "Todo entry not found")
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Todo entry not found")
     })
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteEntry(@ApiParam(value = "ID of todo entry that needs to be deleted", required = true) @PathVariable(value = "id") UUID id) {
+    public void deleteEntry(@Parameter(description = "ID of todo entry that needs to be deleted", required = true) @PathVariable(value = "id") UUID id) {
         todoListService.deleteEntry(id);
     }
 }

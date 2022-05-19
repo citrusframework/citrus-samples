@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
+import com.consol.citrus.TestActionBuilder;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
@@ -32,6 +33,7 @@ import org.testng.annotations.Test;
 import static com.consol.citrus.actions.EchoAction.Builder.echo;
 import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
 import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static com.consol.citrus.container.RepeatOnErrorUntilTrue.Builder.repeatOnError;
 import static com.consol.citrus.dsl.XpathSupport.xpath;
 import static com.consol.citrus.http.actions.HttpActionBuilder.http;
 
@@ -63,21 +65,31 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .header(KafkaMessageHeaders.MESSAGE_KEY, "${todoName}")
             .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
-        $(http()
-            .client(todoClient)
-            .send()
-            .get("/todolist")
-            .message()
-            .accept(MediaType.TEXT_HTML_VALUE));
+        $(repeatOnError().until((i, context) -> i > 5)
+                .actions(
+                    getTodoEntries(),
+                    verifyTodoEntry()
+                ));
+    }
 
-        $(http()
-            .client(todoClient)
-            .receive()
-            .response(HttpStatus.OK)
-            .message()
-            .type(MessageType.XHTML)
-            .validate(xpath()
-                        .expression("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}")));
+    private TestActionBuilder<?> getTodoEntries() {
+        return http()
+                .client(todoClient)
+                .send()
+                .get("/todolist")
+                .message()
+                .accept(MediaType.TEXT_HTML_VALUE);
+    }
+
+    private TestActionBuilder<?> verifyTodoEntry() {
+        return http()
+                .client(todoClient)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .type(MessageType.XHTML)
+                .validate(xpath()
+                        .expression("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
     }
 
     @Test

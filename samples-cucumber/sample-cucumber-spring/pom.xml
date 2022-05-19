@@ -10,12 +10,12 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.16</spring.version>
-    <spring.boot.version>2.5.10</spring.boot.version>
+    <spring.version>5.3.19</spring.version>
+    <spring.boot.version>2.6.7</spring.boot.version>
     <slf4j.version>1.7.36</slf4j.version>
     <log4j2.version>2.17.2</log4j2.version>
-    <cucumber.version>6.11.0</cucumber.version>
-    <citrus.version>3.2.1</citrus.version>
+    <cucumber.version>7.3.1</cucumber.version>
+    <citrus.version>3.3.0-SNAPSHOT</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
@@ -173,52 +173,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <profiles>
-    <profile>
-      <id>todo-app-embedded</id>
-      <activation>
-        <property>
-          <name>system.under.test.mode</name>
-          <value>embedded</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <configuration>
-              <fork>true</fork>
-            </configuration>
-            <executions>
-              <execution>
-                <id>pre-integration-test</id>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>post-integration-test</id>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

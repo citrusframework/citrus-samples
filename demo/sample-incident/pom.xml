@@ -11,18 +11,20 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.16</spring.version>
-    <spring.ws.version>3.1.2</spring.ws.version>
+    <spring.version>5.3.19</spring.version>
+    <spring.ws.version>3.1.3</spring.ws.version>
     <spring.webflow.js.version>2.4.8.RELEASE</spring.webflow.js.version>
-    <spring.integration.version>5.5.9</spring.integration.version>
-    <activemq.version>5.16.3</activemq.version>
-    <apache.cxf.version>3.5.1</apache.cxf.version>
+    <spring.integration.version>5.5.11</spring.integration.version>
+    <activemq.version>5.17.0</activemq.version>
+    <apache.cxf.version>3.5.2</apache.cxf.version>
     <slf4j.version>1.7.36</slf4j.version>
     <log4j2.version>2.17.2</log4j2.version>
-    <citrus.version>3.2.1</citrus.version>
-    <jetty.version>9.4.44.v20210927</jetty.version>
-    <jackson.version>2.12.6</jackson.version>
+    <citrus.version>3.3.0-SNAPSHOT</citrus.version>
+    <jetty.version>9.4.46.v20220331</jetty.version>
+    <jackson.databind.version>2.13.2.2</jackson.databind.version>
+    <jackson.version>2.13.2</jackson.version>
     <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
+    <xerces.version>2.12.2</xerces.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>
     <system.under.test.mode>embedded</system.under.test.mode>
@@ -164,7 +166,7 @@
           <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.12.1</version>
+            <version>${xerces.version}</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -177,7 +179,7 @@
           <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.12.1</version>
+            <version>${xerces.version}</version>
           </dependency>
         </dependencies>
         <executions>
@@ -283,7 +285,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
+      <version>${jackson.databind.version}</version>
     </dependency>
 
     <!-- Apache CXF -->
@@ -404,17 +406,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>consol-labs-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>interval:10080</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
 
   <profiles>
     <profile>

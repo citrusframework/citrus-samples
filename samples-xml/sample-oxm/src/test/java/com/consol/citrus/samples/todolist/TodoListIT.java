@@ -26,10 +26,10 @@ import com.consol.citrus.message.MessageType;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
 import com.consol.citrus.validation.xml.XmlMarshallingValidationProcessor;
+import com.consol.citrus.xml.Jaxb2Marshaller;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
