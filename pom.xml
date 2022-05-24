@@ -20,6 +20,7 @@
     <module>samples-cucumber</module>
     <module>sample-annotation-config</module>
     <module>sample-javaconfig</module>
+    <module>sample-groovy</module>
     <module>sample-mail</module>
     <module>sample-selenium</module>
     <module>samples-ftp</module>
