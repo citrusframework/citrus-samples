@@ -17,7 +17,7 @@
     <activemq.version>5.17.0</activemq.version>
     <slf4j.version>1.7.36</slf4j.version>
     <log4j2.version>2.17.2</log4j2.version>
-    <citrus.version>3.3.0-SNAPSHOT</citrus.version>
+    <citrus.version>3.3.0</citrus.version>
     <xbean.spring.version>4.5</xbean.spring.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>

@@ -15,7 +15,7 @@
     <slf4j.version>1.7.36</slf4j.version>
     <log4j2.version>2.17.2</log4j2.version>
     <testng.version>7.5</testng.version>
-    <citrus.version>3.3.0-SNAPSHOT</citrus.version>
+    <citrus.version>3.3.0</citrus.version>
     <jee.api.version>8.0.0</jee.api.version>
     <junit.version>4.13.2</junit.version>
     <arquillian.version>1.6.0.Final</arquillian.version>

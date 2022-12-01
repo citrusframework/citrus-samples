@@ -14,7 +14,7 @@
     <spring.boot.version>2.6.7</spring.boot.version>
     <spring.kafka.version>2.8.6</spring.kafka.version>
     <activemq.version>5.17.0</activemq.version>
-    <citrus.version>3.3.0-SNAPSHOT</citrus.version>
+    <citrus.version>3.3.0</citrus.version>
     <slf4j.version>1.7.36</slf4j.version>
     <log4j2.version>2.17.2</log4j2.version>
     <jackson.databind.version>2.13.2.2</jackson.databind.version>
