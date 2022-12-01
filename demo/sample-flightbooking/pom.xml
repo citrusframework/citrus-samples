@@ -20,7 +20,7 @@
     <log4j2.version>2.17.2</log4j2.version>
     <citrus.version>3.3.0</citrus.version>
     <jetty.version>9.4.46.v20220331</jetty.version>
-    <jackson.databind.version>2.13.2.2</jackson.databind.version>
+    <jackson.databind.version>2.13.4.1</jackson.databind.version>
     <jackson.version>2.13.2</jackson.version>
     <saaj.version>1.5.3</saaj.version>
     <jaxb.version>2.3.6</jaxb.version>
