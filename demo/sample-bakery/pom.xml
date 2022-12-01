@@ -26,7 +26,7 @@
     <log4j2.version>2.17.2</log4j2.version>
     <citrus.version>3.3.0</citrus.version>
     <jetty.version>9.4.46.v20220331</jetty.version>
-    <jackson.databind.version>2.13.2.2</jackson.databind.version>
+    <jackson.databind.version>2.13.4.1</jackson.databind.version>
     <jackson.version>2.13.2</jackson.version>
     <jakarta.mail.version>1.6.7</jakarta.mail.version>
     <jakarta.servlet-api.version>4.0.4</jakarta.servlet-api.version>
