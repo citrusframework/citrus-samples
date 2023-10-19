@@ -5,16 +5,16 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-groovy</artifactId>
   <name>Citrus Samples:: Groovy</name>
-  <version>3.2.1</version>
+  <version>3.4.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.19</spring.version>
-    <spring.boot.version>2.6.7</spring.boot.version>
+    <spring.version>5.3.25</spring.version>
+    <spring.boot.version>2.7.16</spring.boot.version>
     <slf4j.version>1.7.36</slf4j.version>
-    <log4j2.version>2.17.2</log4j2.version>
-    <citrus.version>3.3.0</citrus.version>
+    <log4j2.version>2.19.0</log4j2.version>
+    <citrus.version>3.4.0</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 

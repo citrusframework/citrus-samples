@@ -16,6 +16,9 @@
 
 package com.consol.citrus;
 
+import java.util.Collections;
+import javax.jms.ConnectionFactory;
+
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
 import com.consol.citrus.jms.endpoint.JmsEndpoint;
 import com.consol.citrus.variable.GlobalVariables;
@@ -23,16 +26,16 @@ import com.consol.citrus.ws.server.WebServiceServer;
 import com.consol.citrus.xml.XsdSchemaRepository;
 import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.camel.CamelContext;
 import org.apache.camel.component.jms.JmsComponent;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spring.SpringCamelContext;
-import org.springframework.context.annotation.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.xml.xsd.SimpleXsdSchema;
-
-import javax.jms.ConnectionFactory;
-import java.util.Collections;
 
 /**
  * @author Christoph Deppisch
@@ -103,9 +106,10 @@ public class EndpointConfig {
         return component;
     }
 
-    @Bean
-    public CamelContext camelContext() throws Exception {
-        SpringCamelContext context = new SpringCamelContext();
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    @DependsOn("connectionFactory")
+    public SpringCamelContext camelContext(ApplicationContext applicationContext) throws Exception {
+        SpringCamelContext context = new SpringCamelContext(applicationContext);
         context.addRouteDefinition(new RouteDefinition()
             .from("jms:queue:JMS.Queue.News")
             .to("log:com.consol.citrus.camel?level=INFO")

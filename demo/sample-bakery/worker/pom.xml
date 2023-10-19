@@ -5,7 +5,7 @@
   <parent>
     <artifactId>citrus-sample-bakery</artifactId>
     <groupId>com.consol.citrus.samples</groupId>
-    <version>3.2.1</version>
+    <version>3.4.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 

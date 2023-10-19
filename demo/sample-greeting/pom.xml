@@ -5,22 +5,22 @@
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-sample-greeting</artifactId>
   <name>Citrus Samples:: Greeting: Java</name>
-  <version>3.2.1</version>
+  <version>3.4.0</version>
   <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.19</spring.version>
-    <spring.ws.version>3.1.3</spring.ws.version>
+    <spring.version>5.3.25</spring.version>
+    <spring.ws.version>3.1.5</spring.ws.version>
     <spring.webflow.js.version>2.4.8.RELEASE</spring.webflow.js.version>
     <spring.integration.version>5.5.11</spring.integration.version>
     <activemq.version>5.17.0</activemq.version>
-    <xbean.spring.version>4.5</xbean.spring.version>
+    <xbean.spring.version>4.22</xbean.spring.version>
     <slf4j.version>1.7.36</slf4j.version>
-    <log4j2.version>2.17.2</log4j2.version>
-    <citrus.version>3.3.0</citrus.version>
-    <jetty.version>9.4.46.v20220331</jetty.version>
+    <log4j2.version>2.19.0</log4j2.version>
+    <citrus.version>3.4.0</citrus.version>
+    <jetty.version>9.4.50.v20221201</jetty.version>
     <jackson.databind.version>2.13.2.2</jackson.databind.version>
     <jackson.version>2.13.2</jackson.version>
     <jaxb.version>2.3.6</jaxb.version>

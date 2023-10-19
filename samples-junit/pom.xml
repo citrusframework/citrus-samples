@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-samples-junit</artifactId>
-  <version>3.2.1</version>
+  <version>3.4.0</version>
   <name>Citrus Samples:: JUnit Samples</name>
   <packaging>pom</packaging>
 

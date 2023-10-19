@@ -4,7 +4,7 @@
 
   <groupId>com.consol.citrus.samples</groupId>
   <artifactId>citrus-samples-cucumber</artifactId>
-  <version>3.2.1</version>
+  <version>3.4.0</version>
   <name>Citrus Samples:: Cucumber Samples</name>
   <packaging>pom</packaging>
 
