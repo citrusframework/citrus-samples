@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderInboundTimer extends RouteBuilder implements Processor {
 
-    private String[] orderTypes = new String[] {"blueberry", "caramel", "chocolate"};
+    private final String[] orderTypes = new String[] {"blueberry", "caramel", "chocolate"};
 
     @Override
     public void configure() throws Exception {

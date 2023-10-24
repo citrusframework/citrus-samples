@@ -2,16 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.consol.citrus.samples</groupId>
+  <groupId>org.citrusframework.samples</groupId>
   <artifactId>citrus-samples-db</artifactId>
-  <version>3.4.0</version>
+  <version>4.0.0</version>
   <name>Citrus Samples:: DB Samples</name>
   <packaging>pom</packaging>
 
   <modules>
     <module>sample-sql</module>
-    <module>sample-jdbc</module>
-    <module>sample-jdbc-transactions</module>
-    <module>sample-jdbc-callable-statements</module>
   </modules>
 </project>

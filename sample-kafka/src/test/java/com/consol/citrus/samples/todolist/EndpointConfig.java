@@ -18,12 +18,12 @@ package com.consol.citrus.samples.todolist;
 
 import java.util.Collections;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.kafka.embedded.EmbeddedKafkaServer;
-import com.consol.citrus.kafka.embedded.EmbeddedKafkaServerBuilder;
-import com.consol.citrus.kafka.endpoint.KafkaEndpoint;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.kafka.embedded.EmbeddedKafkaServer;
+import org.citrusframework.kafka.embedded.EmbeddedKafkaServerBuilder;
+import org.citrusframework.kafka.endpoint.KafkaEndpoint;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

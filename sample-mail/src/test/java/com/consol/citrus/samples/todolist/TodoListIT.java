@@ -16,23 +16,23 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.mail.message.CitrusMailMessageHeaders;
-import com.consol.citrus.mail.message.MailMessage;
-import com.consol.citrus.mail.server.MailServer;
-import com.consol.citrus.message.MessageType;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.mail.message.CitrusMailMessageHeaders;
+import org.citrusframework.mail.message.MailMessage;
+import org.citrusframework.mail.server.MailServer;
+import org.citrusframework.message.MessageType;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.EchoAction.Builder.echo;
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.actions.EchoAction.Builder.echo;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
@@ -83,8 +83,6 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .message(MailMessage.request()
                 .from("todo-report@example.org")
                 .to("users@example.org")
-                .cc("")
-                .bcc("")
                 .subject("ToDo report")
                 .body("There are '1' todo entries!", "text/plain; charset=us-ascii"))
             .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
@@ -139,13 +137,13 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
         $(receive()
             .endpoint(mailServer)
             .message()
-            .body(new ClassPathResource("templates/mail.xml"))
+            .body(Resources.fromClasspath("templates/mail.xml"))
             .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
         $(send()
             .endpoint(mailServer)
             .message()
-            .body(new ClassPathResource("templates/mail-response.xml")));
+            .body(Resources.fromClasspath("templates/mail-response.xml")));
 
         $(http()
             .client(todoClient)
@@ -194,13 +192,13 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .endpoint(mailServer)
             .message()
             .type(MessageType.JSON)
-            .body(new ClassPathResource("templates/mail.json"))
+            .body(Resources.fromClasspath("templates/mail.json"))
             .header(CitrusMailMessageHeaders.MAIL_SUBJECT, "ToDo report"));
 
         $(send()
             .endpoint(mailServer)
             .message()
-            .body(new ClassPathResource("templates/mail-response.json")));
+            .body(Resources.fromClasspath("templates/mail-response.json")));
 
         $(http()
             .client(todoClient)
@@ -215,12 +213,12 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
         $(http()
             .client(todoClient)
             .send()
-            .delete("/todolist"));
+            .delete("/api/todolist"));
 
         $(http()
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 
 }

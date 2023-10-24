@@ -16,16 +16,19 @@
 
 package com.consol.citrus.samples.incident.service;
 
+import java.io.IOException;
+
 import com.consol.citrus.samples.incident.exception.ServiceException;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.Session;
+import jakarta.jms.TextMessage;
 import org.citrusframework.schema.samples.fieldforceservice.v1.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.oxm.Marshaller;
 import org.springframework.xml.transform.StringResult;
-
-import javax.jms.*;
-import java.io.IOException;
 
 /**
  * @author Christoph Deppisch

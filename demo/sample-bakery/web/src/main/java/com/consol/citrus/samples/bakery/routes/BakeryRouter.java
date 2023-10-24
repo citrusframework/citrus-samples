@@ -37,7 +37,7 @@ public class BakeryRouter extends RouteBuilder implements Processor {
     public void configure() throws Exception {
         restConfiguration()
                 .component("servlet")
-                .contextPath("bakery/services")
+                .contextPath("/bakery/services")
                 .port(18001)
                 .dataFormatProperty("prettyPrint", "true");
 

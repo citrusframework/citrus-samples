@@ -16,16 +16,20 @@
 
 package com.consol.citrus.samples.todolist.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
+
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Christoph Deppisch
@@ -34,14 +38,13 @@ import java.util.Properties;
 public class MailService {
 
     /** Logger */
-    private static Logger log = LoggerFactory.getLogger(MailService.class);
+    private static final Logger log = LoggerFactory.getLogger(MailService.class);
 
-    private String mailServerHost = "localhost";
-    private String mailServerPort = "2222";
+    private static final int MAIL_SERVER_PORT = 2222;
 
-    private String from = "todo-report@example.org";
-    private String username = "todo-report@example.org";
-    private String password = "secretpw";
+    private final String from = "todo-report@example.org";
+    private final String username = "todo-report";
+    private final String password = "secretpw";
 
     /**
      * Send mail via SMTP connection.
@@ -51,12 +54,12 @@ public class MailService {
      */
     public void sendMail(String to, String subject, String body) {
         Properties props = new Properties();
-        props.put("mail.smtp.host", mailServerHost);
-        props.put("mail.smtp.port", mailServerPort);
+        props.put("mail.smtp.host", "localhost");
+        props.put("mail.smtp.port", MAIL_SERVER_PORT);
         props.put("mail.smtp.auth", true);
 
         Authenticator authenticator = new Authenticator() {
-            private PasswordAuthentication pa = new PasswordAuthentication(username, password);
+            private final PasswordAuthentication pa = new PasswordAuthentication(username, password);
             @Override
             public PasswordAuthentication getPasswordAuthentication() {
                 return pa;

@@ -16,22 +16,22 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.http.model.Control;
-import com.consol.citrus.http.model.FormData;
-import com.consol.citrus.http.model.FormMarshaller;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.http.validation.FormUrlEncodedMessageValidator;
-import com.consol.citrus.message.MessageType;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.http.model.Control;
+import org.citrusframework.http.model.FormData;
+import org.citrusframework.http.model.FormMarshaller;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.http.validation.FormUrlEncodedMessageValidator;
+import org.citrusframework.message.MessageType;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-import static com.consol.citrus.message.builder.MarshallingPayloadBuilder.Builder.marshal;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch

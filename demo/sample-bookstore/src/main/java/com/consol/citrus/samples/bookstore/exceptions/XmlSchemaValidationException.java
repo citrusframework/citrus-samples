@@ -27,18 +27,18 @@ import org.springframework.messaging.MessageHandlingException;
 public class XmlSchemaValidationException extends MessageHandlingException {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Logger
      */
     private static Logger log = LoggerFactory.getLogger(XmlSchemaValidationException.class);
-    
+
     /**
      * @param failedMessage
      */
     public XmlSchemaValidationException(Message<?> failedMessage, Throwable cause) {
         super(failedMessage);
-        
+
         log.error("Schema validation error", cause);
     }
 }

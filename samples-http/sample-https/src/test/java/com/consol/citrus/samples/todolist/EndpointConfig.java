@@ -16,26 +16,28 @@
 
 package com.consol.citrus.samples.todolist;
 
-import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
+import javax.net.ssl.SSLContext;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.endpoint.adapter.StaticEndpointAdapter;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.http.message.HttpMessage;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.message.Message;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.SSLContexts;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
+import org.apache.hc.core5.ssl.SSLContexts;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.endpoint.adapter.StaticEndpointAdapter;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.http.message.HttpMessage;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.message.Message;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
@@ -80,7 +82,7 @@ public class EndpointConfig {
     }
 
     @Bean
-    public org.apache.http.client.HttpClient httpClient() {
+    public org.apache.hc.client5.http.classic.HttpClient httpClient() {
         try {
             SSLContext sslcontext = SSLContexts
                 .custom()
@@ -91,11 +93,13 @@ public class EndpointConfig {
             SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
                     sslcontext, NoopHostnameVerifier.INSTANCE);
 
-            return HttpClients
-                .custom()
+            PoolingHttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
                     .setSSLSocketFactory(sslSocketFactory)
-                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                .build();
+                    .build();
+
+            return HttpClients.custom()
+                    .setConnectionManager(connectionManager)
+                    .build();
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             throw new BeanCreationException("Failed to create http client for ssl connection", e);
         }
@@ -127,12 +131,14 @@ public class EndpointConfig {
         parent.setSecureScheme("https");
         parent.setSecurePort(securePort);
         HttpConfiguration configuration = new HttpConfiguration(parent);
-        configuration.setCustomizers(Collections.singletonList(new SecureRequestCustomizer()));
+        SecureRequestCustomizer secureRequestCustomizer = new SecureRequestCustomizer();
+        secureRequestCustomizer.setSniHostCheck(false);
+        configuration.setCustomizers(Collections.singletonList(secureRequestCustomizer));
         return configuration;
     }
 
-    private SslContextFactory sslContextFactory() {
-        SslContextFactory contextFactory = new SslContextFactory();
+    private SslContextFactory.Server sslContextFactory() {
+        SslContextFactory.Server contextFactory = new SslContextFactory.Server();
         contextFactory.setKeyStorePath(sslKeyStorePath);
         contextFactory.setKeyStorePassword("secret");
         return contextFactory;

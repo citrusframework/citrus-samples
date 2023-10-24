@@ -16,18 +16,18 @@
 
 package com.consol.citrus;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.testng.CitrusParameters;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.ws.message.SoapMessageHeaders;
-import com.consol.citrus.ws.server.WebServiceServer;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.testng.CitrusParameters;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.ws.message.SoapMessageHeaders;
+import org.citrusframework.ws.server.WebServiceServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
-import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
 
 /**
  * @author Christoph Deppisch

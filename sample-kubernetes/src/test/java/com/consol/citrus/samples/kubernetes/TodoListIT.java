@@ -16,26 +16,26 @@
 
 package com.consol.citrus.samples.kubernetes;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.kubernetes.client.KubernetesClient;
-import com.consol.citrus.kubernetes.command.WatchEventResult;
-import com.consol.citrus.message.MessageType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.kubernetes.client.KubernetesClient;
+import org.citrusframework.kubernetes.command.WatchEventResult;
+import org.citrusframework.message.MessageType;
 import io.fabric8.kubernetes.client.Watcher;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.CreateVariablesAction.Builder.createVariable;
-import static com.consol.citrus.actions.SleepAction.Builder.sleep;
-import static com.consol.citrus.actions.StopTimerAction.Builder.stopTimer;
-import static com.consol.citrus.container.Parallel.Builder.parallel;
-import static com.consol.citrus.container.Timer.Builder.timer;
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-import static com.consol.citrus.kubernetes.actions.KubernetesExecuteAction.Builder.kubernetes;
+import static org.citrusframework.actions.CreateVariablesAction.Builder.createVariable;
+import static org.citrusframework.actions.SleepAction.Builder.sleep;
+import static org.citrusframework.actions.StopTimerAction.Builder.stopTimer;
+import static org.citrusframework.container.Parallel.Builder.parallel;
+import static org.citrusframework.container.Timer.Builder.timer;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.kubernetes.actions.KubernetesExecuteAction.Builder.kubernetes;
 
 /**
  * @author Christoph Deppisch

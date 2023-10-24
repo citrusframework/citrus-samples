@@ -14,7 +14,7 @@ and the project version.
 
 ```groovy
 rootProject.name = 'citrus-sample-gradle'
-group 'com.consol.citrus.samples'
+group 'org.citrusframework.samples'
 version '2.7.1'
 ```
     
@@ -35,9 +35,9 @@ to add the ConSol Labs snapshot repository which is optional. Now lets move on w
     
 ```groovy
 dependencies {
- testCompile group: 'com.consol.citrus', name: 'citrus-base', version: '3.1.0'
- testCompile group: 'com.consol.citrus', name: 'citrus-spring', version: '3.1.0'
- testCompile group: 'com.consol.citrus', name: 'citrus-testng', version: '3.1.0'
+ testCompile group: 'org.citrusframework', name: 'citrus-base', version: '3.1.0'
+ testCompile group: 'org.citrusframework', name: 'citrus-spring', version: '3.1.0'
+ testCompile group: 'org.citrusframework', name: 'citrus-testng', version: '3.1.0'
     [...]
 }
 ```

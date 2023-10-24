@@ -16,22 +16,25 @@
 
 package com.consol.citrus.samples.incident;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.interceptor.LoggingHandlerInterceptor;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
-import com.consol.citrus.jms.message.SoapJmsMessageConverter;
-import com.consol.citrus.report.MessageTracingTestListener;
-import com.consol.citrus.variable.GlobalVariables;
-import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.ws.interceptor.LoggingClientInterceptor;
-import com.consol.citrus.ws.server.WebServiceServer;
-import com.consol.citrus.ws.validation.*;
-import com.consol.citrus.xml.XsdSchemaRepository;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
-import com.consol.citrus.xml.schema.WsdlXsdSchema;
-import org.apache.activemq.ActiveMQConnectionFactory;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jakarta.jms.ConnectionFactory;
+import org.apache.activemq.artemis.core.config.impl.SecurityConfiguration;
+import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQJAASSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.jaas.InVMLoginModule;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.interceptor.LoggingHandlerInterceptor;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.jms.endpoint.JmsSyncEndpoint;
+import org.citrusframework.jms.message.SoapJmsMessageConverter;
+import org.citrusframework.report.MessageTracingTestListener;
 import org.citrusframework.schema.samples.fieldforceservice.v1.OrderNotification;
 import org.citrusframework.schema.samples.fieldforceservice.v1.OrderRequest;
 import org.citrusframework.schema.samples.incidentmanager.v1.OpenIncident;
@@ -40,7 +43,22 @@ import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncident;
 import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResponse;
 import org.citrusframework.schema.samples.smsgateway.v1.SendSmsRequest;
 import org.citrusframework.schema.samples.smsgateway.v1.SendSmsResponse;
-import org.springframework.context.annotation.*;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.variable.GlobalVariables;
+import org.citrusframework.ws.client.WebServiceClient;
+import org.citrusframework.ws.interceptor.LoggingClientInterceptor;
+import org.citrusframework.ws.server.WebServiceServer;
+import org.citrusframework.ws.validation.SimpleSoapAttachmentValidator;
+import org.citrusframework.ws.validation.SimpleSoapFaultValidator;
+import org.citrusframework.ws.validation.SoapAttachmentValidator;
+import org.citrusframework.ws.validation.SoapFaultValidator;
+import org.citrusframework.xml.XsdSchemaRepository;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
+import org.citrusframework.xml.schema.WsdlXsdSchema;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -49,9 +67,6 @@ import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.xml.xsd.SimpleXsdSchema;
-
-import javax.jms.ConnectionFactory;
-import java.util.*;
 
 /**
  * @author Christoph Deppisch
@@ -67,7 +82,7 @@ public class CitrusEndpointConfig {
 
     @Bean
     public WsdlXsdSchema incidentManagerWsdl() {
-        return new WsdlXsdSchema(new ClassPathResource("schema/IncidentManager.wsdl", CitrusEndpointConfig.class));
+        return new WsdlXsdSchema(Resources.create("schema/IncidentManager.wsdl", CitrusEndpointConfig.class));
     }
 
     @Bean
@@ -82,7 +97,7 @@ public class CitrusEndpointConfig {
 
     @Bean
     public WsdlXsdSchema smsGatewayWsdl() {
-        return new WsdlXsdSchema(new ClassPathResource("schema/SmsGateway.wsdl", CitrusEndpointConfig.class));
+        return new WsdlXsdSchema(Resources.create("schema/SmsGateway.wsdl", CitrusEndpointConfig.class));
     }
 
     @Bean
@@ -126,9 +141,25 @@ public class CitrusEndpointConfig {
         return Collections.singletonList(new LoggingClientInterceptor());
     }
 
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    public EmbeddedActiveMQ messageBroker() {
+        EmbeddedActiveMQ broker = new EmbeddedActiveMQ();
+        broker.setSecurityManager(securityManager());
+        return broker;
+    }
+
     @Bean
+    public ActiveMQSecurityManager securityManager() {
+        SecurityConfiguration securityConfiguration = new SecurityConfiguration(Collections.singletonMap("citrus", "citrus"),
+                Collections.singletonMap("citrus", Collections.singletonList("citrus")));
+        securityConfiguration.setDefaultUser("citrus");
+        return new ActiveMQJAASSecurityManager(InVMLoginModule.class.getName(), securityConfiguration);
+    }
+
+    @Bean
+    @DependsOn("messageBroker")
     public ConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory("tcp://localhost:61616");
+        return new ActiveMQConnectionFactory("tcp://localhost:61616", "citrus", "citrus");
     }
 
     @Bean

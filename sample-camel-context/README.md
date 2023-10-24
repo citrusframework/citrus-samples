@@ -18,7 +18,7 @@ public CamelContext camelContext() throws Exception {
     SpringCamelContext context = new SpringCamelContext();
     context.addRouteDefinition(new RouteDefinition()
         .from("jms:queue:JMS.Queue.News")
-        .to("log:com.consol.citrus.camel?level=INFO")
+        .to("log:org.citrusframework.camel?level=INFO")
         .to("spring-ws:http://localhost:18009?soapAction=newsFeed"));
     return context;
 }

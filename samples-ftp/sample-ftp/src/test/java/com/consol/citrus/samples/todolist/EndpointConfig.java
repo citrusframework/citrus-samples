@@ -16,16 +16,16 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.ftp.client.FtpClient;
-import com.consol.citrus.ftp.server.FtpServer;
-import org.apache.commons.net.ftp.FTPCmd;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.net.ftp.FTPCmd;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.ftp.client.FtpClient;
+import org.citrusframework.ftp.server.FtpServer;
+import org.citrusframework.spi.Resources;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Christoph Deppisch
@@ -58,7 +58,7 @@ public class EndpointConfig {
                                               FTPCmd.PORT.getCommand(),
                                               FTPCmd.PASV.getCommand(),
                                               FTPCmd.TYPE.getCommand()).collect(Collectors.joining(",")))
-                .userManagerProperties(new ClassPathResource("citrus.ftp.user.properties"))
+                .userManagerProperties(Resources.fromClasspath("citrus.ftp.user.properties"))
             .build();
     }
 }

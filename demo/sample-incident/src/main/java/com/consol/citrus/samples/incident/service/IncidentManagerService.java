@@ -16,18 +16,25 @@
 
 package com.consol.citrus.samples.incident.service;
 
-import org.citrusframework.schema.samples.fieldforceservice.v1.*;
+import java.util.Calendar;
+import java.util.TimeZone;
+import java.util.UUID;
+
+import jakarta.jws.WebParam;
 import org.citrusframework.schema.samples.fieldforceservice.v1.CustomerType;
-import org.citrusframework.schema.samples.incidentmanager.v1.*;
-import org.citrusframework.schema.samples.networkservice.v1.*;
+import org.citrusframework.schema.samples.fieldforceservice.v1.OrderRequest;
+import org.citrusframework.schema.samples.incidentmanager.v1.IncidentFault_Exception;
+import org.citrusframework.schema.samples.incidentmanager.v1.IncidentManager;
+import org.citrusframework.schema.samples.incidentmanager.v1.OpenIncident;
+import org.citrusframework.schema.samples.incidentmanager.v1.OpenIncidentResponse;
+import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncident;
+import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResponse;
 import org.citrusframework.schema.samples.networkservice.v1.IncidentType;
+import org.citrusframework.schema.samples.networkservice.v1.NetworkComponentType;
 import org.citrusframework.schema.samples.networkservice.v1.NetworkType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.jws.WebParam;
-import java.util.*;
 
 /**
  * @author Christoph Deppisch
@@ -36,7 +43,7 @@ import java.util.*;
 public class IncidentManagerService implements IncidentManager {
 
     /** Logger */
-    private static Logger log = LoggerFactory.getLogger(IncidentManagerService.class);
+    private static final Logger log = LoggerFactory.getLogger(IncidentManagerService.class);
 
     @Autowired
     private NetworkService networkService;

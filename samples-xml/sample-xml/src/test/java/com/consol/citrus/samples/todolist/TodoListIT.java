@@ -16,18 +16,18 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.message.MessageType;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.message.MessageType;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-import static com.consol.citrus.validation.xml.XpathMessageValidationContext.Builder.xpath;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.validation.xml.XpathMessageValidationContext.Builder.xpath;
 
 /**
  * @author Christoph Deppisch
@@ -97,7 +97,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .post("/api/todolist")
             .message()
             .contentType(ContentType.APPLICATION_XML.getMimeType())
-            .body(new ClassPathResource("templates/todo.xml")));
+            .body(Resources.fromClasspath("templates/todo.xml")));
 
         $(http()
             .client(todoClient)
@@ -119,7 +119,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .receive()
             .response(HttpStatus.OK)
             .message()
-            .body(new ClassPathResource("templates/todo.xml")));
+            .body(Resources.fromClasspath("templates/todo.xml")));
     }
 
     @Test

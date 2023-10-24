@@ -16,25 +16,31 @@
 
 package com.consol.citrus.samples.flightbooking;
 
-import javax.jms.ConnectionFactory;
 import java.util.Collections;
 
-import com.consol.citrus.container.BeforeTest;
-import com.consol.citrus.container.SequenceBeforeTest;
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.variable.GlobalVariables;
-import com.consol.citrus.xml.XsdSchemaRepository;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.commons.dbcp.BasicDataSource;
+import jakarta.jms.ConnectionFactory;
+import org.apache.activemq.artemis.core.config.impl.SecurityConfiguration;
+import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQJAASSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.jaas.InVMLoginModule;
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.citrusframework.container.BeforeTest;
+import org.citrusframework.container.SequenceBeforeTest;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.variable.GlobalVariables;
+import org.citrusframework.xml.XsdSchemaRepository;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 
-import static com.consol.citrus.jms.actions.PurgeJmsQueuesAction.Builder.purgeQueues;
+import static org.citrusframework.jms.actions.PurgeJmsQueuesAction.Builder.purgeQueues;
 
 /**
  * @author Christoph Deppisch
@@ -91,11 +97,25 @@ public class CitrusEndpointConfig {
         return namespaceContextBuilder;
     }
 
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    public EmbeddedActiveMQ messageBroker(ActiveMQSecurityManager securityManager) {
+        EmbeddedActiveMQ broker = new EmbeddedActiveMQ();
+        broker.setSecurityManager(securityManager);
+        return broker;
+    }
+
     @Bean
+    public ActiveMQSecurityManager securityManager() {
+        SecurityConfiguration securityConfiguration = new SecurityConfiguration(Collections.singletonMap("citrus", "citrus"),
+                Collections.singletonMap("citrus", Collections.singletonList("citrus")));
+        securityConfiguration.setDefaultUser("citrus");
+        return new ActiveMQJAASSecurityManager(InVMLoginModule.class.getName(), securityConfiguration);
+    }
+
+    @Bean
+    @DependsOn("messageBroker")
     public ConnectionFactory connectionFactory() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(jmsBrokerUrl);
-        connectionFactory.setWatchTopicAdvisories(false);
-        return connectionFactory;
+        return new ActiveMQConnectionFactory("tcp://localhost:61616", "citrus", "citrus");
     }
 
     @Bean
@@ -152,7 +172,7 @@ public class CitrusEndpointConfig {
         dataSource.setUsername(dbUser);
         dataSource.setPassword(dbPassword);
         dataSource.setInitialSize(1);
-        dataSource.setMaxActive(5);
+        dataSource.setMaxTotal(5);
         dataSource.setMaxIdle(2);
         return dataSource;
     }

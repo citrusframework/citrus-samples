@@ -109,5 +109,5 @@
   <oxm:jaxb2-marshaller id="marshaller" context-path="com.consol.citrus.samples.bookstore.model"/>
 
   <bean id="resultTransformer" class="org.springframework.integration.xml.transformer.ResultToStringTransformer"/>
-  
+
 </beans>

@@ -48,7 +48,7 @@ public class TodoListRunnerIT extends TestNGCitrusSpringSupport {
 
         http(action -> action.client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 
 }  
@@ -82,7 +82,7 @@ public class TodoListIT extends TestNGCitrusTest {
 
         runner.http(action -> action.client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 
 }

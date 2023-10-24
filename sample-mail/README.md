@@ -50,8 +50,6 @@ The mail content is marshalled to an expected XML representation that we expect 
 <mail-message xmlns="http://www.citrusframework.org/schema/mail/message">
   <from>todo-report@example.org</from>
   <to>users@example.org</to>
-  <cc></cc>
-  <bcc></bcc>
   <subject>ToDo report</subject>
   <body>
     <contentType>text/plain; charset=us-ascii</contentType>

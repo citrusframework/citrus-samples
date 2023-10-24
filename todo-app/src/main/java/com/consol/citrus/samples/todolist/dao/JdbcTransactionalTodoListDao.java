@@ -16,10 +16,10 @@
 
 package com.consol.citrus.samples.todolist.dao;
 
+import java.util.Set;
+
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Transactional
 public class JdbcTransactionalTodoListDao extends JdbcTodoListDao {
@@ -30,7 +30,7 @@ public class JdbcTransactionalTodoListDao extends JdbcTodoListDao {
     }
 
     @Override
-    public List<TodoEntry> list() {
+    public Set<TodoEntry> list() {
         return super.list();
     }
 

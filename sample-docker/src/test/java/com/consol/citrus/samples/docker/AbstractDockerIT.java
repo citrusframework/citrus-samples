@@ -20,8 +20,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import com.consol.citrus.docker.client.DockerClient;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.docker.client.DockerClient;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

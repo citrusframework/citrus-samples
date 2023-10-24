@@ -16,62 +16,64 @@
 
 package com.consol.citrus.samples.flightbooking;
 
-import com.consol.citrus.samples.flightbooking.model.*;
-import com.consol.citrus.samples.flightbooking.persistence.CustomerDao;
-import com.consol.citrus.samples.flightbooking.persistence.FlightDao;
-import org.springframework.messaging.Message;
-import org.springframework.integration.annotation.Splitter;
-import org.springframework.integration.support.MessageBuilder;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.consol.citrus.samples.flightbooking.model.Flight;
+import com.consol.citrus.samples.flightbooking.model.FlightBookingRequestMessage;
+import com.consol.citrus.samples.flightbooking.model.TravelBookingRequestMessage;
+import com.consol.citrus.samples.flightbooking.persistence.CustomerDao;
+import com.consol.citrus.samples.flightbooking.persistence.FlightDao;
+import org.springframework.integration.annotation.Splitter;
+import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Christoph Deppisch
  */
 public class BookingSplitter {
     private CustomerDao customerDao;
-    
+
     private FlightDao flightDao;
-    
-    private static AtomicInteger bookingIndex = new AtomicInteger(10000);
-    
+
+    private static final AtomicInteger bookingIndex = new AtomicInteger(10000);
+
     @Splitter
     @Transactional
     public Object splitMessage(Message<?> message) {
         List<Message<FlightBookingRequestMessage>> flightRequests = new ArrayList<Message<FlightBookingRequestMessage>>();
-        
+
         if (!(message.getPayload() instanceof TravelBookingRequestMessage)) {
             throw new IllegalStateException("Unsupported message type: " + message.getPayload().getClass());
         }
-        
+
         TravelBookingRequestMessage request  = ((TravelBookingRequestMessage)message.getPayload());
-        
+
         //Save customer if not already present
        if (customerDao.find(request.getCustomer().getId()) == null) {
             customerDao.persist(request.getCustomer());
         }
-        
+
         for (Flight flight : request.getFlights().getFlights()) {
             //Save flight if necessary
             if (flightDao.find(flight.getFlightId()) == null) {
                 flightDao.persist(flight);
             }
-            
+
             FlightBookingRequestMessage flightRequest = new FlightBookingRequestMessage();
             flightRequest.setFlight(flight);
             flightRequest.setCorrelationId(request.getCorrelationId());
             flightRequest.setCustomer(request.getCustomer());
             flightRequest.setBookingId("Bx" + bookingIndex.incrementAndGet());
-            
+
             MessageBuilder<FlightBookingRequestMessage> messageBuilder = MessageBuilder.withPayload(flightRequest);
             messageBuilder.copyHeaders(message.getHeaders());
-            
+
             flightRequests.add(messageBuilder.build());
         }
-        
+
         return flightRequests;
     }
 

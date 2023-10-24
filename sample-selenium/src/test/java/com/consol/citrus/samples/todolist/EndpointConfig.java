@@ -16,21 +16,21 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.container.AfterSuite;
-import com.consol.citrus.container.AfterTest;
-import com.consol.citrus.container.SequenceAfterSuite;
-import com.consol.citrus.container.SequenceAfterTest;
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.selenium.endpoint.SeleniumBrowser;
+import org.citrusframework.container.AfterSuite;
+import org.citrusframework.container.AfterTest;
+import org.citrusframework.container.SequenceAfterSuite;
+import org.citrusframework.container.SequenceAfterTest;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.selenium.endpoint.SeleniumBrowser;
 import org.openqa.selenium.remote.Browser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 
-import static com.consol.citrus.actions.SleepAction.Builder.sleep;
-import static com.consol.citrus.selenium.actions.SeleniumActionBuilder.selenium;
+import static org.citrusframework.actions.SleepAction.Builder.sleep;
+import static org.citrusframework.selenium.actions.SeleniumActionBuilder.selenium;
 
 /**
  * @author Christoph Deppisch

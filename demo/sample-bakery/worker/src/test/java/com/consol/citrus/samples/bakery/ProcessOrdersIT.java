@@ -16,19 +16,19 @@
 
 package com.consol.citrus.samples.bakery;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.functions.Functions;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.functions.Functions;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
-import static com.consol.citrus.actions.SleepAction.Builder.sleep;
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.actions.SleepAction.Builder.sleep;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch

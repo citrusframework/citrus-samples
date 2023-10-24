@@ -57,12 +57,12 @@ $(http()
 
 $(http()
     .server(todoListServer)
-    .respond(HttpStatus.FOUND));
+    .respond(HttpStatus.OK));
 
 $(http()
     .client(todoClient)
     .receive()
-    .response(HttpStatus.FOUND));
+    .response(HttpStatus.OK));
 ```
 
 As you can see we can add multiple query parameters to the GET request with the `queryParam()` methods. The client send action will automatically add those parameters to the request

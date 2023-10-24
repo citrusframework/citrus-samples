@@ -4,16 +4,12 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.UUID;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.functions.core.RandomNumberFunction;
-import com.consol.citrus.functions.core.RandomUUIDFunction;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.ws.message.SoapMessageHeaders;
-import com.consol.citrus.ws.server.WebServiceServer;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.functions.core.RandomNumberFunction;
+import org.citrusframework.functions.core.RandomUUIDFunction;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
 import org.citrusframework.schema.samples.incidentmanager.v1.ComponentType;
 import org.citrusframework.schema.samples.incidentmanager.v1.CustomerType;
 import org.citrusframework.schema.samples.incidentmanager.v1.IncidentType;
@@ -26,19 +22,23 @@ import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResul
 import org.citrusframework.schema.samples.networkservice.v1.CheckType;
 import org.citrusframework.schema.samples.networkservice.v1.NetworkComponentType;
 import org.citrusframework.schema.samples.networkservice.v1.NetworkType;
+import org.citrusframework.spi.Resource;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.ws.client.WebServiceClient;
+import org.citrusframework.ws.message.SoapMessageHeaders;
+import org.citrusframework.ws.server.WebServiceServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.EchoAction.Builder.echo;
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
-import static com.consol.citrus.actions.SleepAction.Builder.sleep;
-import static com.consol.citrus.dsl.XpathSupport.xpath;
-import static com.consol.citrus.message.builder.MarshallingPayloadBuilder.Builder.marshal;
-import static com.consol.citrus.ws.actions.AssertSoapFault.Builder.assertSoapFault;
+import static org.citrusframework.actions.EchoAction.Builder.echo;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.actions.SleepAction.Builder.sleep;
+import static org.citrusframework.dsl.XpathSupport.xpath;
+import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
+import static org.citrusframework.ws.actions.AssertSoapFault.Builder.assertSoapFault;
 
 /**
  * @author Christoph Deppisch
@@ -453,10 +453,10 @@ public class IncidentManager_Http_IT extends TestNGCitrusSpringSupport {
             .body(marshal(response)));
     }
 
-    private Resource incidentRequest = new ClassPathResource("templates/IncidentRequest.xml");
-    private Resource analyseRequest = new ClassPathResource("templates/AnalyseRequest.xml");
-    private Resource analyseResponse = new ClassPathResource("templates/AnalyseResponse.xml");
-    private Resource incidentResponse = new ClassPathResource("templates/IncidentResponse.xml");
+    private final Resource incidentRequest = Resources.fromClasspath("templates/IncidentRequest.xml");
+    private final Resource analyseRequest = Resources.fromClasspath("templates/AnalyseRequest.xml");
+    private final Resource analyseResponse = Resources.fromClasspath("templates/AnalyseResponse.xml");
+    private final Resource incidentResponse = Resources.fromClasspath("templates/IncidentResponse.xml");
 
     @CitrusTest(name = "IncidentManager_Http_Ok_4_IT")
     public void testIncidentManager_Http_Ok_4 () {

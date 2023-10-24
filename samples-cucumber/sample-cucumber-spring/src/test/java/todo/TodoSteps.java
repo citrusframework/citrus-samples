@@ -19,11 +19,11 @@ package todo;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import com.consol.citrus.TestCaseRunner;
-import com.consol.citrus.annotations.CitrusResource;
-import com.consol.citrus.config.CitrusSpringConfig;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.message.MessageType;
+import org.citrusframework.TestCaseRunner;
+import org.citrusframework.annotations.CitrusResource;
+import org.citrusframework.config.CitrusSpringConfig;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.message.MessageType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -33,7 +33,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
@@ -75,7 +75,7 @@ public class TodoSteps {
         runner.then(http()
                 .client(todoListClient)
                 .receive()
-                .response(HttpStatus.FOUND));
+                .response(HttpStatus.OK));
     }
 
     @When("^(?:I|user) removes? entry \"([^\"]*)\"$")

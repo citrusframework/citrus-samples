@@ -25,7 +25,7 @@ We start with a feature test using JUnit and Cucumber runner.
 ```java
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
+        plugin = { "org.citrusframework.cucumber.CitrusReporter" } )
 public class TodoFeatureIT {
 }
 ```
@@ -85,7 +85,7 @@ public class TodoSteps {
         designer.http()
                 .client(todoListClient)
                 .receive()
-                .response(HttpStatus.FOUND);
+                .response(HttpStatus.OK);
     }
     
     [...]
@@ -111,7 +111,7 @@ we have included the respective Maven dependency to the project:
 Secondly we choose Citrus Spring object factory in *cucumber.properties* in order to enable Cucumber Spring support in all tests.
     
 ```properties
-cucumber.object-factory=com.consol.citrus.cucumber.backend.spring.CitrusSpringObjectFactory
+cucumber.object-factory=org.citrusframework.cucumber.backend.spring.CitrusSpringObjectFactory
 ```
     
 These two steps are required to make Citrus work with Cucumber Spring features.

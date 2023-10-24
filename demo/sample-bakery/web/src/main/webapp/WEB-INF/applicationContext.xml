@@ -11,8 +11,10 @@
 
     <component-scan xmlns="http://www.springframework.org/schema/context" base-package="com.consol.citrus.samples.bakery.routes"/>
 
-    <bean id="jms" class="org.apache.camel.component.activemq.ActiveMQComponent">
-      <property name="brokerURL" value="failover:${jms.broker.url}"/>
+    <bean id="jmsConnectionFactory" class="org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory">
+        <constructor-arg value="${jms.broker.url}" />
+        <constructor-arg value="citrus" />
+        <constructor-arg value="citrus" />
     </bean>
 
     <!-- Camel context -->

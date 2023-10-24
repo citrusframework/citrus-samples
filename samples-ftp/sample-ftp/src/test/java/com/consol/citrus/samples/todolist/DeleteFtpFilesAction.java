@@ -1,8 +1,8 @@
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.actions.AbstractTestAction;
-import com.consol.citrus.context.TestContext;
-import com.consol.citrus.exceptions.CitrusRuntimeException;
+import org.citrusframework.actions.AbstractTestAction;
+import org.citrusframework.context.TestContext;
+import org.citrusframework.exceptions.CitrusRuntimeException;
 import org.springframework.core.io.FileSystemResource;
 
 import java.io.IOException;

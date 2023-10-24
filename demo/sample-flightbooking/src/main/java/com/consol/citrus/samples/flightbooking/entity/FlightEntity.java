@@ -16,7 +16,10 @@
 
 package com.consol.citrus.samples.flightbooking.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * @author Christoph Deppisch
@@ -24,75 +27,75 @@ import javax.persistence.*;
 @Entity
 @Table(name = "FBS_FLIGHT")
 public class FlightEntity {
-    
+
     @Id
     @Column(name = "FLIGHT_ID")
     private String flightId;
-    
+
     @Column(name = "AIRLINE", length = 150, nullable = false)
     private String airline;
-    
+
     @Column(name = "FROM_AIRPORT", length = 3, nullable = false)
     private String fromAirport;
-    
+
     @Column(name = "TO_AIRPORT", length = 3, nullable = false)
     private String toAirport;
-    
+
     @Column(name = "SCHEDULED_DEPARTURE", length = 40, nullable = false)
     private String scheduledDeparture;
-    
+
     @Column(name = "SCHEDULED_ARRIVAL", length = 40, nullable = false)
     private String scheduledArrival;
-    
+
     /**
      * @return the flightId
      */
     public String getFlightId() {
         return flightId;
     }
-    
+
     /**
      * @param flightId the flightId to set
      */
     public void setFlightId(String flightId) {
         this.flightId = flightId;
     }
-    
+
     /**
      * @return the airline
      */
     public String getAirline() {
         return airline;
     }
-    
+
     /**
      * @param airline the airline to set
      */
     public void setAirline(String airline) {
         this.airline = airline;
     }
-    
+
     /**
      * @return the from
      */
     public String getFromAirport() {
         return fromAirport;
     }
-    
+
     /**
      * @param from the from to set
      */
     public void setFromAirport(String from) {
         this.fromAirport = from;
     }
-    
+
     /**
      * @return the to
      */
     public String getToAirport() {
         return toAirport;
     }
-    
+
     /**
      * @param to the to to set
      */
@@ -106,21 +109,21 @@ public class FlightEntity {
     public String getScheduledDeparture() {
         return scheduledDeparture;
     }
-    
+
     /**
      * @param scheduledDeparture the scheduledDeparture to set
      */
     public void setScheduledDeparture(String scheduledDeparture) {
         this.scheduledDeparture = scheduledDeparture;
     }
-    
+
     /**
      * @return the scheduledArrival
      */
     public String getScheduledArrival() {
         return scheduledArrival;
     }
-    
+
     /**
      * @param scheduledArrival the scheduledArrival to set
      */

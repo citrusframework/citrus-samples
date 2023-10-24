@@ -21,7 +21,7 @@ We start with a feature test using JUnit and Cucumber runner.
 ```java
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        plugin = { "com.consol.citrus.cucumber.CitrusReporter" } )
+        plugin = { "org.citrusframework.cucumber.CitrusReporter" } )
 public class TodoFeatureIT {
 }
 ```
@@ -78,7 +78,7 @@ public class TodoSteps {
         runner.$(http()
             .client("todoListClient")
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
     
     [...]
@@ -91,7 +91,7 @@ Configuration
 In order to enable Citrus Cucumber support we need to specify a special object factory in *cucumber.properties*.
     
 ```properties
-cucumber.object-factory=com.consol.citrus.cucumber.backend.CitrusObjectFactory
+cucumber.object-factory=org.citrusframework.cucumber.backend.CitrusObjectFactory
 ```
     
 The object factory takes care on creating all step definition instances. The object factory is able to inject *@CitrusResource*

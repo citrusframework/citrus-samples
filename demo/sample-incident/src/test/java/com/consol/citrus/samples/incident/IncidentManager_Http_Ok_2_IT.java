@@ -16,23 +16,23 @@
 
 package com.consol.citrus.samples.incident;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.ws.message.SoapMessageHeaders;
-import com.consol.citrus.ws.server.WebServiceServer;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.ws.client.WebServiceClient;
+import org.citrusframework.ws.message.SoapMessageHeaders;
+import org.citrusframework.ws.server.WebServiceServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.EchoAction.Builder.echo;
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
-import static com.consol.citrus.actions.SleepAction.Builder.sleep;
-import static com.consol.citrus.dsl.XpathSupport.xpath;
+import static org.citrusframework.actions.EchoAction.Builder.echo;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.actions.SleepAction.Builder.sleep;
+import static org.citrusframework.dsl.XpathSupport.xpath;
 
 /**
  * @author Christoph Deppisch

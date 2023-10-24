@@ -18,15 +18,15 @@ package com.consol.citrus.samples.todolist;
 
 import java.util.UUID;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
@@ -60,12 +60,12 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
 
         $(http()
             .server(todoListServer)
-            .respond(HttpStatus.FOUND));
+            .respond(HttpStatus.OK));
 
         $(http()
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 
 }

@@ -57,7 +57,7 @@ public class TodoListLoadTestIT extends TestNGCitrusTest {
         runner.$(http()
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 
     @Parameters( { "runner" })

@@ -16,15 +16,15 @@
 
 package com.consol.citrus.samples.todolist;
 
-import javax.jms.ConnectionFactory;
 import java.util.Collections;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
-import org.apache.activemq.ActiveMQConnectionFactory;
+import jakarta.jms.ConnectionFactory;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.jms.endpoint.JmsSyncEndpoint;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -54,7 +54,7 @@ public class EndpointConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory("tcp://localhost:61616");
+        return new ActiveMQConnectionFactory("tcp://localhost:61616", "citrus", "citrus");
     }
 
     @Bean

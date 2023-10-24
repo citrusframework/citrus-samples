@@ -1,5 +1,5 @@
 <SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
-  <wsa:To SOAP-ENV:mustUnderstand="1">http://citrusframework.org/samples/todolist</wsa:To>
+  <wsa:To>http://citrusframework.org/samples/todolist</wsa:To>
   <wsa:From>
     <wsa:Address>http://citrusframework.org/samples/client</wsa:Address>
   </wsa:From>

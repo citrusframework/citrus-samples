@@ -19,17 +19,17 @@ package com.consol.citrus.samples.todolist;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.consol.citrus.context.TestContextFactory;
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.endpoint.EndpointAdapter;
-import com.consol.citrus.endpoint.adapter.RequestDispatchingEndpointAdapter;
-import com.consol.citrus.endpoint.adapter.StaticResponseEndpointAdapter;
-import com.consol.citrus.endpoint.adapter.mapping.HeaderMappingKeyExtractor;
-import com.consol.citrus.endpoint.adapter.mapping.SimpleMappingStrategy;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.http.message.HttpMessageHeaders;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.variable.GlobalVariables;
+import org.citrusframework.context.TestContextFactory;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.endpoint.EndpointAdapter;
+import org.citrusframework.endpoint.adapter.RequestDispatchingEndpointAdapter;
+import org.citrusframework.endpoint.adapter.StaticResponseEndpointAdapter;
+import org.citrusframework.endpoint.adapter.mapping.HeaderMappingKeyExtractor;
+import org.citrusframework.endpoint.adapter.mapping.SimpleMappingStrategy;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.http.message.HttpMessageHeaders;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.variable.GlobalVariables;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

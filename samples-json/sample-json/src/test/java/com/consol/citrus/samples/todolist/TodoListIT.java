@@ -16,18 +16,18 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.message.MessageType;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.message.MessageType;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-import static com.consol.citrus.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
 
 /**
  * @author Christoph Deppisch
@@ -92,7 +92,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .message()
             .type(MessageType.JSON)
             .contentType(ContentType.APPLICATION_JSON.getMimeType())
-            .body(new ClassPathResource("templates/todo.json")));
+            .body(Resources.fromClasspath("templates/todo.json")));
 
         $(http()
             .client(todoClient)
@@ -115,7 +115,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .response(HttpStatus.OK)
             .message()
             .type(MessageType.JSON)
-            .body(new ClassPathResource("templates/todo.json")));
+            .body(Resources.fromClasspath("templates/todo.json")));
     }
 
     @Test

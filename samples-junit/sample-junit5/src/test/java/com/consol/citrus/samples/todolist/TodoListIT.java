@@ -16,22 +16,22 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.TestActionRunner;
-import com.consol.citrus.TestCaseRunner;
-import com.consol.citrus.annotations.CitrusEndpoint;
-import com.consol.citrus.annotations.CitrusResource;
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.config.CitrusSpringConfig;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.junit.jupiter.spring.CitrusSpringSupport;
-import com.consol.citrus.message.MessageType;
+import org.citrusframework.TestActionRunner;
+import org.citrusframework.TestCaseRunner;
+import org.citrusframework.annotations.CitrusEndpoint;
+import org.citrusframework.annotations.CitrusResource;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.config.CitrusSpringConfig;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.junit.jupiter.spring.CitrusSpringSupport;
+import org.citrusframework.message.MessageType;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-import static com.consol.citrus.validation.xml.XpathMessageValidationContext.Builder.xpath;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.validation.xml.XpathMessageValidationContext.Builder.xpath;
 
 /**
  * @author Christoph Deppisch
@@ -85,6 +85,6 @@ public class TodoListIT {
         test.$(http()
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 }

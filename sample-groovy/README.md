@@ -12,7 +12,7 @@ This sample uses Groovy code to write a Citrus test case that is run via TestNG.
 
 ```java
 @Test
-@CitrusGroovyTest(packageScan = "com.consol.citrus.samples.todolist")
+@CitrusGroovyTest(packageScan = "org.citrusframework.samples.todolist")
 public void loadGroovyTests() {
 }
 ```

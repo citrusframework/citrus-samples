@@ -18,17 +18,22 @@ package com.consol.citrus.samples.todolist.model;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author Christoph Deppisch
  */
-public class TodoEntry {
+public class TodoEntry implements Comparable<TodoEntry> {
 
     private UUID id;
     private String title;
     private String description;
     private boolean done;
+    @JsonIgnore
+    private final long createdAt;
 
     public TodoEntry() {
+        this.createdAt = System.currentTimeMillis();
     }
 
     public TodoEntry(String title, String description) {
@@ -39,6 +44,7 @@ public class TodoEntry {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.createdAt = System.currentTimeMillis();
     }
 
     public UUID getId() {
@@ -71,5 +77,11 @@ public class TodoEntry {
 
     public boolean isDone() {
         return done;
+    }
+
+    @Override
+    public int compareTo(TodoEntry o) {
+        return Long.compare(createdAt, o.createdAt);
+
     }
 }

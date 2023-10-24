@@ -16,14 +16,14 @@
 
 package com.consol.citrus.samples.bookstore;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.ws.client.WebServiceClient;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.validation.script.ScriptValidationContext.Builder.groovy;
-import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+import static org.citrusframework.validation.script.ScriptValidationContext.Builder.groovy;
+import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
 
 /**
  * @author Christoph Deppisch

@@ -4,8 +4,8 @@
 
   <parent>
     <artifactId>citrus-sample-bakery</artifactId>
-    <groupId>com.consol.citrus.samples</groupId>
-    <version>3.4.0</version>
+    <groupId>org.citrusframework.samples</groupId>
+    <version>4.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -15,7 +15,6 @@
   <properties>
     <factory.type>chocolate</factory.type>
     <factory.costs>200</factory.costs>
-    <activemq.embedded.disabled>false</activemq.embedded.disabled>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
@@ -44,10 +43,6 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jms</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-activemq</artifactId>
-    </dependency>
 
     <!-- Spring framework -->
     <dependency>
@@ -65,12 +60,12 @@
 
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-broker</artifactId>
+      <artifactId>artemis-jakarta-client</artifactId>
     </dependency>
-
     <dependency>
-      <groupId>org.jolokia</groupId>
-      <artifactId>jolokia-core</artifactId>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>artemis-jakarta-server</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -80,27 +75,27 @@
 
     <!-- Citrus -->
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-base</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-spring</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-endpoint-catalog</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-testng</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-http</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-jms</artifactId>
     </dependency>
   </dependencies>

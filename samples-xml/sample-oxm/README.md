@@ -78,7 +78,7 @@ Then you are able to create a bean with the Spring Oxm marshaller.
 @Bean
 public Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setContextPath("com.consol.citrus.samples.todolist.model");
+        marshaller.setContextPath("org.citrusframework.samples.todolist.model");
         return new MarshallerAdapter(marshaller);
         }
 ```

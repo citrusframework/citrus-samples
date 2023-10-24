@@ -16,14 +16,14 @@
 
 package com.consol.citrus.samples.kubernetes;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.kubernetes.client.KubernetesClient;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.kubernetes.client.KubernetesClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.kubernetes.actions.KubernetesExecuteAction.Builder.kubernetes;
+import static org.citrusframework.kubernetes.actions.KubernetesExecuteAction.Builder.kubernetes;
 
 /**
  * @author Christoph Deppisch

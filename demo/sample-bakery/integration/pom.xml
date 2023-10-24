@@ -4,8 +4,8 @@
 
   <parent>
     <artifactId>citrus-sample-bakery</artifactId>
-    <groupId>com.consol.citrus.samples</groupId>
-    <version>3.4.0</version>
+    <groupId>org.citrusframework.samples</groupId>
+    <version>4.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -15,56 +15,70 @@
 
   <properties>
     <jetty.embedded.disabled>false</jetty.embedded.disabled>
-    <activemq.embedded.disabled>false</activemq.embedded.disabled>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
   <dependencies>
     <!-- Citrus -->
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-base</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-spring</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-endpoint-catalog</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-testng</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-http</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-jms</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-mail</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-json</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-xml</artifactId>
     </dependency>
 
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-broker</artifactId>
+      <artifactId>artemis-jakarta-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>artemis-jakarta-server</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/jetty</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>jetty.xml</include>
+        </includes>
+      </resource>
+    </resources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -90,44 +104,14 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
         <configuration>
-          <war>${pom.basedir}/src/jolokia/jolokia-war-1.3.1.war</war>
-          <webApp>
-            <contextPath>/jolokia</contextPath>
-            <tempDirectory>${project.build.directory}/tmp/jolokia</tempDirectory>
-          </webApp>
           <httpConnector>
-            <port>${bakery.server.port}</port>
+            <port>8080</port>
             <idleTimeout>60000</idleTimeout>
           </httpConnector>
-          <!-- jetty.xml for using multiple ports inside of one jetty -->
-          <jettyXml>${pom.basedir}/src/jetty/jetty-embedded.xml</jettyXml>
-          <contextHandlers>
-            <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
-              <war>${settings.localRepository}/com/consol/citrus/samples/citrus-bakery-web/${project.version}/citrus-bakery-web-${project.version}.war</war>
-              <contextPath>/bakery</contextPath>
-              <tempDirectory>${project.build.directory}/tmp/bakery</tempDirectory>
-            </contextHandler>
-            <contextHandler implementation="org.eclipse.jetty.maven.plugin.JettyWebAppContext">
-              <war>${settings.localRepository}/com/consol/citrus/samples/citrus-bakery-report/${project.version}/citrus-bakery-report-${project.version}.war</war>
-              <contextPath>/report</contextPath>
-              <tempDirectory>${project.build.directory}/tmp/report</tempDirectory>
-            </contextHandler>
-          </contextHandlers>
-          <systemProperties>
-            <systemProperty>
-              <name>ACTIVEMQ_BROKER_PORT</name>
-              <value>${activemq.server.port}</value>
-            </systemProperty>
-            <systemProperty>
-              <name>REPORT_SERVER_PORT</name>
-              <value>${report.server.port}</value>
-            </systemProperty>
-            <systemProperty>
-              <name>MAIL_SERVER_PORT</name>
-              <value>${mail.server.port}</value>
-            </systemProperty>
-          </systemProperties>
+          <!-- jetty.xml for using multiple deployed wars in single jetty instance -->
+          <jettyXmls>${build.outputDirectory}/jetty.xml</jettyXmls>
         </configuration>
       </plugin>
     </plugins>

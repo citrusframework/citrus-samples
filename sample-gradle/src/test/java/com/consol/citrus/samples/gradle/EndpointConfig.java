@@ -16,10 +16,10 @@
 
 package com.consol.citrus.samples.gradle;
 
-import com.consol.citrus.endpoint.direct.DirectEndpoint;
-import com.consol.citrus.endpoint.direct.DirectEndpointConfiguration;
-import com.consol.citrus.message.DefaultMessageQueue;
-import com.consol.citrus.message.MessageQueue;
+import org.citrusframework.endpoint.direct.DirectEndpoint;
+import org.citrusframework.endpoint.direct.DirectEndpointConfiguration;
+import org.citrusframework.message.DefaultMessageQueue;
+import org.citrusframework.message.MessageQueue;
 import org.springframework.context.annotation.Bean;
 
 /**

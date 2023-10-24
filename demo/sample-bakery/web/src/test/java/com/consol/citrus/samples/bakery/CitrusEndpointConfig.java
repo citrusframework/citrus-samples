@@ -16,16 +16,23 @@
 
 package com.consol.citrus.samples.bakery;
 
-import javax.jms.ConnectionFactory;
+import java.util.Collections;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.report.MessageTracingTestListener;
-import com.consol.citrus.variable.GlobalVariables;
-import org.apache.activemq.ActiveMQConnectionFactory;
+import jakarta.jms.ConnectionFactory;
+import org.apache.activemq.artemis.core.config.impl.SecurityConfiguration;
+import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQJAASSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.jaas.InVMLoginModule;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.report.MessageTracingTestListener;
+import org.citrusframework.variable.GlobalVariables;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -54,11 +61,25 @@ public class CitrusEndpointConfig {
         return new MessageTracingTestListener();
     }
 
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    public EmbeddedActiveMQ messageBroker(ActiveMQSecurityManager securityManager) {
+        EmbeddedActiveMQ broker = new EmbeddedActiveMQ();
+        broker.setSecurityManager(securityManager);
+        return broker;
+    }
+
     @Bean
+    public ActiveMQSecurityManager securityManager() {
+        SecurityConfiguration securityConfiguration = new SecurityConfiguration(Collections.singletonMap("citrus", "citrus"),
+                Collections.singletonMap("citrus", Collections.singletonList("citrus")));
+        securityConfiguration.setDefaultUser("citrus");
+        return new ActiveMQJAASSecurityManager(InVMLoginModule.class.getName(), securityConfiguration);
+    }
+
+    @Bean
+    @DependsOn("messageBroker")
     public ConnectionFactory connectionFactory() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(String.format("tcp://localhost:%s", activemqServerPort));
-        connectionFactory.setWatchTopicAdvisories(false);
-        return connectionFactory;
+        return new ActiveMQConnectionFactory(String.format("tcp://localhost:%s", activemqServerPort), "citrus", "citrus");
     }
 
     @Bean

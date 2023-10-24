@@ -20,12 +20,12 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.consol.citrus.TestCase;
-import com.consol.citrus.TestCaseMetaInfo;
-import com.consol.citrus.report.AbstractTestReporter;
-import com.consol.citrus.report.TestListener;
-import com.consol.citrus.report.TestReporter;
-import com.consol.citrus.report.TestResults;
+import org.citrusframework.TestCase;
+import org.citrusframework.TestCaseMetaInfo;
+import org.citrusframework.report.AbstractTestReporter;
+import org.citrusframework.report.TestListener;
+import org.citrusframework.report.TestReporter;
+import org.citrusframework.report.TestResults;
 import org.springframework.beans.factory.InitializingBean;
 
 /**

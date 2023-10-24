@@ -49,7 +49,7 @@ public class TodoListRunnerIT extends JUnit4CitrusTestRunner {
 
         http(action -> action.client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 
 }
@@ -82,7 +82,7 @@ public class TodoListIT extends JUnit4CitrusTest {
 
         runner.http(action -> action.client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 }
 

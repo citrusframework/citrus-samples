@@ -2,20 +2,21 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.consol.citrus.samples</groupId>
+  <groupId>org.citrusframework.samples</groupId>
   <artifactId>citrus-sample-dynamic-endpoints</artifactId>
   <name>Citrus Samples:: Dynamic Endpoints</name>
-  <version>3.4.0</version>
+  <version>4.0.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.25</spring.version>
-    <spring.boot.version>2.7.16</spring.boot.version>
-    <slf4j.version>1.7.36</slf4j.version>
-    <log4j2.version>2.19.0</log4j2.version>
-    <citrus.version>3.4.0</citrus.version>
-    <activemq.version>5.17.0</activemq.version>
+    <spring.version>6.0.13</spring.version>
+    <spring.boot.version>3.1.4</spring.boot.version>
+    <slf4j.version>2.0.9</slf4j.version>
+    <log4j2.version>2.21.0</log4j2.version>
+    <commons.logging.version>1.2</commons.logging.version>
+    <citrus.version>4.0.0</citrus.version>
+    <activemq.artemis.version>2.31.0</activemq.artemis.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
@@ -27,8 +28,8 @@
         <version>3.8.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>11</source>
-          <target>11</target>
+          <source>17</source>
+          <target>17</target>
         </configuration>
       </plugin>
 
@@ -79,33 +80,19 @@
           <jvmArguments>-Dtodo.jms.enabled=true</jvmArguments>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.activemq.tooling</groupId>
-        <artifactId>activemq-maven-plugin</artifactId>
-        <version>${activemq.version}</version>
-        <configuration>
-          <fork>false</fork>
-          <systemProperties>
-            <property>
-              <name>log4j.configuration</name>
-              <value>log4j.properties</value>
-            </property>
-          </systemProperties>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
   <dependencies>
     <dependency>
-      <groupId>com.consol.citrus.samples</groupId>
+      <groupId>org.citrusframework.samples</groupId>
       <artifactId>citrus-sample-todo</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-broker</artifactId>
-      <version>${activemq.version}</version>
+      <artifactId>artemis-jakarta-client</artifactId>
+      <version>${activemq.artemis.version}</version>
     </dependency>
 
     <!-- Logging -->
@@ -122,14 +109,20 @@
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j2-impl</artifactId>
       <version>${log4j2.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.2</version>
+      <version>${commons.logging.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -143,49 +136,49 @@
 
     <!-- Citrus -->
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-base</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-spring</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-endpoint-catalog</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-testng</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-http</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-jms</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-json</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-text</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>

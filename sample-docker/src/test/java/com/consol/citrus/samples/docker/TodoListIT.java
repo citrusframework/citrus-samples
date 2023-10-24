@@ -16,18 +16,18 @@
 
 package com.consol.citrus.samples.docker;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.docker.client.DockerClient;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.message.MessageType;
-import org.apache.http.entity.ContentType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.docker.client.DockerClient;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.message.MessageType;
+import org.apache.hc.core5.http.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.docker.actions.DockerExecuteAction.Builder.docker;
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.docker.actions.DockerExecuteAction.Builder.docker;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch

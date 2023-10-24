@@ -16,19 +16,19 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.client.HttpClient;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.client.HttpClient;
 import com.consol.citrus.samples.todolist.page.TodoPage;
 import com.consol.citrus.samples.todolist.page.WelcomePage;
-import com.consol.citrus.selenium.endpoint.SeleniumBrowser;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.selenium.endpoint.SeleniumBrowser;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.openqa.selenium.By;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-import static com.consol.citrus.selenium.actions.SeleniumActionBuilder.selenium;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.selenium.actions.SeleniumActionBuilder.selenium;
 
 /**
  * @author Christoph Deppisch

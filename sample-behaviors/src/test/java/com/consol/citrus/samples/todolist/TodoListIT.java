@@ -19,24 +19,24 @@ package com.consol.citrus.samples.todolist;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.consol.citrus.TestActionRunner;
-import com.consol.citrus.TestBehavior;
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.actions.HttpClientRequestActionBuilder;
-import com.consol.citrus.http.actions.HttpClientResponseActionBuilder;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.message.MessageType;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.TestActionRunner;
+import org.citrusframework.TestBehavior;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.actions.HttpClientRequestActionBuilder;
+import org.citrusframework.http.actions.HttpClientResponseActionBuilder;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.message.MessageType;
+import org.citrusframework.spi.Resource;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-import static com.consol.citrus.validation.xml.XpathMessageValidationContext.Builder.xpath;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.validation.xml.XpathMessageValidationContext.Builder.xpath;
 
 /**
  * @author Christoph Deppisch
@@ -69,10 +69,10 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
         variable("todoDescription", "Description: ${todoName}");
 
         applyBehavior(new AddTodoBehavior()
-                            .withResource(new ClassPathResource("templates/todo.json")));
+                            .withResource(Resources.fromClasspath("templates/todo.json")));
 
         applyBehavior(new GetTodoBehavior("${todoId}")
-                            .validate(new ClassPathResource("templates/todo.json")));
+                            .validate(Resources.fromClasspath("templates/todo.json")));
     }
 
     @Test

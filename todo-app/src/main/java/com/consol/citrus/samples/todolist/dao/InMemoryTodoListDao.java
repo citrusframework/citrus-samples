@@ -16,10 +16,14 @@
 
 package com.consol.citrus.samples.todolist.dao;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
-
-import java.util.*;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
+
+import com.consol.citrus.samples.todolist.model.TodoEntry;
 
 /**
  * @author Christoph Deppisch
@@ -27,7 +31,7 @@ import java.util.stream.Collectors;
 public class InMemoryTodoListDao implements TodoListDao {
 
     /** In memory storage */
-    private List<TodoEntry> storage = new ArrayList<>();
+    private final SortedSet<TodoEntry> storage = new ConcurrentSkipListSet<>();
 
     @Override
     public void save(TodoEntry entry) {
@@ -35,20 +39,18 @@ public class InMemoryTodoListDao implements TodoListDao {
     }
 
     @Override
-    public List<TodoEntry> list() {
-        return Collections.unmodifiableList(storage);
+    public Set<TodoEntry> list() {
+        return Collections.unmodifiableSet(storage);
     }
 
     @Override
-    public List<TodoEntry> list(int limit) {
-        return storage.stream().limit(limit).collect(Collectors.toList());
+    public Set<TodoEntry> list(int limit) {
+        return storage.stream().limit(limit).collect(Collectors.toUnmodifiableSet());
     }
 
     @Override
     public void delete(TodoEntry entry) {
-        storage = storage.stream()
-                         .filter(current -> !current.equals(entry))
-                         .collect(Collectors.toList());
+        storage.removeIf(todo -> todo.getId().equals(entry.getId()));
     }
 
     @Override
@@ -62,7 +64,7 @@ public class InMemoryTodoListDao implements TodoListDao {
                 .filter(current -> current.getId().equals(entry.getId()))
                 .findFirst();
 
-        if (!found.isPresent()) {
+        if (found.isEmpty()) {
             throw new RuntimeException(String.format("Unable to find entry with uuid '%s'", entry.getId()));
         }
 

@@ -40,7 +40,7 @@ As you can see we are able to send **x-www-form-urlencoded** message content as 
 $(http()
     .client(todoClient)
     .receive()
-    .response(HttpStatus.FOUND));
+    .response(HttpStatus.OK));
 ```
         
 Run

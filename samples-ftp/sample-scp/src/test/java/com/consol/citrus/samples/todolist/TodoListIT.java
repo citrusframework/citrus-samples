@@ -19,24 +19,24 @@ package com.consol.citrus.samples.todolist;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import com.consol.citrus.actions.AbstractTestAction;
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.context.TestContext;
-import com.consol.citrus.exceptions.CitrusRuntimeException;
-import com.consol.citrus.ftp.client.ScpClient;
-import com.consol.citrus.ftp.message.FtpMessage;
-import com.consol.citrus.ftp.server.SftpServer;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.util.FileUtils;
+import org.citrusframework.actions.AbstractTestAction;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.context.TestContext;
+import org.citrusframework.exceptions.CitrusRuntimeException;
+import org.citrusframework.ftp.client.ScpClient;
+import org.citrusframework.ftp.message.FtpMessage;
+import org.citrusframework.ftp.server.SftpServer;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.util.FileUtils;
 import org.apache.ftpserver.ftplet.DataType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.EchoAction.Builder.echo;
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.actions.EchoAction.Builder.echo;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
@@ -99,7 +99,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             public void doExecute(TestContext context) {
                 try {
                     String content = FileUtils.readToString(Paths.get("target/scp/todo.json").toFile());
-                    Assert.assertEquals(content, FileUtils.readToString(new ClassPathResource("todo/entry.json")));
+                    Assert.assertEquals(content, FileUtils.readToString(Resources.fromClasspath("todo/entry.json")));
                 } catch (IOException e) {
                     throw new CitrusRuntimeException("Failed to read downloaded file", e);
                 }

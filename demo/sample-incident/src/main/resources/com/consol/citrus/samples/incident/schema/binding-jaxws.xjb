@@ -1,25 +1,17 @@
-<jaxws:bindings xmlns="http://java.sun.com/xml/ns/jaxb"
-          xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-          xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
-          xmlns:wsdl="http://schemas.xmlsoap.org/wsdl"
+<jaxws:bindings xmlns="https://jakarta.ee/xml/ns/jaxb"
+          xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+          xmlns:jaxws="https://jakarta.ee/xml/ns/jaxws"
+          xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
           xmlns:xs="http://www.w3.org/2001/XMLSchema"
-          xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
-          jaxb:version="2.1"
-          jaxb:extensionBindingPrefixes="xjc">
-
+          jaxb:version="3.0">
 
   <jaxws:bindings node="wsdl:definitions/wsdl:types/xs:schema[@targetNamespace='http://www.citrusframework.org/schema/samples/IncidentManager/v1']">
     <jaxb:globalBindings>
-      <xjc:javaType
+      <jaxb:javaType
               name="java.util.Calendar"
               xmlType="xs:dateTime"
-              adapter="org.w3._2001.xmlschema.Adapter1" />
-      <xjc:javaType
-              name="java.util.Calendar"
-              xmlType="xs:date"
-              adapter="org.w3._2001.xmlschema.Adapter2" />
-      <xjc:simple />
+              parseMethod="jakarta.xml.bind.DatatypeConverter.parseDateTime"
+              printMethod="jakarta.xml.bind.DatatypeConverter.printDateTime"/>
     </jaxb:globalBindings>
   </jaxws:bindings>
-
 </jaxws:bindings>

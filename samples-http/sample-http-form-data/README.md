@@ -80,7 +80,7 @@ public FormUrlEncodedMessageValidator formUrlEncodedMessageValidator(MessageVali
 }
 ```
 
-The `com.consol.citrus.http.validation.FormUrlEncodedMessageValidator` validator implementation provides convenient form data marshalling that we can use in our test cases when expecting form urlencoded message content.
+The `org.citrusframework.http.validation.FormUrlEncodedMessageValidator` validator implementation provides convenient form data marshalling that we can use in our test cases when expecting form urlencoded message content.
 
 ```java
 $(http()

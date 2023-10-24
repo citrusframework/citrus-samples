@@ -16,13 +16,13 @@
 
 package com.consol.citrus.samples.todolist.service;
 
+import java.util.Set;
+import java.util.UUID;
+
 import com.consol.citrus.samples.todolist.dao.TodoListDao;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Christoph Deppisch
@@ -37,11 +37,11 @@ public class TodoListService {
         todoListDao.save(entry);
     }
 
-    public List<TodoEntry> getAllEntries() {
+    public Set<TodoEntry> getAllEntries() {
         return todoListDao.list();
     }
 
-    public List<TodoEntry> getAllEntries(int limit) {
+    public Set<TodoEntry> getAllEntries(int limit) {
         return todoListDao.list(limit);
     }
 

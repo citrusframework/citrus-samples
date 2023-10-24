@@ -1,5 +1,7 @@
 package com.consol.citrus.samples.todolist.kafka;
 
+import java.io.IOException;
+
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 /**
  * @author Christoph Deppisch

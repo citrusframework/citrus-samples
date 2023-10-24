@@ -32,27 +32,27 @@ public class CustomerConverter {
      */
     private CustomerConverter() {
     }
-    
+
     /**
      * Get model form entity.
      * @param entity
      * @return
-     * @throws ParseException 
+     * @throws ParseException
      */
     public static Customer from(CustomerEntity entity) {
-        if (entity == null) { 
+        if (entity == null) {
             return null;
         }
-        
+
         Customer model = new Customer();
 
         model.setId(entity.getId());
         model.setFirstname(entity.getFirstname());
         model.setLastname(entity.getLastname());
-        
+
         return model;
     }
-    
+
     /**
      * Get entity form model.
      * @param entity
@@ -64,7 +64,7 @@ public class CustomerConverter {
         entity.setId(model.getId());
         entity.setFirstname(model.getFirstname());
         entity.setLastname(model.getLastname());
-        
+
         return entity;
     }
 }

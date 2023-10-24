@@ -25,6 +25,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        plugin = { "pretty", "com.consol.citrus.cucumber.CitrusReporter" } )
+        plugin = { "pretty", "org.citrusframework.cucumber.CitrusReporter" } )
 public class TodoFeatureIT {
 }

@@ -16,14 +16,14 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.TestCaseMetaInfo;
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.exceptions.CitrusRuntimeException;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.TestCaseMetaInfo;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.exceptions.CitrusRuntimeException;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.EchoAction.Builder.echo;
-import static com.consol.citrus.actions.FailAction.Builder.fail;
+import static org.citrusframework.actions.EchoAction.Builder.echo;
+import static org.citrusframework.actions.FailAction.Builder.fail;
 
 /**
  * @author Christoph Deppisch

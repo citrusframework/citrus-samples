@@ -16,8 +16,14 @@
 
 package com.consol.citrus.samples.todolist.model;
 
-import javax.xml.bind.annotation.*;
 import java.util.UUID;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlType;
 
 /**
  * @author Christoph Deppisch
@@ -30,7 +36,7 @@ import java.util.UUID;
         "done"
 })
 @XmlRootElement(name = "todo")
-public class TodoEntry {
+public class TodoEntry implements Comparable<TodoEntry> {
 
     private UUID id;
     @XmlElement(required = true)
@@ -40,7 +46,11 @@ public class TodoEntry {
     @XmlElement
     private boolean done;
 
+    @XmlTransient
+    private final long createdAt;
+
     public TodoEntry() {
+        this.createdAt = System.currentTimeMillis();
     }
 
     public TodoEntry(String title, String description) {
@@ -51,6 +61,7 @@ public class TodoEntry {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.createdAt = System.currentTimeMillis();
     }
 
     public UUID getId() {
@@ -83,5 +94,11 @@ public class TodoEntry {
 
     public boolean isDone() {
         return done;
+    }
+
+    @Override
+    public int compareTo(TodoEntry o) {
+        return Long.compare(createdAt, o.createdAt);
+
     }
 }

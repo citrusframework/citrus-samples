@@ -16,17 +16,22 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.ws.addressing.WsAddressingHeaders;
-import com.consol.citrus.ws.addressing.WsAddressingVersion;
-import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.ws.interceptor.LoggingEndpointInterceptor;
-import com.consol.citrus.ws.interceptor.SoapMustUnderstandEndpointInterceptor;
-import com.consol.citrus.ws.message.converter.WebServiceMessageConverter;
-import com.consol.citrus.ws.message.converter.WsAddressingMessageConverter;
-import com.consol.citrus.ws.server.WebServiceServer;
-import com.consol.citrus.xml.XsdSchemaRepository;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.ws.addressing.WsAddressingHeaders;
+import org.citrusframework.ws.addressing.WsAddressingVersion;
+import org.citrusframework.ws.client.WebServiceClient;
+import org.citrusframework.ws.interceptor.LoggingEndpointInterceptor;
+import org.citrusframework.ws.interceptor.SoapMustUnderstandEndpointInterceptor;
+import org.citrusframework.ws.message.converter.WebServiceMessageConverter;
+import org.citrusframework.ws.message.converter.WsAddressingMessageConverter;
+import org.citrusframework.ws.server.WebServiceServer;
+import org.citrusframework.xml.XsdSchemaRepository;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -35,9 +40,6 @@ import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.addressing.core.EndpointReference;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.xml.xsd.SimpleXsdSchema;
-
-import java.net.URI;
-import java.util.*;
 
 /**
  * @author Christoph Deppisch

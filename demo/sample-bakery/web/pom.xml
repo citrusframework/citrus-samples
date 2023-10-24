@@ -4,8 +4,8 @@
 
   <parent>
     <artifactId>citrus-sample-bakery</artifactId>
-    <groupId>com.consol.citrus.samples</groupId>
-    <version>3.4.0</version>
+    <groupId>org.citrusframework.samples</groupId>
+    <version>4.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -15,7 +15,6 @@
 
   <properties>
     <jetty.embedded.disabled>false</jetty.embedded.disabled>
-    <activemq.embedded.disabled>false</activemq.embedded.disabled>
   </properties>
 
   <dependencies>
@@ -43,19 +42,15 @@
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-jms</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-activemq</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-broker</artifactId>
+      <artifactId>artemis-jakarta-client</artifactId>
     </dependency>
-
     <dependency>
-      <groupId>org.jolokia</groupId>
-      <artifactId>jolokia-core</artifactId>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>artemis-jakarta-server</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <!-- Spring framework -->
@@ -82,35 +77,35 @@
 
     <!-- Citrus -->
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-base</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-spring</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-endpoint-catalog</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-testng</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-http</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-jms</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-json</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-xml</artifactId>
     </dependency>
   </dependencies>
@@ -138,21 +133,12 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
         <configuration>
           <war>${project.build.directory}/bakery.war</war>
           <webAppConfig>
             <contextPath>/bakery</contextPath>
           </webAppConfig>
-          <httpConnector>
-            <port>${bakery.server.port}</port>
-            <idleTimeout>60000</idleTimeout>
-          </httpConnector>
-          <systemProperties>
-            <systemProperty>
-              <name>ACTIVEMQ_BROKER_PORT</name>
-              <value>${activemq.server.port}</value>
-            </systemProperty>
-          </systemProperties>
         </configuration>
       </plugin>
     </plugins>

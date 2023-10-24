@@ -16,9 +16,9 @@
 
 package com.consol.citrus.samples.docker;
 
-import com.consol.citrus.docker.client.DockerClient;
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
+import org.citrusframework.docker.client.DockerClient;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

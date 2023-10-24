@@ -29,35 +29,35 @@ import org.springframework.integration.xml.transformer.UnmarshallingTransformer;
 public abstract class AbstractMarshallingMessageService<T, K> {
     @Autowired
     private UnmarshallingTransformer unmarshallingTransformer;
-    
+
     @Autowired
     private MarshallingTransformer marshallingTransformer;
-    
+
     @ServiceActivator
     public Message<?> processMessageInternal(Message<?> message) {
         Message<K> result = processMessage(unmarshalMessage(message));
-        
+
         return marshalMessage(result);
     }
-    
+
     public abstract Message<K> processMessage(Message<T> request);
 
     /**
      * Unmarshal message payload.
-     * 
+     *
      * @param message
      * @return
      */
     @SuppressWarnings("unchecked") private Message<T> unmarshalMessage(Message<?> message) {
         T payload = (T) unmarshallingTransformer.transformPayload(message.getPayload());
         MessageBuilder<T> builder = MessageBuilder.withPayload(payload).copyHeaders(message.getHeaders());
-        
+
         return builder.build();
     }
-    
+
     /**
-     * Marshal message payload. 
-     * 
+     * Marshal message payload.
+     *
      * @param message
      * @return
      */

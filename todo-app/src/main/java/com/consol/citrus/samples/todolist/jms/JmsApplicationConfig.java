@@ -16,19 +16,26 @@
 
 package com.consol.citrus.samples.todolist.jms;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.broker.BrokerFactory;
-import org.apache.activemq.broker.BrokerService;
-import org.springframework.beans.factory.BeanCreationException;
+import java.util.Collections;
+
+import jakarta.jms.ConnectionFactory;
+import org.apache.activemq.artemis.core.config.impl.SecurityConfiguration;
+import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQJAASSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.jaas.InVMLoginModule;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.support.converter.*;
-
-import javax.jms.ConnectionFactory;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
 
 /**
  * @author Christoph Deppisch
@@ -38,21 +45,20 @@ import javax.jms.ConnectionFactory;
 @ConditionalOnProperty(prefix = "todo.jms", value = "enabled")
 public class JmsApplicationConfig {
 
-    private String brokerHost = "localhost";
-
-    private String brokerPort = "61616";
-
     @Bean(initMethod = "start", destroyMethod = "stop")
     @ConditionalOnProperty(prefix = "todo.jms", value = "broker", havingValue = "enabled", matchIfMissing = true)
-    public BrokerService messageBroker() {
-        try {
-            BrokerService messageBroker = BrokerFactory.createBroker(String.format("broker:tcp://%s:%s", brokerHost, brokerPort));
-            messageBroker.setPersistent(false);
-            messageBroker.setUseJmx(false);
-            return messageBroker;
-        } catch (Exception e) {
-            throw new BeanCreationException("Failed to create embedded message broker", e);
-        }
+    public EmbeddedActiveMQ messageBroker() {
+        EmbeddedActiveMQ broker = new EmbeddedActiveMQ();
+        broker.setSecurityManager(securityManager());
+        return broker;
+    }
+
+    @Bean
+    public ActiveMQSecurityManager securityManager() {
+        SecurityConfiguration securityConfiguration = new SecurityConfiguration(Collections.singletonMap("citrus", "citrus"),
+                Collections.singletonMap("citrus", Collections.singletonList("citrus")));
+        securityConfiguration.setDefaultUser("citrus");
+        return new ActiveMQJAASSecurityManager(InVMLoginModule.class.getName(), securityConfiguration);
     }
 
     @Bean(name = "messageBroker")
@@ -64,7 +70,7 @@ public class JmsApplicationConfig {
     @Bean
     @DependsOn("messageBroker")
     public ConnectionFactory activeMqConnectionFactory() {
-        return new ActiveMQConnectionFactory(String.format("tcp://%s:%s", brokerHost, brokerPort));
+        return new ActiveMQConnectionFactory("tcp://localhost:61616", "citrus", "citrus");
     }
 
     @Bean

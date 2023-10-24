@@ -16,7 +16,7 @@
 
 package com.consol.citrus.samples.todolist.web;
 
-import java.util.List;
+import java.util.Set;
 
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
@@ -50,13 +50,13 @@ public class TodoListController {
     })
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<TodoEntry> list() {
+    public Set<TodoEntry> list() {
         return todoListService.getAllEntries();
     }
 
     @RequestMapping(value = "/{limit}", method = RequestMethod.GET)
     @ResponseBody
-    public List<TodoEntry> listWithLimit(@PathVariable(value = "limit") final int limit) {
+    public Set<TodoEntry> listWithLimit(@PathVariable(value = "limit") final int limit) {
         return todoListService.getAllEntries(limit);
     }
 

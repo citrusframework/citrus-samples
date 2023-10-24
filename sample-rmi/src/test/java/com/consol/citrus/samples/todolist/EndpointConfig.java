@@ -16,9 +16,9 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.rmi.client.RmiClient;
-import com.consol.citrus.rmi.server.RmiServer;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.rmi.client.RmiClient;
+import org.citrusframework.rmi.server.RmiServer;
 import com.consol.citrus.samples.todolist.remote.TodoListService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

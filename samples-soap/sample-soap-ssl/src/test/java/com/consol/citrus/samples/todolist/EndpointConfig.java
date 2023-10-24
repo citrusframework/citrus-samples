@@ -16,31 +16,44 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.ws.server.WebServiceServer;
-import com.consol.citrus.xml.XsdSchemaRepository;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ssl.*;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.ssl.SSLContexts;
-import org.eclipse.jetty.server.*;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.util.Collections;
+import javax.net.ssl.SSLContext;
+
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
+import org.apache.hc.core5.ssl.SSLContexts;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.ws.client.WebServiceClient;
+import org.citrusframework.ws.server.WebServiceServer;
+import org.citrusframework.xml.XsdSchemaRepository;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
-import org.springframework.ws.transport.http.HttpComponentsMessageSender;
+import org.springframework.ws.transport.http.HttpComponents5MessageSender;
 import org.springframework.xml.xsd.SimpleXsdSchema;
-
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.util.Collections;
 
 /**
  * @author Christoph Deppisch
@@ -92,7 +105,7 @@ public class EndpointConfig {
     public HttpClient httpClient() {
         try {
             SSLContext sslcontext = SSLContexts
-                .custom()
+                    .custom()
                     .loadTrustMaterial(new ClassPathResource("keys/citrus.jks").getFile(), "secret".toCharArray(),
                             new TrustSelfSignedStrategy())
                     .build();
@@ -100,20 +113,22 @@ public class EndpointConfig {
             SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
                     sslcontext, NoopHostnameVerifier.INSTANCE);
 
-            return HttpClients
-                .custom()
+            PoolingHttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
                     .setSSLSocketFactory(sslSocketFactory)
-                    .setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                    .addInterceptorFirst(new HttpComponentsMessageSender.RemoveSoapHeadersInterceptor())
-                .build();
+                    .build();
+
+            return HttpClients.custom()
+                    .setConnectionManager(connectionManager)
+                    .addRequestInterceptorFirst(new HttpComponents5MessageSender.RemoveSoapHeadersInterceptor())
+                    .build();
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             throw new BeanCreationException("Failed to create http client for ssl connection", e);
         }
     }
 
     @Bean
-    public HttpComponentsMessageSender sslRequestMessageSender() {
-        return new HttpComponentsMessageSender(httpClient());
+    public HttpComponents5MessageSender sslRequestMessageSender() {
+        return new HttpComponents5MessageSender(httpClient());
     }
 
     @Bean
@@ -122,6 +137,7 @@ public class EndpointConfig {
             .soap()
                 .server()
                 .connector(sslConnector())
+                .resourceBase("src/test/resources")
                 .timeout(5000)
                 .autoStart(true)
             .build();
@@ -141,12 +157,14 @@ public class EndpointConfig {
         parent.setSecureScheme("https");
         parent.setSecurePort(securePort);
         HttpConfiguration configuration = new HttpConfiguration(parent);
-        configuration.setCustomizers(Collections.singletonList(new SecureRequestCustomizer()));
+        SecureRequestCustomizer secureRequestCustomizer = new SecureRequestCustomizer();
+        secureRequestCustomizer.setSniHostCheck(false);
+        configuration.setCustomizers(Collections.singletonList(secureRequestCustomizer));
         return configuration;
     }
 
-    private SslContextFactory sslContextFactory() {
-        SslContextFactory contextFactory = new SslContextFactory();
+    private SslContextFactory.Server sslContextFactory() {
+        SslContextFactory.Server contextFactory = new SslContextFactory.Server();
         contextFactory.setKeyStorePath(sslKeyStorePath);
         contextFactory.setKeyStorePassword("secret");
         return contextFactory;

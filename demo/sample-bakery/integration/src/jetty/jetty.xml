@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_10_0.dtd">
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+  <Set name="connectors">
+    <Array type="org.eclipse.jetty.server.Connector">
+      <Item>
+        <New class="org.eclipse.jetty.server.ServerConnector">
+          <Arg>
+            <Ref refid="Server"/>
+          </Arg>
+          <Set name="port">18001</Set>
+          <Set name="name">BakeryServerConnector</Set>
+        </New>
+      </Item><Item>
+        <New class="org.eclipse.jetty.server.ServerConnector">
+          <Arg>
+            <Ref refid="Server"/>
+          </Arg>
+          <Set name="port">18002</Set>
+          <Set name="name">ReportServerConnector</Set>
+        </New>
+      </Item>
+    </Array>
+  </Set>
+
+  <Set name="handler">
+    <New class="org.eclipse.jetty.server.handler.HandlerCollection">
+      <Arg>
+        <Array type="org.eclipse.jetty.server.Handler">
+          <Item>
+            <New class="org.eclipse.jetty.server.handler.ContextHandlerCollection">
+              <Arg>
+                <Array type="org.eclipse.jetty.server.handler.ContextHandler">
+                  <Item>
+                    <New class="org.eclipse.jetty.maven.plugin.MavenWebAppContext">
+                      <Set name="contextPath">/web</Set>
+                      <Set name="war">${settings.localRepository}/org/citrusframework/samples/citrus-bakery-web/${project.version}/citrus-bakery-web-${project.version}.war</Set>
+                    </New>
+                  </Item>
+                  <Item>
+                    <New class="org.eclipse.jetty.maven.plugin.MavenWebAppContext">
+                      <Set name="contextPath">/</Set>
+                      <Set name="war">${settings.localRepository}/org/citrusframework/samples/citrus-bakery-report/${project.version}/citrus-bakery-report-${project.version}.war</Set>
+                    </New>
+                  </Item>
+                </Array>
+              </Arg>
+            </New>
+          </Item>
+        </Array>
+      </Arg>
+    </New>
+  </Set>
+
+</Configure>

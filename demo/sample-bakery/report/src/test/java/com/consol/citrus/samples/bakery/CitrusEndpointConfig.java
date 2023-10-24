@@ -16,16 +16,16 @@
 
 package com.consol.citrus.samples.bakery;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.mail.server.MailServer;
-import com.consol.citrus.report.MessageTracingTestListener;
-import com.consol.citrus.variable.GlobalVariables;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.mail.server.MailServer;
+import org.citrusframework.report.MessageTracingTestListener;
+import org.citrusframework.variable.GlobalVariables;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author Christoph Deppisch
@@ -56,7 +56,7 @@ public class CitrusEndpointConfig {
     public HttpClient reportingClient() {
         return CitrusEndpoints.http()
                     .client()
-                    .requestMethod(HttpMethod.GET)
+                    .requestMethod(RequestMethod.GET)
                     .requestUrl(String.format("http://localhost:%s/report/services", reportServerPort))
                     .build();
     }
@@ -66,6 +66,7 @@ public class CitrusEndpointConfig {
         return CitrusEndpoints.mail()
                 .server()
                 .port(mailServerPort)
+                .authRequired(false)
                 .autoAccept(true)
                 .autoStart(true)
                 .build();

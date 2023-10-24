@@ -16,13 +16,20 @@
 
 package com.consol.citrus.samples.todolist.dao;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+import javax.sql.DataSource;
+
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.*;
 
 /**
  * @author Christoph Deppisch
@@ -59,7 +66,7 @@ public class JdbcTodoListDao implements TodoListDao, InitializingBean {
     }
 
     @Override
-    public List<TodoEntry> list() {
+    public Set<TodoEntry> list() {
         try {
             try (Connection connection = getConnection()) {
                 try (Statement statement = connection.createStatement()) {
@@ -74,7 +81,7 @@ public class JdbcTodoListDao implements TodoListDao, InitializingBean {
     }
 
     @Override
-    public List<TodoEntry> list(int limit) {
+    public Set<TodoEntry> list(int limit) {
         try (Connection connection = getConnection()) {
             try(CallableStatement callableStatement = connection.prepareCall("{CALL limitedToDoList(?)}")){
                 callableStatement.setInt(1, limit);
@@ -88,8 +95,8 @@ public class JdbcTodoListDao implements TodoListDao, InitializingBean {
         }
     }
 
-    private List<TodoEntry> convertToTodoEntry(ResultSet resultSet) throws SQLException {
-        List<TodoEntry> list = new ArrayList<>();
+    private Set<TodoEntry> convertToTodoEntry(ResultSet resultSet) throws SQLException {
+        Set<TodoEntry> list = new HashSet<>();
         while (resultSet.next()) {
             final String id = resultSet.getString(1);
             final String title = resultSet.getString(2);

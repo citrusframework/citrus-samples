@@ -1,9 +1,9 @@
 package com.consol.citrus.samples.todolist.page;
 
-import com.consol.citrus.context.TestContext;
-import com.consol.citrus.selenium.endpoint.SeleniumBrowser;
-import com.consol.citrus.selenium.model.PageValidator;
-import com.consol.citrus.selenium.model.WebPage;
+import org.citrusframework.context.TestContext;
+import org.citrusframework.selenium.endpoint.SeleniumBrowser;
+import org.citrusframework.selenium.model.PageValidator;
+import org.citrusframework.selenium.model.WebPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

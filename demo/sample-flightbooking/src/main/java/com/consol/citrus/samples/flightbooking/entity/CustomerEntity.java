@@ -16,8 +16,12 @@
 
 package com.consol.citrus.samples.flightbooking.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * @author Christoph Deppisch
@@ -25,54 +29,54 @@ import java.io.Serializable;
 @Entity
 @Table(name = "FBS_CUSTOMER")
 public class CustomerEntity implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @Column(name = "ID")
     private String id;
-    
+
     @Column(name = "FIRSTNAME", length = 150, nullable = false)
     private String firstname;
-    
+
     @Column(name = "LASTNAME", length = 150, nullable = false)
     private String lastname;
-    
+
     /**
      * @return the id
      */
     public String getId() {
         return id;
     }
-    
+
     /**
      * @param id the id to set
      */
     public void setId(String id) {
         this.id = id;
     }
-    
+
     /**
      * @return the firstname
      */
     public String getFirstname() {
         return firstname;
     }
-    
+
     /**
      * @param firstname the firstname to set
      */
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
-    
+
     /**
      * @return the lastname
      */
     public String getLastname() {
         return lastname;
     }
-    
+
     /**
      * @param lastname the lastname to set
      */

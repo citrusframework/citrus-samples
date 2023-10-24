@@ -2,32 +2,78 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.consol.citrus.samples</groupId>
+  <groupId>org.citrusframework.samples</groupId>
   <artifactId>citrus-sample-todo</artifactId>
   <name>Citrus Samples:: Todo App</name>
-  <version>3.4.0</version>
+  <version>4.0.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.25</spring.version>
-    <spring.boot.version>2.7.16</spring.boot.version>
-    <spring.kafka.version>2.8.6</spring.kafka.version>
-    <activemq.version>5.17.0</activemq.version>
-    <citrus.version>3.4.0</citrus.version>
-    <slf4j.version>1.7.36</slf4j.version>
-    <log4j2.version>2.19.0</log4j2.version>
-    <jackson.databind.version>2.13.2.2</jackson.databind.version>
-    <jackson.version>2.13.2</jackson.version>
-    <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
-    <jakarta.mail.version>1.6.7</jakarta.mail.version>
-    <jakarta.jms-api.version>2.0.3</jakarta.jms-api.version>
+    <spring.version>6.0.13</spring.version>
+    <spring.boot.version>3.1.4</spring.boot.version>
+    <spring.kafka.version>3.0.12</spring.kafka.version>
+    <activemq.artemis.version>2.31.0</activemq.artemis.version>
+    <citrus.version>4.0.0</citrus.version>
+    <slf4j.version>2.0.9</slf4j.version>
+    <log4j2.version>2.21.0</log4j2.version>
+    <commons.logging.version>1.2</commons.logging.version>
+    <jackson.databind.version>2.15.3</jackson.databind.version>
+    <jackson.version>2.15.3</jackson.version>
+    <jakarta.activation.api.version>2.1.2</jakarta.activation.api.version>
+    <jakarta.activation.version>2.0.1</jakarta.activation.version>
+    <jakarta.xml.bind-api.version>4.0.1</jakarta.xml.bind-api.version>
+    <jakarta.mail.version>2.0.2</jakarta.mail.version>
+    <jakarta.jms-api.version>3.1.0</jakarta.jms-api.version>
     <jakarta.validation.version>2.0.2</jakarta.validation.version>
+    <jaxb.version>4.0.3</jaxb.version>
     <xerces.version>2.12.2</xerces.version>
+
+    <jaxb.maven.plugin.version>3.1.0</jaxb.maven.plugin.version>
     <skipJaxb>true</skipJaxb>
   </properties>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>jaxb2-maven-plugin</artifactId>
+          <version>${jaxb.maven.plugin.version}</version>
+          <configuration>
+            <createJavaDocAnnotations>false</createJavaDocAnnotations>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.glassfish.jaxb</groupId>
+              <artifactId>jaxb-xjc</artifactId>
+              <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>jakarta.activation</groupId>
+              <artifactId>jakarta.activation-api</artifactId>
+              <version>${jakarta.activation.api.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>jakarta.xml.bind</groupId>
+              <artifactId>jakarta.xml.bind-api</artifactId>
+              <version>${jakarta.xml.bind-api.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.sun.xml.bind</groupId>
+              <artifactId>jaxb-impl</artifactId>
+              <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>xerces</groupId>
+              <artifactId>xercesImpl</artifactId>
+              <version>${xerces.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -51,8 +97,8 @@
         <version>3.8.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>11</source>
-          <target>11</target>
+          <source>17</source>
+          <target>17</target>
         </configuration>
       </plugin>
 
@@ -80,7 +126,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
-        <version>2.5.0</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
@@ -102,13 +147,6 @@
           </xjbSources>
           <skipXjc>${skipJaxb}</skipXjc>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>${xerces.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
 
       <plugin>
@@ -263,17 +301,17 @@
     </dependency>
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-client</artifactId>
-      <version>${activemq.version}</version>
+      <artifactId>artemis-jakarta-client</artifactId>
+      <version>${activemq.artemis.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-broker</artifactId>
-      <version>${activemq.version}</version>
+      <artifactId>artemis-jakarta-server</artifactId>
+      <version>${activemq.artemis.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-base</artifactId>
       <version>${citrus.version}</version>
       <scope>provided</scope>
@@ -287,9 +325,14 @@
     </dependency>
 
     <dependency>
-      <groupId>com.sun.mail</groupId>
+      <groupId>org.eclipse.angus</groupId>
       <artifactId>jakarta.mail</artifactId>
       <version>${jakarta.mail.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.angus</groupId>
+      <artifactId>angus-activation</artifactId>
+      <version>${jakarta.activation.version}</version>
     </dependency>
 
     <dependency>
@@ -351,13 +394,18 @@
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j2-impl</artifactId>
       <version>${log4j2.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.2</version>
+      <version>${commons.logging.version}</version>
       <scope>provided</scope>
     </dependency>
 

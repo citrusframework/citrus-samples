@@ -16,17 +16,17 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.rmi.client.RmiClient;
-import com.consol.citrus.rmi.message.RmiMessage;
-import com.consol.citrus.rmi.server.RmiServer;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.rmi.client.RmiClient;
+import org.citrusframework.rmi.message.RmiMessage;
+import org.citrusframework.rmi.server.RmiServer;
 import com.consol.citrus.samples.todolist.remote.TodoListService;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch

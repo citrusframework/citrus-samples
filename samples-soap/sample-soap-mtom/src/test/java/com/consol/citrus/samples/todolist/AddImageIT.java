@@ -16,17 +16,17 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.ws.message.SoapAttachment;
-import com.consol.citrus.ws.server.WebServiceServer;
-import com.consol.citrus.ws.validation.BinarySoapAttachmentValidator;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.ws.client.WebServiceClient;
+import org.citrusframework.ws.message.SoapAttachment;
+import org.citrusframework.ws.server.WebServiceServer;
+import org.citrusframework.ws.validation.BinarySoapAttachmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.dsl.XmlSupport.xml;
-import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+import static org.citrusframework.dsl.XmlSupport.xml;
+import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
 
 /**
  * @author Christoph Deppisch

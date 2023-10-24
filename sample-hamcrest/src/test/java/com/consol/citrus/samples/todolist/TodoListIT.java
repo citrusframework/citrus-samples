@@ -18,20 +18,20 @@ package com.consol.citrus.samples.todolist;
 
 import java.util.UUID;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.message.MessageType;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import org.apache.http.entity.ContentType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.message.MessageType;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.apache.hc.core5.http.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.CreateVariablesAction.Builder.createVariable;
-import static com.consol.citrus.container.HamcrestConditionExpression.assertThat;
-import static com.consol.citrus.container.Iterate.Builder.iterate;
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
-import static com.consol.citrus.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
+import static org.citrusframework.actions.CreateVariablesAction.Builder.createVariable;
+import static org.citrusframework.container.HamcrestConditionExpression.assertThat;
+import static org.citrusframework.container.Iterate.Builder.iterate;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;

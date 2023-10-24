@@ -16,15 +16,15 @@
 
 package com.consol.citrus.samples.bakery;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch

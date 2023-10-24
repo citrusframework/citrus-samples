@@ -17,18 +17,23 @@
 package com.consol.citrus;
 
 import java.util.Collections;
-import javax.jms.ConnectionFactory;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.variable.GlobalVariables;
-import com.consol.citrus.ws.server.WebServiceServer;
-import com.consol.citrus.xml.XsdSchemaRepository;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
-import org.apache.activemq.ActiveMQConnectionFactory;
+import jakarta.jms.ConnectionFactory;
+import org.apache.activemq.artemis.core.config.impl.SecurityConfiguration;
+import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
+import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQJAASSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
+import org.apache.activemq.artemis.spi.core.security.jaas.InVMLoginModule;
 import org.apache.camel.component.jms.JmsComponent;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.spring.SpringCamelContext;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.variable.GlobalVariables;
+import org.citrusframework.ws.server.WebServiceServer;
+import org.citrusframework.xml.XsdSchemaRepository;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -70,11 +75,25 @@ public class EndpointConfig {
         return namespaceContextBuilder;
     }
 
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    public EmbeddedActiveMQ messageBroker() {
+        EmbeddedActiveMQ broker = new EmbeddedActiveMQ();
+        broker.setSecurityManager(securityManager());
+        return broker;
+    }
+
     @Bean
+    public ActiveMQSecurityManager securityManager() {
+        SecurityConfiguration securityConfiguration = new SecurityConfiguration(Collections.singletonMap("citrus", "citrus"),
+                Collections.singletonMap("citrus", Collections.singletonList("citrus")));
+        securityConfiguration.setDefaultUser("citrus");
+        return new ActiveMQJAASSecurityManager(InVMLoginModule.class.getName(), securityConfiguration);
+    }
+
+    @Bean
+    @DependsOn("messageBroker")
     public ConnectionFactory connectionFactory() {
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
-        connectionFactory.setWatchTopicAdvisories(false);
-        return connectionFactory;
+        return new ActiveMQConnectionFactory("tcp://localhost:61616", "citrus", "citrus");
     }
 
     @Bean
@@ -112,7 +131,7 @@ public class EndpointConfig {
         SpringCamelContext context = new SpringCamelContext(applicationContext);
         context.addRouteDefinition(new RouteDefinition()
             .from("jms:queue:JMS.Queue.News")
-            .to("log:com.consol.citrus.camel?level=INFO")
+            .to("log:org.citrusframework.camel?level=INFO")
             .to("spring-ws:http://localhost:18009?soapAction=newsFeed"));
         return context;
     }

@@ -16,20 +16,20 @@
 
 package com.consol.citrus.samples.flightbooking;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.jms.endpoint.JmsEndpoint;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.jms.endpoint.JmsEndpoint;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
-import static com.consol.citrus.dsl.MessageSupport.MessageHeaderSupport.fromHeaders;
-import static com.consol.citrus.dsl.XmlSupport.xml;
-import static com.consol.citrus.dsl.XpathSupport.xpath;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.dsl.MessageSupport.MessageHeaderSupport.fromHeaders;
+import static org.citrusframework.dsl.XmlSupport.xml;
+import static org.citrusframework.dsl.XpathSupport.xpath;
 
 /**
  * @author Christoph Deppisch
@@ -64,13 +64,13 @@ public class FlightBookingIT extends TestNGCitrusSpringSupport {
         $(send()
             .endpoint(travelAgencyBookingRequestEndpoint)
             .message()
-            .body(new ClassPathResource("templates/TravelBookingRequest.xml"))
+            .body(Resources.fromClasspath("templates/TravelBookingRequest.xml"))
                 .header("bookingCorrelationId", "${correlationId}"));
 
         $(receive()
             .endpoint(royalAirlineServer)
             .message()
-            .body(new ClassPathResource("templates/RoyalAirlineBookingRequest.xml"))
+            .body(Resources.fromClasspath("templates/RoyalAirlineBookingRequest.xml"))
             .header("bookingCorrelationId", "${correlationId}")
             .validate(xml()
                         .xpath()
@@ -84,7 +84,7 @@ public class FlightBookingIT extends TestNGCitrusSpringSupport {
         $(send()
             .endpoint(royalAirlineServer)
             .message()
-            .body(new ClassPathResource("templates/RoyalAirlineBookingResponse.xml"))
+            .body(Resources.fromClasspath("templates/RoyalAirlineBookingResponse.xml"))
             .header("X-sequenceNumber", "${sequenceNumber}")
             .header("X-sequenceSize", "${sequenceSize}")
             .header("bookingCorrelationId", "${correlationId}"));
@@ -92,7 +92,7 @@ public class FlightBookingIT extends TestNGCitrusSpringSupport {
         $(receive()
             .endpoint(smartAirlineBookingRequestEndpoint)
             .message()
-            .body(new ClassPathResource("templates/SmartAirlineBookingRequest.xml"))
+            .body(Resources.fromClasspath("templates/SmartAirlineBookingRequest.xml"))
             .validate(xml()
                         .xpath()
                         .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId"))
@@ -106,7 +106,7 @@ public class FlightBookingIT extends TestNGCitrusSpringSupport {
         $(send()
             .endpoint(smartAirlineBookingResponseEndpoint)
             .message()
-            .body(new ClassPathResource("templates/SmartAirlineBookingResponse.xml"))
+            .body(Resources.fromClasspath("templates/SmartAirlineBookingResponse.xml"))
             .header("sequenceNumber", "${sequenceNumber}")
             .header("sequenceSize", "${sequenceSize}")
             .header("bookingCorrelationId", "${correlationId}"));
@@ -114,7 +114,7 @@ public class FlightBookingIT extends TestNGCitrusSpringSupport {
         $(receive()
             .endpoint(travelAgencyBookingResponseEndpoint)
             .message()
-            .body(new ClassPathResource("templates/TravelBookingResponse.xml"))
+            .body(Resources.fromClasspath("templates/TravelBookingResponse.xml"))
             .header("bookingCorrelationId", "${correlationId}"));
     }
 

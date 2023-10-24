@@ -18,15 +18,15 @@ package com.consol.citrus.samples.todolist;
 
 import java.util.Collections;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.xml.XsdSchemaRepository;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
-import com.consol.citrus.xml.schema.WsdlXsdSchema;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.ws.client.WebServiceClient;
+import org.citrusframework.xml.XsdSchemaRepository;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
+import org.citrusframework.xml.schema.WsdlXsdSchema;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 
@@ -39,7 +39,7 @@ public class EndpointConfig {
 
     @Bean
     public WsdlXsdSchema todoListSchema() {
-        return new WsdlXsdSchema(new ClassPathResource("schema/TodoList.wsdl"));
+        return new WsdlXsdSchema(Resources.fromClasspath("schema/TodoList.wsdl"));
     }
 
     @Bean

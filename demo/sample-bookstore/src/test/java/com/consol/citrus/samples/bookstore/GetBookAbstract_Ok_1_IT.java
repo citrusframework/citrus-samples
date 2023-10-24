@@ -16,15 +16,15 @@
 
 package com.consol.citrus.samples.bookstore;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.ws.client.WebServiceClient;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.dsl.XpathSupport.xpath;
-import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+import static org.citrusframework.dsl.XpathSupport.xpath;
+import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
 
 /**
  * @author Christoph Deppisch
@@ -89,7 +89,7 @@ public class GetBookAbstract_Ok_1_IT extends TestNGCitrusSpringSupport {
                             "<bkr:registration-date>@ignore@</bkr:registration-date>" +
                         "</bkr:book>" +
                     "</bkr:GetBookAbstractResponseMessage>")
-            .attachment("book-abstract", "text/plain", new ClassPathResource("book-abstract.txt", CitrusEndpointConfig.class))
+            .attachment("book-abstract", "text/plain", Resources.fromClasspath("book-abstract.txt", CitrusEndpointConfig.class))
             .extract(xpath()
                         .expression("/bkr:GetBookAbstractResponseMessage/bkr:book/bkr:id", "bookId")));
     }

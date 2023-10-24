@@ -16,14 +16,16 @@
 
 package com.consol.citrus.samples.flightbooking.persistence.impl;
 
+import java.util.List;
+
 import com.consol.citrus.samples.flightbooking.entity.CustomerEntity;
 import com.consol.citrus.samples.flightbooking.entity.converter.CustomerConverter;
 import com.consol.citrus.samples.flightbooking.model.Customer;
 import com.consol.citrus.samples.flightbooking.persistence.CustomerDao;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.*;
-import java.util.List;
 
 /**
  * @author Christoph Deppisch
@@ -33,14 +35,14 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @PersistenceContext
     private EntityManager em;
-    
+
     public Customer find(String customerId) {
         return CustomerConverter.from(em.find(CustomerEntity.class, customerId));
     }
 
     @SuppressWarnings("unchecked") public List<Customer> findAll() {
         Query query = em.createQuery("from CustomerEntity c");
-        
+
         return query.getResultList();
     }
 

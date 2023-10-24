@@ -18,27 +18,27 @@ package com.consol.citrus.samples.todolist;
 
 import java.io.IOException;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.exceptions.CitrusRuntimeException;
-import com.consol.citrus.ftp.client.FtpClient;
-import com.consol.citrus.ftp.message.FtpMessage;
-import com.consol.citrus.ftp.model.CommandResult;
-import com.consol.citrus.ftp.model.GetCommandResult;
-import com.consol.citrus.ftp.model.ListCommandResult;
-import com.consol.citrus.ftp.model.PutCommandResult;
-import com.consol.citrus.ftp.server.FtpServer;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.util.FileUtils;
 import org.apache.commons.net.ftp.FTPCmd;
 import org.apache.ftpserver.ftplet.DataType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.exceptions.CitrusRuntimeException;
+import org.citrusframework.ftp.client.FtpClient;
+import org.citrusframework.ftp.message.FtpMessage;
+import org.citrusframework.ftp.model.CommandResult;
+import org.citrusframework.ftp.model.GetCommandResult;
+import org.citrusframework.ftp.model.ListCommandResult;
+import org.citrusframework.ftp.model.PutCommandResult;
+import org.citrusframework.ftp.server.FtpServer;
+import org.citrusframework.spi.Resource;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.EchoAction.Builder.echo;
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.actions.EchoAction.Builder.echo;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
@@ -128,7 +128,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
 
         $(receive()
             .endpoint(ftpClient)
-            .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", new ClassPathResource("todo/entry.json")))));
+            .message(FtpMessage.result(getRetrieveFileCommandResult("target/todo/todo.json", Resources.fromClasspath("todo/entry.json")))));
     }
 
     private CommandResult getMkdirsCommandResult(String path) {

@@ -16,12 +16,14 @@
 
 package com.consol.citrus.samples.flightbooking.entity.converter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import com.consol.citrus.samples.flightbooking.entity.FlightEntity;
 import com.consol.citrus.samples.flightbooking.model.Flight;
 import org.springframework.util.StringUtils;
-
-import java.text.*;
-import java.util.Calendar;
 
 /**
  * Converter takes care on model to entity conversion and vice versa.
@@ -34,12 +36,12 @@ public class FlightConverter {
      */
     private FlightConverter() {
     }
-    
+
     /**
      * Get model form entity.
      * @param entity
      * @return
-     * @throws ParseException 
+     * @throws ParseException
      */
     public static Flight from(FlightEntity entity) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-dd-MM'T'HH:mm:ss");
@@ -47,7 +49,7 @@ public class FlightConverter {
         if (entity ==  null) {
             return null;
         }
-        
+
         Flight model = new Flight();
 
         Calendar scheduledArrival = null;
@@ -57,7 +59,7 @@ public class FlightConverter {
                 scheduledArrival = Calendar.getInstance();
                 scheduledArrival.setTime(dateFormat.parse(entity.getScheduledArrival()));
             }
-            
+
             if (StringUtils.hasText(entity.getScheduledDeparture())) {
                 scheduledDeparture = Calendar.getInstance();
                 scheduledDeparture.setTime(dateFormat.parse(entity.getScheduledDeparture()));
@@ -65,17 +67,17 @@ public class FlightConverter {
         } catch (ParseException e) {
             throw new IllegalArgumentException("Failed to parse date format", e);
         }
-        
+
         model.setAirline(entity.getAirline());
         model.setFlightId(entity.getFlightId());
         model.setFromAirport(entity.getFromAirport());
         model.setScheduledArrival(scheduledArrival);
         model.setToAirport(entity.getToAirport());
         model.setScheduledDeparture(scheduledDeparture);
-        
+
         return model;
     }
-    
+
     /**
      * Get entity form model.
      * @param model
@@ -85,14 +87,14 @@ public class FlightConverter {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-dd-MM'T'HH:mm:ss");
 
         FlightEntity entity = new FlightEntity();
-        
+
         entity.setAirline(model.getAirline());
         entity.setFlightId(model.getFlightId());
         entity.setFromAirport(model.getFromAirport());
         entity.setScheduledArrival(dateFormat.format(model.getScheduledArrival().getTime()));
         entity.setToAirport(model.getToAirport());
         entity.setScheduledDeparture(dateFormat.format(model.getScheduledDeparture().getTime()));
-        
+
         return entity;
     }
 }

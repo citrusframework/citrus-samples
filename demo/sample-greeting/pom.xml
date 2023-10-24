@@ -2,36 +2,79 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.consol.citrus.samples</groupId>
+  <groupId>org.citrusframework.samples</groupId>
   <artifactId>citrus-sample-greeting</artifactId>
   <name>Citrus Samples:: Greeting: Java</name>
-  <version>3.4.0</version>
+  <version>4.0.0</version>
   <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.25</spring.version>
-    <spring.ws.version>3.1.5</spring.ws.version>
-    <spring.webflow.js.version>2.4.8.RELEASE</spring.webflow.js.version>
-    <spring.integration.version>5.5.11</spring.integration.version>
-    <activemq.version>5.17.0</activemq.version>
-    <xbean.spring.version>4.22</xbean.spring.version>
-    <slf4j.version>1.7.36</slf4j.version>
-    <log4j2.version>2.19.0</log4j2.version>
-    <citrus.version>3.4.0</citrus.version>
-    <jetty.version>9.4.50.v20221201</jetty.version>
-    <jackson.databind.version>2.13.2.2</jackson.databind.version>
-    <jackson.version>2.13.2</jackson.version>
-    <jaxb.version>2.3.6</jaxb.version>
-    <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
+    <spring.version>6.0.13</spring.version>
+    <spring.ws.version>4.0.6</spring.ws.version>
+    <spring.integration.version>6.1.4</spring.integration.version>
+    <activemq.artemis.version>2.31.0</activemq.artemis.version>
+    <xbean.spring.version>4.24</xbean.spring.version>
+    <slf4j.version>2.0.9</slf4j.version>
+    <log4j2.version>2.21.0</log4j2.version>
+    <commons.logging.version>1.2</commons.logging.version>
+    <citrus.version>4.0.0</citrus.version>
+    <jetty.version>11.0.17</jetty.version>
+    <jackson.databind.version>2.15.3</jackson.databind.version>
+    <jackson.version>2.15.3</jackson.version>
+    <jaxb.version>4.0.3</jaxb.version>
+    <jakarta.activation.api.version>2.1.2</jakarta.activation.api.version>
+    <jakarta.xml.bind-api.version>4.0.1</jakarta.xml.bind-api.version>
     <xerces.version>2.12.2</xerces.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>
     <system.under.test.mode>embedded</system.under.test.mode>
+
+    <jaxb.maven.plugin.version>3.1.0</jaxb.maven.plugin.version>
   </properties>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>jaxb2-maven-plugin</artifactId>
+          <version>${jaxb.maven.plugin.version}</version>
+          <configuration>
+            <createJavaDocAnnotations>false</createJavaDocAnnotations>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.glassfish.jaxb</groupId>
+              <artifactId>jaxb-xjc</artifactId>
+              <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>jakarta.activation</groupId>
+              <artifactId>jakarta.activation-api</artifactId>
+              <version>${jakarta.activation.api.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>jakarta.xml.bind</groupId>
+              <artifactId>jakarta.xml.bind-api</artifactId>
+              <version>${jakarta.xml.bind-api.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.sun.xml.bind</groupId>
+              <artifactId>jaxb-impl</artifactId>
+              <version>${jaxb.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>xerces</groupId>
+              <artifactId>xercesImpl</artifactId>
+              <version>${xerces.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -39,8 +82,8 @@
         <version>3.8.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>11</source>
-          <target>11</target>
+          <source>17</source>
+          <target>17</target>
         </configuration>
       </plugin>
 
@@ -90,21 +133,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.activemq.tooling</groupId>
-        <artifactId>activemq-maven-plugin</artifactId>
-        <version>${activemq.version}</version>
-        <configuration>
-          <fork>false</fork>
-          <systemProperties>
-            <property>
-              <name>log4j.configuration</name>
-              <value>log4j.properties</value>
-            </property>
-          </systemProperties>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jetty.version}</version>
@@ -143,7 +171,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>jaxb2-maven-plugin</artifactId>
-        <version>2.5.0</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
@@ -162,13 +189,6 @@
             <xjbSource>src/main/resources/com/consol/citrus/samples/greeting/schema/binding.xjb</xjbSource>
           </xjbSources>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>${xerces.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
     </plugins>
   </build>
@@ -179,11 +199,6 @@
       <groupId>org.springframework.ws</groupId>
       <artifactId>spring-ws-core</artifactId>
       <version>${spring.ws.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.webflow</groupId>
-      <artifactId>spring-js</artifactId>
-      <version>${spring.webflow.js.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -247,21 +262,17 @@
       <version>${xerces.version}</version>
     </dependency>
 
-    <!-- ActiveMQ broker -->
+    <!-- Active MQ -->
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-broker</artifactId>
-      <version>${activemq.version}</version>
+      <artifactId>artemis-jakarta-client</artifactId>
+      <version>${activemq.artemis.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>activemq-spring</artifactId>
-      <version>${activemq.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.xbean</groupId>
-      <artifactId>xbean-spring</artifactId>
-      <version>${xbean.spring.version}</version>
+      <artifactId>artemis-jakarta-server</artifactId>
+      <version>${activemq.artemis.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -284,14 +295,20 @@
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j2-impl</artifactId>
       <version>${log4j2.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.2</version>
+      <version>${commons.logging.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -316,43 +333,43 @@
 
     <!-- Citrus -->
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-base</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-spring</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-endpoint-catalog</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-testng</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-spring-integration</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-jms</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-xml</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
@@ -371,30 +388,6 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.activemq.tooling</groupId>
-            <artifactId>activemq-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>start-activemq</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <fork>true</fork>
-                </configuration>
-              </execution>
-              <execution>
-                <id>stop-activemq</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
             <executions>
@@ -402,7 +395,7 @@
                 <id>start-server</id>
                 <phase>pre-integration-test</phase>
                 <goals>
-                  <goal>deploy-war</goal>
+                  <goal>start-war</goal>
                 </goals>
                 <configuration>
                   <daemon>true</daemon>

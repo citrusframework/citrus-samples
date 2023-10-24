@@ -19,22 +19,22 @@ package com.consol.citrus.samples.todolist;
 import java.util.Map;
 import java.util.UUID;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.context.TestContext;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.message.MessageType;
-import com.consol.citrus.message.builder.ObjectMappingPayloadBuilder;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.context.TestContext;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.message.MessageType;
+import org.citrusframework.message.builder.ObjectMappingPayloadBuilder;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.validation.json.JsonMappingValidationProcessor;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.validation.json.JsonMappingValidationProcessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch

@@ -36,9 +36,10 @@
     </int:interceptors>
   </int:channel>
 
-  <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-    <property name="brokerURL" value="tcp://localhost:61616" />
-    <property name="watchTopicAdvisories" value="false"/>
+  <bean id="jmsConnectionFactory" class="org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory">
+    <constructor-arg value="tcp://localhost:61616" />
+    <constructor-arg value="citrus" />
+    <constructor-arg value="citrus" />
   </bean>
 
   <jms:message-driven-channel-adapter id="bookingIn" destination-name="Travel.Agency.Request.Queue" channel="bookingsXML" connection-factory="jmsConnectionFactory"/>

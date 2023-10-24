@@ -16,24 +16,32 @@
 
 package com.consol.citrus.samples.todolist.soap;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+import java.util.Iterator;
+import java.util.Set;
+
 import com.consol.citrus.samples.todolist.model.Attachment;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.consol.citrus.samples.todolist.service.TodoListService;
-import com.consol.citrus.samples.todolist.soap.model.*;
+import com.consol.citrus.samples.todolist.soap.model.AddTodoEntryRequest;
+import com.consol.citrus.samples.todolist.soap.model.AddTodoEntryResponse;
+import com.consol.citrus.samples.todolist.soap.model.GetTodoListRequest;
+import com.consol.citrus.samples.todolist.soap.model.GetTodoListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.ws.context.MessageContext;
-import org.springframework.ws.server.endpoint.annotation.*;
+import org.springframework.ws.server.endpoint.annotation.Endpoint;
+import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
+import org.springframework.ws.server.endpoint.annotation.RequestPayload;
+import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import org.springframework.ws.soap.SoapMessage;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.*;
 
 /**
  * @author Christoph Deppisch
@@ -60,7 +68,7 @@ public class TodoWebServiceEndpoint {
             if (contentId.startsWith("<") && contentId.endsWith(">")) {
                 contentId = contentId.substring(1, contentId.length() - 1);
             }
-            
+
             todoAttachment.setCid(contentId);
             todoAttachment.setContentType(attachment.getContentType());
 
@@ -85,7 +93,7 @@ public class TodoWebServiceEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getTodoListRequest")
     @ResponsePayload
     public GetTodoListResponse getTodoList(@RequestPayload GetTodoListRequest request) {
-        List<TodoEntry> todoEntryList = todoListService.getAllEntries();
+        Set<TodoEntry> todoEntryList = todoListService.getAllEntries();
 
         GetTodoListResponse response = new GetTodoListResponse();
         response.setList(new GetTodoListResponse.List());

@@ -16,14 +16,14 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.ws.client.WebServiceClient;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.ws.actions.SoapActionBuilder.soap;
+import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
 
 /**
  * @author Christoph Deppisch
@@ -44,27 +44,27 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .send()
             .message()
             .soapAction("addTodoEntry")
-            .body(new ClassPathResource("templates/addTodoEntryRequest.xml"))
+            .body(Resources.fromClasspath("templates/addTodoEntryRequest.xml"))
             .attachment("myAttachment", "text/plain", "This is my attachment"));
 
         $(soap()
             .client(todoClient)
             .receive()
             .message()
-            .body(new ClassPathResource("templates/addTodoEntryResponse.xml")));
+            .body(Resources.fromClasspath("templates/addTodoEntryResponse.xml")));
 
         $(soap()
             .client(todoClient)
             .send()
             .message()
             .soapAction("getTodoList")
-            .body(new ClassPathResource("templates/getTodoListRequest.xml")));
+            .body(Resources.fromClasspath("templates/getTodoListRequest.xml")));
 
         $(soap()
             .client(todoClient)
             .receive()
             .message()
-            .body(new ClassPathResource("templates/getTodoListResponse.xml")));
+            .body(Resources.fromClasspath("templates/getTodoListResponse.xml")));
     }
 
 }

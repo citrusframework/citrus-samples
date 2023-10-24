@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.consol.citrus.samples</groupId>
+  <groupId>org.citrusframework.samples</groupId>
   <artifactId>citrus-samples</artifactId>
-  <version>3.4.0</version>
+  <version>4.0.0</version>
   <name>Citrus Samples:: Parent</name>
   <packaging>pom</packaging>
 
@@ -38,6 +38,5 @@
     <module>sample-binary</module>
     <module>samples-soap</module>
     <module>samples-db</module>
-    <module>samples-remote</module>
   </modules>
 </project>

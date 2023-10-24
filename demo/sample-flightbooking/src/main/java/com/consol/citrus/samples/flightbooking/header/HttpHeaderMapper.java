@@ -44,5 +44,5 @@ public class HttpHeaderMapper extends DefaultHttpHeaderMapper {
         Integer sequenceNumber = headers.get(IntegrationMessageHeaderAccessor.SEQUENCE_SIZE, Integer.class);
         return (sequenceNumber != null ? sequenceNumber : 0);
     }
-    
+
 }

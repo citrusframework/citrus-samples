@@ -4,8 +4,8 @@
 
   <parent>
     <artifactId>citrus-sample-bakery</artifactId>
-    <groupId>com.consol.citrus.samples</groupId>
-    <version>3.4.0</version>
+    <groupId>org.citrusframework.samples</groupId>
+    <version>4.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -15,7 +15,6 @@
 
   <properties>
     <jetty.embedded.disabled>false</jetty.embedded.disabled>
-    <activemq.embedded.disabled>false</activemq.embedded.disabled>
   </properties>
 
   <dependencies>
@@ -36,11 +35,6 @@
       <artifactId>camel-servlet</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.jolokia</groupId>
-      <artifactId>jolokia-core</artifactId>
-    </dependency>
-
     <!-- Spring framework -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -56,45 +50,49 @@
     </dependency>
 
     <dependency>
-      <groupId>com.sun.mail</groupId>
+      <groupId>org.eclipse.angus</groupId>
       <artifactId>jakarta.mail</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.angus</groupId>
+      <artifactId>angus-activation</artifactId>
     </dependency>
 
     <!-- Citrus -->
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-base</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-spring</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-endpoint-catalog</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-testng</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-http</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-jms</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-mail</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-xml</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-json</artifactId>
     </dependency>
   </dependencies>
@@ -122,6 +120,7 @@
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
         <configuration>
           <war>${project.build.directory}/report.war</war>
           <webAppConfig>
@@ -131,15 +130,8 @@
             <port>${report.server.port}</port>
             <idleTimeout>60000</idleTimeout>
           </httpConnector>
-          <systemProperties>
-            <systemProperty>
-              <name>MAIL_SERVER_PORT</name>
-              <value>${mail.server.port}</value>
-            </systemProperty>
-          </systemProperties>
         </configuration>
       </plugin>
     </plugins>
   </build>
-
 </project>

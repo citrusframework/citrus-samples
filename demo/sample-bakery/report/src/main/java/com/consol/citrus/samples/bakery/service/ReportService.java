@@ -16,12 +16,14 @@
 
 package com.consol.citrus.samples.bakery.service;
 
-import org.json.simple.JSONObject;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Christoph Deppisch
@@ -30,10 +32,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ReportService implements InitializingBean {
 
     /** In memory report **/
-    private Map<String, AtomicInteger> report = new LinkedHashMap<>();
+    private final Map<String, AtomicInteger> report = new LinkedHashMap<>();
 
     /** In memory id store of produced items */
-    private ArrayList<String> produced = new ArrayList<>();
+    private final ArrayList<String> produced = new ArrayList<>();
 
     @Autowired
     private MailService mailService;
@@ -43,9 +45,7 @@ public class ReportService implements InitializingBean {
      * @return
      */
     public String status(String id) {
-        JSONObject statusJSon = new JSONObject();
-        statusJSon.put("status", produced.contains(id));
-        return statusJSon.toString();
+        return String.format("{ \"status\": %s }", produced.contains(id));
     }
 
     /**
@@ -78,15 +78,16 @@ public class ReportService implements InitializingBean {
     }
 
     /**
-     * Construc JSON report data.
+     * Construct JSON report data.
      * @return
      */
     public String json() {
-        JSONObject jsonReport = new JSONObject();
-        for (Map.Entry<String, AtomicInteger> goods : report.entrySet()) {
-            jsonReport.put(goods.getKey(), goods.getValue().get());
-        }
-        return jsonReport.toString();
+        return "{" +
+                report.entrySet()
+                        .stream()
+                        .map(goods -> String.format("\"%s\": %s", goods.getKey(), goods.getValue().get()))
+                        .collect(Collectors.joining(",")) +
+                "}";
     }
 
     /**

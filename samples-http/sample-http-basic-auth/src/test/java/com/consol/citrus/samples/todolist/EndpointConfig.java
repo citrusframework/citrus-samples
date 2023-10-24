@@ -16,29 +16,27 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.endpoint.adapter.StaticEndpointAdapter;
-import com.consol.citrus.http.client.BasicAuthClientHttpRequestFactory;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.http.message.HttpMessage;
-import com.consol.citrus.http.security.*;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.message.Message;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.eclipse.jetty.security.*;
-import org.eclipse.jetty.util.security.Credential;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.endpoint.adapter.StaticEndpointAdapter;
+import org.citrusframework.http.client.BasicAuthClientHttpRequestFactory;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.http.message.HttpMessage;
+import org.citrusframework.http.security.BasicAuthConstraint;
+import org.citrusframework.http.security.SecurityHandlerFactory;
+import org.citrusframework.http.security.User;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.message.Message;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
+import org.eclipse.jetty.security.SecurityHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-
-import javax.security.auth.Subject;
-import java.io.IOException;
-import java.security.Principal;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Christoph Deppisch
@@ -80,10 +78,10 @@ public class EndpointConfig {
     public BasicAuthClientHttpRequestFactory basicAuthRequestFactoryBean() {
         BasicAuthClientHttpRequestFactory requestFactory = new BasicAuthClientHttpRequestFactory();
 
-        AuthScope authScope = new AuthScope("localhost", port, "", "basic");
+        AuthScope authScope = new AuthScope("http", "localhost", port, "", "basic");
         requestFactory.setAuthScope(authScope);
 
-        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("citrus", "secr3t");
+        UsernamePasswordCredentials credentials = new UsernamePasswordCredentials("citrus", "secr3t".toCharArray());
         requestFactory.setCredentials(credentials);
         return requestFactory;
     }
@@ -124,7 +122,6 @@ public class EndpointConfig {
     public SecurityHandlerFactory basicAuthSecurityHandlerFactoryBean() {
         SecurityHandlerFactory securityHandlerFactory = new SecurityHandlerFactory();
         securityHandlerFactory.setUsers(users());
-        securityHandlerFactory.setLoginService(basicAuthLoginService(basicAuthUserStore()));
         securityHandlerFactory.setConstraints(Collections.singletonMap("/todo/*", new BasicAuthConstraint(USER_ROLES)));
 
         return securityHandlerFactory;
@@ -133,51 +130,6 @@ public class EndpointConfig {
     @Bean
     public SecurityHandler basicAuthSecurityHandler() throws Exception {
         return basicAuthSecurityHandlerFactoryBean().getObject();
-    }
-
-    @Bean
-    public HashLoginService basicAuthLoginService(PropertyUserStore basicAuthUserStore) {
-        return new HashLoginService() {
-            @Override
-            protected void doStart() throws Exception {
-                setUserStore(basicAuthUserStore);
-                basicAuthUserStore.start();
-
-                super.doStart();
-            }
-        };
-    }
-
-    @Bean
-    public PropertyUserStore basicAuthUserStore() {
-        return new PropertyUserStore() {
-            @Override
-            protected void loadUsers() throws IOException {
-                getKnownUserIdentities().clear();
-
-                for (User user : users()) {
-                    Credential credential = Credential.getCredential(user.getPassword());
-
-                    Principal userPrincipal = new AbstractLoginService.UserPrincipal(user.getName(),credential);
-                    Subject subject = new Subject();
-                    subject.getPrincipals().add(userPrincipal);
-                    subject.getPrivateCredentials().add(credential);
-
-                    String[] roleArray = IdentityService.NO_ROLES;
-                    if (user.getRoles() != null && user.getRoles().length > 0) {
-                        roleArray = user.getRoles();
-                    }
-
-                    for (String role : roleArray) {
-                        subject.getPrincipals().add(new AbstractLoginService.RolePrincipal(role));
-                    }
-
-                    subject.setReadOnly();
-
-                    getKnownUserIdentities().put(user.getName(), getIdentityService().newUserIdentity(subject, userPrincipal, roleArray));
-                }
-            }
-        };
     }
 
     private List<User> users() {

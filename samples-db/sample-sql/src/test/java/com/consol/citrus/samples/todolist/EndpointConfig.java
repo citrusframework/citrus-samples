@@ -18,19 +18,19 @@ package com.consol.citrus.samples.todolist;
 
 import java.util.Collections;
 
-import com.consol.citrus.container.AfterSuite;
-import com.consol.citrus.container.BeforeSuite;
-import com.consol.citrus.container.SequenceAfterSuite;
-import com.consol.citrus.container.SequenceBeforeSuite;
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
+import org.citrusframework.container.AfterSuite;
+import org.citrusframework.container.BeforeSuite;
+import org.citrusframework.container.SequenceAfterSuite;
+import org.citrusframework.container.SequenceBeforeSuite;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import static com.consol.citrus.actions.ExecuteSQLAction.Builder.sql;
+import static org.citrusframework.actions.ExecuteSQLAction.Builder.sql;
 
 /**
  * @author Christoph Deppisch

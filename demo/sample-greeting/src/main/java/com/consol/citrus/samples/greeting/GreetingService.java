@@ -33,12 +33,12 @@ public class GreetingService extends AbstractMarshallingMessageService<GreetingR
         response.setCorrelationId(request.getPayload().getCorrelationId());
         response.setUser("GreetingService");
         response.setText("Hello " + request.getPayload().getUser() + "!");
-        
+
         MessageBuilder<GreetingResponseMessage> builder = MessageBuilder.withPayload(response);
         builder.setHeader("CorrelationId", request.getHeaders().get("CorrelationId"));
         builder.setHeader("Operation", "sayHello");
         builder.setHeader("Type", "response");
-        
+
         return builder.build();
     }
 

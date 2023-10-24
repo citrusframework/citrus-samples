@@ -16,9 +16,11 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.mail.server.MailServer;
+import java.util.Collections;
+
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.mail.server.MailServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -45,6 +47,8 @@ public class EndpointConfig {
             .mail()
                 .server()
                 .port(2222)
+                .knownUsers(Collections.singletonList("todo-report@example.org:todo-report:secretpw"))
+                .authRequired(false)
                 .autoAccept(true)
                 .autoStart(true)
             .build();

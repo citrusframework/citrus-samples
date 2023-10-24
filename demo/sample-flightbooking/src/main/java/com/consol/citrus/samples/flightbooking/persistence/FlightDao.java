@@ -16,9 +16,9 @@
 
 package com.consol.citrus.samples.flightbooking.persistence;
 
-import com.consol.citrus.samples.flightbooking.model.Flight;
-
 import java.util.List;
+
+import com.consol.citrus.samples.flightbooking.model.Flight;
 
 /**
  * @author Christoph Deppisch
@@ -27,36 +27,36 @@ public interface FlightDao {
 
     /**
      * Load a flight with given identifyer.
-     * 
+     *
      * @param flightId
      * @return
      */
     public Flight find(String flightId);
-    
+
     /**
      * Load all available flights.
-     * 
+     *
      * @return
      */
     public List<Flight> findAll();
- 
+
     /**
      * Persist a flight.
-     * 
+     *
      * @param flight
      */
     public void persist(Flight flight);
-    
+
     /**
      * Remove a flight.
-     * 
+     *
      * @param flight
      */
     public void remove(Flight flight);
-    
+
     /**
      * Update a flight.
-     * 
+     *
      * @param flight
      */
     public void merge(Flight flight);

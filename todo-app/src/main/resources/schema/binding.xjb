@@ -1,11 +1,23 @@
-<bindings xmlns="http://java.sun.com/xml/ns/jaxb"
+<bindings xmlns="https://jakarta.ee/xml/ns/jaxb"
           xmlns:xs="http://www.w3.org/2001/XMLSchema"
           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
-          version="2.1"
-          extensionBindingPrefixes="xjc">
+          version="3.0">
 
   <bindings schemaLocation="TodoList.xsd">
+    <globalBindings>
+      <javaType
+            name="java.util.Calendar"
+            xmlType="xs:dateTime"
+            parseMethod="jakarta.xml.bind.DatatypeConverter.parseDateTime"
+            printMethod="jakarta.xml.bind.DatatypeConverter.printDateTime" />
+      <javaType
+            name="java.util.Calendar"
+            xmlType="xs:date"
+            parseMethod="jakarta.xml.bind.DatatypeConverter.parseDate"
+            printMethod="jakarta.xml.bind.DatatypeConverter.printDate" />
+      <xjc:simple />
+    </globalBindings>
     <schemaBindings><package name="com.consol.citrus.samples.todolist.soap.model"/></schemaBindings>
   </bindings>
-
 </bindings>
+

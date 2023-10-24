@@ -16,9 +16,9 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.annotations.CitrusTestSource;
-import com.consol.citrus.common.TestLoader;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.annotations.CitrusTestSource;
+import org.citrusframework.common.TestLoader;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.Test;
 
@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 public class TodoListIT extends TestNGCitrusSpringSupport {
 
     @Test
-    @CitrusTestSource(type = TestLoader.GROOVY, packageScan = "com.consol.citrus.samples.todolist")
+    @CitrusTestSource(type = TestLoader.GROOVY, packageScan = "org.citrusframework.samples.todolist")
     public void loadGroovyTests() {
     }
 

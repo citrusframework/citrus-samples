@@ -1,10 +1,10 @@
 package com.consol.citrus.samples.todolist
 
-import com.consol.citrus.message.MessageType
+import org.citrusframework.message.MessageType
 import org.springframework.http.HttpStatus
 
-import static com.consol.citrus.http.actions.HttpActionBuilder.http
-import static com.consol.citrus.validation.json.JsonPathMessageValidationContext.Builder.jsonPath
+import static org.citrusframework.http.actions.HttpActionBuilder.http
+import static org.citrusframework.validation.json.JsonPathMessageValidationContext.Builder.jsonPath
 
 given:
     variables {

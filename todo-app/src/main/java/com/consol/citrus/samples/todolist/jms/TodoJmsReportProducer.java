@@ -1,15 +1,15 @@
 package com.consol.citrus.samples.todolist.jms;
 
+import java.util.List;
+
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.jms.TextMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
-
-import javax.jms.TextMessage;
-import java.util.List;
 
 /**
  * @author Christoph Deppisch

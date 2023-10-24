@@ -16,13 +16,13 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.variable.dictionary.json.JsonPathMappingDataDictionary;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.spi.Resources;
+import org.citrusframework.variable.dictionary.json.JsonPathMappingDataDictionary;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.io.ClassPathResource;
 
 /**
  * @author Christoph Deppisch
@@ -43,7 +43,7 @@ public class EndpointConfig {
     public JsonPathMappingDataDictionary inboundDictionary() {
         JsonPathMappingDataDictionary dataDictionary = new JsonPathMappingDataDictionary();
         dataDictionary.setGlobalScope(false);
-        dataDictionary.setMappingFile(new ClassPathResource("dictionary/inbound.properties"));
+        dataDictionary.setMappingFile(Resources.fromClasspath("dictionary/inbound.properties"));
         return dataDictionary;
     }
 
@@ -51,7 +51,7 @@ public class EndpointConfig {
     public JsonPathMappingDataDictionary outboundDictionary() {
         JsonPathMappingDataDictionary dataDictionary = new JsonPathMappingDataDictionary();
         dataDictionary.setGlobalScope(false);
-        dataDictionary.setMappingFile(new ClassPathResource("dictionary/outbound.properties"));
+        dataDictionary.setMappingFile(Resources.fromClasspath("dictionary/outbound.properties"));
         return dataDictionary;
     }
 }

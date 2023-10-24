@@ -19,12 +19,10 @@ package com.consol.citrus.samples.incident;
 import java.util.Calendar;
 import java.util.UUID;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.jms.endpoint.JmsSyncEndpoint;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.ws.message.SoapMessageHeaders;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.jms.endpoint.JmsSyncEndpoint;
 import org.citrusframework.schema.samples.incidentmanager.v1.ComponentType;
 import org.citrusframework.schema.samples.incidentmanager.v1.CustomerType;
 import org.citrusframework.schema.samples.incidentmanager.v1.IncidentType;
@@ -37,15 +35,17 @@ import org.citrusframework.schema.samples.networkservice.v1.AnalyseIncidentResul
 import org.citrusframework.schema.samples.networkservice.v1.CheckType;
 import org.citrusframework.schema.samples.networkservice.v1.NetworkComponentType;
 import org.citrusframework.schema.samples.networkservice.v1.NetworkType;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.ws.message.SoapMessageHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.EchoAction.Builder.echo;
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
-import static com.consol.citrus.dsl.XpathSupport.xpath;
-import static com.consol.citrus.message.builder.MarshallingPayloadBuilder.Builder.marshal;
+import static org.citrusframework.actions.EchoAction.Builder.echo;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.dsl.XpathSupport.xpath;
+import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch

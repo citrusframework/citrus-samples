@@ -16,10 +16,10 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.http.server.HttpServer;
-import com.consol.citrus.http.validation.FormUrlEncodedMessageValidator;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.http.validation.FormUrlEncodedMessageValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

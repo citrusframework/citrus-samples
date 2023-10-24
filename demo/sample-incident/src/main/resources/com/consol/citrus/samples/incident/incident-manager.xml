@@ -8,8 +8,10 @@
             http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
     <!-- ActiveMQ connection factory-->
-    <bean id="activemqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-      <property name="brokerURL" value="tcp://localhost:61616" />
+    <bean id="activemqConnectionFactory" class="org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory">
+      <constructor-arg value="tcp://localhost:61616" />
+      <constructor-arg value="citrus" />
+      <constructor-arg value="citrus" />
     </bean>
 
     <!-- Http inbound endpoint for incoming incident requests -->

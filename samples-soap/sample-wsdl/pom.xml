@@ -2,19 +2,20 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.consol.citrus.samples</groupId>
+  <groupId>org.citrusframework.samples</groupId>
   <artifactId>citrus-sample-wsdl</artifactId>
   <name>Citrus Samples:: WSDL</name>
-  <version>3.4.0</version>
+  <version>4.0.0</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>5.3.25</spring.version>
-    <spring.boot.version>2.7.16</spring.boot.version>
-    <slf4j.version>1.7.36</slf4j.version>
-    <log4j2.version>2.19.0</log4j2.version>
-    <citrus.version>3.4.0</citrus.version>
+    <spring.version>6.0.13</spring.version>
+    <spring.boot.version>3.1.4</spring.boot.version>
+    <slf4j.version>2.0.9</slf4j.version>
+    <log4j2.version>2.21.0</log4j2.version>
+    <commons.logging.version>1.2</commons.logging.version>
+    <citrus.version>4.0.0</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
@@ -26,8 +27,8 @@
         <version>3.8.1</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>11</source>
-          <target>11</target>
+          <source>17</source>
+          <target>17</target>
         </configuration>
       </plugin>
 
@@ -68,7 +69,7 @@
       </plugin>
 
       <plugin>
-        <groupId>com.consol.citrus.mvn</groupId>
+        <groupId>org.citrusframework.mvn</groupId>
         <artifactId>citrus-maven-plugin</artifactId>
         <version>${citrus.version}</version>
         <executions>
@@ -143,7 +144,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.consol.citrus.samples</groupId>
+      <groupId>org.citrusframework.samples</groupId>
       <artifactId>citrus-sample-todo</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -162,14 +163,20 @@
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j2-impl</artifactId>
       <version>${log4j2.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.2</version>
+      <version>${commons.logging.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -183,37 +190,37 @@
 
     <!-- Citrus -->
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-base</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-spring</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-endpoint-catalog</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-testng</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-ws</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.consol.citrus</groupId>
+      <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-xml</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>

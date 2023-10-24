@@ -16,25 +16,28 @@
 
 package com.consol.citrus.samples.flightbooking;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.consol.citrus.samples.flightbooking.model.FlightBookingRequestMessage;
+import org.springframework.integration.annotation.Router;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.integration.annotation.Router;
-
-import java.util.*;
 
 /**
  * @author Christoph Deppisch
  */
 public class FlightRouter {
-    
+
     private Map<String, MessageChannel> airlineMappings = new HashMap<String, MessageChannel>();
-    
+
     @Router
     public Collection<MessageChannel> determineTargetChannels(Message<?> message) {
-        
+
         FlightBookingRequestMessage request = (FlightBookingRequestMessage)message.getPayload();
-        
+
         return Collections.singletonList(airlineMappings.get(request.getFlight().getAirline()));
     }
 

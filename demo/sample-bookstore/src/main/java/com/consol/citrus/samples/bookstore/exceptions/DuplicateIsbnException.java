@@ -16,10 +16,9 @@
 
 package com.consol.citrus.samples.bookstore.exceptions;
 
+import com.consol.citrus.samples.bookstore.model.AddBookRequestMessage;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandlingException;
-
-import com.consol.citrus.samples.bookstore.model.AddBookRequestMessage;
 
 /**
  * @author Christoph Deppisch

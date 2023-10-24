@@ -106,7 +106,10 @@ private HttpConfiguration httpConfiguration() {
     parent.setSecureScheme("https");
     parent.setSecurePort(securePort);
     HttpConfiguration configuration = new HttpConfiguration(parent);
-    configuration.setCustomizers(Collections.singletonList(new SecureRequestCustomizer()));
+    
+    SecureRequestCustomizer secureRequestCustomizer = new SecureRequestCustomizer();
+    secureRequestCustomizer.setSniHostCheck(false);
+    configuration.setCustomizers(Collections.singletonList(secureRequestCustomizer));
     return configuration;
 }
 

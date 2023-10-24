@@ -16,9 +16,9 @@
 
 package com.consol.citrus.samples.todolist.dao;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import java.util.Set;
 
-import java.util.List;
+import com.consol.citrus.samples.todolist.model.TodoEntry;
 
 /**
  * @author Christoph Deppisch
@@ -27,9 +27,9 @@ public interface TodoListDao {
 
     void save(TodoEntry entry);
 
-    List<TodoEntry> list();
+    Set<TodoEntry> list();
 
-    List<TodoEntry> list(int limit);
+    Set<TodoEntry> list(int limit);
 
     void delete(TodoEntry entry);
 

@@ -16,9 +16,9 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.ftp.client.ScpClient;
-import com.consol.citrus.ftp.server.SftpServer;
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.ftp.client.ScpClient;
+import org.citrusframework.ftp.server.SftpServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

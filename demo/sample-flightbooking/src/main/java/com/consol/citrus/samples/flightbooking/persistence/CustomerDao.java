@@ -16,9 +16,9 @@
 
 package com.consol.citrus.samples.flightbooking.persistence;
 
-import com.consol.citrus.samples.flightbooking.model.Customer;
-
 import java.util.List;
+
+import com.consol.citrus.samples.flightbooking.model.Customer;
 
 /**
  * @author Christoph Deppisch
@@ -27,36 +27,36 @@ public interface CustomerDao {
 
     /**
      * Load a customer with given identifyer.
-     * 
+     *
      * @param customerId
      * @return
      */
     public Customer find(String customerId);
-    
+
     /**
      * Load all available customers.
-     * 
+     *
      * @return
      */
     public List<Customer> findAll();
- 
+
     /**
      * Persist a customer.
-     * 
+     *
      * @param customer
      */
     public void persist(Customer customer);
-    
+
     /**
      * Remove a customer.
-     * 
+     *
      * @param customer
      */
     public void remove(Customer customer);
-    
+
     /**
      * Update a customer.
-     * 
+     *
      * @param customer
      */
     public void merge(Customer customer);

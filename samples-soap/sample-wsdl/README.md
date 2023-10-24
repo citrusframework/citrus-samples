@@ -135,7 +135,7 @@ The test code generation takes place in the Maven build lifecycle and uses the C
     
 ```xml
 <plugin>
-    <groupId>com.consol.citrus.mvn</groupId>
+    <groupId>org.citrusframework.mvn</groupId>
     <artifactId>citrus-maven-plugin</artifactId>
     <version>${citrus.version}</version>
     <executions>

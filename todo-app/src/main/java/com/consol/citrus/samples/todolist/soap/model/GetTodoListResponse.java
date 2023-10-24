@@ -1,26 +1,26 @@
 //
-// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.11 generiert 
-// Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren. 
-// Generiert: 2017.03.15 um 12:08:04 PM CET 
+// Diese Datei wurde mit der JavaTM Architecture for XML Binding(JAXB) Reference Implementation, v2.2.11 generiert
+// Siehe <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a>
+// Änderungen an dieser Datei gehen bei einer Neukompilierung des Quellschemas verloren.
+// Generiert: 2017.03.15 um 12:08:04 PM CET
 //
 
 
 package com.consol.citrus.samples.todolist.soap.model;
 
 import java.util.ArrayList;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
  * <p>Java-Klasse für anonymous complex type.
- * 
+ *
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
- * 
+ *
  * <pre>
  * &lt;complexType&gt;
  *   &lt;complexContent&gt;
@@ -68,8 +68,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -83,11 +83,11 @@ public class GetTodoListResponse {
 
     /**
      * Ruft den Wert der list-Eigenschaft ab.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link GetTodoListResponse.List }
-     *     
+     *
      */
     public GetTodoListResponse.List getList() {
         return list;
@@ -95,11 +95,11 @@ public class GetTodoListResponse {
 
     /**
      * Legt den Wert der list-Eigenschaft fest.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link GetTodoListResponse.List }
-     *     
+     *
      */
     public void setList(GetTodoListResponse.List value) {
         this.list = value;
@@ -108,9 +108,9 @@ public class GetTodoListResponse {
 
     /**
      * <p>Java-Klasse für anonymous complex type.
-     * 
+     *
      * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
-     * 
+     *
      * <pre>
      * &lt;complexType&gt;
      *   &lt;complexContent&gt;
@@ -148,8 +148,8 @@ public class GetTodoListResponse {
      *   &lt;/complexContent&gt;
      * &lt;/complexType&gt;
      * </pre>
-     * 
-     * 
+     *
+     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -161,25 +161,25 @@ public class GetTodoListResponse {
 
         /**
          * Gets the value of the todoEntry property.
-         * 
+         *
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
          * This is why there is not a <CODE>set</CODE> method for the todoEntry property.
-         * 
+         *
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
          *    getTodoEntry().add(newItem);
          * </pre>
-         * 
-         * 
+         *
+         *
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link GetTodoListResponse.List.TodoEntry }
-         * 
-         * 
+         *
+         *
          */
         public java.util.List<GetTodoListResponse.List.TodoEntry> getTodoEntry() {
             if (todoEntry == null) {
@@ -191,9 +191,9 @@ public class GetTodoListResponse {
 
         /**
          * <p>Java-Klasse für anonymous complex type.
-         * 
+         *
          * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
-         * 
+         *
          * <pre>
          * &lt;complexType&gt;
          *   &lt;complexContent&gt;
@@ -221,8 +221,8 @@ public class GetTodoListResponse {
          *   &lt;/complexContent&gt;
          * &lt;/complexType&gt;
          * </pre>
-         * 
-         * 
+         *
+         *
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
@@ -244,11 +244,11 @@ public class GetTodoListResponse {
 
             /**
              * Ruft den Wert der id-Eigenschaft ab.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getId() {
                 return id;
@@ -256,11 +256,11 @@ public class GetTodoListResponse {
 
             /**
              * Legt den Wert der id-Eigenschaft fest.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setId(String value) {
                 this.id = value;
@@ -268,11 +268,11 @@ public class GetTodoListResponse {
 
             /**
              * Ruft den Wert der title-Eigenschaft ab.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getTitle() {
                 return title;
@@ -280,11 +280,11 @@ public class GetTodoListResponse {
 
             /**
              * Legt den Wert der title-Eigenschaft fest.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setTitle(String value) {
                 this.title = value;
@@ -292,11 +292,11 @@ public class GetTodoListResponse {
 
             /**
              * Ruft den Wert der description-Eigenschaft ab.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link String }
-             *     
+             *
              */
             public String getDescription() {
                 return description;
@@ -304,11 +304,11 @@ public class GetTodoListResponse {
 
             /**
              * Legt den Wert der description-Eigenschaft fest.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link String }
-             *     
+             *
              */
             public void setDescription(String value) {
                 this.description = value;
@@ -316,11 +316,11 @@ public class GetTodoListResponse {
 
             /**
              * Ruft den Wert der attachment-Eigenschaft ab.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link GetTodoListResponse.List.TodoEntry.Attachment }
-             *     
+             *
              */
             public GetTodoListResponse.List.TodoEntry.Attachment getAttachment() {
                 return attachment;
@@ -328,11 +328,11 @@ public class GetTodoListResponse {
 
             /**
              * Legt den Wert der attachment-Eigenschaft fest.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link GetTodoListResponse.List.TodoEntry.Attachment }
-             *     
+             *
              */
             public void setAttachment(GetTodoListResponse.List.TodoEntry.Attachment value) {
                 this.attachment = value;
@@ -340,11 +340,11 @@ public class GetTodoListResponse {
 
             /**
              * Ruft den Wert der done-Eigenschaft ab.
-             * 
+             *
              * @return
              *     possible object is
              *     {@link Boolean }
-             *     
+             *
              */
             public Boolean isDone() {
                 return done;
@@ -352,11 +352,11 @@ public class GetTodoListResponse {
 
             /**
              * Legt den Wert der done-Eigenschaft fest.
-             * 
+             *
              * @param value
              *     allowed object is
              *     {@link Boolean }
-             *     
+             *
              */
             public void setDone(Boolean value) {
                 this.done = value;
@@ -365,9 +365,9 @@ public class GetTodoListResponse {
 
             /**
              * <p>Java-Klasse für anonymous complex type.
-             * 
+             *
              * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
-             * 
+             *
              * <pre>
              * &lt;complexType&gt;
              *   &lt;complexContent&gt;
@@ -381,8 +381,8 @@ public class GetTodoListResponse {
              *   &lt;/complexContent&gt;
              * &lt;/complexType&gt;
              * </pre>
-             * 
-             * 
+             *
+             *
              */
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "", propOrder = {
@@ -401,11 +401,11 @@ public class GetTodoListResponse {
 
                 /**
                  * Ruft den Wert der cid-Eigenschaft ab.
-                 * 
+                 *
                  * @return
                  *     possible object is
                  *     {@link String }
-                 *     
+                 *
                  */
                 public String getCid() {
                     return cid;
@@ -413,11 +413,11 @@ public class GetTodoListResponse {
 
                 /**
                  * Legt den Wert der cid-Eigenschaft fest.
-                 * 
+                 *
                  * @param value
                  *     allowed object is
                  *     {@link String }
-                 *     
+                 *
                  */
                 public void setCid(String value) {
                     this.cid = value;
@@ -425,11 +425,11 @@ public class GetTodoListResponse {
 
                 /**
                  * Ruft den Wert der contentType-Eigenschaft ab.
-                 * 
+                 *
                  * @return
                  *     possible object is
                  *     {@link String }
-                 *     
+                 *
                  */
                 public String getContentType() {
                     return contentType;
@@ -437,11 +437,11 @@ public class GetTodoListResponse {
 
                 /**
                  * Legt den Wert der contentType-Eigenschaft fest.
-                 * 
+                 *
                  * @param value
                  *     allowed object is
                  *     {@link String }
-                 *     
+                 *
                  */
                 public void setContentType(String value) {
                     this.contentType = value;
@@ -449,11 +449,11 @@ public class GetTodoListResponse {
 
                 /**
                  * Ruft den Wert der data-Eigenschaft ab.
-                 * 
+                 *
                  * @return
                  *     possible object is
                  *     {@link String }
-                 *     
+                 *
                  */
                 public String getData() {
                     return data;
@@ -461,11 +461,11 @@ public class GetTodoListResponse {
 
                 /**
                  * Legt den Wert der data-Eigenschaft fest.
-                 * 
+                 *
                  * @param value
                  *     allowed object is
                  *     {@link String }
-                 *     
+                 *
                  */
                 public void setData(String value) {
                     this.data = value;

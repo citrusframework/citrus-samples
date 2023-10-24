@@ -16,12 +16,18 @@
 
 package com.consol.citrus.samples.todolist;
 
-import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.ws.interceptor.*;
-import com.consol.citrus.ws.server.WebServiceServer;
-import com.consol.citrus.xml.XsdSchemaRepository;
-import com.consol.citrus.xml.namespace.NamespaceContextBuilder;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.citrusframework.dsl.endpoint.CitrusEndpoints;
+import org.citrusframework.ws.client.WebServiceClient;
+import org.citrusframework.ws.interceptor.LoggingClientInterceptor;
+import org.citrusframework.ws.interceptor.LoggingEndpointInterceptor;
+import org.citrusframework.ws.interceptor.SoapMustUnderstandEndpointInterceptor;
+import org.citrusframework.ws.server.WebServiceServer;
+import org.citrusframework.xml.XsdSchemaRepository;
+import org.citrusframework.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -32,8 +38,6 @@ import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 import org.springframework.ws.soap.security.wss4j2.callback.SimplePasswordValidationCallbackHandler;
 import org.springframework.xml.xsd.SimpleXsdSchema;
-
-import java.util.*;
 
 /**
  * @author Christoph Deppisch

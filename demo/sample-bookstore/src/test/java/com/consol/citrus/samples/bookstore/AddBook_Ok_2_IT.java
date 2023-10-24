@@ -19,23 +19,23 @@ package com.consol.citrus.samples.bookstore;
 import java.util.Calendar;
 import java.util.Map;
 
-import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.context.TestContext;
 import com.consol.citrus.samples.bookstore.model.AddBookRequestMessage;
 import com.consol.citrus.samples.bookstore.model.AddBookResponseMessage;
 import com.consol.citrus.samples.bookstore.model.Book;
-import com.consol.citrus.testng.spring.TestNGCitrusSpringSupport;
-import com.consol.citrus.validation.xml.XmlMarshallingValidationProcessor;
-import com.consol.citrus.ws.client.WebServiceClient;
-import com.consol.citrus.xml.Marshaller;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.context.TestContext;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.citrusframework.validation.xml.XmlMarshallingValidationProcessor;
+import org.citrusframework.ws.client.WebServiceClient;
+import org.citrusframework.xml.Marshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 
-import static com.consol.citrus.actions.ReceiveMessageAction.Builder.receive;
-import static com.consol.citrus.actions.SendMessageAction.Builder.send;
-import static com.consol.citrus.message.builder.MarshallingPayloadBuilder.Builder.marshal;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.actions.SendMessageAction.Builder.send;
+import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch
