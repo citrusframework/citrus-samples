@@ -64,6 +64,7 @@ jobs:
           ./mvnw --no-transfer-progress -pl :citrus-sample-todo install
       - name: Run Demos
         run: |
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-quarkus
           ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-bakery
           ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-bookstore
           ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-flightbooking

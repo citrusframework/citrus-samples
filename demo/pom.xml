@@ -9,6 +9,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>sample-quarkus</module>
     <module>sample-bakery</module>
     <module>sample-flightbooking</module>
     <module>sample-greeting</module>
