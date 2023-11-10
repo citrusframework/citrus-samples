@@ -17,7 +17,7 @@
 
     <quarkus.platform.version>3.5.0</quarkus.platform.version>
     <surefire-plugin.version>3.1.2</surefire-plugin.version>
-    <citrus.version>4.0.0</citrus.version>
+    <citrus.version>4.1.0-SNAPSHOT</citrus.version>
     <javafaker.version>1.0.2</javafaker.version>
     <skipITs>true</skipITs>
   </properties>
@@ -50,6 +50,12 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+    </dependency>
+
+    <!-- Mail service -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-mailer</artifactId>
     </dependency>
 
     <dependency>
@@ -103,6 +109,11 @@
     <dependency>
       <groupId>org.citrusframework</groupId>
       <artifactId>citrus-kafka</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-mail</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

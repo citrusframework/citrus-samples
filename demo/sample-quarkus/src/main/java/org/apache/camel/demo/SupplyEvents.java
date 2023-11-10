@@ -46,6 +46,9 @@ public class SupplyEvents {
     ProductService productService;
 
     @Inject
+    MailService mailService;
+
+    @Inject
     ObjectMapper mapper;
 
     @Incoming("supply-events")
@@ -68,11 +71,14 @@ public class SupplyEvents {
     public void onAdded(Supply supply) throws JsonProcessingException {
         Optional<Booking> matchingBooking;
         while ((matchingBooking = bookingService.findMatching(supply)).isPresent()) {
+            LOG.info("Found matching booking id=%s for supply: %s".formatted(matchingBooking.get().getId(), mapper.writeValueAsString(supply)));
             Booking booking = matchingBooking.get();
             booking.setPrice(supply.getPrice());
             bookingService.complete(booking);
 
             supplyService.adjust(supply, booking);
+
+            mailService.send(booking);
         }
     }
 

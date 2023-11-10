@@ -19,16 +19,18 @@ package org.apache.camel.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
-
-import jakarta.inject.Inject;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
 import org.apache.camel.demo.model.Supply;
 import org.apache.camel.demo.model.event.BookingCompletedEvent;
 import org.apache.camel.demo.model.event.ShippingEvent;
 import org.citrusframework.TestCaseRunner;
+import org.citrusframework.annotations.CitrusConfiguration;
+import org.citrusframework.annotations.CitrusEndpoint;
 import org.citrusframework.annotations.CitrusResource;
 import org.citrusframework.kafka.endpoint.KafkaEndpoint;
+import org.citrusframework.mail.message.MailMessage;
+import org.citrusframework.mail.server.MailServer;
 import org.citrusframework.quarkus.CitrusSupport;
 import org.junit.jupiter.api.Test;
 
@@ -38,32 +40,35 @@ import static org.citrusframework.actions.SleepAction.Builder.delay;
 import static org.citrusframework.container.Iterate.Builder.iterate;
 import static org.citrusframework.container.Parallel.Builder.parallel;
 import static org.citrusframework.dsl.JsonSupport.marshal;
-import static org.citrusframework.kafka.endpoint.builder.KafkaEndpoints.kafka;
 
 @QuarkusTest
 @CitrusSupport
+@CitrusConfiguration(classes = { CitrusEndpointConfig.class })
 class FoodMarketApplicationTest {
 
-    private final KafkaEndpoint products = kafka()
-            .asynchronous()
-            .topic("products")
-            .build();
+    @CitrusEndpoint
+    private KafkaEndpoint products;
 
-    private final KafkaEndpoint bookings = kafka()
-            .asynchronous()
-            .topic("bookings")
-            .build();
+    @CitrusEndpoint
+    private KafkaEndpoint bookings;
 
-    private final KafkaEndpoint supplies = kafka()
-            .asynchronous()
-            .topic("supplies")
-            .build();
+    @CitrusEndpoint
+    private KafkaEndpoint supplies;
+
+    @CitrusEndpoint
+    private KafkaEndpoint completed;
+
+    @CitrusEndpoint
+    private KafkaEndpoint shipping;
+
+    @CitrusEndpoint
+    private MailServer mailServer;
 
     @CitrusResource
     private TestCaseRunner t;
 
-    @Inject
-    ObjectMapper mapper;
+    @CitrusResource
+    private ObjectMapper mapper;
 
     @Test
     void shouldCompleteOnSupply() {
@@ -72,12 +77,14 @@ class FoodMarketApplicationTest {
             .endpoint(products)
             .message().body(marshal(product, mapper)));
 
-        t.then(delay().seconds(1L));
+        t.then(delay().seconds(3L));
 
         Booking booking = new Booking("citrus-test", product, 100, 0.99D);
         t.when(send()
                 .endpoint(bookings)
                 .message().body(marshal(booking, mapper)));
+
+        t.then(delay().milliseconds(1500L));
 
         Supply supply = new Supply(product, 100, 0.99D);
         t.when(send()
@@ -90,12 +97,23 @@ class FoodMarketApplicationTest {
         ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(), supply.getAmount(), "@ignore@");
         t.then(parallel().actions(
             receive()
-                .endpoint("kafka:completed?timeout=10000")
+                .endpoint(completed)
                 .message().body(marshal(completedEvent, mapper)),
             receive()
-                .endpoint("kafka:shipping?timeout=10000")
+                .endpoint(shipping)
                 .message().body(marshal(shippingEvent, mapper))
         ));
+
+        t.then(receive()
+            .endpoint(mailServer)
+            .message(MailMessage.request("foodmarket@quarkus.io", "%s@quarkus.io".formatted(completedEvent.getClient()), "Booking completed!")
+                .body("Hey %s, your booking %s has been completed.".formatted(completedEvent.getClient(), completedEvent.getProduct()), "text/plain"))
+        );
+
+        t.then(send()
+            .endpoint(mailServer)
+            .message(MailMessage.response())
+        );
     }
 
     @Test
@@ -107,6 +125,8 @@ class FoodMarketApplicationTest {
                 .endpoint(supplies)
                 .message().body(marshal(supply, mapper)));
 
+        t.then(delay().milliseconds(1500L));
+
         Booking booking = new Booking("citrus-test", product, 100, 0.99D);
         t.when(send()
                 .endpoint(bookings)
@@ -118,12 +138,23 @@ class FoodMarketApplicationTest {
         ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(), supply.getAmount(), "@ignore@");
         t.then(parallel().actions(
             receive()
-                .endpoint("kafka:completed?timeout=10000")
+                .endpoint(completed)
                 .message().body(marshal(completedEvent, mapper)),
             receive()
-                .endpoint("kafka:shipping?timeout=10000")
+                .endpoint(shipping)
                 .message().body(marshal(shippingEvent, mapper))
         ));
+
+        t.then(receive()
+            .endpoint(mailServer)
+            .message(MailMessage.request("foodmarket@quarkus.io", "%s@quarkus.io".formatted(completedEvent.getClient()), "Booking completed!")
+                .body("Hey %s, your booking %s has been completed.".formatted(completedEvent.getClient(), completedEvent.getProduct()), "text/plain"))
+        );
+
+        t.then(send()
+            .endpoint(mailServer)
+            .message(MailMessage.response())
+        );
     }
 
     @Test
@@ -157,14 +188,14 @@ class FoodMarketApplicationTest {
                 .condition((i, context) -> i < 10)
                 .actions(
                     receive()
-                        .endpoint("kafka:completed?timeout=10000")
+                        .endpoint(completed)
                         .message().body(marshal(completedEvent, mapper))
                 ),
             iterate()
                 .condition((i, context) -> i < 10)
                 .actions(
                     receive()
-                        .endpoint("kafka:shipping?timeout=10000")
+                        .endpoint(shipping)
                         .message().body(marshal(shippingEvent, mapper))
                 )
         ));

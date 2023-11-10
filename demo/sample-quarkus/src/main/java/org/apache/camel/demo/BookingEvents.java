@@ -21,14 +21,12 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.smallrye.reactive.messaging.MutinyEmitter;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
 import org.apache.camel.demo.model.Supply;
-import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.jboss.logging.Logger;
@@ -46,6 +44,9 @@ public class BookingEvents {
 
     @Inject
     ProductService productService;
+
+    @Inject
+    MailService mailService;
 
     @Inject
     ObjectMapper mapper;
@@ -70,11 +71,15 @@ public class BookingEvents {
     public void onAdded(Booking booking) throws JsonProcessingException {
         Optional<Supply> matchingSupply = supplyService.findAvailable(booking);
         if (matchingSupply.isPresent()) {
+            LOG.info("Found matching supply id=%s for booking: %s".formatted(matchingSupply.get().getId(), mapper.writeValueAsString(booking)));
+
             Supply supply = matchingSupply.get();
             booking.setPrice(supply.getPrice());
             bookingService.complete(booking);
 
             supplyService.adjust(supply, booking);
+
+            mailService.send(booking);
         }
     }
 }
