@@ -14,7 +14,7 @@
     <spring.boot.version>3.1.4</spring.boot.version>
     <spring.kafka.version>3.0.12</spring.kafka.version>
     <activemq.artemis.version>2.31.0</activemq.artemis.version>
-    <citrus.version>4.0.0</citrus.version>
+    <citrus.version>4.0.1</citrus.version>
     <slf4j.version>2.0.9</slf4j.version>
     <log4j2.version>2.21.0</log4j2.version>
     <commons.logging.version>1.2</commons.logging.version>
