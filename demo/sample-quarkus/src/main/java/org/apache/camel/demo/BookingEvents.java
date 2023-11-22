@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.smallrye.reactive.messaging.annotations.Merge;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -67,6 +68,7 @@ public class BookingEvents {
     }
 
     @Incoming("booking-added")
+    @Merge
     @Transactional
     public void onAdded(Booking booking) throws JsonProcessingException {
         Optional<Supply> matchingSupply = supplyService.findAvailable(booking);

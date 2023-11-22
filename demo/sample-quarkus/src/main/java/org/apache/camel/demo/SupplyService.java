@@ -17,7 +17,6 @@
 
 package org.apache.camel.demo;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,6 +106,10 @@ public class SupplyService {
         }
 
         update(supply);
-        shippingEmitter.send(new ShippingEvent(booking.getClient(), supply.getProduct().getName(), booking.getAmount())).await().atMost(Duration.ofSeconds(5));
+        shippingEmitter.send(new ShippingEvent(booking.getClient(), supply.getProduct().getName(), booking.getAmount())).subscribe()
+                .with(
+                    success -> LOG.info("Shipping event successfully sent"),
+                    failure -> LOG.info("Shipping event failed: " + failure.getMessage())
+                );
     }
 }

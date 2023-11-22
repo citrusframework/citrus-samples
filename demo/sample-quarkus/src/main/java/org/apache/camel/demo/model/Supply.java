@@ -41,6 +41,7 @@ import jakarta.persistence.SequenceGenerator;
 public class Supply {
 
     private Long id;
+    private String supplier;
     private Product product;
     private Integer amount;
     private BigDecimal price = new BigDecimal("0.0");
@@ -50,7 +51,8 @@ public class Supply {
     public Supply() {
     }
 
-    public Supply(Product product, int amount, double price) {
+    public Supply(String supplier, Product product, int amount, double price) {
+        this.supplier = supplier;
         this.product = product;
         this.amount = amount;
         this.price = BigDecimal.valueOf(price);
@@ -70,6 +72,14 @@ public class Supply {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
     }
 
     @ManyToOne(optional = false)

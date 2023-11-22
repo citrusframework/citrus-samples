@@ -1,0 +1,218 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one or more
+  ~ contributor license agreements. See the NOTICE file distributed with
+  ~ this work for additional information regarding copyright ownership.
+  ~ The ASF licenses this file to You under the Apache License, Version 2.0
+  ~ (the "License"); you may not use this file except in compliance with
+  ~ the License.  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+        rel="stylesheet"
+        href="styles/patternfly.css"
+        crossorigin="anonymous"
+    >
+    <title>Food Market - 1.0-SNAPSHOT</title>
+</head>
+<body>
+<div class="pf-c-page" id="food-market">
+    <a class="pf-c-skip-to-content pf-c-button pf-m-primary" href="#main-content-food-market">Skip to content</a>
+    <header class="pf-c-page__header">
+        <div class="pf-c-page__header-brand">
+            <div class="pf-c-page__header-brand-toggle">
+                <button class="pf-c-button pf-m-plain" type="button" id="food-market-nav-toggle" aria-label="Global navigation" aria-expanded="true" aria-controls="food-market-primary-nav">
+                    <i class="fas fa-bars" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <div class="pf-c-page__sidebar">
+        <div class="pf-c-page__sidebar-body">
+            <nav class="pf-c-nav" id="food-market-primary-nav" aria-label="Global">
+                <ul class="pf-c-nav__list">
+                    <li class="pf-c-nav__item">
+                        <a href="#" class="pf-c-nav__link pf-m-current" aria-current="page">Fruits</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <main class="pf-c-page__main" tabindex="-1">
+        <section class="pf-c-page__main-section pf-m-light">
+            <div class="pf-c-content">
+                <h1>Food Market demo</h1>
+                <p>Available bookings.</p>
+            </div>
+        </section>
+        <section class="pf-c-page__main-section pf-m-no-padding pf-m-padding-on-xl">
+            <div class="pf-c-card">
+                <table class="pf-c-table pf-m-grid-xl" role="grid" aria-label="This is a table with checkboxes" id="bookings">
+                    <thead>
+                    <tr role="row">
+                        <th role="columnheader" scope="col">Id</th>
+                        <th role="columnheader" scope="col">Client</th>
+                        <th role="columnheader" scope="col">Product</th>
+                        <th role="columnheader" scope="col">Amount</th>
+                        <th role="columnheader" scope="col">Price</th>
+                        <th role="columnheader" scope="col">Status</th>
+                        <td role="cell"></td>
+                    </tr>
+                    </thead>
+                    <tbody role="rowgroup">
+                    {#for booking in bookings}
+                    <tr role="row">
+                        <th role="columnheader" data-label="Id">
+                            <span>#{booking.id}</span>
+                        </th>
+                        <td role="cell" data-label="Client">
+                            <span>{booking.client}</span>
+                        </td>
+                        <td role="cell" data-label="Product">
+                            <span>{booking.product.name}</span>
+                        </td>
+                        <td role="cell" data-label="Amount">
+                            {#if booking.amount}
+                            <span>{booking.amount}</span>
+                            {#else}
+                            <span>0</span>
+                            {/if}
+                        </td>
+                        <td role="cell" data-label="Price">
+                            {#if booking.price}
+                            <span>{booking.price}</span>
+                            {#else}
+                            <span>0.00</span>
+                            {/if}
+                        </td>
+                        <td role="cell" data-label="Status">
+                            <span>{booking.status}</span>
+                        </td>
+                        <td role="cell" data-label="Action">
+                            <a href="#">View</a>
+                        </td>
+                    </tr>
+                    {/for}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="pf-c-page__main-section pf-m-light">
+            <div class="pf-c-content">
+                <p>Available supplies.</p>
+            </div>
+        </section>
+        <section class="pf-c-page__main-section pf-m-no-padding pf-m-padding-on-xl">
+            <div class="pf-c-card">
+                <table class="pf-c-table pf-m-grid-xl" role="grid" aria-label="This is a table with checkboxes" id="supplies">
+                    <thead>
+                    <tr role="row">
+                        <th role="columnheader" scope="col">Id</th>
+                        <th role="columnheader" scope="col">Supplier</th>
+                        <th role="columnheader" scope="col">Product</th>
+                        <th role="columnheader" scope="col">Amount</th>
+                        <th role="columnheader" scope="col">Price</th>
+                        <th role="columnheader" scope="col">Status</th>
+                        <td role="cell"></td>
+                    </tr>
+                    </thead>
+                    <tbody role="rowgroup">
+                    {#for supply in supplies}
+                        <tr role="row">
+                        <th role="columnheader" data-label="Id">
+                            <span>#{supply.id}</span>
+                        </th>
+                        <td role="cell" data-label="Supplier">
+                            <span>{supply.supplier}</span>
+                        </td>
+                        <td role="cell" data-label="Product">
+                            <span>{supply.product.name}</span>
+                        </td>
+                        <td role="cell" data-label="Amount">
+                            {#if supply.amount}
+                                <span>{supply.amount}</span>
+                            {#else}
+                                <span>0</span>
+                            {/if}
+                        </td>
+                        <td role="cell" data-label="Price">
+                            {#if supply.price}
+                                <span>{supply.price}</span>
+                            {#else}
+                                <span>0.00</span>
+                            {/if}
+                        </td>
+                        <td role="cell" data-label="Status">
+                        <span>{supply.status}</span>
+                        </td>
+                        <td role="cell" data-label="Action">
+                            <a href="#">View</a>
+                        </td>
+                        </tr>
+                    {/for}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+<script src="scripts/jquery-3.3.1.min.js"></script>
+<script>
+    const bookings = new EventSource("/bookings");
+    bookings.onmessage = function(event) {
+        var booking = JSON.parse(event.data);
+
+        console.log("Received Data:",booking)
+
+        var tableRef = document
+            .getElementById("bookings")
+            .getElementsByTagName("tbody")[0];
+
+        // Insert a row in the table at the last row
+        var newRow = tableRef.insertRow();
+
+        newRow.insertCell(0).appendChild(document.createTextNode("#" + booking.id));
+        newRow.insertCell(1).appendChild(document.createTextNode(booking.client));
+        newRow.insertCell(2).appendChild(document.createTextNode(booking.product.name));
+        newRow.insertCell(3).appendChild(document.createTextNode(booking.amount));
+        newRow.insertCell(4).appendChild(document.createTextNode(booking.price));
+        newRow.insertCell(5).appendChild(document.createTextNode(booking.status));
+        $(newRow.insertCell(6)).html("<a href=\"#\">View</a>");
+    };
+
+    const supplies = new EventSource("/supplies");
+    supplies.onmessage = function(event) {
+        var supply = JSON.parse(event.data);
+
+        console.log("Received Data:",supply)
+
+        var tableRef = document
+            .getElementById("supplies")
+            .getElementsByTagName("tbody")[0];
+
+        // Insert a row in the table at the last row
+        var newRow = tableRef.insertRow();
+
+        newRow.insertCell(0).appendChild(document.createTextNode("#" + supply.id));
+        newRow.insertCell(1).appendChild(document.createTextNode(supply.supplier));
+        newRow.insertCell(2).appendChild(document.createTextNode(supply.product.name));
+        newRow.insertCell(3).appendChild(document.createTextNode(supply.amount));
+        newRow.insertCell(4).appendChild(document.createTextNode(supply.price));
+        newRow.insertCell(5).appendChild(document.createTextNode(supply.status));
+        $(newRow.insertCell(6)).html("<a href=\"#\">View</a>");
+    };
+</script>
+</html>

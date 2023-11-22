@@ -90,7 +90,7 @@ class FoodMarketApplicationTest {
 
         t.then(t.applyBehavior(new WaitForEntityPersisted(booking, dataSource)));
 
-        Supply supply = new Supply(product, 100, 0.99D);
+        Supply supply = new Supply("citrus-test", product, 100, 0.99D);
         t.when(send()
                 .endpoint(supplies)
                 .message().body(marshal(supply)));
@@ -115,7 +115,7 @@ class FoodMarketApplicationTest {
     void shouldCompleteOnBooking() {
         Product product = new Product("Pineapple");
 
-        Supply supply = new Supply(product, 100, 0.90D);
+        Supply supply = new Supply("citrus-test", product, 100, 0.90D);
         t.when(send()
             .endpoint(supplies)
             .message().body(marshal(supply)));
@@ -159,7 +159,7 @@ class FoodMarketApplicationTest {
 
         t.$(delay().milliseconds(1000L));
 
-        Supply supply = new Supply(product, 100, 0.99D);
+        Supply supply = new Supply("citrus-test", product, 100, 0.99D);
 
         BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
         completedEvent.setStatus(Booking.Status.COMPLETED.name());
@@ -186,4 +186,5 @@ class FoodMarketApplicationTest {
                 )
         ));
     }
+
 }

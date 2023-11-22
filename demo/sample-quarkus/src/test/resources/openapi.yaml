@@ -1,0 +1,375 @@
+---
+openapi: 3.0.3
+info:
+  title: citrus-sample-quarkus API
+  version: 4.0.0
+servers:
+- url: http://localhost:8080
+  description: Auto generated value
+- url: http://0.0.0.0:8080
+  description: Auto generated value
+paths:
+  /:
+    get:
+      tags:
+      - Food Market Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/TemplateInstance'
+  /api/bookings:
+    get:
+      tags:
+      - Booking Api Resource
+      operationId: listBookings
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+    post:
+      tags:
+      - Booking Api Resource
+      operationId: addBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        "200":
+          description: OK
+  /api/bookings/{id}:
+    get:
+      tags:
+      - Booking Api Resource
+      operationId: getBookingById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+      - Booking Api Resource
+      operationId: deleteBooking
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /api/supplies:
+    get:
+      tags:
+      - Supply Api Resource
+      operationId: listSupplies
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Supply'
+    post:
+      tags:
+      - Supply Api Resource
+      operationId: addSupply
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Supply'
+      responses:
+        "200":
+          description: OK
+  /api/supplies/{id}:
+    get:
+      tags:
+      - Supply Api Resource
+      operationId: getSupplyById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+    delete:
+      tags:
+      - Supply Api Resource
+      operationId: deleteSupply
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+  /bookings:
+    get:
+      tags:
+      - Food Market Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/PublisherString'
+  /supplies:
+    get:
+      tags:
+      - Food Market Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/PublisherString'
+components:
+  schemas:
+    Booking:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        client:
+          type: string
+        product:
+          $ref: '#/components/schemas/Product'
+        amount:
+          format: int32
+          type: integer
+        price:
+          type: number
+        status:
+          $ref: '#/components/schemas/Status'
+    Charset:
+      type: object
+      properties:
+        name:
+          type: string
+        aliases:
+          type: array
+          items:
+            type: string
+        aliasSet:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        registered:
+          type: boolean
+    Expression:
+      type: object
+      properties:
+        namespace:
+          type: string
+        parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Part'
+        literal:
+          type: boolean
+        literalValue:
+          type: object
+        origin:
+          $ref: '#/components/schemas/Origin'
+        generatedId:
+          format: int32
+          type: integer
+    Locale:
+      type: object
+      properties:
+        language:
+          type: string
+        script:
+          type: string
+        country:
+          type: string
+        variant:
+          type: string
+        extensionKeys:
+          uniqueItems: true
+          type: array
+          items:
+            format: byte
+            type: string
+        unicodeLocaleAttributes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        unicodeLocaleKeys:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        iSO3Language:
+          type: string
+        iSO3Country:
+          type: string
+        displayLanguage:
+          type: string
+        displayScript:
+          type: string
+        displayCountry:
+          type: string
+        displayVariant:
+          type: string
+        displayName:
+          type: string
+    Origin:
+      type: object
+      properties:
+        line:
+          format: int32
+          type: integer
+        lineCharacterStart:
+          format: int32
+          type: integer
+        lineCharacterEnd:
+          format: int32
+          type: integer
+        templateId:
+          type: string
+        templateGeneratedId:
+          type: string
+        variant:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Variant'
+          nullable: true
+    ParameterDeclaration:
+      type: object
+      properties:
+        typeInfo:
+          type: string
+        key:
+          type: string
+        defaultValue:
+          $ref: '#/components/schemas/Expression'
+        origin:
+          $ref: '#/components/schemas/Origin'
+    Part:
+      type: object
+      properties:
+        name:
+          type: string
+        typeInfo:
+          type: string
+        virtualMethod:
+          type: boolean
+    Product:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+    PublisherString:
+      type: object
+    Status:
+      enum:
+      - PENDING
+      - COMPLETED
+      type: string
+    Status1:
+      enum:
+      - AVAILABLE
+      - SOLD
+      type: string
+    Supply:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        supplier:
+          type: string
+        product:
+          $ref: '#/components/schemas/Product'
+        amount:
+          format: int32
+          type: integer
+        price:
+          type: number
+        status:
+          $ref: '#/components/schemas/Status1'
+    Template:
+      type: object
+      properties:
+        expressions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Expression'
+        generatedId:
+          type: string
+        id:
+          type: string
+        variant:
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Variant'
+          nullable: true
+        parameterDeclarations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParameterDeclaration'
+        fragmentIds:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        fragment:
+          type: boolean
+    TemplateInstance:
+      type: object
+      properties:
+        timeout:
+          format: int64
+          type: integer
+        template:
+          $ref: '#/components/schemas/Template'
+    Variant:
+      type: object
+      properties:
+        locale:
+          $ref: '#/components/schemas/Locale'
+        contentType:
+          type: string
+        encoding:
+          $ref: '#/components/schemas/Charset'
+        hashCode:
+          format: int32
+          type: integer
+        mediaType:
+          type: string
+        charset:
+          $ref: '#/components/schemas/Charset'

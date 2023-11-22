@@ -9,14 +9,28 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import org.citrusframework.container.AfterSuite;
+import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.kafka.endpoint.KafkaEndpoint;
 import org.citrusframework.mail.server.MailServer;
 import org.citrusframework.spi.BindToRegistry;
 
+import static org.citrusframework.actions.StopServerAction.Builder.stop;
+import static org.citrusframework.container.SequenceAfterSuite.Builder.afterSuite;
+import static org.citrusframework.http.endpoint.builder.HttpEndpoints.http;
 import static org.citrusframework.kafka.endpoint.builder.KafkaEndpoints.kafka;
 import static org.citrusframework.mail.endpoint.builder.MailEndpoints.mail;
 
 public class CitrusEndpointConfig {
+
+    private MailServer mailServer;
+
+    @BindToRegistry
+    public HttpClient httpClient() {
+        return http().client()
+                .requestUrl("http://localhost:8081/api")
+                .build();
+    }
 
     @BindToRegistry
     public KafkaEndpoint products() {
@@ -62,12 +76,16 @@ public class CitrusEndpointConfig {
 
     @BindToRegistry
     public MailServer mailServer() {
-        return mail().server()
-                .port(2222)
-                .knownUsers(Collections.singletonList("foodmarket@quarkus.io:foodmarket:secr3t"))
-                .autoAccept(true)
-                .autoStart(true)
-                .build();
+        if (mailServer == null) {
+            mailServer = mail().server()
+                    .port(2222)
+                    .knownUsers(Collections.singletonList("foodmarket@quarkus.io:foodmarket:secr3t"))
+                    .autoAccept(true)
+                    .autoStart(true)
+                    .build();
+        }
+
+        return mailServer;
     }
 
     @BindToRegistry
@@ -80,6 +98,14 @@ public class CitrusEndpointConfig {
                 .enable(MapperFeature.BLOCK_UNSAFE_POLYMORPHIC_BASE_TYPES)
                 .build()
                 .setDefaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_EMPTY, JsonInclude.Include.NON_EMPTY));
+    }
+
+    @BindToRegistry
+    public AfterSuite afterSuiteActions() {
+        return afterSuite()
+                .actions(
+                    stop(mailServer()))
+                .build();
     }
 
 }

@@ -31,10 +31,10 @@ public class MailService {
                 "Booking completed!",
                 "Hey %s, your booking %s has been completed.".formatted(booking.getClient(), booking.getProduct().getName())
             )
-        ).subscribe().with(success -> {
-            LOG.info("Mail message successfully sent");
-        }, failure -> {
-            LOG.info("Mail message failed: " + failure.getMessage());
-        });
+        ).subscribe()
+            .with(
+                success -> LOG.info("Mail message successfully sent"),
+                failure -> LOG.info("Mail message failed: " + failure.getMessage())
+            );
     }
 }

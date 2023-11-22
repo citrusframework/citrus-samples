@@ -17,7 +17,6 @@
 
 package org.apache.camel.demo;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,6 +99,10 @@ public class BookingService {
         booking.setStatus(Booking.Status.COMPLETED);
         LOG.info("Closing booking:" + objectMapper.writeValueAsString(booking));
         update(booking);
-        completedEmitter.send(BookingCompletedEvent.from(booking)).await().atMost(Duration.ofSeconds(5));
+        completedEmitter.send(BookingCompletedEvent.from(booking)).subscribe()
+            .with(
+                success -> LOG.info("Booking completed event successfully sent"),
+                failure -> LOG.info("Booking completed event failed: " + failure.getMessage())
+            );
     }
 }
