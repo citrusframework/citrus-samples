@@ -15,7 +15,7 @@
     <slf4j.version>2.0.9</slf4j.version>
     <log4j2.version>2.21.0</log4j2.version>
     <commons.logging.version>1.2</commons.logging.version>
-    <citrus.version>4.0.1</citrus.version>
+    <citrus.version>4.0.2</citrus.version>
     <activemq.artemis.version>2.31.0</activemq.artemis.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>

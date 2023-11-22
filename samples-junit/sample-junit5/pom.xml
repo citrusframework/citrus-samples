@@ -16,7 +16,7 @@
     <log4j2.version>2.21.0</log4j2.version>
     <commons.logging.version>1.2</commons.logging.version>
     <junit.version>5.7.0</junit.version>
-    <citrus.version>4.0.1</citrus.version>
+    <citrus.version>4.0.2</citrus.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 

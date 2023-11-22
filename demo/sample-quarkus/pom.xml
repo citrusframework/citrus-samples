@@ -17,7 +17,7 @@
 
     <quarkus.platform.version>3.5.0</quarkus.platform.version>
     <surefire-plugin.version>3.1.2</surefire-plugin.version>
-    <citrus.version>4.0.1</citrus.version>
+    <citrus.version>4.0.2</citrus.version>
     <javafaker.version>1.0.2</javafaker.version>
     <skipITs>true</skipITs>
   </properties>
