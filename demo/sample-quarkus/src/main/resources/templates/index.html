@@ -54,10 +54,12 @@
         <section class="pf-c-page__main-section pf-m-light">
             <div class="pf-c-content">
                 <h1>Food Market demo</h1>
-                <p>Available bookings.</p>
             </div>
         </section>
         <section class="pf-c-page__main-section pf-m-no-padding pf-m-padding-on-xl">
+            <div class="pf-c-content">
+                <h3 class="pf-c-title pf-m-lg">Bookings</h3>
+            </div>
             <div class="pf-c-card">
                 <table class="pf-c-table pf-m-grid-xl" role="grid" aria-label="This is a table with checkboxes" id="bookings">
                     <thead>
@@ -109,12 +111,10 @@
                 </table>
             </div>
         </section>
-        <section class="pf-c-page__main-section pf-m-light">
-            <div class="pf-c-content">
-                <p>Available supplies.</p>
-            </div>
-        </section>
         <section class="pf-c-page__main-section pf-m-no-padding pf-m-padding-on-xl">
+            <div class="pf-c-content">
+                <h3 class="pf-c-title pf-m-lg">Supplies</h3>
+            </div>
             <div class="pf-c-card">
                 <table class="pf-c-table pf-m-grid-xl" role="grid" aria-label="This is a table with checkboxes" id="supplies">
                     <thead>
@@ -166,6 +166,114 @@
                 </table>
             </div>
         </section>
+        <section class="pf-c-page__main-section pf-m-no-padding pf-m-padding-on-xl">
+            <form class="pf-c-form" id="new-booking" action="/" method="post" novalidate>
+                <div class="pf-l-grid pf-m-all-2-col-on-md pf-m-gutter">
+                    <div class="pf-c-form__group">
+                        <div class="pf-c-form__group-label"><label class="pf-c-form__label" for="type">
+                                <span class="pf-c-form__label-text">Type</span></label>
+                        </div>
+                        <div class="pf-c-form__group-control">
+                            <select
+                                    class="pf-c-form-control"
+                                    id="type"
+                                    name="type"
+                            >
+                                <option value selected>Select one</option>
+                                <option value="booking">BOOKING</option>
+                                <option value="supply">SUPPLY</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pf-c-form__group">
+                        <div class="pf-c-form__group-label"><label class="pf-c-form__label" for="name">
+                                <span class="pf-c-form__label-text">Name</span></label>
+                        </div>
+                        <div class="pf-c-form__group-control">
+                            <input
+                                    class="pf-c-form-control"
+                                    required
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                            />
+                        </div>
+                    </div>
+                    <div class="pf-c-form__group">
+                        <div class="pf-c-form__group-label"><label class="pf-c-form__label" for="product">
+                                <span class="pf-c-form__label-text">Product</span></label>
+                        </div>
+                        <div class="pf-c-form__group-control">
+                            <select
+                                    class="pf-c-form-control"
+                                    id="product"
+                                    name="product"
+                            >
+                                <option value selected>Select one</option>
+                                {#for product in products}
+                                    <option value="{product.name}">{product.name}</option>
+                                {/for}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pf-c-form__group">
+                        <div class="pf-c-form__group-label"><label class="pf-c-form__label" for="amount">
+                                <span class="pf-c-form__label-text">Amount</span></label>
+                        </div>
+                        <div class="pf-c-form__group-control">
+                            <input
+                                    class="pf-c-form-control"
+                                    required
+                                    type="text"
+                                    id="amount"
+                                    value="0"
+                                    name="amount"
+                            />
+                        </div>
+                    </div>
+                    <div class="pf-c-form__group">
+                        <div class="pf-c-form__group-label"><label class="pf-c-form__label" for="price">
+                                <span class="pf-c-form__label-text">Price</span></label>
+                        </div>
+                        <div class="pf-c-form__group-control">
+                            <input
+                                    class="pf-c-form-control"
+                                    required
+                                    type="text"
+                                    id="price"
+                                    value="0.00"
+                                    name="price"
+                            />
+                        </div>
+                    </div>
+                    <div class="pf-c-form__group">
+                        <div class="pf-c-form__group-label"><label class="pf-c-form__label" for="status">
+                                <span class="pf-c-form__label-text">Status</span></label>
+                        </div>
+                        <div class="pf-c-form__group-control">
+                            <select
+                                    class="pf-c-form-control"
+                                    id="status"
+                                    name="status"
+                            >
+                                <option value selected>Select one</option>
+                                <option value="PENDING">PENDING</option>
+                                <option value="COMPLETED">COMPLETED</option>
+                                <option value="AVAILABLE">AVAILABLE</option>
+                                <option value="SOLD">SOLD</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pf-c-form__group pf-m-action">
+                        <div class="pf-c-form__group-control">
+                            <div class="pf-c-form__actions">
+                                <button id="save" class="pf-c-button pf-m-primary" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
     </main>
 </div>
 </body>
@@ -214,5 +322,9 @@
         newRow.insertCell(5).appendChild(document.createTextNode(supply.status));
         $(newRow.insertCell(6)).html("<a href=\"#\">View</a>");
     };
+
+    $(document).ready(function(){
+        window.history.replaceState("","",window.location.href)
+    });
 </script>
 </html>

@@ -21,10 +21,10 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.smallrye.reactive.messaging.annotations.Merge;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
 import org.apache.camel.demo.model.Supply;
@@ -54,7 +54,7 @@ public class SupplyEvents {
 
     @Incoming("supply-events")
     @Outgoing("supply-added")
-    @Transactional
+    @Blocking
     public Supply processEvent(Supply supply) throws JsonProcessingException {
         LOG.info(String.format("Processing supply for product: %s", supply.getProduct().getName()));
         if (supply.getProduct().getId() == null) {
@@ -69,7 +69,7 @@ public class SupplyEvents {
 
     @Incoming("supply-added")
     @Merge
-    @Transactional
+    @Blocking
     public void onAdded(Supply supply) throws JsonProcessingException {
         Optional<Booking> matchingBooking;
         while ((matchingBooking = bookingService.findMatching(supply)).isPresent()) {

@@ -49,12 +49,14 @@ public class BookingService {
     @Channel("completed-events")
     MutinyEmitter<BookingCompletedEvent> completedEmitter;
 
+    @Transactional
     public Booking findById(Long id) {
         return em.createNamedQuery("Bookings.findById", Booking.class)
                         .setParameter("id", id)
                         .getSingleResult();
     }
 
+    @Transactional
     public Optional<Booking> findMatching(Supply supply) {
         List<Booking> matching = em.createNamedQuery("Bookings.findMatching", Booking.class)
                         .setParameter("product", supply.getProduct().getId())
@@ -72,6 +74,10 @@ public class BookingService {
 
     @Transactional
     public void add(Booking booking) {
+        if (booking.getId() != null) {
+            booking.setId(null);
+        }
+
         em.persist(booking);
     }
 
@@ -80,6 +86,7 @@ public class BookingService {
         em.merge(booking);
     }
 
+    @Transactional
     public List<Booking> findAll() {
         return em.createNamedQuery("Bookings.findAll", Booking.class).getResultList();
     }

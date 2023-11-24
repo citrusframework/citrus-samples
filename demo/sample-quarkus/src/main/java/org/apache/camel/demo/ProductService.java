@@ -34,12 +34,14 @@ public class ProductService {
     @Inject
     EntityManager em;
 
+    @Transactional
     public Product findById(Long id) {
         return em.createNamedQuery("Products.findById", Product.class)
                         .setParameter("id", id)
                         .getSingleResult();
     }
 
+    @Transactional
     public Optional<Product> findByName(String name) {
         try {
             return Optional.of(em.createNamedQuery("Products.findByName", Product.class)
@@ -64,6 +66,7 @@ public class ProductService {
         em.merge(product);
     }
 
+    @Transactional
     public List<Product> findAll() {
         return em.createNamedQuery("Products.findAll", Product.class).getResultList();
     }

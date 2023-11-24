@@ -49,12 +49,14 @@ public class SupplyService {
     @Inject
     ObjectMapper objectMapper;
 
+    @Transactional
     public Supply findById(Long id) {
         return em.createNamedQuery("Supplies.findById", Supply.class)
                         .setParameter("id", id)
                         .getSingleResult();
     }
 
+    @Transactional
     public Optional<Supply> findAvailable(Booking booking) {
         List<Supply> matching = em.createNamedQuery("Supplies.findMatching", Supply.class)
                         .setParameter("product", booking.getProduct().getId())
@@ -72,6 +74,10 @@ public class SupplyService {
 
     @Transactional
     public void add(Supply supply) {
+        if (supply.getId() != null) {
+            supply.setId(null);
+        }
+
         em.persist(supply);
     }
 
@@ -80,6 +86,7 @@ public class SupplyService {
         em.merge(supply);
     }
 
+    @Transactional
     public List<Supply> findAll() {
         return em.createNamedQuery("Supplies.findAll", Supply.class).getResultList();
     }

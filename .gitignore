@@ -15,3 +15,9 @@ bin
 build
 test-output
 sun-jaxb.episode
+
+.camel-jbang
+.yaks-jbang
+.citrus-jbang
+
+_output
