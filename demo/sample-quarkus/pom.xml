@@ -155,6 +155,7 @@
   </dependencies>
 
   <build>
+    <finalName>food-market-demo</finalName>
     <plugins>
       <plugin>
         <groupId>io.quarkus.platform</groupId>

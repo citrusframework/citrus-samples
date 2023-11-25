@@ -7,11 +7,11 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native -t quarkus/kamelets-quarkus-demo .
+# docker build -f src/main/docker/Dockerfile.native -t quarkus/food-market-demo .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/kamelets-quarkus-demo
+# docker run -i --rm -p 8080:8080 quarkus/food-market-demo
 #
 ###
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8

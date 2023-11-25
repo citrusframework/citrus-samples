@@ -266,7 +266,7 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 ./mvnw package -Dnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/kamelets-quarkus-demo-1.0.0-runner`
+You can then execute your native executable with: `./target/food-market-demo-1.1.0-runner`
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
 
@@ -281,7 +281,7 @@ To build your image, run:
 
 You can push your image using:
 ```shell script
-docker push quay.io/{YOUR_USERNAME}/food-market-demo:1.0.0
+docker push quay.io/{YOUR_USERNAME}/food-market-demo:1.1.0
 ```
 
 ## Related Guides
