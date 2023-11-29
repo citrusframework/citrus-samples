@@ -13,7 +13,10 @@ import org.citrusframework.container.AfterSuite;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.kafka.endpoint.KafkaEndpoint;
 import org.citrusframework.mail.server.MailServer;
+import org.citrusframework.selenium.endpoint.SeleniumBrowser;
+import org.citrusframework.selenium.endpoint.SeleniumBrowserBuilder;
 import org.citrusframework.spi.BindToRegistry;
+import org.openqa.selenium.remote.Browser;
 
 import static org.citrusframework.actions.StopServerAction.Builder.stop;
 import static org.citrusframework.container.SequenceAfterSuite.Builder.afterSuite;
@@ -28,7 +31,7 @@ public class CitrusEndpointConfig {
     @BindToRegistry
     public HttpClient httpClient() {
         return http().client()
-                .requestUrl("http://localhost:8081/api")
+                .requestUrl("http://localhost:8081")
                 .build();
     }
 
@@ -98,6 +101,13 @@ public class CitrusEndpointConfig {
                 .enable(MapperFeature.BLOCK_UNSAFE_POLYMORPHIC_BASE_TYPES)
                 .build()
                 .setDefaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_EMPTY, JsonInclude.Include.NON_EMPTY));
+    }
+
+    @BindToRegistry
+    public SeleniumBrowser browser() {
+        return new SeleniumBrowserBuilder()
+                .type(Browser.HTMLUNIT.browserName())
+                .build();
     }
 
     @BindToRegistry

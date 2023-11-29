@@ -48,7 +48,7 @@ import static org.citrusframework.dsl.JsonSupport.marshal;
 @QuarkusTest
 @CitrusSupport
 @CitrusConfiguration(classes = { CitrusEndpointConfig.class })
-class FoodMarketApplicationTest {
+class FoodMarketEventingTest {
 
     @CitrusEndpoint
     private KafkaEndpoint products;

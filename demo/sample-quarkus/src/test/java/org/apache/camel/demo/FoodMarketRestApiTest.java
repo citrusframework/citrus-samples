@@ -42,7 +42,7 @@ import static org.citrusframework.http.actions.HttpActionBuilder.http;
 @QuarkusTest
 @CitrusSupport
 @CitrusConfiguration(classes = { CitrusEndpointConfig.class })
-class FoodMarketApiResourceTest {
+class FoodMarketRestApiTest {
 
     @CitrusEndpoint
     private HttpClient httpClient;
@@ -60,7 +60,7 @@ class FoodMarketApiResourceTest {
         t.when(http()
                 .client(httpClient)
                 .send()
-                .post("/bookings")
+                .post("/api/bookings")
                 .message()
                 .contentType(APPLICATION_JSON)
                 .body(marshal(booking)));
@@ -86,7 +86,7 @@ class FoodMarketApiResourceTest {
         t.when(http()
                 .client(httpClient)
                 .send()
-                .post("/supplies")
+                .post("/api/supplies")
                 .message()
                 .contentType(APPLICATION_JSON)
                 .body(marshal(supply)));
