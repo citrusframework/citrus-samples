@@ -230,7 +230,7 @@
   <pluginRepositories>
     <pluginRepository>
       <id>consol-labs-plugin-snapshots</id>
-      <url>http://labs.consol.de/maven/snapshots-repository/</url>
+      <url>https://labs.consol.de/maven/snapshots-repository/</url>
       <snapshots>
         <enabled>true</enabled>
         <updatePolicy>interval:10080</updatePolicy>
