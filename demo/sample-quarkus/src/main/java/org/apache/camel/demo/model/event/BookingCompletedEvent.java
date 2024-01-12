@@ -31,7 +31,7 @@ public class BookingCompletedEvent {
         event.setClient(booking.getClient());
         event.setProduct(booking.getProduct().getName());
         event.setAmount(booking.getAmount());
-        event.setStatus(booking.getStatus().name());
+        event.setStatus(Booking.Status.COMPLETED.name());
         return event;
     }
 

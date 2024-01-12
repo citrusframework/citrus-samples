@@ -326,9 +326,7 @@
           "literal" : {
             "type" : "boolean"
           },
-          "literalValue" : {
-            "type" : "object"
-          },
+          "literalValue" : { },
           "origin" : {
             "$ref" : "#/components/schemas/Origin"
           },
@@ -434,6 +432,9 @@
               "$ref" : "#/components/schemas/Variant"
             } ],
             "nullable" : true
+          },
+          "synthetic" : {
+            "type" : "boolean"
           }
         }
       },

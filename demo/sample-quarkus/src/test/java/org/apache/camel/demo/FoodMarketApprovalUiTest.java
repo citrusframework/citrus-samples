@@ -52,63 +52,60 @@ import static org.citrusframework.selenium.actions.SeleniumActionBuilder.seleniu
 class FoodMarketApprovalUiTest {
 
     @CitrusEndpoint
-    private HttpClient foodMarketApiClient;
+    HttpClient foodMarketApiClient;
 
     @CitrusEndpoint
-    private KafkaEndpoint completed;
+    KafkaEndpoint completed;
 
     @CitrusEndpoint
-    private KafkaEndpoint shipping;
+    KafkaEndpoint shipping;
 
     @CitrusEndpoint
-    private SeleniumBrowser browser;
+    SeleniumBrowser browser;
 
     @CitrusResource
-    private TestCaseRunner t;
+    TestCaseRunner t;
 
     @Inject
     DataSource dataSource;
-
-    private final String homeUrl = "http://localhost:8081";;
 
     @Test
     void shouldRequireApproval() {
         Product product = new Product("Kiwi");
 
         Supply supply = new Supply("citrus-test", product, 200, 1.99D);
-        t.when(http()
-                .client(foodMarketApiClient)
-                .send()
-                .post("/api/supplies")
-                .message()
-                .contentType(APPLICATION_JSON)
-                .body(marshal(supply)));
-
-        t.then(http()
-                .client(foodMarketApiClient)
-                .receive()
-                .response(HttpStatus.CREATED)
-                .message()
-                .extract(json().expression("$.id", "supplyId")));
+        createSupply(supply);
 
         Booking booking = new Booking("citrus-test", product, 200, 1.99D, TestHelper.createShippingAddress().getFullAddress());
-        t.variable("booking", booking);
-        t.when(http()
-                .client(foodMarketApiClient)
-                .send()
-                .post("/api/bookings")
-                .message()
-                .contentType(APPLICATION_JSON)
-                .body(marshal(booking)));
-
-        t.then(http()
-                .client(foodMarketApiClient)
-                .receive()
-                .response(HttpStatus.CREATED)
-                .message()
-                .extract(json().expression("$.id", "bookingId")));
+        createBooking(booking);
 
         t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.APPROVAL_REQUIRED, dataSource)));
+
+        approveBooking();
+
+        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
+        t.then(receive()
+                .endpoint(completed)
+                .message().body(marshal(completedEvent)));
+
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
+                supply.getAmount(), booking.getShippingAddress());
+
+        t.then(receive()
+                .endpoint(shipping)
+                .message().body(marshal(shippingEvent)));
+
+        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource)));
+    }
+
+    /**
+     * Approve booking by via FoodMarket UI.
+     * Opens new browser with Selenium and makes user click on APPROVE button for the current booking.
+     * Uses a test variable bookingId to identify the booking to approve.
+     * The bookingId usually gets extracted from the response when creating the booking in an earlier step in this test.
+     */
+    private void approveBooking() {
+        String homeUrl = "http://localhost:8081";
 
         t.given(selenium()
                 .browser(browser)
@@ -132,22 +129,41 @@ class FoodMarketApprovalUiTest {
                 .browser(browser)
                 .click()
                 .element("id", "${bookingId}"));
+    }
 
-        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
-        completedEvent.setStatus(Booking.Status.COMPLETED.name());
+    private void createBooking(Booking booking) {
+        t.variable("booking", booking);
+        t.when(http()
+                .client(foodMarketApiClient)
+                .send()
+                .post("/api/bookings")
+                .message()
+                .contentType(APPLICATION_JSON)
+                .body(marshal(booking)));
 
-        t.then(receive()
-                .endpoint(completed)
-                .message().body(marshal(completedEvent)));
+        t.then(http()
+                .client(foodMarketApiClient)
+                .receive()
+                .response(HttpStatus.CREATED)
+                .message()
+                .extract(json().expression("$.id", "bookingId")));
+    }
 
-        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
-                supply.getAmount(), booking.getShippingAddress());
+    private void createSupply(Supply supply) {
+        t.when(http()
+                .client(foodMarketApiClient)
+                .send()
+                .post("/api/supplies")
+                .message()
+                .contentType(APPLICATION_JSON)
+                .body(marshal(supply)));
 
-        t.then(receive()
-                .endpoint(shipping)
-                .message().body(marshal(shippingEvent)));
-
-        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource)));
+        t.then(http()
+                .client(foodMarketApiClient)
+                .receive()
+                .response(HttpStatus.CREATED)
+                .message()
+                .extract(json().expression("$.id", "supplyId")));
     }
 
 }

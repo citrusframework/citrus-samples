@@ -51,19 +51,19 @@ import static org.citrusframework.http.actions.HttpActionBuilder.http;
 class FoodMarketApprovalTest {
 
     @CitrusEndpoint
-    private HttpClient foodMarketApiClient;
+    HttpClient foodMarketApiClient;
 
     @CitrusEndpoint
-    private KafkaEndpoint completed;
+    KafkaEndpoint completed;
 
     @CitrusEndpoint
-    private KafkaEndpoint shipping;
+    KafkaEndpoint shipping;
 
     @CitrusEndpoint
-    private MailServer mailServer;
+    MailServer mailServer;
 
     @CitrusResource
-    private TestCaseRunner t;
+    TestCaseRunner t;
 
     @Inject
     DataSource dataSource;
@@ -73,22 +73,28 @@ class FoodMarketApprovalTest {
         Product product = new Product("Kiwi");
 
         Supply supply = new Supply("citrus-test", product, 200, 1.99D);
-        t.when(http()
-                .client(foodMarketApiClient)
-                .send()
-                .post("/api/supplies")
-                .message()
-                .contentType(APPLICATION_JSON)
-                .body(marshal(supply)));
-
-        t.then(http()
-                .client(foodMarketApiClient)
-                .receive()
-                .response(HttpStatus.CREATED)
-                .message()
-                .extract(json().expression("$.id", "supplyId")));
+        createSupply(supply);
 
         Booking booking = new Booking("citrus-test", product, 200, 1.99D, TestHelper.createShippingAddress().getFullAddress());
+        createBooking(booking);
+
+        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.APPROVAL_REQUIRED, dataSource)));
+
+        approveBooking();
+
+        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
+        verifyBookingCompletedEvent(completedEvent);
+
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
+                supply.getAmount(), booking.getShippingAddress());
+        verifyShippingEvent(shippingEvent);
+
+        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
+
+        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource)));
+    }
+
+    private void createBooking(Booking booking) {
         t.variable("booking", booking);
         t.when(http()
                 .client(foodMarketApiClient)
@@ -104,9 +110,43 @@ class FoodMarketApprovalTest {
                 .response(HttpStatus.CREATED)
                 .message()
                 .extract(json().expression("$.id", "bookingId")));
+    }
 
-        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.APPROVAL_REQUIRED, dataSource)));
+    private void createSupply(Supply supply) {
+        t.when(http()
+                .client(foodMarketApiClient)
+                .send()
+                .post("/api/supplies")
+                .message()
+                .contentType(APPLICATION_JSON)
+                .body(marshal(supply)));
 
+        t.then(http()
+                .client(foodMarketApiClient)
+                .receive()
+                .response(HttpStatus.CREATED)
+                .message()
+                .extract(json().expression("$.id", "supplyId")));
+    }
+
+    private void verifyShippingEvent(ShippingEvent shippingEvent) {
+        t.then(receive()
+                .endpoint(shipping)
+                .message().body(marshal(shippingEvent)));
+    }
+
+    private void verifyBookingCompletedEvent(BookingCompletedEvent completedEvent) {
+        t.then(receive()
+                .endpoint(completed)
+                .message().body(marshal(completedEvent)));
+    }
+
+    /**
+     * Approve booking by calling the FoodMarket Http REST API.
+     * Uses a test variable bookingId to identify the booking to approve.
+     * The bookingId usually gets extracted from the response when creating the booking in an earlier step in this test.
+     */
+    private void approveBooking() {
         t.when(http()
                 .client(foodMarketApiClient)
                 .send()
@@ -117,24 +157,6 @@ class FoodMarketApprovalTest {
                 .client(foodMarketApiClient)
                 .receive()
                 .response(HttpStatus.ACCEPTED));
-
-        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
-        completedEvent.setStatus(Booking.Status.COMPLETED.name());
-
-        t.then(receive()
-                .endpoint(completed)
-                .message().body(marshal(completedEvent)));
-
-        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
-                supply.getAmount(), booking.getShippingAddress());
-
-        t.then(receive()
-                .endpoint(shipping)
-                .message().body(marshal(shippingEvent)));
-
-        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
-
-        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource)));
     }
 
 }

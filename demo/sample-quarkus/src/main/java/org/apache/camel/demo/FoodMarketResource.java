@@ -114,7 +114,8 @@ public class FoodMarketResource {
 
         if ("booking".equals(type)) {
             Booking booking = new Booking(form.getFirst("name"), product.get(),
-                    Integer.parseInt(form.getFirst("amount")), Double.parseDouble(form.getFirst("price")));
+                    Integer.parseInt(form.getFirst("amount")), Double.parseDouble(form.getFirst("price")),
+                    "%s, 000 Foo Blvd.".formatted(form.getFirst("name")));
 
             bookingService.add(booking);
             LOG.info("New booking: " + mapper.writeValueAsString(booking));

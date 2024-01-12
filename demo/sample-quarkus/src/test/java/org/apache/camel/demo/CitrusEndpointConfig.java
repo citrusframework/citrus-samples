@@ -29,7 +29,7 @@ import static org.citrusframework.mail.endpoint.builder.MailEndpoints.mail;
 public class CitrusEndpointConfig {
 
     private MailServer mailServer;
-    private HttpServer shippingService;
+    private HttpServer shippingDetailsService;
 
     @BindToRegistry
     public HttpClient foodMarketApiClient() {
@@ -83,16 +83,16 @@ public class CitrusEndpointConfig {
     }
 
     @BindToRegistry
-    public HttpServer shippingService() {
-        if (shippingService == null) {
-            shippingService = new HttpServerBuilder()
+    public HttpServer shippingDetailsService() {
+        if (shippingDetailsService == null) {
+            shippingDetailsService = new HttpServerBuilder()
                     .port(8888)
                     .timeout(10000L)
                     .autoStart(true)
                     .build();
         }
 
-        return shippingService;
+        return shippingDetailsService;
     }
 
     @BindToRegistry
@@ -132,7 +132,7 @@ public class CitrusEndpointConfig {
     public AfterSuite afterSuiteActions() {
         return afterSuite()
                 .actions(
-                    stop(mailServer(), shippingService()))
+                    stop(mailServer(), shippingDetailsService()))
                 .build();
     }
 

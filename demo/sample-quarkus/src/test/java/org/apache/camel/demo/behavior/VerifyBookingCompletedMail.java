@@ -23,7 +23,10 @@ public class VerifyBookingCompletedMail implements TestBehavior {
     public void apply(TestActionRunner t) {
         t.run(receive()
             .endpoint(mailServer)
-            .message(MailMessage.request("foodmarket@quarkus.io", "%s@quarkus.io".formatted(booking.getClient()), "Booking completed!")
+            .message(MailMessage.request()
+                    .from("foodmarket@quarkus.io")
+                    .to("%s@quarkus.io".formatted(booking.getClient()))
+                    .subject("Booking completed!")
                     .body("Hey %s, your booking %s has been completed."
                             .formatted(booking.getClient(), booking.getProduct().getName()), "text/plain"))
         );

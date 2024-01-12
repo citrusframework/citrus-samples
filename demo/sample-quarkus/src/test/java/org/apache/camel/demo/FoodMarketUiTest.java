@@ -38,12 +38,12 @@ import static org.citrusframework.selenium.actions.SeleniumActionBuilder.seleniu
 class FoodMarketUiTest {
 
     @CitrusEndpoint
-    private SeleniumBrowser browser;
+    SeleniumBrowser browser;
 
     @CitrusResource
-    private TestCaseRunner t;
+    TestCaseRunner t;
 
-    private final String homeUrl = "http://localhost:8081";;
+    private final String homeUrl = "http://localhost:8081";
 
     @Test
     void indexPage() {

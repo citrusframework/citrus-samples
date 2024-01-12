@@ -54,109 +54,116 @@ import static org.citrusframework.dsl.JsonSupport.marshal;
 class FoodMarketEventingTest {
 
     @CitrusEndpoint
-    private KafkaEndpoint products;
+    KafkaEndpoint products;
 
     @CitrusEndpoint
-    private KafkaEndpoint bookings;
+    KafkaEndpoint bookings;
 
     @CitrusEndpoint
-    private KafkaEndpoint supplies;
+    KafkaEndpoint supplies;
 
     @CitrusEndpoint
-    private KafkaEndpoint completed;
+    KafkaEndpoint completed;
 
     @CitrusEndpoint
-    private KafkaEndpoint shipping;
+    KafkaEndpoint shipping;
 
     @CitrusEndpoint
-    private MailServer mailServer;
+    MailServer mailServer;
 
     @CitrusEndpoint
-    private HttpServer shippingService;
+    HttpServer shippingDetailsService;
 
     @CitrusResource
-    private TestCaseRunner t;
+    TestCaseRunner t;
 
     @Inject
     DataSource dataSource;
-
-    @Test
-    void shouldCompleteOnSupply() {
-        Product product = new Product("Watermelon");
-        t.when(send()
-            .endpoint(products)
-            .message().body(marshal(product)));
-
-        t.then(t.applyBehavior(new WaitForProductCreated(product, dataSource)));
-
-        Booking booking = new Booking("citrus-test", product, 100, 0.99D);
-        t.variable("booking", booking);
-        t.when(send()
-                .endpoint(bookings)
-                .message().body(marshal(booking)));
-
-        t.then(t.applyBehavior(new WaitForEntityPersisted(booking, dataSource)));
-
-        Supply supply = new Supply("citrus-test", product, 100, 0.99D);
-        t.when(send()
-                .endpoint(supplies)
-                .message().body(marshal(supply)));
-
-        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
-        completedEvent.setStatus(Booking.Status.COMPLETED.name());
-
-        t.then(receive()
-                .endpoint(completed)
-                .message().body(marshal(completedEvent)));
-
-        ShippingAddress shippingAddress = TestHelper.createShippingAddress();
-        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
-                supply.getAmount(), shippingAddress.getFullAddress());
-
-        t.then(t.applyBehavior(new GetShippingAddress(shippingService, shippingAddress)));
-
-        t.then(receive()
-                .endpoint(shipping)
-                .message().body(marshal(shippingEvent)));
-
-        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
-    }
 
     @Test
     void shouldCompleteOnBooking() {
         Product product = new Product("Pineapple");
 
         Supply supply = new Supply("citrus-test", product, 100, 0.90D);
-        t.when(send()
-            .endpoint(supplies)
-            .message().body(marshal(supply)));
+        createSupply(supply);
 
         t.then(t.applyBehavior(new WaitForEntityPersisted(supply, dataSource)));
 
         Booking booking = new Booking("citrus-test", product, 100, 0.99D);
-        t.variable("booking", booking);
-        t.when(send()
-            .endpoint(bookings)
-            .message().body(marshal(booking)));
+        createBooking(booking);
 
         BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
-        completedEvent.setStatus(Booking.Status.COMPLETED.name());
-
-        t.then(receive()
-                .endpoint(completed)
-                .message().body(marshal(completedEvent)));
+        verifyBookingCompletedEvent(completedEvent);
 
         ShippingAddress shippingAddress = TestHelper.createShippingAddress();
         ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
                 supply.getAmount(), shippingAddress.getFullAddress());
 
-        t.then(t.applyBehavior(new GetShippingAddress(shippingService, shippingAddress)));
+        t.then(t.applyBehavior(new GetShippingAddress(shippingDetailsService, shippingAddress)));
 
+        verifyShippingEvent(shippingEvent);
+
+        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
+    }
+
+    @Test
+    void shouldCompleteOnSupply() {
+        Product product = new Product("Watermelon");
+        createProduct(product);
+
+        t.then(t.applyBehavior(new WaitForProductCreated(product, dataSource)));
+
+        Booking booking = new Booking("citrus-test", product, 100, 0.99D);
+        createBooking(booking);
+
+        t.then(t.applyBehavior(new WaitForEntityPersisted(booking, dataSource)));
+
+        Supply supply = new Supply("citrus-test", product, 100, 0.99D);
+        createSupply(supply);
+
+        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
+        verifyBookingCompletedEvent(completedEvent);
+
+        ShippingAddress shippingAddress = TestHelper.createShippingAddress();
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
+                supply.getAmount(), shippingAddress.getFullAddress());
+
+        t.then(t.applyBehavior(new GetShippingAddress(shippingDetailsService, shippingAddress)));
+
+        verifyShippingEvent(shippingEvent);
+
+        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
+    }
+
+    private void verifyShippingEvent(ShippingEvent shippingEvent) {
         t.then(receive()
                 .endpoint(shipping)
                 .message().body(marshal(shippingEvent)));
+    }
 
-        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
+    private void verifyBookingCompletedEvent(BookingCompletedEvent completedEvent) {
+        t.then(receive()
+                .endpoint(completed)
+                .message().body(marshal(completedEvent)));
+    }
+
+    private void createSupply(Supply supply) {
+        t.when(send()
+                .endpoint(supplies)
+                .message().body(marshal(supply)));
+    }
+
+    private void createBooking(Booking booking) {
+        t.variable("booking", booking);
+        t.when(send()
+                .endpoint(bookings)
+                .message().body(marshal(booking)));
+    }
+
+    private void createProduct(Product product) {
+        t.when(send()
+                .endpoint(products)
+                .message().body(marshal(product)));
     }
 
     @Test
@@ -181,8 +188,6 @@ class FoodMarketEventingTest {
                 .message().body(marshal(supply)));
 
         BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
-        completedEvent.setStatus(Booking.Status.COMPLETED.name());
-
         ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
                 booking.getAmount(), booking.getShippingAddress());
 

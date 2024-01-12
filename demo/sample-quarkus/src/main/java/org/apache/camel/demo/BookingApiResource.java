@@ -69,6 +69,7 @@ public class BookingApiResource {
 
     @POST
     @Operation(operationId = "addBooking")
+    @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response add(Booking booking) throws JsonProcessingException {
         LOG.info(String.format("Processing booking for product: %s", booking.getProduct().getName()));
@@ -92,6 +93,7 @@ public class BookingApiResource {
 
     @GET
     @Path("/{id}")
+    @Produces("application/json")
     @Operation(operationId = "getBookingById")
     public Response find(@PathParam("id") String id) {
         if (!Pattern.compile("\\d+").matcher(id).matches()) {

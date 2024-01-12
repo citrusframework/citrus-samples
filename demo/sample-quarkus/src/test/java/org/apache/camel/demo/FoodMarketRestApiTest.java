@@ -45,10 +45,10 @@ import static org.citrusframework.http.actions.HttpActionBuilder.http;
 class FoodMarketRestApiTest {
 
     @CitrusEndpoint
-    private HttpClient foodMarketApiClient;
+    HttpClient foodMarketApiClient;
 
     @CitrusResource
-    private TestCaseRunner t;
+    TestCaseRunner t;
 
     @Inject
     DataSource dataSource;
