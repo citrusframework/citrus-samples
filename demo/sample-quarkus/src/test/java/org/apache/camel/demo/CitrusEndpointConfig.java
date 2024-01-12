@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.citrusframework.container.AfterSuite;
 import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.http.server.HttpServer;
+import org.citrusframework.http.server.HttpServerBuilder;
 import org.citrusframework.kafka.endpoint.KafkaEndpoint;
 import org.citrusframework.mail.server.MailServer;
 import org.citrusframework.selenium.endpoint.SeleniumBrowser;
@@ -27,6 +29,7 @@ import static org.citrusframework.mail.endpoint.builder.MailEndpoints.mail;
 public class CitrusEndpointConfig {
 
     private MailServer mailServer;
+    private HttpServer shippingService;
 
     @BindToRegistry
     public HttpClient httpClient() {
@@ -64,6 +67,7 @@ public class CitrusEndpointConfig {
         return kafka()
                 .asynchronous()
                 .topic("shipping")
+                .consumerGroup("citrus-shipping")
                 .timeout(10000L)
                 .build();
     }
@@ -73,8 +77,22 @@ public class CitrusEndpointConfig {
         return kafka()
                 .asynchronous()
                 .topic("completed")
+                .consumerGroup("citrus-completed")
                 .timeout(10000L)
                 .build();
+    }
+
+    @BindToRegistry
+    public HttpServer shippingService() {
+        if (shippingService == null) {
+            shippingService = new HttpServerBuilder()
+                    .port(8888)
+                    .timeout(10000L)
+                    .autoStart(true)
+                    .build();
+        }
+
+        return shippingService;
     }
 
     @BindToRegistry
@@ -114,7 +132,7 @@ public class CitrusEndpointConfig {
     public AfterSuite afterSuiteActions() {
         return afterSuite()
                 .actions(
-                    stop(mailServer()))
+                    stop(mailServer(), shippingService()))
                 .build();
     }
 

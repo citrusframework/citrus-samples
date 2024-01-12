@@ -21,11 +21,13 @@ import javax.sql.DataSource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import org.apache.camel.demo.behavior.GetShippingAddress;
 import org.apache.camel.demo.behavior.VerifyBookingCompletedMail;
 import org.apache.camel.demo.behavior.WaitForEntityPersisted;
 import org.apache.camel.demo.behavior.WaitForProductCreated;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
+import org.apache.camel.demo.model.ShippingAddress;
 import org.apache.camel.demo.model.Supply;
 import org.apache.camel.demo.model.event.BookingCompletedEvent;
 import org.apache.camel.demo.model.event.ShippingEvent;
@@ -33,6 +35,7 @@ import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
 import org.citrusframework.annotations.CitrusResource;
+import org.citrusframework.http.server.HttpServer;
 import org.citrusframework.kafka.endpoint.KafkaEndpoint;
 import org.citrusframework.mail.server.MailServer;
 import org.citrusframework.quarkus.CitrusSupport;
@@ -68,6 +71,9 @@ class FoodMarketEventingTest {
     @CitrusEndpoint
     private MailServer mailServer;
 
+    @CitrusEndpoint
+    private HttpServer shippingService;
+
     @CitrusResource
     private TestCaseRunner t;
 
@@ -84,6 +90,7 @@ class FoodMarketEventingTest {
         t.then(t.applyBehavior(new WaitForProductCreated(product, dataSource)));
 
         Booking booking = new Booking("citrus-test", product, 100, 0.99D);
+        t.variable("booking", booking);
         t.when(send()
                 .endpoint(bookings)
                 .message().body(marshal(booking)));
@@ -98,15 +105,19 @@ class FoodMarketEventingTest {
         BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
         completedEvent.setStatus(Booking.Status.COMPLETED.name());
 
-        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(), supply.getAmount(), "@ignore@");
-        t.then(parallel().actions(
-            receive()
+        t.then(receive()
                 .endpoint(completed)
-                .message().body(marshal(completedEvent)),
-            receive()
+                .message().body(marshal(completedEvent)));
+
+        ShippingAddress shippingAddress = TestHelper.createShippingAddress();
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
+                supply.getAmount(), shippingAddress.getFullAddress());
+
+        t.then(t.applyBehavior(new GetShippingAddress(shippingService, shippingAddress)));
+
+        t.then(receive()
                 .endpoint(shipping)
-                .message().body(marshal(shippingEvent))
-        ));
+                .message().body(marshal(shippingEvent)));
 
         t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
     }
@@ -123,6 +134,7 @@ class FoodMarketEventingTest {
         t.then(t.applyBehavior(new WaitForEntityPersisted(supply, dataSource)));
 
         Booking booking = new Booking("citrus-test", product, 100, 0.99D);
+        t.variable("booking", booking);
         t.when(send()
             .endpoint(bookings)
             .message().body(marshal(booking)));
@@ -130,15 +142,19 @@ class FoodMarketEventingTest {
         BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
         completedEvent.setStatus(Booking.Status.COMPLETED.name());
 
-        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(), supply.getAmount(), "@ignore@");
-        t.then(parallel().actions(
-            receive()
+        t.then(receive()
                 .endpoint(completed)
-                .message().body(marshal(completedEvent)),
-            receive()
+                .message().body(marshal(completedEvent)));
+
+        ShippingAddress shippingAddress = TestHelper.createShippingAddress();
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
+                supply.getAmount(), shippingAddress.getFullAddress());
+
+        t.then(t.applyBehavior(new GetShippingAddress(shippingService, shippingAddress)));
+
+        t.then(receive()
                 .endpoint(shipping)
-                .message().body(marshal(shippingEvent))
-        ));
+                .message().body(marshal(shippingEvent)));
 
         t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
     }
@@ -148,7 +164,7 @@ class FoodMarketEventingTest {
         Product product = new Product("Apple");
         t.variable("product", product);
 
-        Booking booking = new Booking("citrus-test", product, 10, 1.99D);
+        Booking booking = new Booking("citrus-test", product, 10, 1.99D, TestHelper.createShippingAddress().getFullAddress());
         t.when(iterate()
                 .condition((i, context) -> i < 10)
                 .actions(
@@ -160,16 +176,17 @@ class FoodMarketEventingTest {
         t.$(delay().milliseconds(1000L));
 
         Supply supply = new Supply("citrus-test", product, 100, 0.99D);
+        t.then(send()
+                .endpoint(supplies)
+                .message().body(marshal(supply)));
 
         BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
         completedEvent.setStatus(Booking.Status.COMPLETED.name());
 
-        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(), booking.getAmount(), "@ignore@");
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
+                booking.getAmount(), booking.getShippingAddress());
 
         t.then(parallel().actions(
-            send()
-                .endpoint(supplies)
-                .message().body(marshal(supply)),
             iterate()
                 .condition((i, context) -> i < 10)
                 .actions(

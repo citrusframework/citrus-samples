@@ -46,16 +46,23 @@ public class Booking {
     private Integer amount;
     private BigDecimal price = new BigDecimal("0.0");
 
+    private String shippingAddress;
+
     private Status status = Status.PENDING;
 
     public Booking() {
     }
 
     public Booking(String client, Product product, int amount, double price) {
+        this(client, product, amount, price, null);
+    }
+
+    public Booking(String client, Product product, int amount, double price, String shippingAddress) {
         this.client = client;
         this.product = product;
         this.amount = amount;
         this.price = BigDecimal.valueOf(price);
+        this.shippingAddress = shippingAddress;
     }
 
     public enum Status {
@@ -114,5 +121,13 @@ public class Booking {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 }

@@ -17,8 +17,6 @@
 
 package org.apache.camel.demo.model.event;
 
-import com.github.javafaker.Faker;
-
 public class ShippingEvent {
 
     private String client;
@@ -26,15 +24,6 @@ public class ShippingEvent {
     private Integer amount;
 
     private String address;
-
-    private static final Faker faker = new Faker();
-
-    public ShippingEvent() {
-    }
-
-    public ShippingEvent(String client, String product, Integer amount) {
-        this(client, product, amount, String.format("%s, %s", faker.name().fullName(), faker.address().streetAddress()));
-    }
 
     public ShippingEvent(String client, String product, Integer amount, String address) {
         this.client = client;

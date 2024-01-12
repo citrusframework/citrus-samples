@@ -260,6 +260,9 @@
           "price" : {
             "type" : "number"
           },
+          "shippingAddress" : {
+            "type" : "string"
+          },
           "status" : {
             "$ref" : "#/components/schemas/Status"
           }

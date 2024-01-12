@@ -47,6 +47,9 @@ public class SupplyService {
     MutinyEmitter<ShippingEvent> shippingEmitter;
 
     @Inject
+    ShippingService shippingService;
+
+    @Inject
     ObjectMapper objectMapper;
 
     @Transactional
@@ -113,7 +116,17 @@ public class SupplyService {
         }
 
         update(supply);
-        shippingEmitter.send(new ShippingEvent(booking.getClient(), supply.getProduct().getName(), booking.getAmount())).subscribe()
+
+        String shippingAddress;
+        if (booking.getShippingAddress() != null) {
+            shippingAddress = booking.getShippingAddress();
+        } else {
+            shippingAddress = shippingService.getAddressInformation(booking).getFullAddress();
+        }
+
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), supply.getProduct().getName(),
+                booking.getAmount(), shippingAddress);
+        shippingEmitter.send(shippingEvent).subscribe()
                 .with(
                     success -> LOG.info("Shipping event successfully sent"),
                     failure -> LOG.info("Shipping event failed: " + failure.getMessage())

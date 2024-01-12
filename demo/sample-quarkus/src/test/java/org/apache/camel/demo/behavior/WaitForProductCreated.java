@@ -23,7 +23,7 @@ public class WaitForProductCreated implements TestBehavior {
     public void apply(TestActionRunner t) {
         t.run(repeatOnError()
             .condition((i, context) -> i > 25)
-            .autoSleep(500)
+            .autoSleep(1000L)
             .actions(sql().dataSource(dataSource)
                     .query()
                     .statement("select count(id) as found from product where product.name='%s'"

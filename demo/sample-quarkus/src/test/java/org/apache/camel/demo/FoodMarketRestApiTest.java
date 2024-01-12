@@ -56,7 +56,7 @@ class FoodMarketRestApiTest {
     @Test
     void shouldAddBooking() {
         Product product = new Product("Kiwi");
-        Booking booking = new Booking("citrus-test", product, 100, 0.99D);
+        Booking booking = new Booking("citrus-test", product, 100, 0.99D, TestHelper.createShippingAddress().getFullAddress());
         t.when(http()
                 .client(httpClient)
                 .send()
