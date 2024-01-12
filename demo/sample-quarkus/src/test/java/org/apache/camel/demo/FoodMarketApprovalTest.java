@@ -21,20 +21,26 @@ import javax.sql.DataSource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import org.apache.camel.demo.behavior.VerifyBookingCompletedMail;
+import org.apache.camel.demo.behavior.VerifyBookingStatus;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
 import org.apache.camel.demo.model.Supply;
+import org.apache.camel.demo.model.event.BookingCompletedEvent;
+import org.apache.camel.demo.model.event.ShippingEvent;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
 import org.citrusframework.annotations.CitrusResource;
 import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.kafka.endpoint.KafkaEndpoint;
+import org.citrusframework.mail.server.MailServer;
 import org.citrusframework.quarkus.CitrusSupport;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.citrusframework.actions.ExecuteSQLAction.Builder.sql;
+import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
 import static org.citrusframework.dsl.JsonSupport.json;
 import static org.citrusframework.dsl.JsonSupport.marshal;
 import static org.citrusframework.http.actions.HttpActionBuilder.http;
@@ -42,10 +48,19 @@ import static org.citrusframework.http.actions.HttpActionBuilder.http;
 @QuarkusTest
 @CitrusSupport
 @CitrusConfiguration(classes = { CitrusEndpointConfig.class })
-class FoodMarketRestApiTest {
+class FoodMarketApprovalTest {
 
     @CitrusEndpoint
     private HttpClient foodMarketApiClient;
+
+    @CitrusEndpoint
+    private KafkaEndpoint completed;
+
+    @CitrusEndpoint
+    private KafkaEndpoint shipping;
+
+    @CitrusEndpoint
+    private MailServer mailServer;
 
     @CitrusResource
     private TestCaseRunner t;
@@ -54,35 +69,10 @@ class FoodMarketRestApiTest {
     DataSource dataSource;
 
     @Test
-    void shouldAddBooking() {
+    void shouldRequireApproval() {
         Product product = new Product("Kiwi");
-        Booking booking = new Booking("citrus-test", product, 100, 0.99D, TestHelper.createShippingAddress().getFullAddress());
-        t.when(http()
-                .client(foodMarketApiClient)
-                .send()
-                .post("/api/bookings")
-                .message()
-                .contentType(APPLICATION_JSON)
-                .body(marshal(booking)));
 
-        t.then(http()
-                .client(foodMarketApiClient)
-                .receive()
-                .response(HttpStatus.CREATED)
-                .message()
-                .extract(json().expression("$.id", "bookingId")));
-
-        t.then(sql()
-                .dataSource(dataSource)
-                .query()
-                .statement("select status from booking where booking.id=${bookingId}")
-                .validate("status", Booking.Status.PENDING.name()));
-    }
-
-    @Test
-    void shouldAddSupply() {
-        Product product = new Product("Cherry");
-        Supply supply = new Supply("citrus-test", product, 100, 0.99D);
+        Supply supply = new Supply("citrus-test", product, 200, 1.99D);
         t.when(http()
                 .client(foodMarketApiClient)
                 .send()
@@ -98,11 +88,53 @@ class FoodMarketRestApiTest {
                 .message()
                 .extract(json().expression("$.id", "supplyId")));
 
-        t.then(sql()
-                .dataSource(dataSource)
-                .query()
-                .statement("select status from supply where supply.id=${supplyId}")
-                .validate("status", Supply.Status.AVAILABLE.name()));
+        Booking booking = new Booking("citrus-test", product, 200, 1.99D, TestHelper.createShippingAddress().getFullAddress());
+        t.variable("booking", booking);
+        t.when(http()
+                .client(foodMarketApiClient)
+                .send()
+                .post("/api/bookings")
+                .message()
+                .contentType(APPLICATION_JSON)
+                .body(marshal(booking)));
+
+        t.then(http()
+                .client(foodMarketApiClient)
+                .receive()
+                .response(HttpStatus.CREATED)
+                .message()
+                .extract(json().expression("$.id", "bookingId")));
+
+        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.APPROVAL_REQUIRED, dataSource)));
+
+        t.when(http()
+                .client(foodMarketApiClient)
+                .send()
+                .put("/api/bookings/approval/${bookingId}")
+                .message());
+
+        t.then(http()
+                .client(foodMarketApiClient)
+                .receive()
+                .response(HttpStatus.ACCEPTED));
+
+        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
+        completedEvent.setStatus(Booking.Status.COMPLETED.name());
+
+        t.then(receive()
+                .endpoint(completed)
+                .message().body(marshal(completedEvent)));
+
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
+                supply.getAmount(), booking.getShippingAddress());
+
+        t.then(receive()
+                .endpoint(shipping)
+                .message().body(marshal(shippingEvent)));
+
+        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
+
+        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource)));
     }
 
 }

@@ -71,6 +71,10 @@ public class BookingEvents {
     @Merge
     @Blocking
     public void onAdded(Booking booking) throws JsonProcessingException {
+        if (booking.getStatus() == Booking.Status.APPROVAL_REQUIRED) {
+            return;
+        }
+
         Optional<Supply> matchingSupply = supplyService.findAvailable(booking);
         if (matchingSupply.isPresent()) {
             LOG.info("Found matching supply id=%s for booking: %s".formatted(matchingSupply.get().getId(), mapper.writeValueAsString(booking)));

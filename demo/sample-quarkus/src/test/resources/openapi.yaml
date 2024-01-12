@@ -61,6 +61,20 @@ paths:
       responses:
         "200":
           description: OK
+  /api/bookings/approval/{id}:
+    put:
+      tags:
+      - Booking Api Resource
+      operationId: approveBooking
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
   /api/bookings/{id}:
     get:
       tags:
@@ -320,6 +334,7 @@ components:
       type: object
     Status:
       enum:
+      - APPROVAL_REQUIRED
       - PENDING
       - COMPLETED
       type: string

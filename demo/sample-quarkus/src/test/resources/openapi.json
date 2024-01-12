@@ -92,6 +92,25 @@
         }
       }
     },
+    "/api/bookings/approval/{id}" : {
+      "put" : {
+        "tags" : [ "Booking Api Resource" ],
+        "operationId" : "approveBooking",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
     "/api/bookings/{id}" : {
       "get" : {
         "tags" : [ "Booking Api Resource" ],
@@ -468,7 +487,7 @@
         "type" : "object"
       },
       "Status" : {
-        "enum" : [ "PENDING", "COMPLETED" ],
+        "enum" : [ "APPROVAL_REQUIRED", "PENDING", "COMPLETED" ],
         "type" : "string"
       },
       "Status1" : {

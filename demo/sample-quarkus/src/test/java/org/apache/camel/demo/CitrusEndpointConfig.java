@@ -32,7 +32,7 @@ public class CitrusEndpointConfig {
     private HttpServer shippingService;
 
     @BindToRegistry
-    public HttpClient httpClient() {
+    public HttpClient foodMarketApiClient() {
         return http().client()
                 .requestUrl("http://localhost:8081")
                 .build();

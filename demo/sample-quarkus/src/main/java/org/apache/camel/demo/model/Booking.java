@@ -66,6 +66,7 @@ public class Booking {
     }
 
     public enum Status {
+        APPROVAL_REQUIRED,
         PENDING,
         COMPLETED
     }

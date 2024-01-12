@@ -30,6 +30,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -102,6 +103,28 @@ public class BookingApiResource {
         } catch (NoResultException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+    }
+
+    @PUT
+    @Path("/approval/{id}")
+    @Operation(operationId = "approveBooking")
+    public Response approve(@PathParam("id") String id) {
+        if (!Pattern.compile("\\d+").matcher(id).matches()) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        Booking booking = bookingService.approve(Long.valueOf(id));
+        if (booking != null) {
+            bookingAddedEmitter.send(booking).subscribe()
+                .with(
+                    success -> LOG.info("Booking approved event successfully sent"),
+                    failure -> LOG.info("Booking approved event failed: " + failure.getMessage())
+                );
+
+            return Response.accepted().build();
+        }
+
+        return Response.status(Response.Status.NOT_ACCEPTABLE).build();
     }
 
     @DELETE

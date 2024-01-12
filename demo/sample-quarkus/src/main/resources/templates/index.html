@@ -103,7 +103,12 @@
                             <span>{booking.status}</span>
                         </td>
                         <td role="cell" data-label="Action">
-                            <a href="#">View</a>
+                            {#when booking.status}
+                                {#is APPROVAL_REQUIRED}
+                                <a id="{booking.id}" href="#" class="approve-booking"><i class="fas fa-check" aria-hidden="true"></i> APPROVE</a>
+                                {#is in PENDING COMPLETED}
+                                <a id="{booking.id}" href="#" class="view-booking"><i class="fas fa-search" aria-hidden="true"></i> VIEW</a>
+                            {/when}
                         </td>
                     </tr>
                     {/for}
@@ -158,7 +163,7 @@
                         <span>{supply.status}</span>
                         </td>
                         <td role="cell" data-label="Action">
-                            <a href="#">View</a>
+                            <a id="{supply.id}" href="#" class="view-supply"><i class="fas fa-search" aria-hidden="true"></i> VIEW</a>
                         </td>
                         </tr>
                     {/for}
@@ -241,7 +246,7 @@
                                     required
                                     type="text"
                                     id="price"
-                                    value="0.00"
+                                    value="1.00"
                                     name="price"
                             />
                         </div>
@@ -298,7 +303,12 @@
         newRow.insertCell(3).appendChild(document.createTextNode(booking.amount));
         newRow.insertCell(4).appendChild(document.createTextNode(booking.price));
         newRow.insertCell(5).appendChild(document.createTextNode(booking.status));
-        $(newRow.insertCell(6)).html("<a href=\"#\">View</a>");
+
+        if (booking.status === 'APPROVAL_REQUIRED') {
+            $(newRow.insertCell(6)).html("<a id=\"" + booking.id + "\" href=\"#\" class=\"approve-booking\"><i class=\"fas fa-check\" aria-hidden=\"true\"></i> APPROVE</a>");
+        } else {
+            $(newRow.insertCell(6)).html("<a id=\"" + booking.id + "\" href=\"#\" class=\"view-booking\"><i class=\"fas fa-search\" aria-hidden=\"true\"></i>VIEW</a>");
+        }
     };
 
     const supplies = new EventSource("/supplies");
@@ -320,8 +330,19 @@
         newRow.insertCell(3).appendChild(document.createTextNode(supply.amount));
         newRow.insertCell(4).appendChild(document.createTextNode(supply.price));
         newRow.insertCell(5).appendChild(document.createTextNode(supply.status));
-        $(newRow.insertCell(6)).html("<a href=\"#\">View</a>");
+        $(newRow.insertCell(6)).html("<a id=\"" + supply.id + "\" href=\"#\" class=\"view-supply\"><i class=\"fas fa-search\" aria-hidden=\"true\"></i>VIEW</a>");
     };
+
+    $(".approve-booking").click(function(event) {
+        event.preventDefault();
+        $.ajax({
+            method: "PUT",
+            url: "/api/bookings/approval/" + $(this).attr("id"),
+        }).done(function() {
+            location.reload();
+        });
+        event.stopPropagation();
+    })
 
     $(document).ready(function(){
         window.history.replaceState("","",window.location.href)

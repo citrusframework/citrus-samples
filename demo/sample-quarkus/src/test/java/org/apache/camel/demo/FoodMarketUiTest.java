@@ -70,7 +70,7 @@ class FoodMarketUiTest {
     @Test
     void shouldCreateBooking() {
         Product product = new Product("Peach");
-        Booking booking = new Booking("browser_client", product, 50, 0.99D, TestHelper.createShippingAddress().getFullAddress());
+        Booking booking = new Booking("browser-client", product, 50, 0.99D, TestHelper.createShippingAddress().getFullAddress());
 
         t.given(selenium()
                 .browser(browser)
@@ -123,7 +123,7 @@ class FoodMarketUiTest {
     @Test
     void shouldCreateSupply() {
         Product product = new Product("Peach");
-        Booking booking = new Booking("browser_client", product, 50, 0.99D, TestHelper.createShippingAddress().getFullAddress());
+        Booking booking = new Booking("browser-client", product, 50, 0.99D, TestHelper.createShippingAddress().getFullAddress());
 
         t.given(selenium()
                 .browser(browser)

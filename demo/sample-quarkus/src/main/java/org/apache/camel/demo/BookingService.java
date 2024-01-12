@@ -78,6 +78,10 @@ public class BookingService {
             booking.setId(null);
         }
 
+        if (booking.getAmount() >= 200) {
+            booking.setStatus(Booking.Status.APPROVAL_REQUIRED);
+        }
+
         em.persist(booking);
     }
 
@@ -111,5 +115,24 @@ public class BookingService {
                 success -> LOG.info("Booking completed event successfully sent"),
                 failure -> LOG.info("Booking completed event failed: " + failure.getMessage())
             );
+    }
+
+    @Transactional
+    public Booking approve(Long id) {
+        try {
+            Booking booking = findById(id);
+            if (booking.getStatus() != Booking.Status.APPROVAL_REQUIRED) {
+                LOG.info("Booking #%d not in approval state - %s".formatted(id, booking.getStatus()));
+                return null;
+            }
+
+            LOG.info("Approving booking:" + objectMapper.writeValueAsString(booking));
+            booking.setStatus(Booking.Status.PENDING);
+            update(booking);
+            return booking;
+        } catch(NoResultException | JsonProcessingException e) {
+            LOG.warn("Failed to approve booking #%d".formatted(id), e);
+            return  null;
+        }
     }
 }
