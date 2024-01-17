@@ -84,12 +84,12 @@ class FoodMarketEventingTest {
     void shouldCompleteOnBooking() {
         Product product = new Product("Pineapple");
 
-        Supply supply = new Supply("citrus-test", product, 100, 0.90D);
+        Supply supply = new Supply("pineapple-supplier", product, 100, 0.90D);
         createSupply(supply);
 
         t.then(t.applyBehavior(new WaitForEntityPersisted(supply, dataSource)));
 
-        Booking booking = new Booking("citrus-test", product, 100, 0.99D);
+        Booking booking = new Booking("pineapple-client", product, 100, 0.99D);
         createBooking(booking);
 
         BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
@@ -113,12 +113,12 @@ class FoodMarketEventingTest {
 
         t.then(t.applyBehavior(new WaitForProductCreated(product, dataSource)));
 
-        Booking booking = new Booking("citrus-test", product, 100, 0.99D);
+        Booking booking = new Booking("watermelon-client", product, 100, 0.99D);
         createBooking(booking);
 
         t.then(t.applyBehavior(new WaitForEntityPersisted(booking, dataSource)));
 
-        Supply supply = new Supply("citrus-test", product, 100, 0.99D);
+        Supply supply = new Supply("watermelon-supplier", product, 100, 0.99D);
         createSupply(supply);
 
         BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
@@ -133,6 +133,49 @@ class FoodMarketEventingTest {
         verifyShippingEvent(shippingEvent);
 
         t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
+    }
+
+    @Test
+    void shouldCompleteAllMatchingBookings() {
+        Product product = new Product("Apple");
+        t.variable("product", product);
+
+        Booking booking = new Booking("apple-client", product, 10, 1.99D, TestHelper.createShippingAddress().getFullAddress());
+        t.when(iterate()
+                .condition((i, context) -> i < 10)
+                .actions(
+                    send()
+                        .endpoint(bookings)
+                        .message().body(marshal(booking))));
+        t.variable("booking", booking);
+
+        t.$(delay().milliseconds(1000L));
+
+        Supply supply = new Supply("apple-supplier", product, 100, 0.99D);
+        t.then(send()
+                .endpoint(supplies)
+                .message().body(marshal(supply)));
+
+        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
+                booking.getAmount(), booking.getShippingAddress());
+
+        t.then(parallel().actions(
+                iterate()
+                    .condition((i, context) -> i < 10)
+                    .actions(
+                        receive()
+                            .endpoint(completed)
+                            .message().body(marshal(completedEvent))
+                    ),
+                iterate()
+                    .condition((i, context) -> i < 10)
+                    .actions(
+                        receive()
+                            .endpoint(shipping)
+                            .message().body(marshal(shippingEvent))
+                    )
+        ));
     }
 
     private void verifyShippingEvent(ShippingEvent shippingEvent) {
@@ -164,49 +207,6 @@ class FoodMarketEventingTest {
         t.when(send()
                 .endpoint(products)
                 .message().body(marshal(product)));
-    }
-
-    @Test
-    void shouldCompleteAllMatchingBookings() {
-        Product product = new Product("Apple");
-        t.variable("product", product);
-
-        Booking booking = new Booking("citrus-test", product, 10, 1.99D, TestHelper.createShippingAddress().getFullAddress());
-        t.when(iterate()
-                .condition((i, context) -> i < 10)
-                .actions(
-                        send()
-                            .endpoint(bookings)
-                            .message().body(marshal(booking))));
-        t.variable("booking", booking);
-
-        t.$(delay().milliseconds(1000L));
-
-        Supply supply = new Supply("citrus-test", product, 100, 0.99D);
-        t.then(send()
-                .endpoint(supplies)
-                .message().body(marshal(supply)));
-
-        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
-        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
-                booking.getAmount(), booking.getShippingAddress());
-
-        t.then(parallel().actions(
-            iterate()
-                .condition((i, context) -> i < 10)
-                .actions(
-                    receive()
-                        .endpoint(completed)
-                        .message().body(marshal(completedEvent))
-                ),
-            iterate()
-                .condition((i, context) -> i < 10)
-                .actions(
-                    receive()
-                        .endpoint(shipping)
-                        .message().body(marshal(shippingEvent))
-                )
-        ));
     }
 
 }

@@ -87,10 +87,10 @@ class FoodMarketOpenApiTest {
     private JsonPathMappingDataDictionary getBookingDictionary() {
         JsonPathMappingDataDictionary dictionary = new JsonPathMappingDataDictionary();
 
-        dictionary.getMappings().put("$.product.name", "citrus:randomEnumValue('Mango','Cherry','Banana')");
+        dictionary.getMappings().put("$.product.name", "citrus:randomEnumValue('Orange','Strawberry','Banana')");
         dictionary.getMappings().put("$.product.id", "");
         dictionary.getMappings().put("$.amount", "citrus:randomNumber(2)");
-        dictionary.getMappings().put("$.price", "1.citrus:randomNumber(2, true)");
+        dictionary.getMappings().put("$.price", "0.1citrus:randomNumber(1, true)");
         dictionary.getMappings().put("$.status", Booking.Status.PENDING.name());
         dictionary.setDirection(MessageDirection.OUTBOUND);
 
@@ -100,10 +100,10 @@ class FoodMarketOpenApiTest {
     private JsonPathMappingDataDictionary getSupplyDictionary() {
         JsonPathMappingDataDictionary dictionary = new JsonPathMappingDataDictionary();
 
-        dictionary.getMappings().put("$.product.name", "citrus:randomEnumValue('Mango','Cherry','Banana')");
+        dictionary.getMappings().put("$.product.name", "citrus:randomEnumValue('Orange','Strawberry','Banana')");
         dictionary.getMappings().put("$.product.id", "");
         dictionary.getMappings().put("$.amount", "citrus:randomNumber(2)");
-        dictionary.getMappings().put("$.price", "1.citrus:randomNumber(2, true)");
+        dictionary.getMappings().put("$.price", "5.citrus:randomNumber(2, true)");
         dictionary.getMappings().put("$.status", Supply.Status.AVAILABLE.name());
         dictionary.setDirection(MessageDirection.OUTBOUND);
 

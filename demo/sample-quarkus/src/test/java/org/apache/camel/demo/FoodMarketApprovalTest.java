@@ -36,14 +36,17 @@ import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.kafka.endpoint.KafkaEndpoint;
 import org.citrusframework.mail.server.MailServer;
 import org.citrusframework.quarkus.CitrusSupport;
+import org.citrusframework.selenium.endpoint.SeleniumBrowser;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
+import static org.citrusframework.container.FinallySequence.Builder.doFinally;
 import static org.citrusframework.dsl.JsonSupport.json;
 import static org.citrusframework.dsl.JsonSupport.marshal;
 import static org.citrusframework.http.actions.HttpActionBuilder.http;
+import static org.citrusframework.selenium.actions.SeleniumActionBuilder.selenium;
 
 @QuarkusTest
 @CitrusSupport
@@ -62,6 +65,9 @@ class FoodMarketApprovalTest {
     @CitrusEndpoint
     MailServer mailServer;
 
+    @CitrusEndpoint
+    SeleniumBrowser browser;
+
     @CitrusResource
     TestCaseRunner t;
 
@@ -70,17 +76,43 @@ class FoodMarketApprovalTest {
 
     @Test
     void shouldRequireApproval() {
-        Product product = new Product("Kiwi");
+        Product product = new Product("Cherry");
 
-        Supply supply = new Supply("citrus-test", product, 200, 1.99D);
+        Supply supply = new Supply("cherry-supplier", product, 200, 1.99D);
         createSupply(supply);
 
-        Booking booking = new Booking("citrus-test", product, 200, 1.99D, TestHelper.createShippingAddress().getFullAddress());
+        Booking booking = new Booking("cherry-client", product, 200, 1.99D, TestHelper.createShippingAddress().getFullAddress());
         createBooking(booking);
 
         t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.APPROVAL_REQUIRED, dataSource)));
 
         approveBooking();
+
+        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
+        verifyBookingCompletedEvent(completedEvent);
+
+        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
+                supply.getAmount(), booking.getShippingAddress());
+        verifyShippingEvent(shippingEvent);
+
+        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
+
+        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource)));
+    }
+
+    @Test
+    void shouldRequireApprovalUi() {
+        Product product = new Product("Mango");
+
+        Supply supply = new Supply("mango-supplier", product, 200, 1.99D);
+        createSupply(supply);
+
+        Booking booking = new Booking("mango-client", product, 200, 1.99D, TestHelper.createShippingAddress().getFullAddress());
+        createBooking(booking);
+
+        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.APPROVAL_REQUIRED, dataSource)));
+
+        approveBookingUi();
 
         BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
         verifyBookingCompletedEvent(completedEvent);
@@ -159,4 +191,36 @@ class FoodMarketApprovalTest {
                 .response(HttpStatus.ACCEPTED));
     }
 
+    /**
+     * Approve booking by via FoodMarket UI.
+     * Opens new browser with Selenium and makes user click on APPROVE button for the current booking.
+     * Uses a test variable bookingId to identify the booking to approve.
+     * The bookingId usually gets extracted from the response when creating the booking in an earlier step in this test.
+     */
+    private void approveBookingUi() {
+        String homeUrl = "http://localhost:8081";
+
+        t.given(selenium()
+                .browser(browser)
+                .start());
+
+        t.given(doFinally().actions(
+                selenium()
+                        .browser(browser)
+                        .stop()));
+
+        t.when(selenium()
+                .browser(browser)
+                .navigate(homeUrl));
+
+        t.then(selenium()
+                .browser(browser)
+                .find()
+                .element("id", "${bookingId}"));
+
+        t.then(selenium()
+                .browser(browser)
+                .click()
+                .element("id", "${bookingId}"));
+    }
 }

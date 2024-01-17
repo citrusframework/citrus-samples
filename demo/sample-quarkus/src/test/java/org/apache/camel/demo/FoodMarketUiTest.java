@@ -20,6 +20,7 @@ package org.apache.camel.demo;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
+import org.apache.camel.demo.model.Supply;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
@@ -70,7 +71,7 @@ class FoodMarketUiTest {
     @Test
     void shouldCreateBooking() {
         Product product = new Product("Peach");
-        Booking booking = new Booking("browser-client", product, 50, 0.99D, TestHelper.createShippingAddress().getFullAddress());
+        Booking booking = new Booking("peach-client", product, 50, 0.50D, TestHelper.createShippingAddress().getFullAddress());
 
         t.given(selenium()
                 .browser(browser)
@@ -123,7 +124,7 @@ class FoodMarketUiTest {
     @Test
     void shouldCreateSupply() {
         Product product = new Product("Peach");
-        Booking booking = new Booking("browser-client", product, 50, 0.99D, TestHelper.createShippingAddress().getFullAddress());
+        Supply supply = new Supply("peach-supplier", product, 50, 4.99D);
 
         t.given(selenium()
                 .browser(browser)
@@ -147,25 +148,25 @@ class FoodMarketUiTest {
                 .browser(browser)
                 .setInput()
                 .element(By.id("name"))
-                .value(booking.getClient()));
+                .value(supply.getSupplier()));
 
         t.then(selenium()
                 .browser(browser)
                 .setInput()
                 .element(By.id("product"))
-                .value(booking.getProduct().getName()));
+                .value(supply.getProduct().getName()));
 
         t.then(selenium()
                 .browser(browser)
                 .setInput()
                 .element(By.id("amount"))
-                .value(booking.getAmount().toString()));
+                .value(supply.getAmount().toString()));
 
         t.then(selenium()
                 .browser(browser)
                 .setInput()
                 .element(By.id("price"))
-                .value(booking.getPrice().toString()));
+                .value(supply.getPrice().toString()));
 
         t.then(selenium()
                 .browser(browser)

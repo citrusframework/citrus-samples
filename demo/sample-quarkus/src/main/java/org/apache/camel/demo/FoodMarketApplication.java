@@ -43,6 +43,7 @@ public class FoodMarketApplication {
         productService.add(new Product("Kiwi", "Tropical fruit"));
         productService.add(new Product("Cherry", "Delicious"));
         productService.add(new Product("Orange", "Juicy fruit"));
+        productService.add(new Product("Coconut", "Tropical fruit"));
     }
 
 }

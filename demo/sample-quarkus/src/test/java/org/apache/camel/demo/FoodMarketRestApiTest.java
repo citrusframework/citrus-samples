@@ -56,7 +56,7 @@ class FoodMarketRestApiTest {
     @Test
     void shouldAddBooking() {
         Product product = new Product("Kiwi");
-        Booking booking = new Booking("citrus-test", product, 100, 0.99D, TestHelper.createShippingAddress().getFullAddress());
+        Booking booking = new Booking("kiwi-client", product, 100, 0.50D, TestHelper.createShippingAddress().getFullAddress());
         t.when(http()
                 .client(foodMarketApiClient)
                 .send()
@@ -81,8 +81,8 @@ class FoodMarketRestApiTest {
 
     @Test
     void shouldAddSupply() {
-        Product product = new Product("Cherry");
-        Supply supply = new Supply("citrus-test", product, 100, 0.99D);
+        Product product = new Product("Kiwi");
+        Supply supply = new Supply("kiwi-supplier", product, 100, 4.99D);
         t.when(http()
                 .client(foodMarketApiClient)
                 .send()
