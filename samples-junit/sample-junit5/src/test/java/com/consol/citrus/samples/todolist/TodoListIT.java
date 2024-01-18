@@ -85,6 +85,6 @@ public class TodoListIT {
         test.$(http()
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK));
+            .response(HttpStatus.FOUND));
     }
 }

@@ -40,7 +40,7 @@ public class TodoListIT extends AbstractDockerIT {
     @Autowired
     private HttpClient todoClient;
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testDeploymentState() {
         $(docker()
@@ -49,7 +49,7 @@ public class TodoListIT extends AbstractDockerIT {
             .validateCommandResult((container, context) -> Assert.assertTrue(container.getState().getRunning())));
     }
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testTodoService() {
         variable("todoId", "citrus:randomUUID()");

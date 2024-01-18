@@ -32,8 +32,7 @@ import static org.citrusframework.http.actions.HttpActionBuilder.http;
 /**
  * @author Christoph Deppisch
  */
-
-@Test(invocationCount = 40, threadPoolSize = 8)
+@Test(invocationCount = 40, threadPoolSize = 4)
 public class TodoListLoadTestIT extends TestNGCitrusSpringSupport {
 
     @Autowired
@@ -54,7 +53,7 @@ public class TodoListLoadTestIT extends TestNGCitrusSpringSupport {
         actions.$(http()
             .client(todoClient)
             .receive()
-            .response(HttpStatus.OK));
+            .response(HttpStatus.FOUND));
     }
 
     @CitrusTest

@@ -83,7 +83,7 @@ public class ReportOrdersIT extends TestNGCitrusSpringSupport {
         $(http()
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.NO_CONTENT));
+            .response(HttpStatus.OK));
 
         $(echo("Receive order id in list of produced goods"));
 
@@ -136,7 +136,7 @@ public class ReportOrdersIT extends TestNGCitrusSpringSupport {
         $(http()
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.NO_CONTENT));
+            .response(HttpStatus.OK));
 
         $(echo("Receive report with changed data"));
 
@@ -187,7 +187,7 @@ public class ReportOrdersIT extends TestNGCitrusSpringSupport {
         $(http()
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.NO_CONTENT));
+            .response(HttpStatus.OK));
 
         $(echo("Receive report positive status for order id"));
 

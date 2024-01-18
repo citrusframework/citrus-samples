@@ -49,7 +49,8 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
     @Autowired
     private SftpServer sftpServer;
 
-    @Test
+    // TODO: enable when Citrus 4.1.1 is available
+    @Test(enabled = false)
     @CitrusTest
     public void testStoreAndRetrieveFile() {
         variable("todoId", "citrus:randomUUID()");

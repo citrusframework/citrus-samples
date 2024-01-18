@@ -75,7 +75,7 @@ public class TodoSteps {
         runner.then(http()
                 .client(todoListClient)
                 .receive()
-                .response(HttpStatus.OK));
+                .response(HttpStatus.FOUND));
     }
 
     @When("^(?:I|user) removes? entry \"([^\"]*)\"$")

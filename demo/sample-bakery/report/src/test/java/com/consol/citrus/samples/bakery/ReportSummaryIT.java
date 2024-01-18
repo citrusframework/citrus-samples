@@ -106,7 +106,7 @@ public class ReportSummaryIT extends TestNGCitrusSpringSupport {
         $(http()
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.NO_CONTENT));
+            .response(HttpStatus.OK));
 
         $(http()
             .client(reportingClient)
@@ -119,7 +119,7 @@ public class ReportSummaryIT extends TestNGCitrusSpringSupport {
         $(http()
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.NO_CONTENT));
+            .response(HttpStatus.OK));
 
         $(http()
             .client(reportingClient)
@@ -132,7 +132,7 @@ public class ReportSummaryIT extends TestNGCitrusSpringSupport {
         $(http()
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.NO_CONTENT));
+            .response(HttpStatus.OK));
 
         $(echo("Receive report with changed data"));
 
@@ -159,7 +159,7 @@ public class ReportSummaryIT extends TestNGCitrusSpringSupport {
         $(http()
             .client(reportingClient)
             .receive()
-            .response(HttpStatus.NO_CONTENT));
+            .response(HttpStatus.OK));
 
         $(echo("Receive empty report data"));
 

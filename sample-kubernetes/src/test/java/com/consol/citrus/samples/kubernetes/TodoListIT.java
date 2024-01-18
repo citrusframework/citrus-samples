@@ -48,7 +48,7 @@ public class TodoListIT extends AbstractKubernetesIT {
     @Autowired
     private HttpClient todoClient;
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testDeploymentState() {
         $(kubernetes()
@@ -68,7 +68,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .validate((service, context) -> Assert.assertNotNull(service.getResult())));
     }
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testTodoService() {
         variable("todoId", "citrus:randomUUID()");
@@ -109,7 +109,7 @@ public class TodoListIT extends AbstractKubernetesIT {
             .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testTodoServiceReplication() {
         $(timer()

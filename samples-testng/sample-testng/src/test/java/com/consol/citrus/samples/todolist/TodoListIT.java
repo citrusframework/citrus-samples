@@ -81,7 +81,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
 
         test.$(http().client(todoClient)
             .receive()
-            .response(HttpStatus.OK));
+            .response(HttpStatus.FOUND));
     }
 
 }

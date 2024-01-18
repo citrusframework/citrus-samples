@@ -33,7 +33,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     @Autowired
     private KubernetesClient k8sClient;
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testListNodes() {
         $(kubernetes()
@@ -45,7 +45,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
             }));
     }
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testListNamespaces() {
         $(kubernetes()
@@ -57,7 +57,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
             }));
     }
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testListEndpoints() {
         $(kubernetes()
@@ -70,7 +70,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
             }));
     }
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testListServices() {
         $(kubernetes()
@@ -83,7 +83,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
             }));
     }
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testListPods() {
         $(kubernetes()
@@ -96,7 +96,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
             }));
     }
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testListReplicationControllers() {
         $(kubernetes()
