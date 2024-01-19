@@ -92,17 +92,17 @@ system under test. Please find following list of samples and their primary objec
 | [sample-test-jar](samples-remote/sample-test-jar)                             |              Creates an executable test JAR to run all integration tests               |
 | [sample-test-war](samples-remote/sample-test-war)                             | Creates a deployable test WAR to run all integration tests as part of a web deployment |
 
-Following sample projects cover message transports and technologies. Each of these samples provides a separate system under test applicaiton
+Following sample projects cover message transports and technologies. Each of these samples provides a separate system under test application
 that demonstrates the messaging aspect.
 
-| Demo Projects                                | JMS | Http | SOAP | Channel | Camel | Arquillian | JDBC | SYNC | ASYNC |
-|----------------------------------------------|:---:|:----:|:----:|:-------:|:-----:|:----------:|:----:|:----:|:-----:|
-| [sample-bakery](sample-bakery)               |  X  |  X   |      |         |       |            |      |  X   |   X   |
-| [sample-flightbooking](sample-flightbooking) |  X  |  X   |      |         |       |            |  X   |      |   X   |
-| [sample-greeting](sample-greeting)           |  X  |      |      |    X    |       |            |      |  X   |   X   |
-| [sample-bookstore](sample-bookstore)         |  X  |      |  X   |         |       |            |      |  X   |       |
-| [sample-incident](sample-incident)           |  X  |  X   |  X   |         |       |            |      |  X   |   X   |
-| [sample-javaee](sample-javaee)               |  X  |  X   |      |         |       |     X      |      |  X   |   X   |
+| Demo Projects                                     | Kafka | JMS | Http | SOAP | Channel | Camel | SQL | SYNC | ASYNC |
+|---------------------------------------------------|:-----:|:---:|:----:|:----:|:-------:|:-----:|:---:|:----:|:-----:|
+| [sample-quarkus](demo/sample-quarkus)             |   X   |     |  X   |      |         |       |  X  |  X   |   X   |
+| [sample-bakery](demo/sample-bakery)               |       |  X  |  X   |      |         |       |     |  X   |   X   |
+| [sample-flightbooking](demo/sample-flightbooking) |       |  X  |  X   |      |         |       |  X  |      |   X   |
+| [sample-greeting](demo/sample-greeting)           |       |  X  |      |      |    X    |       |     |  X   |   X   |
+| [sample-bookstore](demo/sample-bookstore)         |       |  X  |      |  X   |         |       |     |  X   |       |
+| [sample-incident](demo/sample-incident)           |       |  X  |  X   |  X   |         |       |     |  X   |   X   |
 
 Pick your sample application for try out and got to the respective folder.
 
@@ -126,7 +126,8 @@ Run
 
 You can run all the samples locally on your machine. We are using the Maven build tool for this.
 
-All samples use some project as system under test. These sample application has to be started before executing any Citrus tests.
+All samples use some project as a system under test. 
+These sample application has to be started before executing any Citrus tests.
 Many samples reuse the [todo-list](todo-app) application which is a simple web application that provides a basic REST API. 
 
 You can auto start and deploy the todo-list application within the Maven build by using the following command:
