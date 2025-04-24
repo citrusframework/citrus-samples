@@ -81,6 +81,6 @@ public class TodoListIT extends JUnit4CitrusSpringSupport {
         test.$(http()
             .client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 }

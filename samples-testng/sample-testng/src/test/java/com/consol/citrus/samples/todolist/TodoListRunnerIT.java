@@ -75,7 +75,7 @@ public class TodoListRunnerIT extends TestNGCitrusSpringSupport {
 
         $(http().client(todoClient)
             .receive()
-            .response(HttpStatus.FOUND));
+            .response(HttpStatus.OK));
     }
 
 }

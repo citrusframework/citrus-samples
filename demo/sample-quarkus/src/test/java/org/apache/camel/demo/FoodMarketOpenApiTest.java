@@ -31,6 +31,7 @@ import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageDirection;
 import org.citrusframework.openapi.OpenApiSpecification;
 import org.citrusframework.quarkus.CitrusSupport;
+import org.citrusframework.spi.Resources;
 import org.citrusframework.variable.dictionary.json.JsonPathMappingDataDictionary;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ import static org.citrusframework.openapi.actions.OpenApiActionBuilder.openapi;
 class FoodMarketOpenApiTest {
 
     private final OpenApiSpecification foodMarketSpec =
-            OpenApiSpecification.from("http://localhost:8081/q/openapi");
+            OpenApiSpecification.from(Resources.fromClasspath("openapi.yaml"));
 
     @CitrusEndpoint
     HttpClient foodMarketApiClient;

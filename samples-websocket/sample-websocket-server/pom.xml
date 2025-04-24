@@ -33,8 +33,8 @@
     <compiler-plugin.version>3.11.0</compiler-plugin.version>
     <surefire-plugin.version>3.1.2</surefire-plugin.version>
 
-    <quarkus.platform.version>3.6.6</quarkus.platform.version>
-    <citrus.version>4.1.0</citrus.version>
+    <quarkus.platform.version>3.19.1</quarkus.platform.version>
+    <citrus.version>4.5.2</citrus.version>
   </properties>
 
   <dependencyManagement>

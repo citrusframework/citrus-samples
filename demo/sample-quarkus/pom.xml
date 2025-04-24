@@ -15,9 +15,9 @@
     <maven.compiler.release>17</maven.compiler.release>
     <compiler-plugin.version>3.11.0</compiler-plugin.version>
 
-    <quarkus.platform.version>3.6.6</quarkus.platform.version>
+    <quarkus.platform.version>3.20.0</quarkus.platform.version>
     <surefire-plugin.version>3.1.2</surefire-plugin.version>
-    <citrus.version>4.1.0</citrus.version>
+    <citrus.version>4.5.2</citrus.version>
     <javafaker.version>1.0.2</javafaker.version>
     <skipITs>true</skipITs>
   </properties>
@@ -65,11 +65,15 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+      <artifactId>quarkus-messaging-kafka</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-client</artifactId>
+      <artifactId>quarkus-resteasy-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy-client-jackson</artifactId>
     </dependency>
 
     <!-- Mail service -->

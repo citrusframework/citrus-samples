@@ -1,13 +1,13 @@
 {
   "from": "todo-report@example.org",
   "to": "users@example.org",
-  "cc": "",
-  "bcc": "",
+  "cc": null,
+  "bcc": null,
   "replyTo": null,
   "subject": "ToDo report",
   "body": {
     "contentType": "text/plain; charset=us-ascii",
     "content": "There are '${entryCount}' todo entries!",
-    "attachments":null
+    "attachments": null
   }
 }

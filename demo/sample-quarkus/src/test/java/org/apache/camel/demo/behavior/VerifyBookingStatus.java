@@ -1,5 +1,6 @@
 package org.apache.camel.demo.behavior;
 
+import java.time.Duration;
 import javax.sql.DataSource;
 
 import org.apache.camel.demo.model.Booking;
@@ -32,7 +33,7 @@ public class VerifyBookingStatus implements TestBehavior {
         if (retryAttempts > 0) {
             t.run(repeatOnError()
                     .condition((i, context) -> i > retryAttempts)
-                    .autoSleep(1000L)
+                    .autoSleep(Duration.ofMillis(1000L))
                     .actions(verifyBookingStatus)
             );
         } else {

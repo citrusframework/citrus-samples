@@ -65,7 +65,7 @@ public class ReportOrderMailIT extends TestNGCitrusSpringSupport {
          $(http()
              .client(reportingClient)
              .receive()
-             .response(HttpStatus.OK));
+             .response(HttpStatus.NO_CONTENT));
 
          $(echo("Receive report mail for 1000+ order"));
 
