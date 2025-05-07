@@ -22,7 +22,6 @@ import org.citrusframework.http.model.Control;
 import org.citrusframework.http.model.FormData;
 import org.citrusframework.http.model.FormMarshaller;
 import org.citrusframework.http.server.HttpServer;
-import org.citrusframework.http.validation.FormUrlEncodedMessageValidator;
 import org.citrusframework.message.MessageType;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +98,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .post("/api/todo")
             .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .type(FormUrlEncodedMessageValidator.MESSAGE_TYPE)
+            .type(MessageType.FORM_URL_ENCODED)
             .body(marshal(getFormData(), new FormMarshaller())));
 
         $(http()
@@ -153,7 +152,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .post("/api/todo")
             .message()
             .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .type(FormUrlEncodedMessageValidator.MESSAGE_TYPE)
+            .type(MessageType.FORM_URL_ENCODED)
             .body("<form-data xmlns=\"http://www.citrusframework.org/schema/http/message\">" +
                         "<content-type>application/x-www-form-urlencoded</content-type>" +
                         "<action>/api/todo</action>" +
