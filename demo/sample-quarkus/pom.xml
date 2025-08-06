@@ -15,9 +15,9 @@
     <maven.compiler.release>17</maven.compiler.release>
     <compiler-plugin.version>3.14.0</compiler-plugin.version>
 
-    <quarkus.platform.version>3.20.0</quarkus.platform.version>
+    <quarkus.platform.version>3.23.2</quarkus.platform.version>
     <surefire-plugin.version>3.5.3</surefire-plugin.version>
-    <citrus.version>4.6.0</citrus.version>
+    <citrus.version>4.7.0</citrus.version>
     <javafaker.version>1.0.2</javafaker.version>
     <skipITs>true</skipITs>
   </properties>

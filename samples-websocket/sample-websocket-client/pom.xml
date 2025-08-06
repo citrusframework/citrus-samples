@@ -31,10 +31,10 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <compiler-plugin.version>3.14.0</compiler-plugin.version>
-    <surefire-plugin.version>3.1.2</surefire-plugin.version>
+    <surefire-plugin.version>3.5.3</surefire-plugin.version>
 
-    <quarkus.platform.version>3.19.1</quarkus.platform.version>
-    <citrus.version>4.6.0</citrus.version>
+    <quarkus.platform.version>3.23.2</quarkus.platform.version>
+    <citrus.version>4.7.0</citrus.version>
   </properties>
 
   <dependencyManagement>

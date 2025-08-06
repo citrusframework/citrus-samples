@@ -14,6 +14,9 @@
     <log4j2.version>2.23.1</log4j2.version>
     <commons.logging.version>1.3.4</commons.logging.version>
     <citrus.version>4.3.3</citrus.version>
+    <maven.failsafe.plugin.version>3.5.3</maven.failsafe.plugin.version>
+    <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
+    <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
   <build>
@@ -38,17 +41,30 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>${maven.surefire.plugin.version}</version>
         <configuration>
           <failIfNoTests>false</failIfNoTests>
           <workingDirectory>${project.build.directory}</workingDirectory>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-testng</artifactId>
+            <version>${maven.surefire.plugin.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>${maven.failsafe.plugin.version}</version>
+        <configuration>
+          <failIfNoTests>false</failIfNoTests>
+          <systemProperties>
+            <system.under.test.mode>${system.under.test.mode}</system.under.test.mode>
+          </systemProperties>
+        </configuration>
         <executions>
           <execution>
             <id>integration-tests</id>
@@ -58,6 +74,13 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-testng</artifactId>
+            <version>${maven.surefire.plugin.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

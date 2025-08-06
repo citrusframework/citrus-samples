@@ -60,9 +60,9 @@ In order to setup Maven for JUnit5 we need to configure the `maven-failsafe-plug
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-failsafe-plugin</artifactId>
-    <version>2.22.2</version>
+    <version>${maven.failsafe.plugin.version}</version>
     <configuration>
-      <forkCount>1</forkCount>
+     <failIfNoTests>false</failIfNoTests>
     </configuration>
     <executions>
       <execution>

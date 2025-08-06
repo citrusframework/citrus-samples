@@ -10,13 +10,15 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>6.2.6</spring.version>
+    <spring.version>6.2.8</spring.version>
     <spring.boot.version>3.4.4</spring.boot.version>
     <slf4j.version>2.0.17</slf4j.version>
     <log4j2.version>2.23.1</log4j2.version>
     <commons.logging.version>1.3.4</commons.logging.version>
     <junit.jupiter.version>5.12.2</junit.jupiter.version>
-    <citrus.version>4.6.0</citrus.version>
+    <citrus.version>4.7.0</citrus.version>
+    <maven.failsafe.plugin.version>3.5.3</maven.failsafe.plugin.version>
+    <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
 
@@ -42,7 +44,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>${maven.surefire.plugin.version}</version>
         <configuration>
           <failIfNoTests>false</failIfNoTests>
           <workingDirectory>${project.build.directory}</workingDirectory>
@@ -52,10 +54,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.2</version>
+        <version>${maven.failsafe.plugin.version}</version>
         <configuration>
-          <forkCount>1</forkCount>
-          <threadCount>1</threadCount>
+          <failIfNoTests>false</failIfNoTests>
           <systemProperties>
             <system.under.test.mode>${system.under.test.mode}</system.under.test.mode>
           </systemProperties>
@@ -73,7 +74,7 @@
           <dependency>
             <groupId>org.apache.maven.surefire</groupId>
             <artifactId>surefire-junit-platform</artifactId>
-            <version>2.22.2</version>
+            <version>${maven.surefire.plugin.version}</version>
           </dependency>
         </dependencies>
       </plugin>
