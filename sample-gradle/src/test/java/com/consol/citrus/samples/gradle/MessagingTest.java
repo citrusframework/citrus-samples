@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.gradle;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.endpoint.direct.DirectEndpoint;
 import org.citrusframework.message.MessageType;
@@ -24,15 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-
 /**
  * @author Christoph Deppisch
  */
 @ContextConfiguration(classes = { EndpointConfig.class })
-public class MessagingTest extends TestNGCitrusSpringSupport {
+public class MessagingTest extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private DirectEndpoint testEndpoint;

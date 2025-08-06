@@ -27,7 +27,7 @@ In test cases we can reference this client component in order to send REST calls
 the `TestNGCitrusTestRunner` implementation as base for your test.
     
 ```java
-public class TodoListRunnerIT extends TestNGCitrusSpringSupport {
+public class TodoListRunnerIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;

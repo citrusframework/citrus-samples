@@ -3,15 +3,15 @@ package org.apache.camel.demo.behavior;
 import org.apache.camel.demo.TestHelper;
 import org.apache.camel.demo.model.ShippingAddress;
 import org.citrusframework.TestActionRunner;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestBehavior;
 import org.citrusframework.http.server.HttpServer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import static org.citrusframework.dsl.JsonSupport.marshal;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
-public class GetShippingAddress implements TestBehavior {
+public class GetShippingAddress implements TestBehavior, TestActionSupport {
 
     private final HttpServer shippingService;
 

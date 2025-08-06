@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import org.apache.commons.net.ftp.FTPCmd;
 import org.apache.ftpserver.ftplet.DataType;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.ftp.client.SftpClient;
 import org.citrusframework.ftp.message.FtpMessage;
@@ -33,15 +34,11 @@ import org.citrusframework.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.actions.FailAction.Builder.fail;
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private SftpClient sftpClient;

@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.spi.Resources;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
@@ -23,12 +24,11 @@ import org.citrusframework.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private WebServiceClient todoClient;

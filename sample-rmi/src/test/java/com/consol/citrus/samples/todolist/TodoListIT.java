@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.rmi.client.RmiClient;
 import org.citrusframework.rmi.message.RmiMessage;
@@ -25,13 +26,11 @@ import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private RmiClient todoRmiClient;

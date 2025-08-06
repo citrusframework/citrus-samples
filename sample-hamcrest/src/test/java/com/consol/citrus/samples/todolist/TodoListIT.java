@@ -18,6 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import java.util.UUID;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
@@ -27,11 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.CreateVariablesAction.Builder.createVariable;
 import static org.citrusframework.container.HamcrestConditionExpression.assertThat;
-import static org.citrusframework.container.Iterate.Builder.iterate;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-import static org.citrusframework.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
@@ -45,7 +42,7 @@ import static org.hamcrest.Matchers.startsWith;
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -89,7 +86,8 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .response(HttpStatus.OK)
             .message()
             .type(MessageType.JSON)
-            .validate(jsonPath()
+            .validate(validation()
+                    .jsonPath()
                     .expression("$.keySet()", hasItems("id", "title", "description", "done"))
                     .expression("$.id", equalTo(todoId))
                     .expression("$.title", allOf(startsWith("todo_"), endsWith(todoId)))

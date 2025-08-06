@@ -33,14 +33,14 @@
     <compiler-plugin.version>3.14.0</compiler-plugin.version>
     <surefire-plugin.version>3.5.3</surefire-plugin.version>
 
-    <quarkus.platform.version>3.23.2</quarkus.platform.version>
-    <citrus.version>4.7.0</citrus.version>
+    <quarkus.platform.version>3.26.0</quarkus.platform.version>
+    <citrus.version>4.8.0</citrus.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>io.quarkus.platform</groupId>
+        <groupId>io.quarkus</groupId>
         <artifactId>quarkus-bom</artifactId>
         <version>${quarkus.platform.version}</version>
         <type>pom</type>
@@ -99,7 +99,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>io.quarkus.platform</groupId>
+        <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
         <version>${quarkus.platform.version}</version>
         <configuration>

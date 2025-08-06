@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.bakery;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.jms.endpoint.JmsEndpoint;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
@@ -23,15 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class RouteMessagesJmsIT extends TestNGCitrusSpringSupport {
+public class RouteMessagesJmsIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("bakeryOrderEndpoint")

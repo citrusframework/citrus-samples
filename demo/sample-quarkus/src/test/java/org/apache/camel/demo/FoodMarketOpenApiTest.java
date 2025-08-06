@@ -23,6 +23,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Supply;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
@@ -36,12 +37,10 @@ import org.citrusframework.variable.dictionary.json.JsonPathMappingDataDictionar
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import static org.citrusframework.openapi.actions.OpenApiActionBuilder.openapi;
-
 @QuarkusTest
 @CitrusSupport
 @CitrusConfiguration(classes = { CitrusEndpointConfig.class })
-class FoodMarketOpenApiTest {
+class FoodMarketOpenApiTest implements TestActionSupport {
 
     private final OpenApiSpecification foodMarketSpec =
             OpenApiSpecification.from(Resources.fromClasspath("openapi.yaml"));

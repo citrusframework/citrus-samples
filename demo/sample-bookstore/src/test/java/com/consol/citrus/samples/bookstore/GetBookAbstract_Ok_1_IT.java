@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.bookstore;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.spi.Resources;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
@@ -23,14 +24,11 @@ import org.citrusframework.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.dsl.XpathSupport.xpath;
-import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
-
 /**
  * @author Christoph Deppisch
  */
 @Test
-public class GetBookAbstract_Ok_1_IT extends TestNGCitrusSpringSupport {
+public class GetBookAbstract_Ok_1_IT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private WebServiceClient bookStoreClient;
@@ -90,7 +88,7 @@ public class GetBookAbstract_Ok_1_IT extends TestNGCitrusSpringSupport {
                         "</bkr:book>" +
                     "</bkr:GetBookAbstractResponseMessage>")
             .attachment("book-abstract", "text/plain", Resources.fromClasspath("book-abstract.txt", CitrusEndpointConfig.class))
-            .extract(xpath()
+            .extract(extractor().xpath()
                         .expression("/bkr:GetBookAbstractResponseMessage/bkr:book/bkr:id", "bookId")));
     }
 

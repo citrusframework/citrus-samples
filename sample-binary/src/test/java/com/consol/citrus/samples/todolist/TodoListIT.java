@@ -18,6 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import java.nio.charset.StandardCharsets;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.jms.endpoint.JmsEndpoint;
 import org.citrusframework.message.MessageType;
@@ -25,14 +26,10 @@ import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-import static org.citrusframework.validation.interceptor.BinaryMessageProcessor.Builder.toBinary;
-
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private JmsEndpoint todoJmsEndpoint;
@@ -49,7 +46,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .message()
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
             .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")
-            .process(toBinary().encoding(StandardCharsets.UTF_8)));
+            .process(processor().toBinary().encoding(StandardCharsets.UTF_8)));
 
         $(receive()
             .endpoint(todoJmsEndpoint)
@@ -71,7 +68,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .message()
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
             .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")
-            .process(toBinary().encoding(StandardCharsets.UTF_8)));
+            .process(processor().toBinary().encoding(StandardCharsets.UTF_8)));
 
         $(receive()
             .endpoint(todoJmsEndpoint)

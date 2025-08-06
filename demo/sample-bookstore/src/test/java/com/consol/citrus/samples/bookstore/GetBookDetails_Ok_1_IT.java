@@ -16,20 +16,17 @@
 
 package com.consol.citrus.samples.bookstore;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.citrusframework.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.dsl.XmlSupport.xml;
-import static org.citrusframework.dsl.XpathSupport.xpath;
-import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
-
 /**
  * @author Christoph Deppisch
  */
-public class GetBookDetails_Ok_1_IT extends TestNGCitrusSpringSupport {
+public class GetBookDetails_Ok_1_IT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private WebServiceClient bookStoreClient;
@@ -88,11 +85,12 @@ public class GetBookDetails_Ok_1_IT extends TestNGCitrusSpringSupport {
                             "<bkr:registration-date>?</bkr:registration-date>" +
                         "</bkr:book>" +
                     "</bkr:GetBookDetailsResponseMessage>")
-            .validate(xml()
+            .validate(validation()
                         .xpath()
                         .ignore("/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:id")
                         .ignore("/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:registration-date"))
-            .extract(xpath()
+            .extract(extractor()
+                        .xpath()
                         .expression("/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:id", "bookId")));
     }
 

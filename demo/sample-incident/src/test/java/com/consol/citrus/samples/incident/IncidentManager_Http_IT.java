@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.functions.core.RandomNumberFunction;
 import org.citrusframework.functions.core.RandomUUIDFunction;
@@ -32,20 +33,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-import static org.citrusframework.actions.SleepAction.Builder.sleep;
-import static org.citrusframework.dsl.XpathSupport.xpath;
 import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
-import static org.citrusframework.ws.actions.AssertSoapFault.Builder.assertSoapFault;
 
 /**
  * @author Christoph Deppisch
  * @since 2.0
  */
 @Test
-public class IncidentManager_Http_IT extends TestNGCitrusSpringSupport {
+public class IncidentManager_Http_IT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("incidentHttpClient")
@@ -114,7 +109,7 @@ public class IncidentManager_Http_IT extends TestNGCitrusSpringSupport {
                          "<net:connection>@ignore@</net:connection>" +
                        "</net:network>" +
                      "</net:AnalyseIncident>")
-            .extract(xpath()
+            .extract(extractor().xpath()
                     .expression("net:AnalyseIncident/net:network/net:lineId", "lineId")
                     .expression("net:AnalyseIncident/net:network/net:connection" ,"connectionId")));
 
@@ -290,7 +285,7 @@ public class IncidentManager_Http_IT extends TestNGCitrusSpringSupport {
                          "<net:connection>@ignore@</net:connection>" +
                        "</net:network>" +
                      "</net:AnalyseIncident>")
-                .extract(xpath()
+                .extract(extractor().xpath()
                         .expression("net:AnalyseIncident/net:network/net:lineId", "lineId")
                         .expression("net:AnalyseIncident/net:network/net:connection" ,"connectionId")));
 
@@ -435,7 +430,7 @@ public class IncidentManager_Http_IT extends TestNGCitrusSpringSupport {
             .endpoint(networkHttpServer)
             .message()
             .body(marshal(analyseIncident))
-            .extract(xpath()
+            .extract(extractor().xpath()
                     .expression("net:AnalyseIncident/net:network/net:lineId", "lineId")
                     .expression("net:AnalyseIncident/net:network/net:connection", "connection")));
 
@@ -474,7 +469,7 @@ public class IncidentManager_Http_IT extends TestNGCitrusSpringSupport {
             .endpoint(networkHttpServer)
             .message()
             .body(analyseRequest)
-            .extract(xpath()
+            .extract(extractor().xpath()
                     .expression("net:AnalyseIncident/net:network/net:lineId", "lineId")
                     .expression("net:AnalyseIncident/net:network/net:connection", "connectionId")));
 
@@ -499,7 +494,8 @@ public class IncidentManager_Http_IT extends TestNGCitrusSpringSupport {
         incident.getIncident().setState(StateType.NEW);
         incident.getIncident().setDescription("Something missing!");
 
-        $(assertSoapFault()
+        $(soap().client()
+            .assertFault()
             .faultCode("{http://schemas.xmlsoap.org/soap/envelope/}Client").faultString("@startsWith('Unmarshalling Error')@")
             .when(send()
                 .endpoint(incidentHttpClient)

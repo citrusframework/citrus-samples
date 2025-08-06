@@ -26,6 +26,8 @@ import org.apache.activemq.artemis.spi.core.security.ActiveMQJAASSecurityManager
 import org.apache.activemq.artemis.spi.core.security.ActiveMQSecurityManager;
 import org.apache.activemq.artemis.spi.core.security.jaas.InVMLoginModule;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.citrusframework.DefaultTestActions;
+import org.citrusframework.TestActions;
 import org.citrusframework.container.BeforeTest;
 import org.citrusframework.container.SequenceBeforeTest;
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;
@@ -40,14 +42,14 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 
-import static org.citrusframework.jms.actions.PurgeJmsQueuesAction.Builder.purgeQueues;
-
 /**
  * @author Christoph Deppisch
  */
 @ContextConfiguration
 @PropertySource(value = "citrus.properties")
 public class CitrusEndpointConfig {
+
+    private final TestActions actions = new DefaultTestActions();
 
     @Value("${jms.broker.url}")
     private String jmsBrokerUrl;
@@ -180,7 +182,7 @@ public class CitrusEndpointConfig {
     @Bean
     public BeforeTest beforeTest(ConnectionFactory connectionFactory) {
         return new SequenceBeforeTest.Builder()
-                .actions(purgeQueues()
+                .actions(actions.purgeQueues()
                     .connectionFactory(connectionFactory)
                     .queue(travelAgencyRequestQueue)
                     .queue(travelAgencyResponseQueue)

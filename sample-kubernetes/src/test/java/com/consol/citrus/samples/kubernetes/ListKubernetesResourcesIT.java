@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.kubernetes;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.kubernetes.client.KubernetesClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,10 @@ import org.springframework.util.CollectionUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.kubernetes.actions.KubernetesExecuteAction.Builder.kubernetes;
-
 /**
  * @author Christoph Deppisch
  */
-public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
+public class ListKubernetesResourcesIT extends AbstractKubernetesIT implements TestActionSupport {
 
     @Autowired
     private KubernetesClient k8sClient;
@@ -38,6 +37,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     public void testListNodes() {
         $(kubernetes()
             .client(k8sClient)
+            .execute()
             .nodes()
             .list()
             .validate((result, context) -> {
@@ -50,6 +50,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     public void testListNamespaces() {
         $(kubernetes()
             .client(k8sClient)
+            .execute()
             .namespaces()
             .list()
             .validate((result, context) -> {
@@ -62,6 +63,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     public void testListEndpoints() {
         $(kubernetes()
             .client(k8sClient)
+            .execute()
             .endpoints()
             .list()
             .namespace("default")
@@ -75,6 +77,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     public void testListServices() {
         $(kubernetes()
             .client(k8sClient)
+            .execute()
             .services()
             .list()
             .namespace("default")
@@ -88,6 +91,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     public void testListPods() {
         $(kubernetes()
             .client(k8sClient)
+            .execute()
             .pods()
             .list()
             .namespace("default")
@@ -101,6 +105,7 @@ public class ListKubernetesResourcesIT extends AbstractKubernetesIT {
     public void testListReplicationControllers() {
         $(kubernetes()
             .client(k8sClient)
+            .execute()
             .replicationControllers()
             .list()
             .namespace("default")

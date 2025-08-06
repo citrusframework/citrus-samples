@@ -20,9 +20,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IHookCallBack;
@@ -35,7 +35,7 @@ import org.testng.annotations.BeforeSuite;
 public class AbstractKubernetesIT extends TestNGCitrusSpringSupport {
 
     /** Logger */
-    private static Logger log = LoggerFactory.getLogger(AbstractKubernetesIT.class);
+    private static final Logger log = LoggerFactory.getLogger(AbstractKubernetesIT.class);
 
     /** Minikube connection state, checks connectivity only once per test run */
     private static boolean connected = false;
@@ -44,8 +44,9 @@ public class AbstractKubernetesIT extends TestNGCitrusSpringSupport {
     public void checkMinikubeEnvironment() {
         try {
             Future<Boolean> future = Executors.newSingleThreadExecutor().submit(() -> {
-                KubernetesClient kubernetesClient = new DefaultKubernetesClient();
-                kubernetesClient.pods().list();
+                try (KubernetesClient kubernetesClient = new KubernetesClientBuilder().build()) {
+                    kubernetesClient.pods().list();
+                }
                 return true;
             });
 

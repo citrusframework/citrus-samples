@@ -52,7 +52,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.ws.soap.SoapMessageFactory;
 import org.springframework.ws.soap.saaj.SaajSoapMessageFactory;
-import org.springframework.ws.transport.http.HttpComponents5MessageSender;
+import org.springframework.ws.transport.http.HttpComponents5ClientFactory;
+import org.springframework.ws.transport.http.SimpleHttpComponents5MessageSender;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 
 /**
@@ -119,7 +120,7 @@ public class EndpointConfig {
 
             return HttpClients.custom()
                     .setConnectionManager(connectionManager)
-                    .addRequestInterceptorFirst(new HttpComponents5MessageSender.RemoveSoapHeadersInterceptor())
+                    .addRequestInterceptorFirst(new HttpComponents5ClientFactory.RemoveSoapHeadersInterceptor())
                     .build();
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             throw new BeanCreationException("Failed to create http client for ssl connection", e);
@@ -127,8 +128,8 @@ public class EndpointConfig {
     }
 
     @Bean
-    public HttpComponents5MessageSender sslRequestMessageSender() {
-        return new HttpComponents5MessageSender(httpClient());
+    public SimpleHttpComponents5MessageSender sslRequestMessageSender() {
+        return new SimpleHttpComponents5MessageSender(httpClient());
     }
 
     @Bean

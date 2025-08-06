@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.bakery;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.functions.Functions;
 import org.citrusframework.http.server.HttpServer;
@@ -26,16 +27,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-import static org.citrusframework.actions.SleepAction.Builder.sleep;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class ProcessOrdersIT extends TestNGCitrusSpringSupport {
+public class ProcessOrdersIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("factoryOrderEndpoint")

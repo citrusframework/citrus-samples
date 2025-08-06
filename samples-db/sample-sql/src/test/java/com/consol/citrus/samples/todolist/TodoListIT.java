@@ -18,6 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import javax.sql.DataSource;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
@@ -27,14 +28,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.ExecuteSQLQueryAction.Builder.query;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-import static org.citrusframework.validation.xml.XpathMessageValidationContext.Builder.xpath;
-
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -58,7 +55,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .response(HttpStatus.OK)
             .message()
             .type(MessageType.XHTML)
-            .validate(xpath().expression("//xh:h1", "TODO list"))
+            .validate(validation().xpath().expression("//xh:h1", "TODO list"))
             .body("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
                     "\"org/w3/xhtml/xhtml1-transitional.dtd\">" +
                     "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
@@ -103,7 +100,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .response(HttpStatus.OK)
             .message()
             .type(MessageType.XHTML)
-            .validate(xpath().expression("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}")));
+            .validate(validation().xpath().expression("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}")));
 
         $(query(todoDataSource)
             .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")

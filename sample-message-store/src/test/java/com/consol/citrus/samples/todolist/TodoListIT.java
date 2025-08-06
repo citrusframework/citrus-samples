@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.Message;
@@ -27,14 +28,10 @@ import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.dsl.JsonPathSupport.jsonPath;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -76,7 +73,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .message()
             .name("todoResponse")
             .type(MessageType.JSON)
-            .validate(jsonPath()
+            .validate(validation().jsonPath()
                         .expression("$.id", "citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')")));
 
         $(echo("citrus:message(todoResponse)"));

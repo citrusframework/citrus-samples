@@ -18,6 +18,7 @@ package com.consol.citrus.samples.bakery;
 
 import java.util.Map;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.functions.Functions;
@@ -31,15 +32,12 @@ import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class ReportOrdersIT extends TestNGCitrusSpringSupport {
+public class ReportOrdersIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("reportingClient")

@@ -5,13 +5,11 @@ import javax.sql.DataSource;
 
 import org.apache.camel.demo.model.Booking;
 import org.citrusframework.TestActionRunner;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestBehavior;
-import org.citrusframework.actions.ExecuteSQLQueryAction;
+import org.citrusframework.actions.sql.ExecuteSqlQueryActionBuilder;
 
-import static org.citrusframework.actions.ExecuteSQLAction.Builder.sql;
-import static org.citrusframework.container.RepeatOnErrorUntilTrue.Builder.repeatOnError;
-
-public class VerifyBookingStatus implements TestBehavior {
+public class VerifyBookingStatus implements TestBehavior, TestActionSupport {
 
     private final DataSource dataSource;
     private final Booking.Status status;
@@ -24,7 +22,7 @@ public class VerifyBookingStatus implements TestBehavior {
 
     @Override
     public void apply(TestActionRunner t) {
-        ExecuteSQLQueryAction.Builder verifyBookingStatus = sql()
+        ExecuteSqlQueryActionBuilder<?, ?> verifyBookingStatus = sql()
             .dataSource(dataSource)
             .query()
             .statement("select status from booking where booking.id=${bookingId}")

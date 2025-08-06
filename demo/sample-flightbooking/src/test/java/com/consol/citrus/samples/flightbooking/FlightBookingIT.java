@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.flightbooking;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.server.HttpServer;
 import org.citrusframework.jms.endpoint.JmsEndpoint;
@@ -25,17 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-import static org.citrusframework.dsl.MessageSupport.MessageHeaderSupport.fromHeaders;
-import static org.citrusframework.dsl.XmlSupport.xml;
-import static org.citrusframework.dsl.XpathSupport.xpath;
-
 /**
  * @author Christoph Deppisch
  */
 @Test
-public class FlightBookingIT extends TestNGCitrusSpringSupport {
+public class FlightBookingIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("travelAgencyBookingRequestEndpoint")
@@ -72,13 +67,15 @@ public class FlightBookingIT extends TestNGCitrusSpringSupport {
             .message()
             .body(Resources.fromClasspath("templates/RoyalAirlineBookingRequest.xml"))
             .header("bookingCorrelationId", "${correlationId}")
-            .validate(xml()
+            .validate(validation()
                         .xpath()
                         .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId"))
-            .extract(fromHeaders()
+            .extract(extractor()
+                        .fromHeaders()
                         .expression("X-sequenceNumber", "${sequenceNumber}")
                         .expression("X-sequenceSize", "${sequenceSize}"))
-            .extract(xpath()
+            .extract(extractor()
+                    .xpath()
                     .expression("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${royalAirlineBookingId}")));
 
         $(send()
@@ -93,14 +90,16 @@ public class FlightBookingIT extends TestNGCitrusSpringSupport {
             .endpoint(smartAirlineBookingRequestEndpoint)
             .message()
             .body(Resources.fromClasspath("templates/SmartAirlineBookingRequest.xml"))
-            .validate(xml()
+            .validate(validation()
                         .xpath()
                         .ignore("//fbs:FlightBookingRequestMessage/fbs:bookingId"))
             .header("bookingCorrelationId", "${correlationId}")
-            .extract(fromHeaders()
+            .extract(extractor()
+                        .fromHeaders()
                         .expression("sequenceNumber", "${sequenceNumber}")
                         .expression("sequenceSize", "${sequenceSize}"))
-            .extract(xpath()
+            .extract(extractor()
+                        .xpath()
                         .expression("//fbs:FlightBookingRequestMessage/fbs:bookingId", "${smartAirlineBookingId}")));
 
         $(send()

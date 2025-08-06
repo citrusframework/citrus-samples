@@ -16,31 +16,24 @@
 
 package com.consol.citrus.samples.kubernetes;
 
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.Watcher;
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.kubernetes.client.KubernetesClient;
-import org.citrusframework.kubernetes.command.WatchEventResult;
 import org.citrusframework.message.MessageType;
-import io.fabric8.kubernetes.client.Watcher;
-import org.apache.hc.core5.http.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.CreateVariablesAction.Builder.createVariable;
-import static org.citrusframework.actions.SleepAction.Builder.sleep;
-import static org.citrusframework.actions.StopTimerAction.Builder.stopTimer;
-import static org.citrusframework.container.Parallel.Builder.parallel;
-import static org.citrusframework.container.Timer.Builder.timer;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-import static org.citrusframework.kubernetes.actions.KubernetesExecuteAction.Builder.kubernetes;
-
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends AbstractKubernetesIT {
+public class TodoListIT extends AbstractKubernetesIT implements TestActionSupport {
 
     @Autowired
     private KubernetesClient k8sClient;
@@ -53,6 +46,7 @@ public class TodoListIT extends AbstractKubernetesIT {
     public void testDeploymentState() {
         $(kubernetes()
             .client(k8sClient)
+            .execute()
             .pods()
             .list()
             .label("app=todo")
@@ -63,6 +57,7 @@ public class TodoListIT extends AbstractKubernetesIT {
 
         $(kubernetes()
             .client(k8sClient)
+            .execute()
             .services()
             .get("citrus-sample-todo-service")
             .validate((service, context) -> Assert.assertNotNull(service.getResult())));
@@ -141,24 +136,30 @@ public class TodoListIT extends AbstractKubernetesIT {
             ));
 
         $(kubernetes()
+            .execute()
+            .client(k8sClient)
             .pods()
             .list()
             .label("app=todo")
             .validate((pods, context) -> {
                 Assert.assertNotNull(pods.getResult());
                 Assert.assertEquals(pods.getResult().getItems().size(), 1L);
-                context.setVariable("todoPod", pods.getResult().getItems().get(0).getMetadata().getName());
+                context.setVariable("todoPod", ((Pod)pods.getResult().getItems().get(0)).getMetadata().getName());
             }));
 
         $(parallel()
             .actions(
                 kubernetes()
+                    .execute()
+                    .client(k8sClient)
                     .pods()
                     .watch()
                     .name("${todoPod}")
                     .namespace("default")
-                    .validate((result, context) -> Assert.assertEquals(((WatchEventResult) result).getAction(), Watcher.Action.MODIFIED)),
+                    .validate((result, context) -> Assert.assertEquals(result.getResult().getAction(), Watcher.Action.MODIFIED)),
                 kubernetes()
+                    .execute()
+                    .client(k8sClient)
                     .pods()
                     .delete("${todoPod}")
                     .namespace("default")

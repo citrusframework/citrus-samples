@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.docker.client.DockerClient;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ import org.testng.annotations.BeforeSuite;
 /**
  * @author Christoph Deppisch
  */
-public class AbstractDockerIT extends TestNGCitrusSpringSupport {
+public class AbstractDockerIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     /** Logger */
     private static Logger log = LoggerFactory.getLogger(AbstractDockerIT.class);

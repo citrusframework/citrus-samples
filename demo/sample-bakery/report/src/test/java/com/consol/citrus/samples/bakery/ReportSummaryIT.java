@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.bakery;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
@@ -25,15 +26,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class ReportSummaryIT extends TestNGCitrusSpringSupport {
+public class ReportSummaryIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("reportingClient")

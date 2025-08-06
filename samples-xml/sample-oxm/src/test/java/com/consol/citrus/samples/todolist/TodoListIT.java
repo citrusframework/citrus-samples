@@ -19,6 +19,7 @@ package com.consol.citrus.samples.todolist;
 import java.util.Map;
 import java.util.UUID;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.http.client.HttpClient;
@@ -33,13 +34,12 @@ import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
 import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;

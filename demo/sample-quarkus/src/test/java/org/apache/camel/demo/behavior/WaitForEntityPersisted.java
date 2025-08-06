@@ -6,12 +6,10 @@ import javax.sql.DataSource;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Supply;
 import org.citrusframework.TestActionRunner;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestBehavior;
 
-import static org.citrusframework.actions.ExecuteSQLAction.Builder.sql;
-import static org.citrusframework.container.RepeatOnErrorUntilTrue.Builder.repeatOnError;
-
-public class WaitForEntityPersisted implements TestBehavior {
+public class WaitForEntityPersisted implements TestBehavior, TestActionSupport {
 
     private final String entityName;
     private final String status;

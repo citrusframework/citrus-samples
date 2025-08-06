@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.citrusframework.ws.client.WebServiceClient;
@@ -25,13 +26,10 @@ import org.citrusframework.ws.validation.BinarySoapAttachmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.dsl.XmlSupport.xml;
-import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
-
 /**
  * @author Christoph Deppisch
  */
-public class GetImageIT extends TestNGCitrusSpringSupport {
+public class GetImageIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private WebServiceClient imageClient;
@@ -81,7 +79,7 @@ public class GetImageIT extends TestNGCitrusSpringSupport {
             .client(imageClient)
             .receive()
             .message()
-            .validate(xml()
+            .validate(validation().xml()
                         .schemaValidation(false))
             .body("<image:getImageResponse xmlns:image=\"http://www.citrusframework.org/imageService\">" +
                         "<image:image>" +

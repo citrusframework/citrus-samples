@@ -21,10 +21,11 @@ import java.util.Map;
 
 import org.apache.hc.core5.http.ContentType;
 import org.citrusframework.TestActionRunner;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestBehavior;
+import org.citrusframework.actions.http.HttpReceiveResponseMessageBuilderFactory;
+import org.citrusframework.actions.http.HttpSendRequestMessageBuilderFactory;
 import org.citrusframework.annotations.CitrusTest;
-import org.citrusframework.http.actions.HttpClientRequestActionBuilder;
-import org.citrusframework.http.actions.HttpClientResponseActionBuilder;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
 import org.citrusframework.spi.Resource;
@@ -35,13 +36,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-import static org.citrusframework.validation.xml.XpathMessageValidationContext.Builder.xpath;
-
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -103,7 +101,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
         @Override
         public void apply(TestActionRunner runner) {
 
-            HttpClientRequestActionBuilder.HttpMessageBuilderSupport requestAction = http()
+            HttpSendRequestMessageBuilderFactory<?, ?> requestAction = http()
                 .client(todoClient)
                 .send()
                 .post("/api/todolist")
@@ -163,7 +161,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
                 .message()
                 .accept(ContentType.APPLICATION_JSON.getMimeType()));
 
-            HttpClientResponseActionBuilder.HttpMessageBuilderSupport responseAction = http()
+            HttpReceiveResponseMessageBuilderFactory<?, ?> responseAction = http()
                 .client(todoClient)
                 .receive()
                 .response(HttpStatus.OK)
@@ -176,7 +174,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
                 responseAction.body(resource);
             }
 
-            responseAction.validate(xpath().expressions(validateExpressions));
+            responseAction.validate(validation().xpath().expressions(validateExpressions));
 
             runner.$(responseAction);
         }

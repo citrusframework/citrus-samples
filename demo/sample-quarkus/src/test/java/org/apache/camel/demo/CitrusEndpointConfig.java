@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import org.citrusframework.DefaultTestActions;
+import org.citrusframework.TestActions;
 import org.citrusframework.container.AfterSuite;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.http.server.HttpServer;
@@ -20,13 +22,14 @@ import org.citrusframework.selenium.endpoint.SeleniumBrowserBuilder;
 import org.citrusframework.spi.BindToRegistry;
 import org.openqa.selenium.remote.Browser;
 
-import static org.citrusframework.actions.StopServerAction.Builder.stop;
 import static org.citrusframework.container.SequenceAfterSuite.Builder.afterSuite;
 import static org.citrusframework.http.endpoint.builder.HttpEndpoints.http;
 import static org.citrusframework.kafka.endpoint.builder.KafkaEndpoints.kafka;
 import static org.citrusframework.mail.endpoint.builder.MailEndpoints.mail;
 
 public class CitrusEndpointConfig {
+
+    private final TestActions actions = new DefaultTestActions();
 
     private MailServer mailServer;
     private HttpServer shippingDetailsService;
@@ -132,7 +135,7 @@ public class CitrusEndpointConfig {
     public AfterSuite afterSuiteActions() {
         return afterSuite()
                 .actions(
-                    stop(mailServer(), shippingDetailsService()))
+                    actions.stop(mailServer(), shippingDetailsService()))
                 .build();
     }
 

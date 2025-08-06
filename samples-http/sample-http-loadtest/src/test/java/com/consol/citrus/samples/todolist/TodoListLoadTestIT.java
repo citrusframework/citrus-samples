@@ -18,6 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import org.citrusframework.TestActionRunner;
 import org.citrusframework.annotations.CitrusResource;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
@@ -27,13 +28,12 @@ import org.springframework.http.MediaType;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
  */
 @Test(invocationCount = 40, threadPoolSize = 4)
-public class TodoListLoadTestIT extends TestNGCitrusSpringSupport {
+public class TodoListLoadTestIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;

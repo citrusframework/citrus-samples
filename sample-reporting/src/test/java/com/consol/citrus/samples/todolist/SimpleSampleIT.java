@@ -17,19 +17,18 @@
 package com.consol.citrus.samples.todolist;
 
 import org.citrusframework.TestCaseMetaInfo;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.exceptions.CitrusRuntimeException;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.actions.FailAction.Builder.fail;
 
 /**
  * @author Christoph Deppisch
  */
 @Test
-public class SimpleSampleIT extends TestNGCitrusSpringSupport {
+public class SimpleSampleIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @CitrusTest
     public void testSuccessFirst() {

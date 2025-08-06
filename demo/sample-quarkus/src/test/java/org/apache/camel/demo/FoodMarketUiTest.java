@@ -21,6 +21,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
 import org.apache.camel.demo.model.Supply;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
@@ -30,13 +31,10 @@ import org.citrusframework.selenium.endpoint.SeleniumBrowser;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
-import static org.citrusframework.container.FinallySequence.Builder.doFinally;
-import static org.citrusframework.selenium.actions.SeleniumActionBuilder.selenium;
-
 @QuarkusTest
 @CitrusSupport
 @CitrusConfiguration(classes = { CitrusEndpointConfig.class })
-class FoodMarketUiTest {
+class FoodMarketUiTest implements TestActionSupport {
 
     @CitrusEndpoint
     SeleniumBrowser browser;

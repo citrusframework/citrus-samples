@@ -18,7 +18,7 @@ package com.consol.citrus.samples.todolist.reporting;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import org.citrusframework.TestCase;
 import org.citrusframework.TestCaseMetaInfo;
@@ -59,7 +59,7 @@ public class ExtentReporter extends AbstractTestReporter implements TestReporter
     }
 
     @Override
-    public void onTestFinish(TestCase test) {
+    public void onTestExecutionEnd(TestCase test) {
         // do nothing
     }
 
@@ -77,7 +77,7 @@ public class ExtentReporter extends AbstractTestReporter implements TestReporter
      * Initialize reports.
      */
     private void initializeExtentReports() {
-        final ExtentHtmlReporter extentHtmlReporter = new ExtentHtmlReporter("target/citrus-reports/extent-reports.html");
+        final ExtentSparkReporter extentHtmlReporter = new ExtentSparkReporter("target/citrus-reports/extent-reports.html");
         extentHtmlReporter.config().setDocumentTitle("ExtentReports - Created by Citrus TestListener");
         extentHtmlReporter.config().setReportName("ExtentReports - Created by Citrus TestListener");
         extentHtmlReporter.config().setTheme(Theme.STANDARD);

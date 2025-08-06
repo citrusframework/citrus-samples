@@ -15,9 +15,9 @@
     <maven.compiler.release>17</maven.compiler.release>
     <compiler-plugin.version>3.14.0</compiler-plugin.version>
 
-    <quarkus.platform.version>3.23.2</quarkus.platform.version>
+    <quarkus.platform.version>3.26.0</quarkus.platform.version>
     <surefire-plugin.version>3.5.3</surefire-plugin.version>
-    <citrus.version>4.7.0</citrus.version>
+    <citrus.version>4.8.0</citrus.version>
     <javafaker.version>1.0.2</javafaker.version>
     <skipITs>true</skipITs>
   </properties>
@@ -25,7 +25,7 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>io.quarkus.platform</groupId>
+        <groupId>io.quarkus</groupId>
         <artifactId>quarkus-bom</artifactId>
         <version>${quarkus.platform.version}</version>
         <type>pom</type>
@@ -178,7 +178,7 @@
     <finalName>food-market-demo</finalName>
     <plugins>
       <plugin>
-        <groupId>io.quarkus.platform</groupId>
+        <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
         <version>${quarkus.platform.version}</version>
         <configuration>

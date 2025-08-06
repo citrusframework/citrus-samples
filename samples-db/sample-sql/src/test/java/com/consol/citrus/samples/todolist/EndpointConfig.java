@@ -18,6 +18,9 @@ package com.consol.citrus.samples.todolist;
 
 import java.util.Collections;
 
+import org.apache.commons.dbcp.BasicDataSource;
+import org.citrusframework.DefaultTestActions;
+import org.citrusframework.TestActions;
 import org.citrusframework.container.AfterSuite;
 import org.citrusframework.container.BeforeSuite;
 import org.citrusframework.container.SequenceAfterSuite;
@@ -25,12 +28,9 @@ import org.citrusframework.container.SequenceBeforeSuite;
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.xml.namespace.NamespaceContextBuilder;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import static org.citrusframework.actions.ExecuteSQLAction.Builder.sql;
 
 /**
  * @author Christoph Deppisch
@@ -38,6 +38,8 @@ import static org.citrusframework.actions.ExecuteSQLAction.Builder.sql;
 @Import(TodoAppAutoConfiguration.class)
 @Configuration
 public class EndpointConfig {
+
+    private final TestActions actions = new DefaultTestActions();
 
     @Bean
     public HttpClient todoClient() {
@@ -58,7 +60,7 @@ public class EndpointConfig {
     @Bean
     public BeforeSuite beforeSuite(BasicDataSource todoListDataSource) {
         return new SequenceBeforeSuite.Builder()
-                .actions(sql(todoListDataSource)
+                .actions(actions.sql(todoListDataSource)
                         .statement("CREATE TABLE IF NOT EXISTS todo_entries " +
                                 "(id VARCHAR(50), title VARCHAR(255), description VARCHAR(255), done BOOLEAN)"))
                 .build();
@@ -67,7 +69,7 @@ public class EndpointConfig {
     @Bean
     public AfterSuite afterSuite(BasicDataSource todoListDataSource) {
         return new SequenceAfterSuite.Builder()
-                .actions(sql(todoListDataSource)
+                .actions(actions.sql(todoListDataSource)
                         .statement("DELETE FROM todo_entries"))
                 .build();
     }

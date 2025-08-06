@@ -16,19 +16,17 @@
 
 package com.consol.citrus.samples.bookstore;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.citrusframework.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.ws.actions.AssertSoapFault.Builder.assertSoapFault;
-import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
-
 /**
  * @author Christoph Deppisch
  */
-public class SchemaValidation_Error_1_IT extends TestNGCitrusSpringSupport {
+public class SchemaValidation_Error_1_IT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private WebServiceClient bookStoreClient;
@@ -42,7 +40,8 @@ public class SchemaValidation_Error_1_IT extends TestNGCitrusSpringSupport {
         variable("isbn", "978-0596517335");
         variable("faultCode", "{http://www.consol.com/citrus/samples/errorcodes}CITRUS:999");
 
-        $(assertSoapFault()
+        $(soap().client()
+                .assertFault()
                 .faultCode("${faultCode}")
                 .faultString("Client sent invalid request!")
                 .when(

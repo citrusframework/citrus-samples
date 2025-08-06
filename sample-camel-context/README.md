@@ -55,7 +55,7 @@ The components above are used in a Citrus test case.
      
 ```java
 @Test
-public class NewsFeedIT extends TestNGCitrusSpringSupport {
+public class NewsFeedIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private JmsEndpoint newsJmsEndpoint;

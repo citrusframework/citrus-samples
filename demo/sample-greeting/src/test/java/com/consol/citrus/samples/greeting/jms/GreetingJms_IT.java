@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.greeting.jms;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.jms.endpoint.JmsEndpoint;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
@@ -23,13 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
  */
-public class GreetingJms_IT extends TestNGCitrusSpringSupport {
+public class GreetingJms_IT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("greetingJmsRequestSender")

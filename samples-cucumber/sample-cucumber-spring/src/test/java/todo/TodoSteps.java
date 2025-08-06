@@ -19,6 +19,7 @@ package todo;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusResource;
 import org.citrusframework.config.CitrusSpringConfig;
@@ -33,7 +34,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
@@ -41,7 +41,7 @@ import static org.citrusframework.http.actions.HttpActionBuilder.http;
 @SuppressWarnings("SpringJavaAutowiringInspection")
 @CucumberContextConfiguration
 @ContextConfiguration(classes = CitrusSpringConfig.class)
-public class TodoSteps {
+public class TodoSteps implements TestActionSupport {
 
     @CitrusResource
     private TestCaseRunner runner;

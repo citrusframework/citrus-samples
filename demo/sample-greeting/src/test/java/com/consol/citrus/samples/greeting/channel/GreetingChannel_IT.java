@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.greeting.channel;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.channel.ChannelEndpoint;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
@@ -23,13 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
 
 /**
  * @author Christoph Deppisch
  */
-public class GreetingChannel_IT extends TestNGCitrusSpringSupport {
+public class GreetingChannel_IT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("greetingsEndpoint")

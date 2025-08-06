@@ -111,7 +111,7 @@
             <idleTimeout>60000</idleTimeout>
           </httpConnector>
           <!-- jetty.xml for using multiple deployed wars in single jetty instance -->
-          <jettyXmls>${build.outputDirectory}/jetty.xml</jettyXmls>
+          <jettyXmls>${project.build.outputDirectory}/jetty.xml</jettyXmls>
         </configuration>
       </plugin>
     </plugins>

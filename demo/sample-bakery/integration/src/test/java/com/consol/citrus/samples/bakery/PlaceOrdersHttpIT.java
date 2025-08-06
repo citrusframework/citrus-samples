@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.bakery;
 
 import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.functions.Functions;
 import org.citrusframework.http.client.HttpClient;
@@ -27,15 +28,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.container.RepeatOnErrorUntilTrue.Builder.repeatOnError;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 /**
  * @author Christoph Deppisch
  * @since 2.4
  */
 @Test
-public class PlaceOrdersHttpIT extends TestNGCitrusSpringSupport {
+public class PlaceOrdersHttpIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("bakeryClient")

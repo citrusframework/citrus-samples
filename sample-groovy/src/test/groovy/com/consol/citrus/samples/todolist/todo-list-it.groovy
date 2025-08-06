@@ -3,9 +3,6 @@ package com.consol.citrus.samples.todolist
 import org.citrusframework.message.MessageType
 import org.springframework.http.HttpStatus
 
-import static org.citrusframework.http.actions.HttpActionBuilder.http
-import static org.citrusframework.validation.json.JsonPathMessageValidationContext.Builder.jsonPath
-
 given:
     variables {
         todoId = "citrus:randomUUID()"
@@ -48,7 +45,7 @@ then: //Verify existence
             .response(HttpStatus.OK)
             .message()
             .type(MessageType.JSON)
-            .validate(jsonPath()
+            .validate(validation().jsonPath()
                     .expression('$.id', "${todoId}")
                     .expression('$.title', "${todoName}")
                     .expression('$.description', "${todoDescription}")

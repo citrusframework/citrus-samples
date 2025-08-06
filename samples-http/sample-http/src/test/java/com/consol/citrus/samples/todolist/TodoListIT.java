@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
@@ -25,11 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.dsl.XpathSupport.xpath;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-import static org.citrusframework.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
-
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -50,7 +47,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .response(HttpStatus.OK)
             .message()
             .type(MessageType.XHTML)
-            .validate(xpath()
+            .validate(validation().xpath()
                         .expression("//xh:h1", "TODO list"))
             .body("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
                     "\"org/w3/xhtml/xhtml1-transitional.dtd\">" +
@@ -118,7 +115,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
                 .response(HttpStatus.OK)
                 .message()
                 .type(MessageType.JSON)
-                .validate(jsonPath()
+                .validate(validation().jsonPath()
                         .expression("$.id", "${todoId}")
                         .expression("$.title", "${todoName}")
                         .expression("$.description", "${todoDescription}")

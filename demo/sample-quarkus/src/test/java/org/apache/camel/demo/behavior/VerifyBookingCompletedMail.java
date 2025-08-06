@@ -2,14 +2,13 @@ package org.apache.camel.demo.behavior;
 
 import org.apache.camel.demo.model.Booking;
 import org.citrusframework.TestActionRunner;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestBehavior;
 import org.citrusframework.mail.message.MailMessage;
 import org.citrusframework.mail.server.MailServer;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
 
-public class VerifyBookingCompletedMail implements TestBehavior {
+public class VerifyBookingCompletedMail implements TestBehavior, TestActionSupport {
 
     private final Booking booking;
     private final MailServer mailServer;

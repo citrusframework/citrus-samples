@@ -22,6 +22,7 @@ package org.citrusframework.samples.websocket;
 import java.util.Collections;
 
 import io.quarkus.test.junit.QuarkusTest;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
@@ -35,14 +36,11 @@ import org.citrusframework.websocket.server.WebSocketServerEndpointConfiguration
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 @QuarkusTest
 @CitrusSupport
 @CitrusConfiguration(classes = { ChatSocketTest.EndpointConfig.class })
-class ChatSocketTest {
+class ChatSocketTest implements TestActionSupport {
 
     @CitrusResource
     TestCaseRunner t;

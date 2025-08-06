@@ -16,6 +16,8 @@
 
 package com.consol.citrus.samples.todolist;
 
+import org.citrusframework.DefaultTestActions;
+import org.citrusframework.TestActions;
 import org.citrusframework.container.AfterSuite;
 import org.citrusframework.container.AfterTest;
 import org.citrusframework.container.SequenceAfterSuite;
@@ -29,15 +31,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 
-import static org.citrusframework.actions.SleepAction.Builder.sleep;
-import static org.citrusframework.selenium.actions.SeleniumActionBuilder.selenium;
-
 /**
  * @author Christoph Deppisch
  */
 @Import(TodoAppAutoConfiguration.class)
 @Configuration
 public class EndpointConfig {
+
+    private final TestActions actions = new DefaultTestActions();
 
     @Bean
     public SeleniumBrowser browser() {
@@ -52,14 +53,14 @@ public class EndpointConfig {
     @DependsOn("browser")
     public AfterSuite afterSuite(SeleniumBrowser browser) {
         return new SequenceAfterSuite.Builder()
-                .actions(selenium().browser(browser).stop())
+                .actions(actions.selenium().browser(browser).stop())
                 .build();
     }
 
     @Bean
     public AfterTest afterTest() {
         return new SequenceAfterTest.Builder()
-                .actions(sleep().milliseconds(500L))
+                .actions(actions.sleep().milliseconds(500L))
                 .build();
     }
 

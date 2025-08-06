@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.incident;
 
 import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.server.HttpServer;
 import org.citrusframework.jms.endpoint.JmsEndpoint;
@@ -28,17 +29,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-import static org.citrusframework.actions.SleepAction.Builder.sleep;
-import static org.citrusframework.dsl.XpathSupport.xpath;
-
 /**
  * @author Christoph Deppisch
  * @since 2.6
  */
-public class IncidentManager_Http_Ok_2_IT extends TestNGCitrusSpringSupport {
+public class IncidentManager_Http_Ok_2_IT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("incidentHttpClient")
@@ -108,7 +103,7 @@ public class IncidentManager_Http_Ok_2_IT extends TestNGCitrusSpringSupport {
                          "<net:connection>@ignore@</net:connection>" +
                        "</net:network>" +
                      "</net:AnalyseIncident>")
-            .extract(xpath()
+            .extract(extractor().xpath()
                     .expression("net:AnalyseIncident/net:network/net:lineId", "lineId")
                     .expression("net:AnalyseIncident/net:network/net:connection" ,"connectionId")));
 

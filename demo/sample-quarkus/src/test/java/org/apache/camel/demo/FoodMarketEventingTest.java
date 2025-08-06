@@ -31,6 +31,7 @@ import org.apache.camel.demo.model.ShippingAddress;
 import org.apache.camel.demo.model.Supply;
 import org.apache.camel.demo.model.event.BookingCompletedEvent;
 import org.apache.camel.demo.model.event.ShippingEvent;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
@@ -41,17 +42,12 @@ import org.citrusframework.mail.server.MailServer;
 import org.citrusframework.quarkus.CitrusSupport;
 import org.junit.jupiter.api.Test;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-import static org.citrusframework.actions.SleepAction.Builder.delay;
-import static org.citrusframework.container.Iterate.Builder.iterate;
-import static org.citrusframework.container.Parallel.Builder.parallel;
 import static org.citrusframework.dsl.JsonSupport.marshal;
 
 @QuarkusTest
 @CitrusSupport
 @CitrusConfiguration(classes = { CitrusEndpointConfig.class })
-class FoodMarketEventingTest {
+class FoodMarketEventingTest implements TestActionSupport {
 
     @CitrusEndpoint
     KafkaEndpoint products;

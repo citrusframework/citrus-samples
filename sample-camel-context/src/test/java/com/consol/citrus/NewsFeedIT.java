@@ -16,6 +16,7 @@
 
 package com.consol.citrus;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.jms.endpoint.JmsEndpoint;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
@@ -25,17 +26,13 @@ import org.citrusframework.ws.server.WebServiceServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
 
 /**
  * @author Christoph Deppisch
  * @since 2.1
  */
 @Test
-public class NewsFeedIT extends TestNGCitrusSpringSupport {
+public class NewsFeedIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private JmsEndpoint newsJmsEndpoint;

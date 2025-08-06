@@ -16,19 +16,17 @@
 
 package com.consol.citrus.samples.bookstore;
 
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.citrusframework.ws.client.WebServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.validation.script.ScriptValidationContext.Builder.groovy;
-import static org.citrusframework.ws.actions.SoapActionBuilder.soap;
-
 /**
  * @author Christoph Deppisch
  */
-public class ListBooks_Ok_2_IT extends TestNGCitrusSpringSupport {
+public class ListBooks_Ok_2_IT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private WebServiceClient bookStoreClient;
@@ -73,7 +71,8 @@ public class ListBooks_Ok_2_IT extends TestNGCitrusSpringSupport {
         $(soap()
             .client(bookStoreClient)
             .receive()
-            .validate(groovy()
+            .validate(validation()
+                    .groovy()
                     .script("org.testng.Assert.assertTrue(root.books.book.findAll{ it.isbn == '${isbn}' }.size() == 1, " +
                             "\"Missing book with isbn: '${isbn}' in book list!\")")));
     }

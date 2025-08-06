@@ -5,12 +5,10 @@ import javax.sql.DataSource;
 
 import org.apache.camel.demo.model.Product;
 import org.citrusframework.TestActionRunner;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestBehavior;
 
-import static org.citrusframework.actions.ExecuteSQLAction.Builder.sql;
-import static org.citrusframework.container.RepeatOnErrorUntilTrue.Builder.repeatOnError;
-
-public class WaitForProductCreated implements TestBehavior {
+public class WaitForProductCreated implements TestBehavior, TestActionSupport {
 
     private final Product product;
     private final DataSource dataSource;

@@ -1,9 +1,9 @@
 package com.consol.citrus.samples.todolist.page;
 
+import org.citrusframework.actions.selenium.PageValidator;
+import org.citrusframework.actions.selenium.WebPage;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.selenium.endpoint.SeleniumBrowser;
-import org.citrusframework.selenium.model.PageValidator;
-import org.citrusframework.selenium.model.WebPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,7 +13,7 @@ import org.testng.Assert;
 /**
  * @author Christoph Deppisch
  */
-public class TodoPage implements WebPage, PageValidator<TodoPage> {
+public class TodoPage implements WebPage, PageValidator<TodoPage, SeleniumBrowser> {
 
     @FindBy(tagName = "h1")
     private WebElement heading;

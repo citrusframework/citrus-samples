@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
@@ -26,13 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-import static org.citrusframework.validation.json.JsonPathMessageValidationContext.Builder.jsonPath;
-
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -155,7 +153,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
             .response(HttpStatus.OK)
             .message()
             .type(MessageType.JSON)
-            .validate(jsonPath()
+            .validate(validation().jsonPath()
                     .expression("$.id", "${todoId}")
                     .expression("$.title", "${todoName}")
                     .expression("$.description", "${todoDescription}")

@@ -22,6 +22,7 @@ import java.util.Map;
 import com.consol.citrus.samples.bookstore.model.AddBookRequestMessage;
 import com.consol.citrus.samples.bookstore.model.AddBookResponseMessage;
 import com.consol.citrus.samples.bookstore.model.Book;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
@@ -33,15 +34,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
 import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch
  */
 @Test
-public class AddBook_Ok_2_IT extends TestNGCitrusSpringSupport {
+public class AddBook_Ok_2_IT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     @Qualifier("bookStoreClient")

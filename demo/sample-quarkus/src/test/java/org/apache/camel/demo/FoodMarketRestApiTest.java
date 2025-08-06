@@ -24,6 +24,7 @@ import jakarta.inject.Inject;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
 import org.apache.camel.demo.model.Supply;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
@@ -34,15 +35,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.citrusframework.actions.ExecuteSQLAction.Builder.sql;
-import static org.citrusframework.dsl.JsonSupport.json;
 import static org.citrusframework.dsl.JsonSupport.marshal;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
 
 @QuarkusTest
 @CitrusSupport
 @CitrusConfiguration(classes = { CitrusEndpointConfig.class })
-class FoodMarketRestApiTest {
+class FoodMarketRestApiTest implements TestActionSupport {
 
     @CitrusEndpoint
     HttpClient foodMarketApiClient;
@@ -70,7 +68,7 @@ class FoodMarketRestApiTest {
                 .receive()
                 .response(HttpStatus.CREATED)
                 .message()
-                .extract(json().expression("$.id", "bookingId")));
+                .extract(extractor().jsonPath().expression("$.id", "bookingId")));
 
         t.then(sql()
                 .dataSource(dataSource)
@@ -96,7 +94,7 @@ class FoodMarketRestApiTest {
                 .receive()
                 .response(HttpStatus.CREATED)
                 .message()
-                .extract(json().expression("$.id", "supplyId")));
+                .extract(extractor().jsonPath().expression("$.id", "supplyId")));
 
         t.then(sql()
                 .dataSource(dataSource)

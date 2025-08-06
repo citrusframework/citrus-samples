@@ -17,6 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import org.citrusframework.TestActionBuilder;
+import org.citrusframework.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.kafka.endpoint.KafkaEndpoint;
@@ -30,17 +31,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.actions.EchoAction.Builder.echo;
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
-import static org.citrusframework.actions.SendMessageAction.Builder.send;
-import static org.citrusframework.container.RepeatOnErrorUntilTrue.Builder.repeatOnError;
-import static org.citrusframework.dsl.XpathSupport.xpath;
-import static org.citrusframework.http.actions.HttpActionBuilder.http;
-
 /**
  * @author Christoph Deppisch
  */
-public class TodoListIT extends TestNGCitrusSpringSupport {
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
     @Autowired
     private HttpClient todoClient;
@@ -88,7 +82,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
                 .response(HttpStatus.OK)
                 .message()
                 .type(MessageType.XHTML)
-                .validate(xpath()
+                .validate(validation().xpath()
                         .expression("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
     }
 
