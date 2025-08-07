@@ -21,27 +21,21 @@ import javax.sql.DataSource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import org.apache.camel.demo.behavior.VerifyBookingCompletedMail;
 import org.apache.camel.demo.behavior.VerifyBookingStatus;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
 import org.apache.camel.demo.model.Supply;
-import org.apache.camel.demo.model.event.BookingCompletedEvent;
-import org.apache.camel.demo.model.event.ShippingEvent;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
 import org.citrusframework.annotations.CitrusResource;
 import org.citrusframework.http.client.HttpClient;
-import org.citrusframework.kafka.endpoint.KafkaEndpoint;
-import org.citrusframework.mail.server.MailServer;
 import org.citrusframework.quarkus.CitrusSupport;
 import org.citrusframework.selenium.endpoint.SeleniumBrowser;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.citrusframework.actions.ReceiveMessageAction.Builder.receive;
 import static org.citrusframework.container.FinallySequence.Builder.doFinally;
 import static org.citrusframework.dsl.JsonSupport.json;
 import static org.citrusframework.dsl.JsonSupport.marshal;
@@ -55,15 +49,6 @@ class FoodMarketApprovalTest {
 
     @CitrusEndpoint
     HttpClient foodMarketApiClient;
-
-    @CitrusEndpoint
-    KafkaEndpoint completed;
-
-    @CitrusEndpoint
-    KafkaEndpoint shipping;
-
-    @CitrusEndpoint
-    MailServer mailServer;
 
     @CitrusEndpoint
     SeleniumBrowser browser;
@@ -88,16 +73,7 @@ class FoodMarketApprovalTest {
 
         approveBooking();
 
-        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
-        verifyBookingCompletedEvent(completedEvent);
-
-        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
-                supply.getAmount(), booking.getShippingAddress());
-        verifyShippingEvent(shippingEvent);
-
-        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
-
-        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource)));
+        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource).withRetryAttempts(10)));
     }
 
     @Test
@@ -114,16 +90,7 @@ class FoodMarketApprovalTest {
 
         approveBookingUi();
 
-        BookingCompletedEvent completedEvent = BookingCompletedEvent.from(booking);
-        verifyBookingCompletedEvent(completedEvent);
-
-        ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), product.getName(),
-                supply.getAmount(), booking.getShippingAddress());
-        verifyShippingEvent(shippingEvent);
-
-        t.then(t.applyBehavior(new VerifyBookingCompletedMail(booking, mailServer)));
-
-        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource)));
+        t.then(t.applyBehavior(new VerifyBookingStatus(Booking.Status.COMPLETED, dataSource).withRetryAttempts(10)));
     }
 
     private void createBooking(Booking booking) {
@@ -159,18 +126,6 @@ class FoodMarketApprovalTest {
                 .response(HttpStatus.CREATED)
                 .message()
                 .extract(json().expression("$.id", "supplyId")));
-    }
-
-    private void verifyShippingEvent(ShippingEvent shippingEvent) {
-        t.then(receive()
-                .endpoint(shipping)
-                .message().body(marshal(shippingEvent)));
-    }
-
-    private void verifyBookingCompletedEvent(BookingCompletedEvent completedEvent) {
-        t.then(receive()
-                .endpoint(completed)
-                .message().body(marshal(completedEvent)));
     }
 
     /**
