@@ -11,7 +11,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>6.2.10</spring.version>
+    <spring.version>6.2.11</spring.version>
     <spring.ws.version>4.1.1</spring.ws.version>
     <spring.integration.version>6.5.1</spring.integration.version>
     <activemq.artemis.version>2.42.0</activemq.artemis.version>
@@ -20,7 +20,7 @@
     <slf4j.version>2.0.17</slf4j.version>
     <log4j2.version>2.25.1</log4j2.version>
     <commons.logging.version>1.3.5</commons.logging.version>
-    <citrus.version>4.8.0</citrus.version>
+    <citrus.version>4.8.1</citrus.version>
     <jetty.version>11.0.26</jetty.version>
     <jackson.databind.version>2.19.2</jackson.databind.version>
     <jackson.version>2.19.2</jackson.version>
@@ -30,8 +30,8 @@
     <xerces.version>2.12.2</xerces.version>
     <server.port>18001</server.port>
     <server.stop.port>18100</server.stop.port>
-    <maven.failsafe.plugin.version>3.5.3</maven.failsafe.plugin.version>
-    <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
+    <maven.failsafe.plugin.version>3.5.4</maven.failsafe.plugin.version>
+    <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
     <system.under.test.mode>embedded</system.under.test.mode>
 
     <jaxb.maven.plugin.version>3.3.0</jaxb.maven.plugin.version>
