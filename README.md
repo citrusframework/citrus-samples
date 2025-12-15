@@ -111,13 +111,11 @@ Preconditions
 
 See the preconditions for using the Citrus sample applications:
 
-* Installed JDK 1.8 or higher plus `JAVA_HOME` environment variable set
+* Installed JDK 17 or higher plus `JAVA_HOME` environment variable set
 up and pointing to your Java installation directory
 
-* Apache Maven 3.0.x or higher
-The sample projects are executable via Apache Maven (http://maven.apache.org/). You need
-ANT installed and running an your machine in order to use this way of executing the
-sample applications.
+* Apache Maven 3.9.x or higher
+The sample projects are executable via Apache Maven (http://maven.apache.org/).
 
 In each of the samples folders you will find the Maven (POM) pom.xml that defines all dependencies and build plugins.
 
@@ -133,7 +131,7 @@ Many samples reuse the [todo-list](todo-app) application which is a simple web a
 You can auto start and deploy the todo-list application within the Maven build by using the following command:
 
      mvn clean install -Dsystem.under.test.mode=embedded
-    
+
 The embedded option automatically starts an embedded Jetty Web Server Container before the integration test phase in Maven. After that
 the Citrus tests will be able to perform its actions in integration-test phase in Maven. After the tests are finished the embedded Jetty 
 container is automatically stopped.

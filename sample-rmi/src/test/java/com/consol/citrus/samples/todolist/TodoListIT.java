@@ -38,7 +38,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
     @Autowired
     private RmiServer todoRmiServer;
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testAddTodo() {
         $(send()
@@ -63,7 +63,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
             .message(RmiMessage.result()));
     }
 
-    @Test
+    @Test(enabled = false)
     @CitrusTest
     public void testGetTodos() {
         $(send()

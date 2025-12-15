@@ -10,11 +10,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>6.2.11</spring.version>
+    <spring.version>6.2.12</spring.version>
     <slf4j.version>2.0.17</slf4j.version>
     <log4j2.version>2.25.1</log4j2.version>
     <commons.logging.version>1.3.5</commons.logging.version>
-    <citrus.version>4.8.1</citrus.version>
+    <citrus.version>4.8.2</citrus.version>
     <maven.failsafe.plugin.version>3.5.4</maven.failsafe.plugin.version>
     <maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
     <system.under.test.mode>embedded</system.under.test.mode>
