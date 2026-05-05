@@ -52,11 +52,11 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         variable("todoDescription", "Description: ${todoName}");
         variable("done", "false");
 
-        applyBehavior(new AddTodoBehavior()
-            .withPayloadData("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+        $(applyBehavior(new AddTodoBehavior()
+            .withPayloadData("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")));
 
-        applyBehavior(new GetTodoBehavior("${todoId}")
-            .validate("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
+        $(applyBehavior(new GetTodoBehavior("${todoId}")
+            .validate("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")));
     }
 
     @Test
@@ -66,11 +66,11 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        applyBehavior(new AddTodoBehavior()
-                            .withResource(Resources.fromClasspath("templates/todo.json")));
+        $(applyBehavior(new AddTodoBehavior()
+                            .withResource(Resources.fromClasspath("templates/todo.json"))));
 
-        applyBehavior(new GetTodoBehavior("${todoId}")
-                            .validate(Resources.fromClasspath("templates/todo.json")));
+        $(applyBehavior(new GetTodoBehavior("${todoId}")
+                            .validate(Resources.fromClasspath("templates/todo.json"))));
     }
 
     @Test
@@ -80,14 +80,14 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
         variable("todoDescription", "Description: ${todoName}");
 
-        applyBehavior(new AddTodoBehavior()
-            .withPayloadData("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}"));
+        $(applyBehavior(new AddTodoBehavior()
+            .withPayloadData("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": false}")));
 
-        applyBehavior(new GetTodoBehavior("${todoId}")
+        $(applyBehavior(new GetTodoBehavior("${todoId}")
             .validate("$.id", "${todoId}")
             .validate("$.title", "${todoName}")
             .validate("$.description", "${todoDescription}")
-            .validate("$.done", false));
+            .validate("$.done", false)));
     }
 
     /**

@@ -176,7 +176,7 @@
     </dependency>
     <dependency>
       <groupId>org.citrusframework</groupId>
-      <artifactId>citrus-validation-xml</artifactId>
+      <artifactId>citrus-validation-json</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>
