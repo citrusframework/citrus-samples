@@ -29,6 +29,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.apache.camel.demo.model.Booking;
+import org.apache.camel.demo.model.ShippingAddress;
 import org.apache.camel.demo.model.Supply;
 import org.apache.camel.demo.model.event.ShippingEvent;
 import org.eclipse.microprofile.reactive.messaging.Channel;
@@ -121,7 +122,9 @@ public class SupplyService {
         if (booking.getShippingAddress() != null) {
             shippingAddress = booking.getShippingAddress();
         } else {
-            shippingAddress = shippingService.getAddressInformation(booking).getFullAddress();
+            shippingAddress = Optional.ofNullable(shippingService.getAddressInformation(booking))
+                    .map(ShippingAddress::getFullAddress)
+                    .orElse("");
         }
 
         ShippingEvent shippingEvent = new ShippingEvent(booking.getClient(), supply.getProduct().getName(),

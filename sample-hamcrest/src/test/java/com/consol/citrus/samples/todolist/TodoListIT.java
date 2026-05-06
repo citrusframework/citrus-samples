@@ -18,7 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import java.util.UUID;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.container.HamcrestConditionExpression.assertThat;
+import static org.citrusframework.validation.hamcrest.HamcrestConditionExpression.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;

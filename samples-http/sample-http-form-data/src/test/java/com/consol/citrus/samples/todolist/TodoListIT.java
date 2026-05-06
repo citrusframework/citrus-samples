@@ -16,7 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.http.model.Control;
@@ -30,7 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
+import static org.citrusframework.xml.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch

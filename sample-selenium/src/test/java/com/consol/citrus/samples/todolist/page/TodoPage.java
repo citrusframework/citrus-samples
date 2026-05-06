@@ -1,7 +1,7 @@
 package com.consol.citrus.samples.todolist.page;
 
-import org.citrusframework.actions.selenium.PageValidator;
-import org.citrusframework.actions.selenium.WebPage;
+import org.citrusframework.api.actions.selenium.PageValidator;
+import org.citrusframework.api.actions.selenium.WebPage;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.selenium.endpoint.SeleniumBrowser;
 import org.openqa.selenium.By;

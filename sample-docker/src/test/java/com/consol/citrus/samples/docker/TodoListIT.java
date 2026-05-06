@@ -18,7 +18,7 @@ package com.consol.citrus.samples.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import org.apache.hc.core5.http.ContentType;
-import org.citrusframework.actions.docker.command.CommandResultCallback;
+import org.citrusframework.docker.command.CommandResultCallback;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.docker.client.DockerClient;
 import org.citrusframework.http.client.HttpClient;

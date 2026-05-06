@@ -19,7 +19,7 @@ package com.consol.citrus.samples.todolist;
 import java.util.Map;
 import java.util.UUID;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.http.client.HttpClient;
@@ -27,14 +27,14 @@ import org.citrusframework.message.MessageType;
 import com.consol.citrus.samples.todolist.model.TodoEntry;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.citrusframework.validation.xml.XmlMarshallingValidationProcessor;
-import org.citrusframework.xml.Jaxb2Marshaller;
+import org.citrusframework.base.xml.Jaxb2Marshaller;
 import org.apache.hc.core5.http.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
+import static org.citrusframework.xml.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch

@@ -4,6 +4,8 @@
     version="1.0">
 
     <persistence-unit name="flightbooking" transaction-type="RESOURCE_LOCAL">
+        <class>com.consol.citrus.samples.flightbooking.entity.FlightEntity</class>
+        <class>com.consol.citrus.samples.flightbooking.entity.CustomerEntity</class>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="hibernate.show_sql" value="true" />

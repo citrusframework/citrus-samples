@@ -23,7 +23,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Supply;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
@@ -33,7 +33,7 @@ import org.citrusframework.message.MessageDirection;
 import org.citrusframework.openapi.OpenApiSpecification;
 import org.citrusframework.quarkus.CitrusSupport;
 import org.citrusframework.spi.Resources;
-import org.citrusframework.variable.dictionary.json.JsonPathMappingDataDictionary;
+import org.citrusframework.json.variable.dictionary.JsonPathMappingDataDictionary;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 

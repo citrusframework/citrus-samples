@@ -31,7 +31,7 @@ import org.apache.camel.demo.model.ShippingAddress;
 import org.apache.camel.demo.model.Supply;
 import org.apache.camel.demo.model.event.BookingCompletedEvent;
 import org.apache.camel.demo.model.event.ShippingEvent;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;
@@ -42,7 +42,7 @@ import org.citrusframework.mail.server.MailServer;
 import org.citrusframework.quarkus.CitrusSupport;
 import org.junit.jupiter.api.Test;
 
-import static org.citrusframework.dsl.JsonSupport.marshal;
+import static org.citrusframework.json.dsl.JsonSupport.marshal;
 
 @QuarkusTest
 @CitrusSupport

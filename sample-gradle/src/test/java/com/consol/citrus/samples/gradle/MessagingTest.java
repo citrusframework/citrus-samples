@@ -16,7 +16,7 @@
 
 package com.consol.citrus.samples.gradle;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.endpoint.direct.DirectEndpoint;
 import org.citrusframework.message.MessageType;

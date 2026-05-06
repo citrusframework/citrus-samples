@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Supply;
 import org.citrusframework.TestActionRunner;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestBehavior;
 
 public class WaitForEntityPersisted implements TestBehavior, TestActionSupport {

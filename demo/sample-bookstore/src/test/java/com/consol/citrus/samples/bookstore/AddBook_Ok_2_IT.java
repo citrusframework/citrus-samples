@@ -22,19 +22,19 @@ import java.util.Map;
 import com.consol.citrus.samples.bookstore.model.AddBookRequestMessage;
 import com.consol.citrus.samples.bookstore.model.AddBookResponseMessage;
 import com.consol.citrus.samples.bookstore.model.Book;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.citrusframework.validation.xml.XmlMarshallingValidationProcessor;
 import org.citrusframework.ws.client.WebServiceClient;
-import org.citrusframework.xml.Marshaller;
+import org.citrusframework.api.xml.Marshaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.Assert;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
+import static org.citrusframework.xml.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch

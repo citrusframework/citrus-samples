@@ -16,12 +16,17 @@
 
 package com.consol.citrus.samples.todolist;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;
 import org.citrusframework.http.client.HttpClient;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import tools.jackson.core.StreamReadFeature;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.cfg.EnumFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * @author Christoph Deppisch
@@ -41,6 +46,13 @@ public class EndpointConfig {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper();
+        return JsonMapper.builder()
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .enable(EnumFeature.READ_ENUMS_USING_TO_STRING)
+                .enable(EnumFeature.WRITE_ENUMS_USING_TO_STRING)
+                .disable(StreamReadFeature.AUTO_CLOSE_SOURCE)
+                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.NON_EMPTY))
+                .changeDefaultPropertyInclusion(incl -> incl.withContentInclusion(JsonInclude.Include.NON_EMPTY))
+                .build();
     }
 }

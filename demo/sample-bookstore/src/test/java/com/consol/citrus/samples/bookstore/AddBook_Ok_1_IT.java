@@ -16,7 +16,7 @@
 
 package com.consol.citrus.samples.bookstore;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.citrusframework.ws.client.WebServiceClient;

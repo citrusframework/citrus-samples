@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.docker.client.DockerClient;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.slf4j.Logger;

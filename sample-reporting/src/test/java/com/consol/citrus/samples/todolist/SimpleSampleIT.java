@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import org.citrusframework.TestCaseMetaInfo;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.exceptions.CitrusRuntimeException;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;

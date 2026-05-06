@@ -3,15 +3,9 @@ package org.apache.camel.demo;
 import java.util.Collections;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import org.citrusframework.DefaultTestActions;
+import org.citrusframework.dsl.DefaultTestActions;
 import org.citrusframework.TestActions;
-import org.citrusframework.container.AfterSuite;
+import org.citrusframework.api.container.AfterSuite;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.http.server.HttpServer;
 import org.citrusframework.http.server.HttpServerBuilder;
@@ -21,6 +15,11 @@ import org.citrusframework.selenium.endpoint.SeleniumBrowser;
 import org.citrusframework.selenium.endpoint.SeleniumBrowserBuilder;
 import org.citrusframework.spi.BindToRegistry;
 import org.openqa.selenium.remote.Browser;
+import tools.jackson.core.StreamReadFeature;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.cfg.EnumFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.citrusframework.container.SequenceAfterSuite.Builder.afterSuite;
 import static org.citrusframework.http.endpoint.builder.HttpEndpoints.http;
@@ -116,12 +115,12 @@ public class CitrusEndpointConfig {
     public ObjectMapper mapper() {
         return JsonMapper.builder()
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
-                .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
-                .disable(JsonParser.Feature.AUTO_CLOSE_SOURCE)
-                .enable(MapperFeature.BLOCK_UNSAFE_POLYMORPHIC_BASE_TYPES)
-                .build()
-                .setDefaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.NON_EMPTY, JsonInclude.Include.NON_EMPTY));
+                .enable(EnumFeature.READ_ENUMS_USING_TO_STRING)
+                .enable(EnumFeature.WRITE_ENUMS_USING_TO_STRING)
+                .disable(StreamReadFeature.AUTO_CLOSE_SOURCE)
+                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.NON_EMPTY))
+                .changeDefaultPropertyInclusion(incl -> incl.withContentInclusion(JsonInclude.Include.NON_EMPTY))
+                .build();
     }
 
     @BindToRegistry

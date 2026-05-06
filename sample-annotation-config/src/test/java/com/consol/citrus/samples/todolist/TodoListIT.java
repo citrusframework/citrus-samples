@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.todolist;
 
 import org.citrusframework.annotations.CitrusEndpoint;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.http.config.annotation.HttpClientConfig;

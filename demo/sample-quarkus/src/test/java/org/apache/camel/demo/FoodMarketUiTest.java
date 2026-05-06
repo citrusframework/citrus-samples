@@ -21,7 +21,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.apache.camel.demo.model.Booking;
 import org.apache.camel.demo.model.Product;
 import org.apache.camel.demo.model.Supply;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;

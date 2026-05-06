@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.UUID;
 
 import org.apache.hc.core5.http.ContentType;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.server.HttpServer;
 import org.citrusframework.jms.endpoint.JmsSyncEndpoint;
@@ -42,7 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.testng.annotations.Test;
 
-import static org.citrusframework.message.builder.MarshallingPayloadBuilder.Builder.marshal;
+import static org.citrusframework.xml.message.builder.MarshallingPayloadBuilder.Builder.marshal;
 
 /**
  * @author Christoph Deppisch

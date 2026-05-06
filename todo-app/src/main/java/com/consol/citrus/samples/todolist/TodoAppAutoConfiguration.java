@@ -1,6 +1,6 @@
 package com.consol.citrus.samples.todolist;
 
-import org.citrusframework.container.BeforeSuite;
+import org.citrusframework.api.container.BeforeSuite;
 import org.citrusframework.container.SequenceBeforeSuite;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

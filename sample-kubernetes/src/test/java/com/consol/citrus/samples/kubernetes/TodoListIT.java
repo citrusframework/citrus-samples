@@ -19,7 +19,7 @@ package com.consol.citrus.samples.kubernetes;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.Watcher;
 import org.apache.hc.core5.http.ContentType;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.kubernetes.client.KubernetesClient;

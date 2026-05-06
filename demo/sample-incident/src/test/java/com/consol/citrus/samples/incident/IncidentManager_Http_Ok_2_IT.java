@@ -17,7 +17,7 @@
 package com.consol.citrus.samples.incident;
 
 import org.apache.hc.core5.http.ContentType;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.server.HttpServer;
 import org.citrusframework.jms.endpoint.JmsEndpoint;

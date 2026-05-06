@@ -16,16 +16,18 @@
 
 package com.consol.citrus.samples.todolist;
 
-import org.citrusframework.TestActionSupport;
+import java.util.Collections;
+
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.exceptions.ValidationException;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.Message;
 import org.citrusframework.message.MessageType;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
-import org.apache.hc.core5.http.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -118,7 +120,10 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
             .type(MessageType.JSON)
             .validate((message, context) -> {
                 Message todoRequest = context.getMessageStore().getMessage("todoRequest");
-                Assert.assertEquals(message.getPayload(), todoRequest.getPayload());
+                context.getMessageValidatorRegistry()
+                        .findMessageValidator("defaultJsonMessageValidator")
+                        .orElseThrow(() -> new ValidationException("Failed to retrieve proper Json message validator"))
+                        .validateMessage(todoRequest, message, context, Collections.emptyList());
             }));
 
         $(echo("citrus:message(todoResponse)"));

@@ -72,8 +72,10 @@ records on that topic in the test case.
 $(receive()
     .endpoint(todoReportEndpoint)
     .type(MessageType.JSON)
-    .message(new KafkaMessage("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
-        .messageKey("todo.entries.done")));
+    .message(
+        new KafkaMessage("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\":true}]")
+        .messageKey("todo.entries.done"))
+    );
 ```
 
 The received record is validated with an expected message key and payload.

@@ -21,10 +21,10 @@ import java.util.Map;
 
 import org.apache.hc.core5.http.ContentType;
 import org.citrusframework.TestActionRunner;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestBehavior;
-import org.citrusframework.actions.http.HttpReceiveResponseMessageBuilderFactory;
-import org.citrusframework.actions.http.HttpSendRequestMessageBuilderFactory;
+import org.citrusframework.api.actions.http.HttpReceiveResponseMessageBuilderFactory;
+import org.citrusframework.api.actions.http.HttpSendRequestMessageBuilderFactory;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;

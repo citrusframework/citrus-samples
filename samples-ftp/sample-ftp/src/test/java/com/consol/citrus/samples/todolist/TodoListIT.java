@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import org.apache.commons.net.ftp.FTPCmd;
 import org.apache.ftpserver.ftplet.DataType;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.exceptions.CitrusRuntimeException;
 import org.citrusframework.ftp.client.FtpClient;

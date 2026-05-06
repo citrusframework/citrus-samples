@@ -23,7 +23,7 @@ import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.kafka.embedded.EmbeddedKafkaServer;
 import org.citrusframework.kafka.embedded.EmbeddedKafkaServerBuilder;
 import org.citrusframework.kafka.endpoint.KafkaEndpoint;
-import org.citrusframework.xml.namespace.NamespaceContextBuilder;
+import org.citrusframework.api.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

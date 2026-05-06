@@ -18,8 +18,8 @@ package com.consol.citrus.samples.todolist;
 
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;
 import org.citrusframework.http.client.HttpClient;
-import org.citrusframework.xml.Jaxb2Marshaller;
-import org.citrusframework.xml.Marshaller;
+import org.citrusframework.base.xml.Jaxb2Marshaller;
+import org.citrusframework.api.xml.Marshaller;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

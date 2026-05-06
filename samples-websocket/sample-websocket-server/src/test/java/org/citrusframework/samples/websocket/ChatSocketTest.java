@@ -22,7 +22,7 @@ package org.citrusframework.samples.websocket;
 import java.util.Collections;
 
 import io.quarkus.test.junit.QuarkusTest;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusEndpoint;

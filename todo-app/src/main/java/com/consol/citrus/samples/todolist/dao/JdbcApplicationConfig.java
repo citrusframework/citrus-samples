@@ -16,16 +16,18 @@
 
 package com.consol.citrus.samples.todolist.dao;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import java.io.IOException;
+
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.hsqldb.persist.HsqlProperties;
 import org.hsqldb.server.Server;
 import org.hsqldb.server.ServerAcl;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.*;
-
-import java.io.IOException;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 /**
  * @author Christoph Deppisch

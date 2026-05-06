@@ -16,7 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.jms.endpoint.JmsEndpoint;
@@ -123,7 +123,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
             .endpoint(todoReportEndpoint)
             .message()
             .type(MessageType.JSON)
-            .body("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
+            .body("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\":true}]")
             .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry"));
     }
 

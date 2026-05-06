@@ -18,10 +18,10 @@ package com.consol.citrus.samples.bakery;
 
 import java.util.Map;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;
-import org.citrusframework.functions.Functions;
+import org.citrusframework.base.functions.Functions;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;

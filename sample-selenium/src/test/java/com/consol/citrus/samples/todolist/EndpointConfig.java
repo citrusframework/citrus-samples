@@ -16,10 +16,10 @@
 
 package com.consol.citrus.samples.todolist;
 
-import org.citrusframework.DefaultTestActions;
+import org.citrusframework.dsl.DefaultTestActions;
 import org.citrusframework.TestActions;
-import org.citrusframework.container.AfterSuite;
-import org.citrusframework.container.AfterTest;
+import org.citrusframework.api.container.AfterSuite;
+import org.citrusframework.api.container.AfterTest;
 import org.citrusframework.container.SequenceAfterSuite;
 import org.citrusframework.container.SequenceAfterTest;
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;

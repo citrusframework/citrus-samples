@@ -19,7 +19,7 @@ package com.consol.citrus.samples.todolist;
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.spi.Resources;
-import org.citrusframework.variable.dictionary.json.JsonPathMappingDataDictionary;
+import org.citrusframework.json.variable.dictionary.JsonPathMappingDataDictionary;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

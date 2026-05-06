@@ -19,10 +19,10 @@ package todo;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusResource;
-import org.citrusframework.config.CitrusSpringConfig;
+import org.citrusframework.spring.config.CitrusSpringConfig;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
 import io.cucumber.java.en.Given;

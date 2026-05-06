@@ -79,7 +79,7 @@ with a normal `receive` operation on a JMS endpoint.
 $(receive()
     .endpoint(todoReportEndpoint)
     .type(MessageType.JSON)
-    .body("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"attachment\":null, \"done\":true}]")
+    .body("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\":true}]")
     .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry"));
 ```
 

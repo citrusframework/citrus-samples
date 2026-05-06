@@ -20,8 +20,8 @@ import java.util.Collections;
 
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;
 import org.citrusframework.http.client.HttpClient;
-import org.citrusframework.xml.XsdSchemaRepository;
-import org.citrusframework.xml.namespace.NamespaceContextBuilder;
+import org.citrusframework.xml.schema.XsdSchemaRepository;
+import org.citrusframework.api.xml.namespace.NamespaceContextBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

@@ -5,7 +5,7 @@ import javax.sql.DataSource;
 
 import org.apache.camel.demo.model.Product;
 import org.citrusframework.TestActionRunner;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestBehavior;
 
 public class WaitForProductCreated implements TestBehavior, TestActionSupport {

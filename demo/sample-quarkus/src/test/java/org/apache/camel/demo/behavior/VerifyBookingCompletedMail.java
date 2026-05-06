@@ -2,7 +2,7 @@ package org.apache.camel.demo.behavior;
 
 import org.apache.camel.demo.model.Booking;
 import org.citrusframework.TestActionRunner;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestBehavior;
 import org.citrusframework.mail.message.MailMessage;
 import org.citrusframework.mail.server.MailServer;

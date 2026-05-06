@@ -16,9 +16,10 @@
 
 package com.consol.citrus.samples.todolist;
 
+import java.time.Duration;
 import javax.sql.DataSource;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
@@ -87,24 +88,28 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
             .receive()
             .response(HttpStatus.OK));
 
-        $(http()
-            .client(todoClient)
-            .send()
-            .get("/todolist")
-            .message()
-            .accept(MediaType.TEXT_HTML_VALUE));
-
-        $(http()
-            .client(todoClient)
-            .receive()
-            .response(HttpStatus.OK)
-            .message()
-            .type(MessageType.XHTML)
-            .validate(validation().xpath().expression("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}")));
-
         $(query(todoDataSource)
-            .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")
-            .validate("cnt", "1"));
+                .statement("select count(*) as cnt from todo_entries where title = '${todoName}'")
+                .validate("cnt", "1"));
+
+        $(repeatOnError()
+            .autoSleep(Duration.ofMillis(200L))
+            .until((i, context) -> i < 10)
+            .actions(
+                http()
+                    .client(todoClient)
+                    .send()
+                    .get("/todolist")
+                    .message()
+                    .accept(MediaType.TEXT_HTML_VALUE),
+                http()
+                    .client(todoClient)
+                    .receive()
+                    .response(HttpStatus.OK)
+                    .message()
+                    .type(MessageType.XHTML)
+                    .validate(validation().xpath().expression("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"))
+            ));
     }
 
 }

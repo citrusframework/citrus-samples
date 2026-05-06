@@ -15,9 +15,10 @@
     <maven.compiler.release>17</maven.compiler.release>
     <compiler-plugin.version>3.14.1</compiler-plugin.version>
 
-    <quarkus.platform.version>3.34.6</quarkus.platform.version>
-    <surefire-plugin.version>3.5.5</surefire-plugin.version>
-    <citrus.version>4.10.3</citrus.version>
+    <quarkus.platform.version>3.38.0</quarkus.platform.version>
+    <surefire-plugin.version>3.5.6</surefire-plugin.version>
+    <citrus.version>5.0.0</citrus.version>
+    <jackson.version>3.2.1</jackson.version>
     <javafaker.version>1.0.2</javafaker.version>
     <skipITs>true</skipITs>
   </properties>
@@ -45,15 +46,15 @@
     <!-- Quarkus platform -->
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy</artifactId>
+      <artifactId>quarkus-rest</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-jackson</artifactId>
+      <artifactId>quarkus-rest-jackson</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-qute</artifactId>
+      <artifactId>quarkus-rest-qute</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -69,11 +70,11 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-client</artifactId>
+      <artifactId>quarkus-rest-client</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-client-jackson</artifactId>
+      <artifactId>quarkus-rest-client-jackson</artifactId>
     </dependency>
 
     <!-- Mail service -->
@@ -109,6 +110,12 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>tools.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
       <scope>test</scope>
     </dependency>
 

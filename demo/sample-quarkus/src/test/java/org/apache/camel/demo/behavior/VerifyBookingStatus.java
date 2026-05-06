@@ -5,9 +5,9 @@ import javax.sql.DataSource;
 
 import org.apache.camel.demo.model.Booking;
 import org.citrusframework.TestActionRunner;
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestBehavior;
-import org.citrusframework.actions.sql.ExecuteSqlQueryActionBuilder;
+import org.citrusframework.api.actions.sql.ExecuteSqlQueryActionBuilder;
 
 public class VerifyBookingStatus implements TestBehavior, TestActionSupport {
 

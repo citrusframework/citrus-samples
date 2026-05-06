@@ -19,21 +19,21 @@ package com.consol.citrus.samples.todolist;
 import java.util.Map;
 import java.util.UUID;
 
-import org.citrusframework.TestActionSupport;
+import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.apache.hc.core5.http.ContentType;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
-import org.citrusframework.message.builder.ObjectMappingPayloadBuilder;
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.citrusframework.json.message.builder.ObjectMappingPayloadBuilder;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.citrusframework.validation.json.JsonMappingValidationProcessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.hc.core5.http.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import tools.jackson.databind.ObjectMapper;
 
 
 /**

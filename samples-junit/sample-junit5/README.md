@@ -77,7 +77,7 @@ In order to setup Maven for JUnit5 we need to configure the `maven-failsafe-plug
       <dependency>
         <groupId>org.junit.platform</groupId>
         <artifactId>junit-platform-surefire-provider</artifactId>
-        <version>${junit.platform.version}</version>
+        <version>${junit.jupiter.version}</version>
       </dependency>
     </dependencies>
 </plugin>

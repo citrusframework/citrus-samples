@@ -18,7 +18,7 @@ package com.consol.citrus.samples.todolist;
 
 import java.nio.charset.StandardCharsets;
 
-import org.citrusframework.TestActionSupport;
+import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.jms.endpoint.JmsEndpoint;
 import org.citrusframework.message.MessageType;
