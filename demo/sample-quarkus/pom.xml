@@ -13,11 +13,11 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <maven.compiler.release>17</maven.compiler.release>
-    <compiler-plugin.version>3.14.0</compiler-plugin.version>
+    <compiler-plugin.version>3.14.1</compiler-plugin.version>
 
-    <quarkus.platform.version>3.30.0</quarkus.platform.version>
-    <surefire-plugin.version>3.5.4</surefire-plugin.version>
-    <citrus.version>4.10.1</citrus.version>
+    <quarkus.platform.version>3.34.6</quarkus.platform.version>
+    <surefire-plugin.version>3.5.5</surefire-plugin.version>
+    <citrus.version>4.10.2</citrus.version>
     <javafaker.version>1.0.2</javafaker.version>
     <skipITs>true</skipITs>
   </properties>
