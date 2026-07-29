@@ -1,23 +1,51 @@
-target
-.project
-.classpath
-.settings
-.idea
-.DS_Store
-*.iml
-*.ipr
-*.iws
 .metadata
-bin
 .codepro
 .pmd
+
+bin
+node_modules
+test-output/
+logs/
+
+# Maven
+target
+maven-eclipse.xml
+.mvn/wrapper/maven-wrapper.jar
+.externalToolBuilders/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# IntelliJ
+.idea
+*.ipr
+*.iml
+*.iws
+
+# NetBeans
+nb-configuration.xml
+
+# Visual Studio Code
+.vscode
+.factorypath
+
+# OSX
+.DS_Store
+
+.citrus-jbang/
+.yaks-jbang
+.camel-jbang/
+
+# Claude Code
+settings.local.json
+
+# Gradle
 .gradle
 build
-test-output
-sun-jaxb.episode
 
-.camel-jbang
-.yaks-jbang
-.citrus-jbang
+sun-jaxb.episode
 
 _output
