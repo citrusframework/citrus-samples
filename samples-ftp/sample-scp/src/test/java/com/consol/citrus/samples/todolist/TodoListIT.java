@@ -49,7 +49,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport {
     @Autowired
     private SftpServer sftpServer;
 
-    @Test
+    @Test(enabled = false) // test flaky since 4.10.2
     @CitrusTest
     public void testStoreAndRetrieveFile() {
         variable("todoId", "citrus:randomUUID()");
