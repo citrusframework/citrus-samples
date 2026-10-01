@@ -1,0 +1,224 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.citrusframework.samples</groupId>
+  <artifactId>citrus-sample-playwright</artifactId>
+  <name>Citrus Samples:: Playwright</name>
+  <version>4.0.0</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <spring.version>7.0.8</spring.version>
+    <spring.boot.version>4.1.0</spring.boot.version>
+    <slf4j.version>2.0.18</slf4j.version>
+    <log4j2.version>2.25.4</log4j2.version>
+    <commons.logging.version>1.4.0</commons.logging.version>
+    <!-- NOTE: This sample requires Citrus 5.1.0 or higher. The citrus-playwright
+      Maven module is new in Citrus 5.1.0 and does not exist in earlier releases.
+      Maintainer: bump this version once Citrus 5.1.0 is released. -->
+    <citrus.version>5.1.0</citrus.version>
+    <maven.failsafe.plugin.version>3.5.6</maven.failsafe.plugin.version>
+    <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
+    <exec.maven.plugin.version>3.6.3</exec.maven.plugin.version>
+    <playwright.browser>chromium</playwright.browser>
+    <system.under.test.mode>embedded</system.under.test.mode>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.14.0</version>
+        <configuration>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <source>17</source>
+          <target>17</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+        <configuration>
+          <failIfNoTests>false</failIfNoTests>
+          <workingDirectory>${project.build.directory}</workingDirectory>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-testng</artifactId>
+            <version>${maven.surefire.plugin.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven.failsafe.plugin.version}</version>
+        <configuration>
+          <failIfNoTests>false</failIfNoTests>
+          <systemProperties>
+            <system.under.test.mode>${system.under.test.mode}</system.under.test.mode>
+          </systemProperties>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-tests</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-testng</artifactId>
+            <version>${maven.surefire.plugin.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <!-- Installs the Playwright browser binaries before the tests run, so the
+        sample works with a plain 'mvn verify' (same approach as the
+        playwright-runtimes profile in citrus-playwright itself). -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec.maven.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>install-playwright-browsers</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${java.home}/bin/java</executable>
+              <classpathScope>test</classpathScope>
+              <arguments>
+                <argument>-classpath</argument>
+                <classpath/>
+                <argument>com.microsoft.playwright.CLI</argument>
+                <argument>install</argument>
+                <argument>${playwright.browser}</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring.boot.version}</version>
+        <configuration>
+          <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
+          <useTestClasspath>false</useTestClasspath>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.citrusframework.samples</groupId>
+      <artifactId>citrus-sample-todo</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- Logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j2-impl</artifactId>
+      <version>${log4j2.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>${commons.logging.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Spring Framework -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Citrus -->
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-base</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-spring</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-endpoint-catalog</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-testng</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-http</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-playwright</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-validation-xml</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
