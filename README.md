@@ -36,6 +36,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-hamcrest](sample-hamcrest)                                            |              Shows Hamcrest matcher support in validation and conditions               |
 | [sample-mail](sample-mail)                                                    |                         Shows mail server activities in Citrus                         |
 | [sample-selenium](sample-selenium)                                            |                      Perform UI testing with Selenium and Citrus                       |
+| [sample-playwright](sample-playwright)                                          |                     Perform UI testing with Playwright and Citrus (requires Citrus 5.1.0+) |
 | [sample-dynamic-endpoints](sample-dynamic-endpoints)                          |                         Shows dynamic endpoint component usage                         |
 | [sample-jms](sample-jms)                                                      |                          Shows JMS message broker integration                          |
 | [sample-kafka](sample-kafka)                                                  |                                Shows Kafka integration                                 |
