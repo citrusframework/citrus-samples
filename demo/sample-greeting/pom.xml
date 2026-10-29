@@ -19,7 +19,7 @@
     <slf4j.version>2.0.18</slf4j.version>
     <log4j2.version>2.25.4</log4j2.version>
     <commons.logging.version>1.4.0</commons.logging.version>
-    <citrus.version>5.0.0</citrus.version>
+    <citrus.version>5.1.0</citrus.version>
     <jetty.version>11.0.26</jetty.version>
     <jackson.version>3.2.1</jackson.version>
     <jackson.annotations.version>2.22</jackson.annotations.version>
