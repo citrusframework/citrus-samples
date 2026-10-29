@@ -15,8 +15,8 @@
     <slf4j.version>2.0.18</slf4j.version>
     <log4j2.version>2.25.4</log4j2.version>
     <commons.logging.version>1.4.0</commons.logging.version>
-    <cucumber.version>7.34.3</cucumber.version>
-    <citrus.version>5.0.0</citrus.version>
+    <cucumber.version>8.0.4</cucumber.version>
+    <citrus.version>5.1.0</citrus.version>
     <maven.failsafe.plugin.version>3.5.6</maven.failsafe.plugin.version>
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
     <system.under.test.mode>embedded</system.under.test.mode>

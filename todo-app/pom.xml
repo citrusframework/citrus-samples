@@ -17,7 +17,7 @@
     <activemq.artemis.version>2.55.0</activemq.artemis.version>
     <angus-activation.version>2.0.3</angus-activation.version>
     <angus-mail.version>2.0.5</angus-mail.version>
-    <citrus.version>5.0.0</citrus.version>
+    <citrus.version>5.1.0</citrus.version>
     <slf4j.version>2.0.18</slf4j.version>
     <log4j2.version>2.25.4</log4j2.version>
     <commons.logging.version>1.4.0</commons.logging.version>
