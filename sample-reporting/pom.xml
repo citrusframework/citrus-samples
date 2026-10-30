@@ -10,9 +10,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>7.0.8</spring.version>
-    <slf4j.version>2.0.18</slf4j.version>
-    <log4j2.version>2.25.4</log4j2.version>
+    <spring.version>7.0.9</spring.version>
+    <slf4j.version>2.0.20</slf4j.version>
+    <log4j2.version>2.25.5</log4j2.version>
     <commons.logging.version>1.4.0</commons.logging.version>
     <citrus.version>5.1.0</citrus.version>
     <extentreports.version>5.1.2</extentreports.version>
