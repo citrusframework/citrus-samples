@@ -24,9 +24,6 @@ Citrus artifacts.
 ```groovy
 repositories {
     mavenCentral()
-    maven {
-        url 'http://labs.consol.de/maven/snapshots-repository/'
-    }
 }
 ```
     
