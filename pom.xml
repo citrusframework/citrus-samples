@@ -23,6 +23,7 @@
     <module>sample-groovy</module>
     <module>sample-mail</module>
     <module>sample-selenium</module>
+    <module>sample-playwright</module>
     <module>samples-ftp</module>
     <module>samples-testng</module>
     <module>samples-junit</module>
