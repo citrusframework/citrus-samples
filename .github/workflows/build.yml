@@ -78,6 +78,7 @@ jobs:
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-camel-context
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dictionaries
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dynamic-endpoints
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-groovy
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-hamcrest
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-javaconfig
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-jms
@@ -94,4 +95,5 @@ jobs:
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-junit
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-soap
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-testng
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-websocket
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-xml
