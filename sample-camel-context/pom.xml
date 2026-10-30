@@ -10,7 +10,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>7.0.8</spring.version>
+    <spring.version>7.0.9</spring.version>
     <spring.ws.version>5.0.2</spring.ws.version>
     <jvnet.staxex.version>2.1.0</jvnet.staxex.version>
     <apache.camel.version>4.23.0</apache.camel.version>
