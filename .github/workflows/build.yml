@@ -86,6 +86,7 @@ jobs:
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-message-store
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-reporting
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-rmi
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-selenium
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-cucumber
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-db
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-ftp
