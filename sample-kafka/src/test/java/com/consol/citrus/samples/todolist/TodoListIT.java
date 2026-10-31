@@ -139,7 +139,9 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
     }
 
     private TestActionBuilder<?> verifyTodoEntry() {
-        return repeatOnError().until((i, context) -> i > 10)
+        // Generous budget: the embedded Kafka consumer may need a rebalance
+        // before the sent entry becomes visible via the REST API.
+        return repeatOnError().until((i, context) -> i > 30)
                 .autoSleep(Duration.ofMillis(1000))
                 .actions(
                     http()
@@ -157,7 +159,6 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
                             @Override
                             public void validate(TodoEntry[] entries, Map<String, Object> headers, TestContext context) {
                                 Arrays.stream(entries)
-                                        .peek(todoEntry -> System.out.println("+++++++++++++++++++++++++++++ " + todoEntry.getTitle()))
                                         .filter(entry -> entry.getTitle().equals(context.getVariable("todoName")))
                                         .findFirst()
                                         .orElseThrow(() -> new ValidationException("Missing todo entry: %s".formatted(context.getVariable("todoName"))));
