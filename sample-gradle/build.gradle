@@ -4,8 +4,10 @@ version '4.0.0'
 apply plugin: 'java'
 apply plugin: 'idea'
 
-sourceCompatibility = 17
-targetCompatibility = 17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenLocal()
@@ -13,14 +15,14 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'org.citrusframework', name: 'citrus-base', version: '4.0.0'
-    testCompile group: 'org.citrusframework', name: 'citrus-spring', version: '4.0.0'
-    testCompile group: 'org.citrusframework', name: 'citrus-endpoint-catalog', version: '4.0.0'
-    testCompile group: 'org.citrusframework', name: 'citrus-testng', version: '4.0.0'
-    testCompile group: 'org.springframework', name: 'spring-test', version: '6.0.13'
-    testCompile group: 'org.slf4j', name: 'slf4j-api', version: '2.0.9'
-    testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: '2.0.9'
-    testCompile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.21.0'
+    testImplementation group: 'org.citrusframework', name: 'citrus-base', version: '5.1.0'
+    testImplementation group: 'org.citrusframework', name: 'citrus-spring', version: '5.1.0'
+    testImplementation group: 'org.citrusframework', name: 'citrus-endpoint-catalog', version: '5.1.0'
+    testImplementation group: 'org.citrusframework', name: 'citrus-testng', version: '5.1.0'
+    testImplementation group: 'org.springframework', name: 'spring-test', version: '7.0.8'
+    testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.18'
+    testImplementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: '2.0.18'
+    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: '2.25.4'
 }
 
 tasks.withType (JavaCompile) {

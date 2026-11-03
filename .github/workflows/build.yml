@@ -42,6 +42,23 @@ on:
       - 'NOTICE'
 
 jobs:
+  gradle-sample:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Build and test Gradle sample
+        run: gradle test
+        working-directory: sample-gradle
+
   build:
     runs-on: ubuntu-latest
 
