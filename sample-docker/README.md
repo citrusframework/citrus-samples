@@ -73,7 +73,7 @@ The sample uses the Fabric8 Docker Maven plugin building and running the Docker 
         <alias>todo-app-tests</alias>
         <name>citrus/todo-app-tests:${project.version}</name>
         <build>
-          <from>maven:3.5.0-jdk-8</from>
+          <from>maven:3.9-eclipse-temurin-21</from>
           <assembly>
             <descriptorRef>project</descriptorRef>
           </assembly>
@@ -140,14 +140,14 @@ Now let us move on to the Citrus tests. We want to also run the tests as Docker 
 
 ```xml
 <build>
-  <from>maven:3.5.0-jdk-8</from>
+  <from>maven:3.9-eclipse-temurin-21</from>
   <assembly>
     <descriptorRef>project</descriptorRef>
   </assembly>
 </build>
 ```
 
-This time we extend from *maven:3.5.0-jdk-8* Docker image which is ready to execute a Citrus Maven build at container runtime. The image also works with the Docker Maven plugin assembly
+This time we extend from *maven:3.9-eclipse-temurin-21* Docker image which is ready to execute a Citrus Maven build at container runtime. The image also works with the Docker Maven plugin assembly
 mechanism. This time the assembly adds the complete project sources by using the *descriptorRef=project* which is a predefined assembly in the Fabric8 plugin.
 
 We can build the Docker images by calling:
