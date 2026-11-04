@@ -46,6 +46,10 @@ Information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `GreetingJms_IT.citrus.it.yaml`, `GreetingChannel_IT.citrus.it.yaml` + `GreetingJms_IT.citrus.it.xml`, `GreetingChannel_IT.citrus.it.xml` (same scenarios), executed via `GreetingYamlIT` / `GreetingXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=GreetingYamlIT,GreetingXmlIT`.
+
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/

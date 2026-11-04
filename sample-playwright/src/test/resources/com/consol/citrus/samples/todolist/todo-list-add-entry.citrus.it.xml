@@ -1,0 +1,55 @@
+<test name="TodoListIT.testAddEntry" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase">
+  <description>TodoListIT.testAddEntry port</description>
+  <variables>
+    <variable name="todoName" value="todo_citrus:randomNumber(4)"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <DELETE path="/api/todolist"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+    <playwright browser="browser">
+      <start/>
+    </playwright>
+    <playwright browser="browser">
+      <open url="http://localhost:8080/todolist"/>
+    </playwright>
+    <playwright browser="browser">
+      <verify check="text" expected="No todos found">
+        <element text="No todos found"/>
+      </verify>
+    </playwright>
+    <playwright browser="browser">
+      <fill value="${todoName}">
+        <element css="input[name=title]"/>
+      </fill>
+    </playwright>
+    <playwright browser="browser">
+      <fill value="${todoDescription}">
+        <element css="textarea[name=description]"/>
+      </fill>
+    </playwright>
+    <playwright browser="browser">
+      <click>
+        <element css="form button[type=submit]"/>
+      </click>
+    </playwright>
+    <playwright browser="browser">
+      <wait condition="visible">
+        <element text="${todoName}"/>
+      </wait>
+    </playwright>
+    <playwright browser="browser">
+      <verify check="text" expected="${todoName}">
+        <element text="${todoName}"/>
+      </verify>
+    </playwright>
+  </actions>
+</test>

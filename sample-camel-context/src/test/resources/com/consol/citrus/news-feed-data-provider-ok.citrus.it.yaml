@@ -1,0 +1,27 @@
+name: NewsFeed_DataProvider_Ok_IT
+author: Christoph Deppisch
+status: FINAL
+description: Port of NewsFeedParameterIT data-driven test with fixed message (declarative tests do not support TestNG data providers)
+variables:
+  - name: message
+    value: Citrus rocks!
+actions:
+  - send:
+      endpoint: newsJmsEndpoint
+      message:
+        body:
+          data: '<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>${message}</nf:Message></nf:News>'
+  - soap:
+      server: newsServer
+      receiveRequest:
+        message:
+          soapAction: newsFeed
+          body:
+            data: '<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>${message}</nf:Message></nf:News>'
+  - soap:
+      server: newsServer
+      sendResponse:
+        message:
+          headers:
+            - name: citrus_http_status_code
+              value: "200"

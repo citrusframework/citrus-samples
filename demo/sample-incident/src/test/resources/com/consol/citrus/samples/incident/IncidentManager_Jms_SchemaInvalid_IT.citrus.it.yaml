@@ -1,0 +1,23 @@
+name: IncidentManager_Jms_SchemaInvalid_IT
+author: Christoph Deppisch
+status: FINAL
+description: Invalid OpenIncident request via JMS triggers SOAP fault response.
+actions:
+  - send:
+      endpoint: incidentJmsEndpoint
+      message:
+        headers:
+          - name: citrus_soap_action
+            value: /IncidentManager/openIncident
+        body:
+          data: |
+            <im:OpenIncident xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"><im:incident><im:captured>@ignore@</im:captured><im:state>NEW</im:state><im:component>SOFTWARE</im:component><im:description>Something missing!</im:description></im:incident></im:OpenIncident>
+  - receive:
+      endpoint: incidentJmsEndpoint
+      message:
+        headers:
+          - name: SOAPJMS_isFault
+            value: "true"
+        body:
+          data: |
+            <SOAP-ENV:Fault xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><faultcode>@contains('Client')@</faultcode><faultstring>@startsWith('Unmarshalling Error')@</faultstring></SOAP-ENV:Fault>

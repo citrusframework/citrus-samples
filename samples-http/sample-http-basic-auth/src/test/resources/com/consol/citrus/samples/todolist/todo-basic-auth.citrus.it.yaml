@@ -1,0 +1,15 @@
+name: "TodoListBasicAuth"
+author: "Citrus"
+status: "FINAL"
+actions:
+  - http:
+      client: "todoBasicAuthClient"
+      sendRequest:
+        GET:
+          path: "/todo/"
+          accept: "application/xml"
+  - http:
+      client: "todoBasicAuthClient"
+      receiveResponse:
+        response:
+          status: "200"

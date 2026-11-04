@@ -1,0 +1,22 @@
+name: "TodoListTestPost"
+author: "Christina Deppisch"
+status: "FINAL"
+variables:
+  - name: "todoName"
+    value: "citrus:concat('todo_', citrus:randomNumber(4))"
+  - name: "todoDescription"
+    value: "Description: ${todoName}"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        POST:
+          path: "/todolist"
+          contentType: "application/x-www-form-urlencoded"
+          body:
+            data: "title=${todoName}&description=${todoDescription}"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"

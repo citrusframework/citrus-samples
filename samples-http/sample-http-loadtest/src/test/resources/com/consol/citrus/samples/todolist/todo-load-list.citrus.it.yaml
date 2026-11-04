@@ -1,0 +1,15 @@
+name: "TodoListLoadListTodos"
+author: "Citrus"
+status: "FINAL"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        GET:
+          path: "/todolist"
+          accept: "text/html"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"

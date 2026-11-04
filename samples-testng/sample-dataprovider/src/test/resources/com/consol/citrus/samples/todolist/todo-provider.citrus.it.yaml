@@ -1,0 +1,46 @@
+name: "TodoListTestProvider"
+author: "Christina Deppisch"
+status: "FINAL"
+variables:
+  - name: "todoId"
+    value: "citrus:randomUUID()"
+  - name: "todoName"
+    value: "todo1"
+  - name: "todoDescription"
+    value: "Description: todo1"
+  - name: "done"
+    value: "false"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        POST:
+          path: "/api/todolist"
+          contentType: "application/json"
+          type: "JSON"
+          body:
+            data: |
+              { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": ${done} }
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"
+          type: "PLAINTEXT"
+          body:
+            data: "${todoId}"
+  - http:
+      client: "todoClient"
+      sendRequest:
+        GET:
+          path: "/api/todo/${todoId}"
+          accept: "application/json"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"
+          type: "JSON"
+          body:
+            data: |
+              { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": ${done} }

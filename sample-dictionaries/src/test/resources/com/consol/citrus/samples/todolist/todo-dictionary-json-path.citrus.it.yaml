@@ -1,0 +1,49 @@
+name: TodoListIT.testJsonPathValidation
+author: Christoph Deppisch
+status: FINAL
+description: TodoListIT.testJsonPathValidation port
+variables:
+  - name: todoId
+    value: citrus:randomUUID()
+actions:
+  - http:
+      client: todoClient
+      sendRequest:
+        POST:
+          path: "/api/todolist"
+          contentType: application/json
+          type: JSON
+          dataDictionary: outboundDictionary
+          body:
+            data: '{ "id": "${todoId}", "title": null, "description": null, "done": null}'
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+          type: PLAINTEXT
+          body:
+            data: ${todoId}
+  - http:
+      client: todoClient
+      sendRequest:
+        GET:
+          path: "/api/todo/${todoId}"
+          accept: application/json
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+          type: JSON
+          dataDictionary: inboundDictionary
+        validate:
+          - jsonPath:
+              - expression: $.id
+                value: ${todoId}
+              - expression: $.title
+                value: todo_${todoId}
+              - expression: $.description
+                value: "@endsWith('todo_${todoId}')@"
+              - expression: $.done
+                value: "false"

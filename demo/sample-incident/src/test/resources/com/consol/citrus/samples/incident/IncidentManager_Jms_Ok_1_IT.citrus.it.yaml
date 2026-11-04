@@ -1,0 +1,55 @@
+name: IncidentManager_Jms_Ok_1_IT
+author: Christoph Deppisch
+status: FINAL
+description: Calls IncidentManager application via JMS message transport using SOAP request message.
+variables:
+  - name: ticketId
+    value: "citrus:randomUUID()"
+  - name: customerId
+    value: "citrus:randomNumber(6)"
+actions:
+  - echo:
+      message: "Step 1: Send OpenIncident request message to IncidentManager via JMS SOAP interface"
+  - send:
+      endpoint: incidentJmsEndpoint
+      fork: true
+      message:
+        headers:
+          - name: citrus_soap_action
+            value: /IncidentManager/openIncident
+        body:
+          data: |
+            <im:OpenIncident xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"><im:incident><im:ticketId>${ticketId}</im:ticketId><im:captured>citrus:currentDate('yyyy-MM-dd'T'00:00:00')</im:captured><im:state>NEW</im:state><im:component>SOFTWARE</im:component><im:description>Something went wrong with the software!</im:description></im:incident><im:customer><im:id>${customerId}</im:id><im:firstname>Christoph</im:firstname><im:lastname>Deppisch</im:lastname><im:address>Franziskanerstr. 38, 80995 München</im:address></im:customer></im:OpenIncident>
+  - echo:
+      message: "Step 2: Receive AnalyseIncident request message as NetworkService application via Http SOAP interface"
+  - receive:
+      endpoint: networkBackendHttpServer
+      message:
+        body:
+          data: |
+            <net:AnalyseIncident xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1"><net:incident><net:ticketId>${ticketId}</net:ticketId><net:description>Something went wrong with the software!</net:description></net:incident><net:network><net:lineId>@ignore@</net:lineId><net:type>SOFTWARE</net:type><net:connection>@ignore@</net:connection></net:network></net:AnalyseIncident>
+      extract:
+        body:
+          - path: net:AnalyseIncident/net:network/net:lineId
+            variable: lineId
+          - path: net:AnalyseIncident/net:network/net:connection
+            variable: connectionId
+  - echo:
+      message: "Step 3: Send AnalyseIncidentResponse message as result of the NetworkService call"
+  - send:
+      endpoint: networkBackendHttpServer
+      message:
+        headers:
+          - name: Content-Type
+            value: application/xml
+        body:
+          data: |
+            <net:AnalyseIncidentResponse xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1"><net:ticketId>${ticketId}</net:ticketId><net:result><net:lineId>${lineId}</net:lineId><net:resultCode>CODE_citrus:randomNumber(4)</net:resultCode><net:solved>true</net:solved><net:bandwidth>12000</net:bandwidth><net:lineCheck>OK</net:lineCheck><net:connectionCheck>OK</net:connectionCheck><net:fieldForceRequired>false</net:fieldForceRequired></net:result></net:AnalyseIncidentResponse>
+  - echo:
+      message: "Step 4: Receive OpenIncident response message with analyse outcome from IncidentManager application"
+  - receive:
+      endpoint: incidentJmsEndpoint
+      message:
+        body:
+          data: |
+            <im:OpenIncidentResponse xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"><im:ticketId>${ticketId}</im:ticketId><im:scheduled>@ignore@</im:scheduled></im:OpenIncidentResponse>

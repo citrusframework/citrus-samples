@@ -1,0 +1,49 @@
+<test name="GetBookDetails_Ok_1_IT" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>Add book then request book details.</description>
+  <variables>
+    <variable name="isbn" value="citrus:concat('978-', citrus:randomNumber(10))"/>
+  </variables>
+  <actions>
+    <soap client="bookStoreClient">
+      <send-request>
+        <message soap-action="addBook">
+          <body>
+            <data><![CDATA[<bkr:AddBookRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:book><bkr:title>Maven: The Definitive Guide</bkr:title><bkr:author>Mike Loukides, Sonatype</bkr:author><bkr:isbn>${isbn}</bkr:isbn><bkr:year>2008</bkr:year></bkr:book></bkr:AddBookRequestMessage>]]></data>
+          </body>
+        </message>
+      </send-request>
+    </soap>
+    <soap client="bookStoreClient">
+      <receive-response>
+        <message>
+          <body>
+            <data><![CDATA[<bkr:AddBookResponseMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:success>true</bkr:success></bkr:AddBookResponseMessage>]]></data>
+          </body>
+        </message>
+      </receive-response>
+    </soap>
+    <soap client="bookStoreClient">
+      <send-request>
+        <message soap-action="getBookDetails">
+          <body>
+            <data><![CDATA[<bkr:GetBookDetailsRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:isbn>${isbn}</bkr:isbn></bkr:GetBookDetailsRequestMessage>]]></data>
+          </body>
+        </message>
+      </send-request>
+    </soap>
+    <soap client="bookStoreClient">
+      <receive-response>
+        <message>
+          <body>
+            <data><![CDATA[<bkr:GetBookDetailsResponseMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:book><bkr:id>@ignore@</bkr:id><bkr:title>Maven: The Definitive Guide</bkr:title><bkr:author>Mike Loukides, Sonatype</bkr:author><bkr:isbn>${isbn}</bkr:isbn><bkr:year>2008</bkr:year><bkr:registration-date>@ignore@</bkr:registration-date></bkr:book></bkr:GetBookDetailsResponseMessage>]]></data>
+          </body>
+        </message>
+        <extract>
+          <body path="/bkr:GetBookDetailsResponseMessage/bkr:book/bkr:id" variable="bookId"/>
+        </extract>
+      </receive-response>
+    </soap>
+  </actions>
+</test>

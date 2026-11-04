@@ -1,0 +1,36 @@
+<test name="TodoListQueryParam" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <variables>
+    <variable name="id" value="citrus:randomUUID()"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request fork="true">
+        <GET path="/api/todo">
+          <param name="id" value="${id}"/>
+          <param name="title" value="todo_0001"/>
+          <param name="description"/>
+        </GET>
+      </send-request>
+    </http>
+    <http server="todoListServer">
+      <receive-request>
+        <GET path="/api/todo">
+          <param name="title" value="todo_0001"/>
+          <param name="description" value="@ignore@"/>
+        </GET>
+      </receive-request>
+    </http>
+    <http server="todoListServer">
+      <send-response>
+        <response status="200"/>
+      </send-response>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+  </actions>
+</test>

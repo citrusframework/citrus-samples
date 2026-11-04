@@ -1,0 +1,33 @@
+name: TodoListIT.testAddTodoEntry
+author: Christoph Deppisch
+status: FINAL
+variables:
+  - name: todoName
+    value: citrus:concat('todo_', citrus:randomNumber(4))
+  - name: todoDescription
+    value: "Description: ${todoName}"
+actions:
+  - send:
+      endpoint: todoJmsEndpoint
+      message:
+        headers:
+          - name: _type
+            value: com.consol.citrus.samples.todolist.model.TodoEntry
+        body:
+          data: '{ "title": "${todoName}", "description": "${todoDescription}" }'
+  - http:
+      client: todoClient
+      sendRequest:
+        GET:
+          path: /todolist
+          accept: text/html
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+          type: XHTML
+        validate:
+          - xpath:
+              - expression: "(//xh:li[@class='list-group-item']/xh:span)[last()]"
+                value: "${todoName}"

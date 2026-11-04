@@ -1,0 +1,34 @@
+<test name="NewsFeed_Ok_2_IT" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase">
+  <actions>
+    <echo message="Send JMS request message to queue destination"/>
+    <send endpoint="newsJmsEndpoint">
+      <message>
+        <headers>
+          <header name="Operation" value="HelloService/sayHello"/>
+        </headers>
+        <body>
+          <data><![CDATA[<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>Citrus rocks!</nf:Message></nf:News>]]></data>
+        </body>
+      </message>
+    </send>
+    <echo message="Receive JMS message on queue destination"/>
+    <soap server="newsServer">
+      <receive-request>
+        <message soap-action="newsFeed">
+          <body>
+            <data><![CDATA[<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>Citrus rocks!</nf:Message></nf:News>]]></data>
+          </body>
+        </message>
+      </receive-request>
+    </soap>
+    <soap server="newsServer">
+      <send-response>
+        <message>
+          <headers>
+            <header name="citrus_http_status_code" value="200"/>
+          </headers>
+        </message>
+      </send-response>
+    </soap>
+  </actions>
+</test>

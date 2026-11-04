@@ -1,0 +1,24 @@
+name: SchemaValidation_Error_1_IT
+author: Christoph Deppisch
+status: FINAL
+description: Invalid request triggers schema validation SOAP fault.
+variables:
+  - name: isbn
+    value: 978-0596517335
+  - name: faultCode
+    value: "{http://www.consol.com/citrus/samples/errorcodes}CITRUS:999"
+actions:
+  - soap:
+      client: bookStoreClient
+      assertFault:
+        faultCode: "${faultCode}"
+        faultString: "Client sent invalid request!"
+        when:
+          send:
+            endpoint: bookStoreClient
+            message:
+              headers:
+                - name: citrus_soap_action
+                  value: addBook
+              body:
+                data: '<bkr:AddBookRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:book><bkr:title>Maven: The Definitive Guide</bkr:title><bkr:author>Mike Loukides, Sonatype</bkr:author><bkr:isbn>${isbn}</bkr:isbn><bkr:year>03.Okt.2008</bkr:year></bkr:book></bkr:AddBookRequestMessage>'

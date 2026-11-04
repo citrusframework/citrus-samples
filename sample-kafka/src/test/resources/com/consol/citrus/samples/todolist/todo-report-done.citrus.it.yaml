@@ -1,0 +1,74 @@
+name: TodoReportDoneIT
+author: Christoph Deppisch
+status: FINAL
+variables:
+- name: todoId
+  value: citrus:randomUUID()
+- name: todoName
+  value: citrus:concat('todo_', citrus:randomNumber(4))
+- name: todoDescription
+  value: "Description: ${todoName}"
+actions:
+- send:
+    endpoint: todoKafkaEndpoint
+    message:
+      headers:
+      - name: citrus_kafka_messageKey
+        value: ${todoName}
+      body:
+        data: |
+          { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}" }
+- repeat-on-error:
+    until: i > 30
+    autoSleep: 1000
+    actions:
+    - http:
+        client: todoClient
+        sendRequest:
+          GET:
+            path: /api/todolist
+            accept: application/json
+    - http:
+        client: todoClient
+        receiveResponse:
+          response:
+            status: 200
+- echo:
+    message: Set todo entry status to done
+- http:
+    client: todoClient
+    sendRequest:
+      PUT:
+        path: /api/todo/${todoId}
+        accept: application/json
+        parameters:
+        - name: done
+          value: 'true'
+- http:
+    client: todoClient
+    receiveResponse:
+      response:
+        status: 200
+- echo:
+    message: Trigger Kafka report
+- http:
+    client: todoClient
+    sendRequest:
+      GET:
+        path: /api/kafka/report/done
+        accept: application/json
+- http:
+    client: todoClient
+    receiveResponse:
+      response:
+        status: 200
+- receive:
+    endpoint: todoReportEndpoint
+    message:
+      headers:
+      - name: citrus_kafka_messageKey
+        value: todo.entries.done
+      body:
+        data: |
+          [{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done":true}]
+      type: JSON

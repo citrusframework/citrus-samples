@@ -1,0 +1,57 @@
+name: TodoListIT.testReportTodoEntryDone
+author: Christoph Deppisch
+status: FINAL
+variables:
+  - name: todoId
+    value: citrus:randomUUID()
+  - name: todoName
+    value: citrus:concat('todo_', citrus:randomNumber(4))
+  - name: todoDescription
+    value: "Description: ${todoName}"
+actions:
+  - send:
+      endpoint: todoJmsEndpoint
+      message:
+        headers:
+          - name: _type
+            value: com.consol.citrus.samples.todolist.model.TodoEntry
+        body:
+          data: '{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}" }'
+  - echo:
+      message: Set todo entry status to done
+  - http:
+      client: todoClient
+      sendRequest:
+        PUT:
+          path: /api/todo/${todoId}
+          accept: application/json
+          parameters:
+            - name: done
+              value: "true"
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+  - echo:
+      message: Trigger Jms report
+  - http:
+      client: todoClient
+      sendRequest:
+        GET:
+          path: /api/jms/report/done
+          accept: application/json
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+  - receive:
+      endpoint: todoReportEndpoint
+      message:
+        type: JSON
+        headers:
+          - name: _type
+            value: com.consol.citrus.samples.todolist.model.TodoEntry
+        body:
+          data: '[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done":true}]'

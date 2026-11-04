@@ -1,0 +1,17 @@
+name: "TodoListLoadAddTodo"
+author: "Citrus"
+status: "FINAL"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        POST:
+          path: "/todolist"
+          contentType: "application/x-www-form-urlencoded"
+          body:
+            data: "title=citrus:concat('todo_', citrus:randomNumber(10))"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"

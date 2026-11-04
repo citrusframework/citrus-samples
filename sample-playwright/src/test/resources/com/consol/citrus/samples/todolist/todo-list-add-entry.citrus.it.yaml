@@ -1,0 +1,64 @@
+name: "TodoListIT.testAddEntry"
+author: "Citrus"
+status: "FINAL"
+description: "TodoListIT.testAddEntry port"
+variables:
+  - name: "todoName"
+    value: "todo_citrus:randomNumber(4)"
+  - name: "todoDescription"
+    value: "Description: ${todoName}"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        DELETE:
+          path: "/api/todolist"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"
+  - playwright:
+      browser: "browser"
+      start: {}
+  - playwright:
+      browser: "browser"
+      open:
+        url: "http://localhost:8080/todolist"
+  - playwright:
+      browser: "browser"
+      verify:
+        element:
+          text: "No todos found"
+        check: "text"
+        expected: "No todos found"
+  - playwright:
+      browser: "browser"
+      fill:
+        element:
+          css: "input[name=title]"
+        value: "${todoName}"
+  - playwright:
+      browser: "browser"
+      fill:
+        element:
+          css: "textarea[name=description]"
+        value: "${todoDescription}"
+  - playwright:
+      browser: "browser"
+      click:
+        element:
+          css: "form button[type=submit]"
+  - playwright:
+      browser: "browser"
+      wait:
+        condition: "visible"
+        element:
+          text: "${todoName}"
+  - playwright:
+      browser: "browser"
+      verify:
+        element:
+          text: "${todoName}"
+        check: "text"
+        expected: "${todoName}"

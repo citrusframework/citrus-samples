@@ -1,0 +1,68 @@
+<test name="TodoReportDoneIT" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase">
+  <description></description>
+  <variables>
+    <variable name="todoId" value="citrus:randomUUID()"/>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <send endpoint="todoKafkaEndpoint">
+      <message>
+        <headers>
+          <header name="citrus_kafka_messageKey" value="${todoName}"/>
+        </headers>
+        <body>
+          <data><![CDATA[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}" }]]></data>
+        </body>
+      </message>
+    </send>
+    <repeat-on-error until="i &gt; 30" auto-sleep="1000">
+      <actions>
+        <http client="todoClient">
+          <send-request>
+            <GET path="/api/todolist" accept="application/json"/>
+          </send-request>
+        </http>
+        <http client="todoClient">
+          <receive-response>
+            <response status="200"/>
+          </receive-response>
+        </http>
+      </actions>
+    </repeat-on-error>
+    <echo message="Set todo entry status to done"/>
+    <http client="todoClient">
+      <send-request>
+        <PUT path="/api/todo/${todoId}" accept="application/json">
+          <param name="done" value="true"/>
+        </PUT>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+    <echo message="Trigger Kafka report"/>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/api/kafka/report/done" accept="application/json"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+    <receive endpoint="todoReportEndpoint">
+      <message type="JSON">
+        <headers>
+          <header name="citrus_kafka_messageKey" value="todo.entries.done"/>
+        </headers>
+        <body>
+          <data><![CDATA[[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done":true}]]]></data>
+        </body>
+      </message>
+    </receive>
+  </actions>
+</test>
