@@ -102,8 +102,8 @@
         <version>3.14.0</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
-          <source>17</source>
-          <target>17</target>
+          <source>21</source>
+          <target>21</target>
         </configuration>
       </plugin>
 
@@ -164,7 +164,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>0.31.0</version>
+        <version>0.46.0</version>
         <configuration>
           <logDate>default</logDate>
           <verbose>true</verbose>
@@ -173,7 +173,7 @@
               <alias>todo-app</alias>
               <name>citrusframework/todo-app:${project.version}</name>
               <build>
-                <from>fabric8/s2i-java:3.0-java8</from>
+                <from>registry.access.redhat.com/ubi9/openjdk-21-runtime:1.24</from>
                 <tags>
                   <tag>latest</tag>
                 </tags>
@@ -187,7 +187,7 @@
                   <inline>
                     <files>
                       <file>
-                        <source>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}-executable.jar</source>
+                        <source>${settings.localRepository}/org/citrusframework/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}-executable.jar</source>
                         <destName>app.jar</destName>
                         <outputDirectory>.</outputDirectory>
                       </file>
