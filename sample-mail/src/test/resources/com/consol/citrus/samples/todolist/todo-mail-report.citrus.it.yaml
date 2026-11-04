@@ -1,0 +1,74 @@
+name: TodoMailReport
+author: Citrus
+status: FINAL
+description: Send todo entry then receive mail report
+variables:
+  - name: todoId
+    value: citrus:randomUUID()
+  - name: todoName
+    value: citrus:concat('todo_', citrus:randomNumber(4))
+  - name: todoDescription
+    value: 'Description: ${todoName}'
+actions:
+  - http:
+      client: todoClient
+      sendRequest:
+        DELETE:
+          path: /api/todolist
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+  - http:
+      client: todoClient
+      sendRequest:
+        POST:
+          path: /api/todolist
+          contentType: application/json
+          body:
+            data: |
+              { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}"}
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+          type: PLAINTEXT
+          body:
+            data: ${todoId}
+  - http:
+      client: todoClient
+      sendRequest:
+        GET:
+          path: /api/reporting/mail
+  - echo:
+      message: Receive reporting mail
+  - receive:
+      endpoint: mailServer
+      message:
+        headers:
+          - name: citrus_mail_subject
+            value: ToDo report
+        body:
+          data: |
+            <mail-message xmlns="http://www.citrusframework.org/schema/mail/message">
+              <from>todo-report@example.org</from>
+              <to>users@example.org</to>
+              <subject>ToDo report</subject>
+              <body>
+                <contentType>text/plain; charset=us-ascii</contentType>
+                <content>There are '1' todo entries!</content>
+              </body>
+            </mail-message>
+  - send:
+      endpoint: mailServer
+      message:
+        body:
+          resource:
+            file: classpath:templates/mail-response.xml
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200

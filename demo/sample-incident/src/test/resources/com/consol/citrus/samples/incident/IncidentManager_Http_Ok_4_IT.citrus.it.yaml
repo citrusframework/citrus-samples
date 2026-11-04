@@ -1,0 +1,47 @@
+name: IncidentManager_Http_Ok_4_IT
+author: Christoph Deppisch
+status: FINAL
+description: Resource-based flow using template files from test resources.
+variables:
+  - name: ticketId
+    value: "citrus:randomUUID()"
+  - name: customerId
+    value: "citrus:randomNumber(6)"
+actions:
+  - soap:
+      client: incidentHttpClient
+      sendRequest:
+        fork: true
+        message:
+          soapAction: /IncidentManager/openIncident
+          body:
+            resource:
+              file: "classpath:templates/IncidentRequest.xml"
+  - receive:
+      endpoint: networkBackendHttpServer
+      message:
+        body:
+          resource:
+            file: "classpath:templates/AnalyseRequest.xml"
+      extract:
+        body:
+          - path: net:AnalyseIncident/net:network/net:lineId
+            variable: lineId
+          - path: net:AnalyseIncident/net:network/net:connection
+            variable: connectionId
+  - send:
+      endpoint: networkBackendHttpServer
+      message:
+        headers:
+          - name: Content-Type
+            value: application/xml
+        body:
+          resource:
+            file: "classpath:templates/AnalyseResponse.xml"
+  - soap:
+      client: incidentHttpClient
+      receiveResponse:
+        message:
+          body:
+            resource:
+              file: "classpath:templates/IncidentResponse.xml"

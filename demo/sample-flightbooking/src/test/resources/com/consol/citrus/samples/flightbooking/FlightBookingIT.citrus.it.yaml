@@ -1,0 +1,94 @@
+name: FlightBookingIT
+author: Christoph Deppisch
+status: FINAL
+description: Flight booking orchestration across travel agency, royal airline and smart airline endpoints.
+variables:
+  - name: correlationId
+    value: "citrus:concat('Lx1x', 'citrus:randomNumber(10)')"
+  - name: customerId
+    value: "citrus:concat('Mx1x', citrus:randomNumber(10))"
+actions:
+  - send:
+      endpoint: travelAgencyBookingRequestEndpoint
+      message:
+        headers:
+          - name: bookingCorrelationId
+            value: "${correlationId}"
+        body:
+          resource:
+            file: "classpath:templates/TravelBookingRequest.xml"
+  - receive:
+      endpoint: royalAirlineServer
+      message:
+        headers:
+          - name: bookingCorrelationId
+            value: "${correlationId}"
+        body:
+          resource:
+            file: "classpath:templates/RoyalAirlineBookingRequest.xml"
+      ignore:
+        - path: //fbs:FlightBookingRequestMessage/fbs:bookingId
+      extract:
+        header:
+          - name: X-sequenceNumber
+            variable: sequenceNumber
+          - name: X-sequenceSize
+            variable: sequenceSize
+        body:
+          - path: //fbs:FlightBookingRequestMessage/fbs:bookingId
+            variable: royalAirlineBookingId
+  - send:
+      endpoint: royalAirlineServer
+      message:
+        headers:
+          - name: X-sequenceNumber
+            value: "${sequenceNumber}"
+          - name: X-sequenceSize
+            value: "${sequenceSize}"
+          - name: bookingCorrelationId
+            value: "${correlationId}"
+        body:
+          resource:
+            file: "classpath:templates/RoyalAirlineBookingResponse.xml"
+  - receive:
+      endpoint: smartAirlineBookingRequestEndpoint
+      message:
+        headers:
+          - name: bookingCorrelationId
+            value: "${correlationId}"
+        body:
+          resource:
+            file: "classpath:templates/SmartAirlineBookingRequest.xml"
+      ignore:
+        - path: //fbs:FlightBookingRequestMessage/fbs:bookingId
+      extract:
+        header:
+          - name: sequenceNumber
+            variable: sequenceNumber
+          - name: sequenceSize
+            variable: sequenceSize
+        body:
+          - path: //fbs:FlightBookingRequestMessage/fbs:bookingId
+            variable: smartAirlineBookingId
+  - send:
+      endpoint: smartAirlineBookingResponseEndpoint
+      message:
+        headers:
+          - name: sequenceNumber
+            value: "${sequenceNumber}"
+          - name: sequenceSize
+            value: "${sequenceSize}"
+          - name: bookingCorrelationId
+            value: "${correlationId}"
+        body:
+          resource:
+            file: "classpath:templates/SmartAirlineBookingResponse.xml"
+  - receive:
+      endpoint: travelAgencyBookingResponseEndpoint
+      message:
+        headers:
+          - name: bookingCorrelationId
+            value: "${correlationId}"
+        body:
+          resource:
+            file: "classpath:templates/TravelBookingResponse.xml"

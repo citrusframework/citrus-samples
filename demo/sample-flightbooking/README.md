@@ -27,6 +27,10 @@ Information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `FlightBookingIT.citrus.it.yaml` + `FlightBookingIT.citrus.it.xml` (same scenario), executed via `FlightBookingYamlIT` / `FlightBookingXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=FlightBookingYamlIT,FlightBookingXmlIT`.
+
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/

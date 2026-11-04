@@ -1,0 +1,69 @@
+name: TodoMailReportJson
+author: Citrus
+status: FINAL
+description: Send todo entry then receive JSON mail report
+variables:
+  - name: todoId
+    value: citrus:randomUUID()
+  - name: todoName
+    value: citrus:concat('todo_', citrus:randomNumber(4))
+  - name: todoDescription
+    value: 'Description: ${todoName}'
+  - name: entryCount
+    value: '1'
+actions:
+  - http:
+      client: todoClient
+      sendRequest:
+        DELETE:
+          path: /api/todolist
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+  - http:
+      client: todoClient
+      sendRequest:
+        POST:
+          path: /api/todolist
+          contentType: application/json
+          body:
+            data: |
+              { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}"}
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+          type: PLAINTEXT
+          body:
+            data: ${todoId}
+  - http:
+      client: todoClient
+      sendRequest:
+        GET:
+          path: /api/reporting/mail
+  - echo:
+      message: Receive reporting mail
+  - receive:
+      endpoint: mailServer
+      message:
+        type: JSON
+        headers:
+          - name: citrus_mail_subject
+            value: ToDo report
+        body:
+          resource:
+            file: classpath:templates/mail.json
+  - send:
+      endpoint: mailServer
+      message:
+        body:
+          resource:
+            file: classpath:templates/mail-response.json
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200

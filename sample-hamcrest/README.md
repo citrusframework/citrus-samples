@@ -126,6 +126,10 @@ Further information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `todo-hamcrest-validation.citrus.it.yaml`, `todo-hamcrest-condition.citrus.it.yaml` + matching `*.citrus.it.xml` (same scenarios), executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=TodoListYamlIT,TodoListXmlIT`. Matchers replaced by exact values (no hamcrest support in YAML/XML DSL), loop assert by iterate condition.
+
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/

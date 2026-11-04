@@ -1,0 +1,7 @@
+name: "SimpleSampleIT.testSuccessFirst"
+author: "Christoph Deppisch"
+status: "FINAL"
+description: "SimpleSampleIT.testSuccessFirst port"
+actions:
+  - echo:
+      message: "1st test successful"

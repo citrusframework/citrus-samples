@@ -1,0 +1,28 @@
+name: "TodoListIT.testIndexPage"
+author: "Christoph Deppisch"
+status: "FINAL"
+description: "TodoListIT.testIndexPage port"
+actions:
+  - selenium:
+      browser: "browser"
+      start: {}
+  - selenium:
+      navigate:
+        page: "http://localhost:8080"
+  - selenium:
+      find:
+        element:
+          link-text: "Run application"
+        validate:
+          enabled: true
+          displayed: true
+  - selenium:
+      click:
+        element:
+          link-text: "Run application"
+  - selenium:
+      find:
+        element:
+          tag-name: "h1"
+        validate:
+          text: "TODO list"

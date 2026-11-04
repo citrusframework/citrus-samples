@@ -1,0 +1,56 @@
+name: TodoListIT.testAddTodoEntry
+author: Christoph Deppisch
+status: FINAL
+variables:
+  - name: todoName
+    value: citrus:concat('todo_', citrus:randomNumber(4))
+  - name: todoDescription
+    value: "Description: ${todoName}"
+actions:
+  - sql:
+      dataSource: todoListDataSource
+      statements:
+        - statement: select count(*) as cnt from todo_entries where title = '${todoName}'
+      validate:
+        - column: cnt
+          value: "0"
+  - http:
+      client: todoClient
+      sendRequest:
+        POST:
+          path: /todolist
+          contentType: application/x-www-form-urlencoded
+          body:
+            data: 'title=${todoName}&description=${todoDescription}'
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: "200"
+  - sql:
+      dataSource: todoListDataSource
+      statements:
+        - statement: select count(*) as cnt from todo_entries where title = '${todoName}'
+      validate:
+        - column: cnt
+          value: "1"
+  - repeat-on-error:
+      autoSleep: 200
+      until: i < 10
+      actions:
+        - http:
+            client: todoClient
+            sendRequest:
+              GET:
+                path: /todolist
+                accept: text/html
+        - http:
+            client: todoClient
+            receiveResponse:
+              response:
+                status: "200"
+                type: XHTML
+              validate:
+                - xpath:
+                    - expression: "(//xh:li[@class='list-group-item']/xh:span)[last()]"
+                      value: ${todoName}

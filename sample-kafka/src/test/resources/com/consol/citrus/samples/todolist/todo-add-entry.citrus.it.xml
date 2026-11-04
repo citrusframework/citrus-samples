@@ -1,0 +1,36 @@
+<test name="TodoAddEntryIT" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase">
+  <description></description>
+  <variables>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <wait-for>
+      <http url="http://localhost:8080/api/todolist"/>
+    </wait-for>
+    <send endpoint="todoKafkaEndpoint">
+      <message>
+        <headers>
+          <header name="citrus_kafka_messageKey" value="${todoName}"/>
+        </headers>
+        <body>
+          <data><![CDATA[{ "title": "${todoName}", "description": "${todoDescription}" }]]></data>
+        </body>
+      </message>
+    </send>
+    <repeat-on-error until="i &gt; 30" auto-sleep="1000">
+      <actions>
+        <http client="todoClient">
+          <send-request>
+            <GET path="/api/todolist" accept="application/json"/>
+          </send-request>
+        </http>
+        <http client="todoClient">
+          <receive-response>
+            <response status="200"/>
+          </receive-response>
+        </http>
+      </actions>
+    </repeat-on-error>
+  </actions>
+</test>

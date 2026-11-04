@@ -1,0 +1,37 @@
+name: "TodoListPlainFormData"
+author: "Citrus"
+status: "FINAL"
+variables:
+  - name: "todoName"
+    value: "citrus:concat('todo_', citrus:randomNumber(4))"
+  - name: "todoDescription"
+    value: "Description: ${todoName}"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        fork: true
+        POST:
+          path: "/api/todo"
+          contentType: "application/x-www-form-urlencoded"
+          body:
+            data: "title=${todoName}&description=${todoDescription}"
+  - http:
+      server: "todoListServer"
+      receiveRequest:
+        POST:
+          path: "/api/todo"
+          contentType: "application/x-www-form-urlencoded"
+          type: "PLAINTEXT"
+          body:
+            data: "{description=[${todoDescription}], title=[${todoName}]}"
+  - http:
+      server: "todoListServer"
+      sendResponse:
+        response:
+          status: "200"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"

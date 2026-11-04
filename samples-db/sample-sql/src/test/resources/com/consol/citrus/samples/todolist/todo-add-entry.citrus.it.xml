@@ -1,0 +1,51 @@
+<test name="TodoListIT.testAddTodoEntry" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase">
+  <variables>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <sql datasource="todoListDataSource">
+      <statements>
+        <statement>select count(*) as cnt from todo_entries where title = '${todoName}'</statement>
+      </statements>
+      <validate column="cnt" value="0"/>
+    </sql>
+    <http client="todoClient">
+      <send-request>
+        <POST path="/todolist" content-type="application/x-www-form-urlencoded">
+          <body>
+            <data><![CDATA[title=${todoName}&description=${todoDescription}]]></data>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+    <sql datasource="todoListDataSource">
+      <statements>
+        <statement>select count(*) as cnt from todo_entries where title = '${todoName}'</statement>
+      </statements>
+      <validate column="cnt" value="1"/>
+    </sql>
+    <repeat-on-error auto-sleep="200" until="i &lt; 10">
+      <actions>
+        <http client="todoClient">
+          <send-request>
+            <GET path="/todolist" accept="text/html"/>
+          </send-request>
+        </http>
+        <http client="todoClient">
+          <receive-response>
+            <response status="200" type="XHTML"/>
+            <validate>
+              <xpath expression="(//xh:li[@class='list-group-item']/xh:span)[last()]" value="${todoName}"/>
+            </validate>
+          </receive-response>
+        </http>
+      </actions>
+    </repeat-on-error>
+  </actions>
+</test>

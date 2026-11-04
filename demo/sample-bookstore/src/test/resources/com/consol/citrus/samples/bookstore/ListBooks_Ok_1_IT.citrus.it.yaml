@@ -1,0 +1,37 @@
+name: ListBooks_Ok_1_IT
+author: Christoph Deppisch
+status: FINAL
+description: Add book then validate it is present in book list via XPath.
+variables:
+  - name: isbn
+    value: "citrus:concat('978-', citrus:randomNumber(10))"
+actions:
+  - soap:
+      client: bookStoreClient
+      sendRequest:
+        message:
+          soapAction: addBook
+          body:
+            data: '<bkr:AddBookRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:book><bkr:title>Enterprise Integration Patterns: Designing, Building, and Deploying Messaging Solutions</bkr:title><bkr:author>Gregor Hohpe, Bobby Wolf</bkr:author><bkr:isbn>${isbn}</bkr:isbn><bkr:year>2003</bkr:year></bkr:book></bkr:AddBookRequestMessage>'
+  - soap:
+      client: bookStoreClient
+      receiveResponse:
+        message:
+          body:
+            data: '<bkr:AddBookResponseMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:success>true</bkr:success></bkr:AddBookResponseMessage>'
+  - soap:
+      client: bookStoreClient
+      sendRequest:
+        message:
+          soapAction: listBooks
+          body:
+            data: '<bkr:ListBooksRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"/>'
+  - soap:
+      client: bookStoreClient
+      receiveResponse:
+        validate:
+          - xpath:
+              - expression: "boolean:count(/bkr:ListBooksResponseMessage/bkr:books/bkr:book) > 0"
+                value: "true"
+              - expression: "boolean:/bkr:ListBooksResponseMessage/bkr:books/bkr:book/bkr:isbn[.='${isbn}']"
+                value: "true"

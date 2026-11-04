@@ -269,6 +269,10 @@ Further information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `todo-list-index-page.citrus.it.yaml`, `todo-list-add-entry.citrus.it.yaml`, `todo-pages-index-page.citrus.it.yaml`, `todo-pages-add-entry.citrus.it.yaml` + matching `*.citrus.it.xml` (same scenarios), executed via `TodoListYamlIT`/`TodoPagesYamlIT` / `TodoListXmlIT`/`TodoPagesXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=TodoListYamlIT,TodoPagesYamlIT,TodoListXmlIT,TodoPagesXmlIT`.
+
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/

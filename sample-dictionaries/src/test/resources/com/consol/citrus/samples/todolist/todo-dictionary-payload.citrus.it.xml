@@ -1,0 +1,42 @@
+<test name="TodoListIT.testJsonPayloadValidation" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>TodoListIT.testJsonPayloadValidation port</description>
+  <variables>
+    <variable name="todoId" value="citrus:randomUUID()"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <POST path="/api/todolist" content-type="application/json" type="JSON" data-dictionary="outboundDictionary">
+          <body>
+            <data><![CDATA[{ "id": "${todoId}", "title": null, "description": null, "done": null}]]></data>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="PLAINTEXT">
+          <body>
+            <data><![CDATA[${todoId}]]></data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/api/todo/${todoId}" accept="application/json"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="JSON" data-dictionary="inboundDictionary">
+          <body>
+            <data><![CDATA[{ "id": "${todoId}", "title": null, "description": null, "done": null}]]></data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+  </actions>
+</test>

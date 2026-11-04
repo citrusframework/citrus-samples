@@ -1,0 +1,50 @@
+<test name="IncidentManager_Http_Ok_4_IT" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>Resource-based flow using template files from test resources.</description>
+  <variables>
+    <variable name="ticketId" value="citrus:randomUUID()"/>
+    <variable name="customerId" value="citrus:randomNumber(6)"/>
+  </variables>
+  <actions>
+    <soap client="incidentHttpClient">
+      <send-request fork="true">
+        <message soap-action="/IncidentManager/openIncident">
+          <body>
+            <resource file="classpath:templates/IncidentRequest.xml"/>
+          </body>
+        </message>
+      </send-request>
+    </soap>
+    <receive endpoint="networkBackendHttpServer">
+      <message>
+        <body>
+          <resource file="classpath:templates/AnalyseRequest.xml"/>
+        </body>
+      </message>
+      <extract>
+        <body path="net:AnalyseIncident/net:network/net:lineId" variable="lineId"/>
+        <body path="net:AnalyseIncident/net:network/net:connection" variable="connectionId"/>
+      </extract>
+    </receive>
+    <send endpoint="networkBackendHttpServer">
+      <message>
+        <headers>
+          <header name="Content-Type" value="application/xml"/>
+        </headers>
+        <body>
+          <resource file="classpath:templates/AnalyseResponse.xml"/>
+        </body>
+      </message>
+    </send>
+    <soap client="incidentHttpClient">
+      <receive-response>
+        <message>
+          <body>
+            <resource file="classpath:templates/IncidentResponse.xml"/>
+          </body>
+        </message>
+      </receive-response>
+    </soap>
+  </actions>
+</test>

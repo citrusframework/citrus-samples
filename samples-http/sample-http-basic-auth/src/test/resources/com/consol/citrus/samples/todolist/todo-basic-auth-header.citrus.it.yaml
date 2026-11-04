@@ -1,0 +1,18 @@
+name: "TodoListBasicAuthHeader"
+author: "Citrus"
+status: "FINAL"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        GET:
+          path: "/todo/"
+          accept: "application/xml"
+          headers:
+            - name: "Authorization"
+              value: "Basic citrus:encodeBase64('citrus:secr3t')"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"

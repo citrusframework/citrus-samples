@@ -1,0 +1,20 @@
+name: IncidentManager_Http_SchemaInvalid_IT
+author: Christoph Deppisch
+status: FINAL
+description: Invalid OpenIncident request triggers SOAP fault with unmarshalling error.
+actions:
+  - soap:
+      client: incidentHttpClient
+      assertFault:
+        faultCode: "{http://schemas.xmlsoap.org/soap/envelope/}Client"
+        faultString: "@startsWith('Unmarshalling Error')@"
+        when:
+          send:
+            endpoint: incidentHttpClient
+            message:
+              headers:
+                - name: citrus_soap_action
+                  value: /IncidentManager/openIncident
+              body:
+                data: |
+                  <im:OpenIncident xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"><im:incident><im:captured>@ignore@</im:captured><im:state>NEW</im:state><im:component>SOFTWARE</im:component><im:description>Something missing!</im:description></im:incident></im:OpenIncident>
