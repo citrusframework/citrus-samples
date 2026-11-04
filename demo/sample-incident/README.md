@@ -52,6 +52,12 @@ Information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `IncidentManager_*_IT.citrus.it.yaml` (10 files, e.g. `IncidentManager_Http_Ok_1_IT`, `IncidentManager_Jms_Ok_1_IT`) + `IncidentManager_*_IT.citrus.it.xml` (10 files, same scenarios), executed via `IncidentYamlIT` / `IncidentXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=IncidentYamlIT,IncidentXmlIT`.
+
+Ports run with `-Dsystem.under.test.mode=embedded`; JAXB payloads replaced by inline XML; SOAP-over-JMS via generic send/receive + `citrus_soap_action` header.
+
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/

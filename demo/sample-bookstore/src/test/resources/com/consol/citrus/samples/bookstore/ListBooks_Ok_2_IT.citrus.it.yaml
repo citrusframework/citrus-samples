@@ -1,0 +1,37 @@
+name: ListBooks_Ok_2_IT
+author: Christoph Deppisch
+status: FINAL
+description: Add random book then validate presence via Groovy script.
+variables:
+  - name: isbn
+    value: "citrus:concat('978-', citrus:randomNumber(9, true))"
+  - name: year
+    value: "citrus:currentDate('yyyy')"
+actions:
+  - soap:
+      client: bookStoreClient
+      sendRequest:
+        message:
+          soapAction: addBook
+          body:
+            data: '<bkr:AddBookRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:book><bkr:title>Random Book</bkr:title><bkr:author>Random Author</bkr:author><bkr:isbn>${isbn}</bkr:isbn><bkr:year>${year}</bkr:year></bkr:book></bkr:AddBookRequestMessage>'
+  - soap:
+      client: bookStoreClient
+      receiveResponse:
+        message:
+          body:
+            data: '<bkr:AddBookResponseMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:success>true</bkr:success></bkr:AddBookResponseMessage>'
+  - soap:
+      client: bookStoreClient
+      sendRequest:
+        message:
+          soapAction: listBooks
+          body:
+            data: '<bkr:ListBooksRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"/>'
+  - soap:
+      client: bookStoreClient
+      receiveResponse:
+        validate:
+          - script:
+              type: groovy
+              value: "org.testng.Assert.assertTrue(root.books.book.findAll{ it.isbn == '${isbn}' }.size() == 1, \"Missing book with isbn: '${isbn}' in book list!\")"

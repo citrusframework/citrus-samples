@@ -1,0 +1,30 @@
+name: NewsFeed_Ok_2_IT
+author: Christoph Deppisch
+status: FINAL
+actions:
+  - echo:
+      message: Send JMS request message to queue destination
+  - send:
+      endpoint: newsJmsEndpoint
+      message:
+        headers:
+          - name: Operation
+            value: HelloService/sayHello
+        body:
+          data: '<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>Citrus rocks!</nf:Message></nf:News>'
+  - echo:
+      message: Receive JMS message on queue destination
+  - soap:
+      server: newsServer
+      receiveRequest:
+        message:
+          soapAction: newsFeed
+          body:
+            data: '<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>Citrus rocks!</nf:Message></nf:News>'
+  - soap:
+      server: newsServer
+      sendResponse:
+        message:
+          headers:
+            - name: citrus_http_status_code
+              value: "200"

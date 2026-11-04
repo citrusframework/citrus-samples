@@ -1,0 +1,24 @@
+<test name="TodoListTestGet" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/todolist" accept="text/html"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="XHTML">
+          <body>
+            <data><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                    "org/w3/xhtml/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>@ignore@</head><body>@ignore@</body></html>]]></data>
+          </body>
+        </response>
+        <validate>
+          <xpath expression="//xh:h1" value="TODO list"/>
+        </validate>
+      </receive-response>
+    </http>
+  </actions>
+</test>

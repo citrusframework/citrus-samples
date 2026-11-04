@@ -1,0 +1,20 @@
+<test name="TodoListStaticTodo" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/api/todo" accept="application/json"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="JSON">
+          <body>
+            <data><![CDATA[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": false}]]></data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+  </actions>
+</test>

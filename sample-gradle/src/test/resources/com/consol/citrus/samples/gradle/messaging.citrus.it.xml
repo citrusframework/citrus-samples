@@ -1,0 +1,23 @@
+<test name="MessagingTest.testMessaging" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>MessagingTest.testMessaging port</description>
+  <actions>
+    <echo message="Test simple message send and receive"/>
+    <send endpoint="testEndpoint">
+      <message type="PLAINTEXT">
+        <body>
+          <data>Hello Citrus!</data>
+        </body>
+      </message>
+    </send>
+    <receive endpoint="testEndpoint">
+      <message type="PLAINTEXT">
+        <body>
+          <data>Hello Citrus!</data>
+        </body>
+      </message>
+    </receive>
+    <echo message="Successful send and receive"/>
+  </actions>
+</test>

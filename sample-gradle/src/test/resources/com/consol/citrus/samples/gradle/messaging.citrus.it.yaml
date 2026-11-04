@@ -1,0 +1,21 @@
+name: "MessagingTest.testMessaging"
+author: "Christoph Deppisch"
+status: "FINAL"
+description: "MessagingTest.testMessaging port"
+actions:
+  - echo:
+      message: "Test simple message send and receive"
+  - send:
+      endpoint: "testEndpoint"
+      message:
+        type: "PLAINTEXT"
+        body:
+          data: "Hello Citrus!"
+  - receive:
+      endpoint: "testEndpoint"
+      message:
+        type: "PLAINTEXT"
+        body:
+          data: "Hello Citrus!"
+  - echo:
+      message: "Successful send and receive"

@@ -1,0 +1,55 @@
+<test name="TodoListTestLifecycle" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <variables>
+    <variable name="todoId" value="citrus:randomUUID()"/>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <POST path="/api/todolist" content-type="application/json">
+          <body>
+            <data><![CDATA[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": false }]]></data>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="PLAINTEXT">
+          <body>
+            <data><![CDATA[${todoId}]]></data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/api/todo/${todoId}" accept="application/json"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="JSON"/>
+        <validate>
+          <json-path expression="$.id" value="${todoId}"/>
+          <json-path expression="$.title" value="${todoName}"/>
+          <json-path expression="$.description" value="${todoDescription}"/>
+          <json-path expression="$.done" value="false"/>
+        </validate>
+      </receive-response>
+    </http>
+    <http client="todoClient">
+      <send-request>
+        <DELETE path="/api/todo/${todoId}" accept="application/json"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+  </actions>
+</test>

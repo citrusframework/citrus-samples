@@ -125,6 +125,11 @@ Further information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `news-feed-ok-1.citrus.it.yaml`, `news-feed-ok-2.citrus.it.yaml`, `news-feed-data-provider-ok.citrus.it.yaml` + `news-feed-ok-1.citrus.it.xml`, `news-feed-ok-2.citrus.it.xml`, `news-feed-data-provider-ok.citrus.it.xml` (same scenarios), executed via `NewsFeedYamlIT` / `NewsFeedXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=NewsFeedYamlIT,NewsFeedXmlIT`.
+The data-provider test is ported as a single fixed-message case.
+
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/

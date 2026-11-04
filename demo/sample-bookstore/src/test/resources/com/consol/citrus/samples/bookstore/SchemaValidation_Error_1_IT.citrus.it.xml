@@ -1,0 +1,27 @@
+<test name="SchemaValidation_Error_1_IT" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>Invalid request triggers schema validation SOAP fault.</description>
+  <variables>
+    <variable name="isbn" value="978-0596517335"/>
+    <variable name="faultCode" value="{http://www.consol.com/citrus/samples/errorcodes}CITRUS:999"/>
+  </variables>
+  <actions>
+    <soap client="bookStoreClient">
+      <assert-fault fault-code="${faultCode}" fault-string="Client sent invalid request!">
+        <when>
+          <send endpoint="bookStoreClient">
+            <message>
+              <headers>
+                <header name="citrus_soap_action" value="addBook"/>
+              </headers>
+              <body>
+                <data><![CDATA[<bkr:AddBookRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:book><bkr:title>Maven: The Definitive Guide</bkr:title><bkr:author>Mike Loukides, Sonatype</bkr:author><bkr:isbn>${isbn}</bkr:isbn><bkr:year>03.Okt.2008</bkr:year></bkr:book></bkr:AddBookRequestMessage>]]></data>
+              </body>
+            </message>
+          </send>
+        </when>
+      </assert-fault>
+    </soap>
+  </actions>
+</test>

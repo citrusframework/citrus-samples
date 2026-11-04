@@ -1,0 +1,39 @@
+name: "TodoListQueryParam"
+author: "Citrus"
+status: "FINAL"
+variables:
+  - name: "id"
+    value: "citrus:randomUUID()"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        fork: true
+        GET:
+          path: "/api/todo"
+          parameters:
+            - name: "id"
+              value: "${id}"
+            - name: "title"
+              value: "todo_0001"
+            - name: "description"
+  - http:
+      server: "todoListServer"
+      receiveRequest:
+        GET:
+          path: "/api/todo"
+          parameters:
+            - name: "title"
+              value: "todo_0001"
+            - name: "description"
+              value: "@ignore@"
+  - http:
+      server: "todoListServer"
+      sendResponse:
+        response:
+          status: "200"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"

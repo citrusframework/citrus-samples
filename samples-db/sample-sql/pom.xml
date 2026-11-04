@@ -63,6 +63,8 @@
         <version>${maven.failsafe.plugin.version}</version>
         <configuration>
           <failIfNoTests>false</failIfNoTests>
+          <forkCount>1</forkCount>
+          <reuseForks>false</reuseForks>
           <systemProperties>
             <system.under.test.mode>${system.under.test.mode}</system.under.test.mode>
             <todo.persistence.type>jdbc</todo.persistence.type>
@@ -197,6 +199,18 @@
     <dependency>
       <groupId>org.citrusframework</groupId>
       <artifactId>citrus-validation-xml</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-yaml</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-xml</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>

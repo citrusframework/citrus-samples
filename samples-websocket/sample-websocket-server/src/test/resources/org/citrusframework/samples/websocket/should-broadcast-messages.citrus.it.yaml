@@ -1,0 +1,33 @@
+name: "ChatBroadcastMessages"
+author: "Citrus"
+status: "FINAL"
+description: "Broadcast chat messages via websocket"
+actions:
+  - http:
+      client: "http://localhost:8081"
+      sendRequest:
+        fork: true
+        POST:
+          path: "chat/citrus-user"
+          body:
+            data: "Hello from Citrus!"
+  - receive:
+      endpoint: "chatEndpoint"
+      message:
+        body:
+          data: "Quarkus wants to join ..."
+  - send:
+      endpoint: "chatEndpoint"
+      message:
+        body:
+          data: "Welcome Quarkus!"
+  - receive:
+      endpoint: "chatEndpoint"
+      message:
+        body:
+          data: ">> citrus-user: Hello from Citrus!"
+  - http:
+      client: "http://localhost:8081"
+      receiveResponse:
+        response:
+          status: "201"
