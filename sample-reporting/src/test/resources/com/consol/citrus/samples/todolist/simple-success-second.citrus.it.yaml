@@ -1,0 +1,7 @@
+name: "SimpleSampleIT.testSuccessSecond.yaml"
+author: "Christoph Deppisch"
+status: "FINAL"
+description: "SimpleSampleIT.testSuccessSecond port"
+actions:
+  - echo:
+      message: "2nd test successful"

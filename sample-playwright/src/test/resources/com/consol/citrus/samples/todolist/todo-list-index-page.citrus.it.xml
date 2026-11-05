@@ -1,0 +1,33 @@
+<test name="TodoListIT.testIndexPage.xml" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>TodoListIT.testIndexPage port</description>
+  <actions>
+    <playwright browser="browser">
+      <start/>
+    </playwright>
+    <playwright browser="browser">
+      <open url="http://localhost:8080"/>
+    </playwright>
+    <playwright browser="browser">
+      <verify check="visible">
+        <element text="Run application"/>
+      </verify>
+    </playwright>
+    <playwright browser="browser">
+      <verify check="enabled">
+        <element text="Run application"/>
+      </verify>
+    </playwright>
+    <playwright browser="browser">
+      <click>
+        <element text="Run application"/>
+      </click>
+    </playwright>
+    <playwright browser="browser">
+      <verify check="text" expected="TODO list">
+        <element css="h1"/>
+      </verify>
+    </playwright>
+  </actions>
+</test>

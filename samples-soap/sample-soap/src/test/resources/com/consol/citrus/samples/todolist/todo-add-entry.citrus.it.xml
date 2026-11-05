@@ -1,0 +1,46 @@
+<test name="TodoListIT.testAddTodoEntry.xml" author="Christoph" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <variables>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <soap client="todoClient">
+      <send-request>
+        <message soap-action="addTodoEntry">
+          <body>
+            <resource file="classpath:templates/addTodoEntryRequest.xml"/>
+          </body>
+        </message>
+      </send-request>
+    </soap>
+    <soap client="todoClient">
+      <receive-response>
+        <message>
+          <body>
+            <resource file="classpath:templates/addTodoEntryResponse.xml"/>
+          </body>
+        </message>
+      </receive-response>
+    </soap>
+    <soap client="todoClient">
+      <send-request>
+        <message soap-action="getTodoList">
+          <body>
+            <resource file="classpath:templates/getTodoListRequest.xml"/>
+          </body>
+        </message>
+      </send-request>
+    </soap>
+    <soap client="todoClient">
+      <receive-response>
+        <message>
+          <body>
+            <resource file="classpath:templates/getTodoListResponse.xml"/>
+          </body>
+        </message>
+      </receive-response>
+    </soap>
+  </actions>
+</test>

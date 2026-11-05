@@ -1,0 +1,74 @@
+<test name="TodoMailReport.xml" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>Send todo entry then receive mail report</description>
+  <variables>
+    <variable name="todoId" value="citrus:randomUUID()"/>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <DELETE path="/api/todolist"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+    <http client="todoClient">
+      <send-request>
+        <POST path="/api/todolist" content-type="application/json" type="JSON">
+          <body>
+            <data><![CDATA[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}"}]]></data>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="PLAINTEXT">
+          <body>
+            <data>${todoId}</data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/api/reporting/mail"/>
+      </send-request>
+    </http>
+    <echo message="Receive reporting mail"/>
+    <receive endpoint="mailServer">
+      <message>
+        <headers>
+          <header name="citrus_mail_subject" value="ToDo report"/>
+        </headers>
+        <body>
+          <data><![CDATA[<mail-message xmlns="http://www.citrusframework.org/schema/mail/message">
+  <from>todo-report@example.org</from>
+  <to>users@example.org</to>
+  <subject>ToDo report</subject>
+  <body>
+    <contentType>text/plain; charset=us-ascii</contentType>
+    <content>There are '1' todo entries!</content>
+  </body>
+</mail-message>]]></data>
+        </body>
+      </message>
+    </receive>
+    <send endpoint="mailServer">
+      <message>
+        <body>
+          <resource file="classpath:templates/mail-response.xml"/>
+        </body>
+      </message>
+    </send>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+  </actions>
+</test>

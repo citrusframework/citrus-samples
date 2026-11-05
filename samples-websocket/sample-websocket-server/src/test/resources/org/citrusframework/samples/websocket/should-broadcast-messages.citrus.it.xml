@@ -1,0 +1,40 @@
+<test name="ChatBroadcastMessages.xml" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>Broadcast chat messages via websocket</description>
+  <actions>
+    <http client="http://localhost:8081">
+      <send-request fork="true">
+        <POST path="chat/citrus-user">
+          <body>
+            <data>Hello from Citrus!</data>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <receive endpoint="chatEndpoint">
+      <message>
+        <body>
+          <data>Quarkus wants to join ...</data>
+        </body>
+      </message>
+    </receive>
+    <send endpoint="chatEndpoint">
+      <message>
+        <body>
+          <data>Welcome Quarkus!</data>
+        </body>
+      </message>
+    </send>
+    <receive endpoint="chatEndpoint">
+      <message>
+        <body>
+          <data>&gt;&gt; citrus-user: Hello from Citrus!</data>
+        </body>
+      </message>
+    </receive>
+    <http client="http://localhost:8081">
+      <receive-response>
+        <response status="201"/>
+      </receive-response>
+    </http>
+  </actions>
+</test>

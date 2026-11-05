@@ -1,0 +1,36 @@
+name: TodoAddEntryIT.yaml
+author: Christoph Deppisch
+status: FINAL
+variables:
+- name: todoName
+  value: citrus:concat('todo_', citrus:randomNumber(4))
+- name: todoDescription
+  value: "Description: ${todoName}"
+actions:
+- wait-for:
+    http:
+      url: http://localhost:8080/api/todolist
+- send:
+    endpoint: todoKafkaEndpoint
+    message:
+      headers:
+      - name: citrus_kafka_messageKey
+        value: ${todoName}
+      body:
+        data: |
+          { "title": "${todoName}", "description": "${todoDescription}" }
+- repeat-on-error:
+    until: i > 30
+    autoSleep: 1000
+    actions:
+    - http:
+        client: todoClient
+        sendRequest:
+          GET:
+            path: /api/todolist
+            accept: application/json
+    - http:
+        client: todoClient
+        receiveResponse:
+          response:
+            status: 200

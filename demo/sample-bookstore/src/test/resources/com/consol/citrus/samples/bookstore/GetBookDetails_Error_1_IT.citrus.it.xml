@@ -1,0 +1,27 @@
+<test name="GetBookDetails_Error_1_IT.xml" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>Request details for non-existent book expecting SOAP fault.</description>
+  <variables>
+    <variable name="isbn" value="000-0000000000"/>
+    <variable name="faultCode" value="{http://www.consol.com/citrus/samples/errorcodes}CITRUS:1002"/>
+  </variables>
+  <actions>
+    <soap client="bookStoreClient">
+      <assert-fault fault-code="${faultCode}" fault-string="Book(isbn:'${isbn}') not available in registry">
+        <when>
+          <send endpoint="bookStoreClient">
+            <message>
+              <headers>
+                <header name="citrus_soap_action" value="getBookDetails"/>
+              </headers>
+              <body>
+                <data><![CDATA[<bkr:GetBookDetailsRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:isbn>${isbn}</bkr:isbn></bkr:GetBookDetailsRequestMessage>]]></data>
+              </body>
+            </message>
+          </send>
+        </when>
+      </assert-fault>
+    </soap>
+  </actions>
+</test>

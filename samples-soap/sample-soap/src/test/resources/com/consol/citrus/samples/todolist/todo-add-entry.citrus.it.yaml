@@ -1,0 +1,39 @@
+name: "TodoListIT.testAddTodoEntry.yaml"
+author: "Christoph"
+status: "FINAL"
+variables:
+  - name: "todoName"
+    value: "citrus:concat('todo_', citrus:randomNumber(4))"
+  - name: "todoDescription"
+    value: "Description: ${todoName}"
+actions:
+  - soap:
+      client: "todoClient"
+      sendRequest:
+        message:
+          soapAction: "addTodoEntry"
+          body:
+            resource:
+              file: "classpath:templates/addTodoEntryRequest.xml"
+  - soap:
+      client: "todoClient"
+      receiveResponse:
+        message:
+          body:
+            resource:
+              file: "classpath:templates/addTodoEntryResponse.xml"
+  - soap:
+      client: "todoClient"
+      sendRequest:
+        message:
+          soapAction: "getTodoList"
+          body:
+            resource:
+              file: "classpath:templates/getTodoListRequest.xml"
+  - soap:
+      client: "todoClient"
+      receiveResponse:
+        message:
+          body:
+            resource:
+              file: "classpath:templates/getTodoListResponse.xml"

@@ -1,0 +1,23 @@
+name: NewsFeed_Ok_1_IT.yaml
+author: Christoph Deppisch
+status: FINAL
+actions:
+  - send:
+      endpoint: newsJmsEndpoint
+      message:
+        body:
+          data: '<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>Citrus rocks!</nf:Message></nf:News>'
+  - receive:
+      endpoint: newsServer
+      message:
+        headers:
+          - name: citrus_soap_action
+            value: newsFeed
+        body:
+          data: '<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>Citrus rocks!</nf:Message></nf:News>'
+  - send:
+      endpoint: newsServer
+      message:
+        headers:
+          - name: citrus_http_status_code
+            value: "200"

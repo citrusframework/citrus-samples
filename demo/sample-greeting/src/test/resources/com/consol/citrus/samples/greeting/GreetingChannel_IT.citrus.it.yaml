@@ -1,0 +1,30 @@
+name: GreetingChannel_IT.yaml
+author: Christoph Deppisch
+status: FINAL
+description: "Send asynchronous greeting request via Spring Integration channel: Citrus -> GreetingService"
+variables:
+  - name: correlationId
+    value: "citrus:randomNumber(10)"
+  - name: user
+    value: Christoph
+actions:
+  - send:
+      endpoint: greetingsEndpoint
+      message:
+        headers:
+          - name: Operation
+            value: sayHello
+          - name: CorrelationId
+            value: "${correlationId}"
+        body:
+          data: '<tns:GreetingRequestMessage xmlns:tns="http://www.citrusframework.org/samples/greeting"><tns:CorrelationId>${correlationId}</tns:CorrelationId><tns:Operation>sayHello</tns:Operation><tns:User>${user}</tns:User><tns:Text>Hello Citrus!</tns:Text></tns:GreetingRequestMessage>'
+  - receive:
+      endpoint: greetingsTransformedEndpoint
+      message:
+        headers:
+          - name: Operation
+            value: sayHello
+          - name: CorrelationId
+            value: "${correlationId}"
+        body:
+          data: '<tns:GreetingResponseMessage xmlns:tns="http://www.citrusframework.org/samples/greeting"><tns:CorrelationId>${correlationId}</tns:CorrelationId><tns:Operation>sayHello</tns:Operation><tns:User>GreetingService</tns:User><tns:Text>Hello ${user}!</tns:Text></tns:GreetingResponseMessage>'

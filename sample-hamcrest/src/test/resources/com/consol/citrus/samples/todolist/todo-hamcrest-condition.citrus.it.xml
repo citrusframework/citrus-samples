@@ -1,0 +1,34 @@
+<test name="TodoListIT.testHamcrestCondition.xml" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>TodoListIT.testHamcrestCondition port - HamcrestConditionExpression replaced by string condition</description>
+  <actions>
+    <iterate condition="i lt= 5">
+      <actions>
+        <create-variables>
+          <variable name="todoId" value="citrus:randomUUID()"/>
+          <variable name="todoName" value="todo_${i}"/>
+          <variable name="todoDescription" value="Description: ${todoName}"/>
+        </create-variables>
+        <http client="todoClient">
+          <send-request>
+            <POST path="/api/todolist" content-type="application/json" type="JSON">
+              <body>
+                <data><![CDATA[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": false}]]></data>
+              </body>
+            </POST>
+          </send-request>
+        </http>
+        <http client="todoClient">
+          <receive-response>
+            <response status="200" type="PLAINTEXT">
+              <body>
+                <data><![CDATA[${todoId}]]></data>
+              </body>
+            </response>
+          </receive-response>
+        </http>
+      </actions>
+    </iterate>
+  </actions>
+</test>

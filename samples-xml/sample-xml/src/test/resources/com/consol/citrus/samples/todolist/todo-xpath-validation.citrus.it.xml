@@ -1,0 +1,44 @@
+<test name="TodoXpathValidationIT.xml" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase https://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>XPath validation</description>
+  <variables>
+    <variable name="todoId" value="citrus:randomUUID()"/>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <POST path="/api/todolist" content-type="application/xml">
+          <body>
+            <data><![CDATA[<todo xmlns="http://citrusframework.org/samples/todolist"><id>${todoId}</id><title>${todoName}</title><description>${todoDescription}</description></todo>]]></data>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="PLAINTEXT">
+          <body>
+            <data>${todoId}</data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/api/todo/${todoId}" accept="application/xml"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+        <validate>
+          <xpath expression="/t:todo/t:id" value="${todoId}"/>
+          <xpath expression="/t:todo/t:title" value="${todoName}"/>
+          <xpath expression="/t:todo/t:description" value="${todoDescription}"/>
+          <xpath expression="/t:todo/t:done" value="false"/>
+        </validate>
+      </receive-response>
+    </http>
+  </actions>
+</test>

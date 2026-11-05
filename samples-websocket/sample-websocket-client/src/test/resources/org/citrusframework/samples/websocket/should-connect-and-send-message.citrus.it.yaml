@@ -1,0 +1,15 @@
+name: "ChatSendMessage.yaml"
+author: "Citrus"
+status: "FINAL"
+description: "Connect and send chat message via websocket"
+actions:
+  - send:
+      endpoint: "chatClient"
+      message:
+        body:
+          data: "Hello Quarkus chat!"
+  - receive:
+      endpoint: "chatClient"
+      message:
+        body:
+          data: ">> citrus: Hello Quarkus chat!"

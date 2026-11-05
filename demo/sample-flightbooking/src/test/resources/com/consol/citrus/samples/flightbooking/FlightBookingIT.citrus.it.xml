@@ -1,0 +1,87 @@
+<test name="FlightBookingIT.xml" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>Flight booking orchestration across travel agency, royal airline and smart airline endpoints.</description>
+  <variables>
+    <variable name="correlationId" value="citrus:concat('Lx1x', 'citrus:randomNumber(10)')"/>
+    <variable name="customerId" value="citrus:concat('Mx1x', citrus:randomNumber(10))"/>
+  </variables>
+  <actions>
+    <send endpoint="travelAgencyBookingRequestEndpoint">
+      <message>
+        <headers>
+          <header name="bookingCorrelationId" value="${correlationId}"/>
+        </headers>
+        <body>
+          <resource file="classpath:templates/TravelBookingRequest.xml"/>
+        </body>
+      </message>
+    </send>
+    <receive endpoint="royalAirlineServer">
+      <message>
+        <headers>
+          <header name="bookingCorrelationId" value="${correlationId}"/>
+        </headers>
+        <body>
+          <resource file="classpath:templates/RoyalAirlineBookingRequest.xml"/>
+        </body>
+      </message>
+      <ignore path="//fbs:FlightBookingRequestMessage/fbs:bookingId"/>
+      <extract>
+        <header name="X-sequenceNumber" variable="sequenceNumber"/>
+        <header name="X-sequenceSize" variable="sequenceSize"/>
+        <body path="//fbs:FlightBookingRequestMessage/fbs:bookingId" variable="royalAirlineBookingId"/>
+      </extract>
+    </receive>
+    <send endpoint="royalAirlineServer">
+      <message>
+        <headers>
+          <header name="X-sequenceNumber" value="${sequenceNumber}"/>
+          <header name="X-sequenceSize" value="${sequenceSize}"/>
+          <header name="bookingCorrelationId" value="${correlationId}"/>
+        </headers>
+        <body>
+          <resource file="classpath:templates/RoyalAirlineBookingResponse.xml"/>
+        </body>
+      </message>
+    </send>
+    <receive endpoint="smartAirlineBookingRequestEndpoint">
+      <message>
+        <headers>
+          <header name="bookingCorrelationId" value="${correlationId}"/>
+        </headers>
+        <body>
+          <resource file="classpath:templates/SmartAirlineBookingRequest.xml"/>
+        </body>
+      </message>
+      <ignore path="//fbs:FlightBookingRequestMessage/fbs:bookingId"/>
+      <extract>
+        <header name="sequenceNumber" variable="sequenceNumber"/>
+        <header name="sequenceSize" variable="sequenceSize"/>
+        <body path="//fbs:FlightBookingRequestMessage/fbs:bookingId" variable="smartAirlineBookingId"/>
+      </extract>
+    </receive>
+    <send endpoint="smartAirlineBookingResponseEndpoint">
+      <message>
+        <headers>
+          <header name="sequenceNumber" value="${sequenceNumber}"/>
+          <header name="sequenceSize" value="${sequenceSize}"/>
+          <header name="bookingCorrelationId" value="${correlationId}"/>
+        </headers>
+        <body>
+          <resource file="classpath:templates/SmartAirlineBookingResponse.xml"/>
+        </body>
+      </message>
+    </send>
+    <receive endpoint="travelAgencyBookingResponseEndpoint">
+      <message>
+        <headers>
+          <header name="bookingCorrelationId" value="${correlationId}"/>
+        </headers>
+        <body>
+          <resource file="classpath:templates/TravelBookingResponse.xml"/>
+        </body>
+      </message>
+    </receive>
+  </actions>
+</test>

@@ -1,0 +1,48 @@
+name: TodoXpathValidationIT.yaml
+author: Christoph Deppisch
+status: FINAL
+variables:
+  - name: todoId
+    value: citrus:randomUUID()
+  - name: todoName
+    value: citrus:concat('todo_', citrus:randomNumber(4))
+  - name: todoDescription
+    value: 'Description: ${todoName}'
+actions:
+  - http:
+      client: todoClient
+      sendRequest:
+        POST:
+          path: /api/todolist
+          contentType: application/xml
+          body:
+            data: '<todo xmlns="http://citrusframework.org/samples/todolist"><id>${todoId}</id><title>${todoName}</title><description>${todoDescription}</description></todo>'
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: "200"
+          type: PLAINTEXT
+          body:
+            data: ${todoId}
+  - http:
+      client: todoClient
+      sendRequest:
+        GET:
+          path: /api/todo/${todoId}
+          accept: application/xml
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: "200"
+        validate:
+          - xpath:
+              - expression: /t:todo/t:id
+                value: ${todoId}
+              - expression: /t:todo/t:title
+                value: ${todoName}
+              - expression: /t:todo/t:description
+                value: ${todoDescription}
+              - expression: /t:todo/t:done
+                value: "false"

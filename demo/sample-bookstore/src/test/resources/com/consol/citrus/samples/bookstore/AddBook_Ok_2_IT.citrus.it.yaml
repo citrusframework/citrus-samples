@@ -1,0 +1,21 @@
+name: AddBook_Ok_2_IT.yaml
+author: Christoph Deppisch
+status: FINAL
+description: Add book using inline XML payload instead of JAXB marshalling with custom validation processor.
+variables:
+  - name: isbn
+    value: "citrus:concat('978-', citrus:randomNumber(10))"
+actions:
+  - soap:
+      client: bookStoreClient
+      sendRequest:
+        message:
+          soapAction: addBook
+          body:
+            data: '<bkr:AddBookRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:book><bkr:title>Maven: The Definitive Guide</bkr:title><bkr:author>Mike Loukides, Sonatype</bkr:author><bkr:isbn>${isbn}</bkr:isbn><bkr:year>2008</bkr:year></bkr:book></bkr:AddBookRequestMessage>'
+  - soap:
+      client: bookStoreClient
+      receiveResponse:
+        message:
+          body:
+            data: '<bkr:AddBookResponseMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:success>true</bkr:success></bkr:AddBookResponseMessage>'

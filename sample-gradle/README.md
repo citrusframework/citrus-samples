@@ -107,6 +107,10 @@ Further information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `messaging.citrus.it.yaml` + `messaging.citrus.it.xml` (same scenario), executed via `MessagingYamlIT` / `MessagingXmlIT` (`@CitrusTestSource`). Run all variants: `gradle test` (no failsafe fork config). Run only ports: `gradle test --tests MessagingYamlIT --tests MessagingXmlIT`.
+
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/

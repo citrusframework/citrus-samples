@@ -1,0 +1,35 @@
+<test name="NewsFeed_DataProvider_Ok_IT.xml" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>Port of NewsFeedParameterIT data-driven test with fixed message (declarative tests do not support TestNG data providers)</description>
+  <variables>
+    <variable name="message" value="Citrus rocks!"/>
+  </variables>
+  <actions>
+    <send endpoint="newsJmsEndpoint">
+      <message>
+        <body>
+          <data><![CDATA[<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>${message}</nf:Message></nf:News>]]></data>
+        </body>
+      </message>
+    </send>
+    <soap server="newsServer">
+      <receive-request>
+        <message soap-action="newsFeed">
+          <body>
+            <data><![CDATA[<nf:News xmlns:nf="http://citrusframework.org/schemas/samples/news"><nf:Message>${message}</nf:Message></nf:News>]]></data>
+          </body>
+        </message>
+      </receive-request>
+    </soap>
+    <soap server="newsServer">
+      <send-response>
+        <message>
+          <headers>
+            <header name="citrus_http_status_code" value="200"/>
+          </headers>
+        </message>
+      </send-response>
+    </soap>
+  </actions>
+</test>

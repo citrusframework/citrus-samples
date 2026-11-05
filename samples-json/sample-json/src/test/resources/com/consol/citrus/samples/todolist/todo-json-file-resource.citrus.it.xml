@@ -1,0 +1,43 @@
+<test name="TodoJsonFileResourceIT.xml" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <variables>
+    <variable name="todoId" value="citrus:randomUUID()"/>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <POST path="/api/todolist" content-type="application/json" type="JSON">
+          <body>
+            <resource file="classpath:templates/todo.json"/>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="PLAINTEXT">
+          <body>
+            <data><![CDATA[${todoId}]]></data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/api/todo/${todoId}" accept="application/json"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="JSON">
+          <body>
+            <resource file="classpath:templates/todo.json"/>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+  </actions>
+</test>

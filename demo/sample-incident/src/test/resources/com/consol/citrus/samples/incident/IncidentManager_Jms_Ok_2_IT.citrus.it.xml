@@ -1,0 +1,48 @@
+<test name="IncidentManager_Jms_Ok_2_IT.xml" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>Marshal-based JMS flow ported to inline XML with NETWORK component and no field force.</description>
+  <variables>
+    <variable name="ticketId" value="citrus:randomUUID()"/>
+  </variables>
+  <actions>
+    <send endpoint="incidentJmsEndpoint" fork="true">
+      <message>
+        <headers>
+          <header name="citrus_soap_action" value="/IncidentManager/openIncident"/>
+        </headers>
+        <body>
+          <data><![CDATA[<im:OpenIncident xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"><im:incident><im:ticketId>${ticketId}</im:ticketId><im:captured>citrus:currentDate('yyyy-MM-dd'T'00:00:00')</im:captured><im:state>NEW</im:state><im:component>NETWORK</im:component><im:description>Something went wrong!</im:description></im:incident><im:customer><im:id>1000</im:id><im:firstname>Christoph</im:firstname><im:lastname>Deppisch</im:lastname><im:address>Franziskanerstr. 38, 80995 München</im:address></im:customer></im:OpenIncident>]]></data>
+        </body>
+      </message>
+    </send>
+    <receive endpoint="networkBackendHttpServer">
+      <message>
+        <body>
+          <data><![CDATA[<net:AnalyseIncident xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1"><net:incident><net:ticketId>${ticketId}</net:ticketId><net:description>Something went wrong!</net:description></net:incident><net:network><net:lineId>@ignore@</net:lineId><net:type>NETWORK</net:type><net:connection>@ignore@</net:connection></net:network></net:AnalyseIncident>]]></data>
+        </body>
+      </message>
+      <extract>
+        <body path="net:AnalyseIncident/net:network/net:lineId" variable="lineId"/>
+        <body path="net:AnalyseIncident/net:network/net:connection" variable="connection"/>
+      </extract>
+    </receive>
+    <send endpoint="networkBackendHttpServer">
+      <message>
+        <headers>
+          <header name="Content-Type" value="application/xml"/>
+        </headers>
+        <body>
+          <data><![CDATA[<net:AnalyseIncidentResponse xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1"><net:ticketId>${ticketId}</net:ticketId><net:result><net:lineId>${lineId}</net:lineId><net:resultCode>CODE_citrus:randomNumber(4)</net:resultCode><net:solved>true</net:solved><net:bandwidth>12000</net:bandwidth><net:lineCheck>OK</net:lineCheck><net:connectionCheck>OK</net:connectionCheck><net:fieldForceRequired>false</net:fieldForceRequired></net:result></net:AnalyseIncidentResponse>]]></data>
+        </body>
+      </message>
+    </send>
+    <receive endpoint="incidentJmsEndpoint">
+      <message>
+        <body>
+          <data><![CDATA[<im:OpenIncidentResponse xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"><im:ticketId>${ticketId}</im:ticketId><im:scheduled>@ignore@</im:scheduled></im:OpenIncidentResponse>]]></data>
+        </body>
+      </message>
+    </receive>
+  </actions>
+</test>

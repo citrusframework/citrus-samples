@@ -1,0 +1,45 @@
+name: IncidentManager_Http_Ok_3_IT.yaml
+author: Christoph Deppisch
+status: FINAL
+description: Marshal-based flow ported to inline XML with NETWORK component and no field force.
+variables:
+  - name: ticketId
+    value: "citrus:randomUUID()"
+actions:
+  - soap:
+      client: incidentHttpClient
+      sendRequest:
+        fork: true
+        message:
+          soapAction: /IncidentManager/openIncident
+          body:
+            data: |
+              <im:OpenIncident xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"><im:incident><im:ticketId>${ticketId}</im:ticketId><im:captured>citrus:currentDate('yyyy-MM-dd'T'00:00:00')</im:captured><im:state>NEW</im:state><im:component>NETWORK</im:component><im:description>Something went wrong!</im:description></im:incident><im:customer><im:id>1000</im:id><im:firstname>Christoph</im:firstname><im:lastname>Deppisch</im:lastname><im:address>Franziskanerstr. 38, 80995 München</im:address></im:customer></im:OpenIncident>
+  - receive:
+      endpoint: networkBackendHttpServer
+      message:
+        body:
+          data: |
+            <net:AnalyseIncident xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1"><net:incident><net:ticketId>${ticketId}</net:ticketId><net:description>Something went wrong!</net:description></net:incident><net:network><net:lineId>@ignore@</net:lineId><net:type>NETWORK</net:type><net:connection>@ignore@</net:connection></net:network></net:AnalyseIncident>
+      extract:
+        body:
+          - path: net:AnalyseIncident/net:network/net:lineId
+            variable: lineId
+          - path: net:AnalyseIncident/net:network/net:connection
+            variable: connection
+  - send:
+      endpoint: networkBackendHttpServer
+      message:
+        headers:
+          - name: Content-Type
+            value: application/xml
+        body:
+          data: |
+            <net:AnalyseIncidentResponse xmlns:net="http://www.citrusframework.org/schema/samples/NetworkService/v1"><net:ticketId>${ticketId}</net:ticketId><net:result><net:lineId>${lineId}</net:lineId><net:resultCode>CODE_citrus:randomNumber(4)</net:resultCode><net:solved>true</net:solved><net:bandwidth>12000</net:bandwidth><net:lineCheck>OK</net:lineCheck><net:connectionCheck>OK</net:connectionCheck><net:fieldForceRequired>false</net:fieldForceRequired></net:result></net:AnalyseIncidentResponse>
+  - soap:
+      client: incidentHttpClient
+      receiveResponse:
+        message:
+          body:
+            data: |
+              <im:OpenIncidentResponse xmlns:im="http://www.citrusframework.org/schema/samples/IncidentManager/v1"><im:ticketId>${ticketId}</im:ticketId><im:scheduled>@ignore@</im:scheduled></im:OpenIncidentResponse>

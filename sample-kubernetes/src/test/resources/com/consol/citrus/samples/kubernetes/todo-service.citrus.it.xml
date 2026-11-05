@@ -1,0 +1,45 @@
+<test name="TodoListIT.testTodoService.xml" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>TodoListIT.testTodoService port (HTTP only, no cluster actions)</description>
+  <variables>
+    <variable name="todoId" value="citrus:randomUUID()"/>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+    <variable name="done" value="false"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <POST path="/api/todolist" content-type="application/json" type="JSON">
+          <body>
+            <data><![CDATA[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": ${done}}]]></data>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="PLAINTEXT">
+          <body>
+            <data><![CDATA[${todoId}]]></data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/api/todo/${todoId}" accept="application/json"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="JSON">
+          <body>
+            <data><![CDATA[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": ${done}}]]></data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+  </actions>
+</test>

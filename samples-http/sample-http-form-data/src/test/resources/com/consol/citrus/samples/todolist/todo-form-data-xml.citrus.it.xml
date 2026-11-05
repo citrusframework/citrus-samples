@@ -1,0 +1,38 @@
+<test name="TodoListFormDataXml.xml" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <variables>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request fork="true">
+        <POST path="/api/todo" content-type="application/x-www-form-urlencoded">
+          <body>
+            <data><![CDATA[title=${todoName}&description=${todoDescription}]]></data>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <http server="todoListServer">
+      <receive-request>
+        <POST path="/api/todo" content-type="application/x-www-form-urlencoded" type="x-www-form-urlencoded">
+          <body>
+            <data><![CDATA[<form-data xmlns="http://www.citrusframework.org/schema/http/message"><content-type>application/x-www-form-urlencoded</content-type><action>/api/todo</action><controls><control name="description"><value>${todoDescription}</value></control><control name="title"><value>${todoName}</value></control></controls></form-data>]]></data>
+          </body>
+        </POST>
+      </receive-request>
+    </http>
+    <http server="todoListServer">
+      <send-response>
+        <response status="200"/>
+      </send-response>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+  </actions>
+</test>

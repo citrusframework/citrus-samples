@@ -1,0 +1,34 @@
+<test name="TodoListIT.testAddTodoEntry.xml" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>TodoListIT.testAddTodoEntry port</description>
+  <variables>
+    <variable name="todoName" value="citrus:concat('todo_', citrus:randomNumber(4))"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <send endpoint="todoJmsEndpoint">
+      <message>
+        <headers>
+          <header name="_type" value="com.consol.citrus.samples.todolist.model.TodoEntry"/>
+        </headers>
+        <body>
+          <data>{ "title": "${todoName}", "description": "${todoDescription}" }</data>
+        </body>
+      </message>
+    </send>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/todolist" accept="text/html"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="XHTML"/>
+        <validate>
+          <xpath expression="(//xh:li[@class='list-group-item']/xh:span)[last()]" value="${todoName}"/>
+        </validate>
+      </receive-response>
+    </http>
+  </actions>
+</test>

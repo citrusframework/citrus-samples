@@ -1,0 +1,16 @@
+<test name="TodoListBasicAuth.xml" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <actions>
+    <http client="todoBasicAuthClient">
+      <send-request>
+        <GET path="/todo/" accept="application/xml"/>
+      </send-request>
+    </http>
+    <http client="todoBasicAuthClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+  </actions>
+</test>

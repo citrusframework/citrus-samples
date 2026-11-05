@@ -1,0 +1,49 @@
+<test name="TodoPagesIT.testAddEntry.xml" author="Christoph Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>TodoPagesIT.testAddEntry port</description>
+  <variables>
+    <variable name="todoName" value="todo_citrus:randomNumber(4)"/>
+    <variable name="todoDescription" value="Description: ${todoName}"/>
+  </variables>
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <DELETE path="/api/todolist"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+    <selenium browser="browser">
+      <start/>
+    </selenium>
+    <selenium>
+      <navigate page="http://localhost:8080/todolist"/>
+    </selenium>
+    <selenium>
+      <page type="com.consol.citrus.samples.todolist.page.TodoPage" action="validate"/>
+    </selenium>
+    <selenium>
+      <page type="com.consol.citrus.samples.todolist.page.TodoPage" action="submit">
+        <arguments>
+          <argument>${todoName}</argument>
+          <argument>${todoDescription}</argument>
+        </arguments>
+      </page>
+    </selenium>
+    <selenium>
+      <wait until="visible" timeout="2000">
+        <element xpath="(//li[@class='list-group-item']/span)[last()]"/>
+      </wait>
+    </selenium>
+    <selenium>
+      <find>
+        <element xpath="(//li[@class='list-group-item']/span)[last()]"/>
+        <validate text="${todoName}"/>
+      </find>
+    </selenium>
+  </actions>
+</test>

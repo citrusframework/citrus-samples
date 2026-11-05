@@ -1,0 +1,44 @@
+name: "TodoListTestMessageStoreValidation.yaml"
+author: "Christina Deppisch"
+status: "FINAL"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        POST:
+          path: "/api/todolist"
+          contentType: "application/json"
+          name: "todoRequest"
+          type: "JSON"
+          body:
+            data: |
+              {"id": "citrus:randomUUID()", "title": "citrus:concat('todo_', citrus:randomNumber(4))", "description": "ToDo Description", "done": false}
+  - echo:
+      message: "citrus:message(todoRequest)"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"
+          type: "PLAINTEXT"
+          body:
+            data: "citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"
+  - http:
+      client: "todoClient"
+      sendRequest:
+        GET:
+          path: "/api/todo/citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"
+          accept: "application/json"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"
+          type: "JSON"
+          name: "todoResponse"
+        validate:
+          - jsonPath:
+              - expression: "$.id"
+                value: "citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"
+  - echo:
+      message: "citrus:message(todoResponse)"

@@ -1,0 +1,43 @@
+name: TodoListIT.testJsonValidationWithFileResource.yaml
+author: Christoph Deppisch
+status: FINAL
+description: TodoListIT.testJsonValidationWithFileResource port
+variables:
+  - name: todoId
+    value: citrus:randomUUID()
+actions:
+  - http:
+      client: todoClient
+      sendRequest:
+        POST:
+          path: "/api/todolist"
+          contentType: application/json
+          type: JSON
+          dataDictionary: outboundDictionary
+          body:
+            resource:
+              file: classpath:templates/todo.json
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+          type: PLAINTEXT
+          body:
+            data: ${todoId}
+  - http:
+      client: todoClient
+      sendRequest:
+        GET:
+          path: "/api/todo/${todoId}"
+          accept: application/json
+  - http:
+      client: todoClient
+      receiveResponse:
+        response:
+          status: 200
+          type: JSON
+          dataDictionary: inboundDictionary
+          body:
+            resource:
+              file: classpath:templates/todo.json

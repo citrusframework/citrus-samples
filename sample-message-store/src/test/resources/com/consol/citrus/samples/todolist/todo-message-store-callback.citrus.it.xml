@@ -1,0 +1,42 @@
+<test name="TodoListTestMessageStoreCallback.xml" author="Christina Deppisch" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <actions>
+    <http client="todoClient">
+      <send-request>
+        <POST path="/api/todolist" content-type="application/json" name="todoRequest" type="JSON">
+          <body>
+            <data><![CDATA[{"id": "citrus:randomUUID()", "title": "citrus:concat('todo_', citrus:randomNumber(4))", "description": "ToDo Description", "done": false}]]></data>
+          </body>
+        </POST>
+      </send-request>
+    </http>
+    <echo message="citrus:message(todoRequest)"/>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="PLAINTEXT">
+          <body>
+            <data><![CDATA[citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')]]></data>
+          </body>
+        </response>
+      </receive-response>
+    </http>
+    <http client="todoClient">
+      <send-request>
+        <GET path="/api/todo/citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')" accept="application/json"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200" type="JSON" name="todoResponse"/>
+        <validate>
+          <json-path expression="$.id" value="citrus:jsonPath(citrus:message(todoRequest.body()), '$.id')"/>
+          <json-path expression="$.title" value="citrus:jsonPath(citrus:message(todoRequest.body()), '$.title')"/>
+          <json-path expression="$.description" value="citrus:jsonPath(citrus:message(todoRequest.body()), '$.description')"/>
+          <json-path expression="$.done" value="citrus:jsonPath(citrus:message(todoRequest.body()), '$.done')"/>
+        </validate>
+      </receive-response>
+    </http>
+    <echo message="citrus:message(todoResponse)"/>
+  </actions>
+</test>

@@ -1,0 +1,32 @@
+<test name="TodoPagesIT.testIndexPage.xml" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+  <description>TodoPagesIT.testIndexPage port</description>
+  <actions>
+    <playwright browser="browser">
+      <start/>
+    </playwright>
+    <playwright browser="browser">
+      <open url="http://localhost:8080"/>
+    </playwright>
+    <http client="todoClient">
+      <send-request>
+        <DELETE path="/api/todolist"/>
+      </send-request>
+    </http>
+    <http client="todoClient">
+      <receive-response>
+        <response status="200"/>
+      </receive-response>
+    </http>
+    <playwright browser="browser">
+      <page-object type="com.consol.citrus.samples.todolist.page.WelcomePage" validator="com.consol.citrus.samples.todolist.page.WelcomePage$Validator"/>
+    </playwright>
+    <playwright browser="browser">
+      <page-object type="com.consol.citrus.samples.todolist.page.WelcomePage" method="startApp"/>
+    </playwright>
+    <playwright browser="browser">
+      <page-object type="com.consol.citrus.samples.todolist.page.TodoPage" validator="com.consol.citrus.samples.todolist.page.TodoPage$Validator"/>
+    </playwright>
+  </actions>
+</test>

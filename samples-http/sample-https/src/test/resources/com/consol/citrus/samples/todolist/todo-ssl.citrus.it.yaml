@@ -1,0 +1,15 @@
+name: "TodoListSsl.yaml"
+author: "Citrus"
+status: "FINAL"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        GET:
+          path: "/todo"
+          accept: "application/xml"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"

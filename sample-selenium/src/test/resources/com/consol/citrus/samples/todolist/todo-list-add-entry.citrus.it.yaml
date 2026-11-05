@@ -1,0 +1,58 @@
+name: "TodoListIT.testAddEntry.yaml"
+author: "Christoph Deppisch"
+status: "FINAL"
+description: "TodoListIT.testAddEntry port"
+variables:
+  - name: "todoName"
+    value: "todo_citrus:randomNumber(4)"
+  - name: "todoDescription"
+    value: "Description: ${todoName}"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        DELETE:
+          path: "/api/todolist"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"
+  - selenium:
+      browser: "browser"
+      start: {}
+  - selenium:
+      navigate:
+        page: "http://localhost:8080/todolist"
+  - selenium:
+      find:
+        element:
+          xpath: "(//li[@class='list-group-item'])[last()]"
+        validate:
+          text: "No todos found"
+  - selenium:
+      set-input:
+        value: "${todoName}"
+        element:
+          name: "title"
+  - selenium:
+      set-input:
+        value: "${todoDescription}"
+        element:
+          name: "description"
+  - selenium:
+      click:
+        element:
+          tag-name: "button"
+  - selenium:
+      wait-until:
+        condition: "visible"
+        timeout: 2000
+        element:
+          xpath: "(//li[@class='list-group-item']/span)[last()]"
+  - selenium:
+      find:
+        element:
+          xpath: "(//li[@class='list-group-item']/span)[last()]"
+        validate:
+          text: "${todoName}"

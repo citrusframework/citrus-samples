@@ -1,0 +1,24 @@
+name: GetBookDetails_Error_1_IT.yaml
+author: Christoph Deppisch
+status: FINAL
+description: Request details for non-existent book expecting SOAP fault.
+variables:
+  - name: isbn
+    value: 000-0000000000
+  - name: faultCode
+    value: "{http://www.consol.com/citrus/samples/errorcodes}CITRUS:1002"
+actions:
+  - soap:
+      client: bookStoreClient
+      assertFault:
+        faultCode: "${faultCode}"
+        faultString: "Book(isbn:'${isbn}') not available in registry"
+        when:
+          send:
+            endpoint: bookStoreClient
+            message:
+              headers:
+                - name: citrus_soap_action
+                  value: getBookDetails
+              body:
+                data: '<bkr:GetBookDetailsRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:isbn>${isbn}</bkr:isbn></bkr:GetBookDetailsRequestMessage>'

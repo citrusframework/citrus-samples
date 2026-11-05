@@ -1,0 +1,34 @@
+name: "TodoListIT.testHamcrestCondition.yaml"
+author: "Christoph Deppisch"
+status: "FINAL"
+description: "TodoListIT.testHamcrestCondition port - HamcrestConditionExpression replaced by string condition"
+actions:
+  - iterate:
+      condition: "i <= 5"
+      actions:
+        - createVariables:
+            variables:
+              - name: "todoId"
+                value: "citrus:randomUUID()"
+              - name: "todoName"
+                value: "todo_${i}"
+              - name: "todoDescription"
+                value: "Description: ${todoName}"
+        - http:
+            client: "todoClient"
+            sendRequest:
+              POST:
+                path: "/api/todolist"
+                contentType: "application/json"
+                type: "JSON"
+                body:
+                  data: |
+                    { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": false}
+        - http:
+            client: "todoClient"
+            receiveResponse:
+              response:
+                status: "200"
+                type: "PLAINTEXT"
+                body:
+                  data: "${todoId}"

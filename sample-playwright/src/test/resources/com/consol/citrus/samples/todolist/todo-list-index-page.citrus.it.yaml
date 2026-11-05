@@ -1,0 +1,36 @@
+name: "TodoListIT.testIndexPage.yaml"
+author: "Citrus"
+status: "FINAL"
+description: "TodoListIT.testIndexPage port"
+actions:
+  - playwright:
+      browser: "browser"
+      start: {}
+  - playwright:
+      browser: "browser"
+      open:
+        url: "http://localhost:8080"
+  - playwright:
+      browser: "browser"
+      verify:
+        element:
+          text: "Run application"
+        check: "visible"
+  - playwright:
+      browser: "browser"
+      verify:
+        element:
+          text: "Run application"
+        check: "enabled"
+  - playwright:
+      browser: "browser"
+      click:
+        element:
+          text: "Run application"
+  - playwright:
+      browser: "browser"
+      verify:
+        element:
+          css: "h1"
+        check: "text"
+        expected: "TODO list"

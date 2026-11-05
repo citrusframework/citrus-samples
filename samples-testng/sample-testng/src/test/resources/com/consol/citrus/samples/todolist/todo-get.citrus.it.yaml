@@ -1,0 +1,24 @@
+name: "TodoListTestGet.yaml"
+author: "Christina Deppisch"
+status: "FINAL"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        GET:
+          path: "/todolist"
+          accept: "text/html"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"
+          type: "XHTML"
+          body:
+            data: |
+              <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "org/w3/xhtml/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>@ignore@</head><body>@ignore@</body></html>
+        validate:
+          - xpath:
+              - expression: "//xh:h1"
+                value: "TODO list"

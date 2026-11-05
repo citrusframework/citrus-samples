@@ -1,0 +1,11 @@
+name: "TodoListIT.testDeploymentState.yaml"
+author: "Christoph Deppisch"
+status: "FINAL"
+description: "TodoListIT.testDeploymentState port (pods phase check via verify-pod; services get-assertion has no YAML DSL verb)"
+actions:
+  - kubernetes:
+      client: "k8sClient"
+      namespace: "default"
+      verifyPod:
+        label: "app=todo"
+        phase: "Running"
