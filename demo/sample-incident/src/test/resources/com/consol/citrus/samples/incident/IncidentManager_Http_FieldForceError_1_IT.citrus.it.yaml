@@ -1,4 +1,4 @@
-name: IncidentManager_Http_FieldForceError_1_IT
+name: IncidentManager_Http_FieldForceError_1_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Field force interaction aborted because of customer not found error.

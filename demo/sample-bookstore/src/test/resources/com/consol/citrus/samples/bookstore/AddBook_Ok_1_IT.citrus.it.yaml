@@ -1,4 +1,4 @@
-name: AddBook_Ok_1_IT
+name: AddBook_Ok_1_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: This test shows basic SOAP WebService client server communication. Citrus sends a SOAP request in order to add a book to the registry.

@@ -1,4 +1,4 @@
-name: "TodoListIT.testHamcrestCondition"
+name: "TodoListIT.testHamcrestCondition.yaml"
 author: "Christoph Deppisch"
 status: "FINAL"
 description: "TodoListIT.testHamcrestCondition port - HamcrestConditionExpression replaced by string condition"
@@ -20,6 +20,7 @@ actions:
               POST:
                 path: "/api/todolist"
                 contentType: "application/json"
+                type: "JSON"
                 body:
                   data: |
                     { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": false}

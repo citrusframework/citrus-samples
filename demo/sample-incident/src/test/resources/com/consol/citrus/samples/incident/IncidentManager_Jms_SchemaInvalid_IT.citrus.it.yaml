@@ -1,4 +1,4 @@
-name: IncidentManager_Jms_SchemaInvalid_IT
+name: IncidentManager_Jms_SchemaInvalid_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Invalid OpenIncident request via JMS triggers SOAP fault response.

@@ -1,4 +1,4 @@
-name: SchemaValidation_Error_1_IT
+name: SchemaValidation_Error_1_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Invalid request triggers schema validation SOAP fault.

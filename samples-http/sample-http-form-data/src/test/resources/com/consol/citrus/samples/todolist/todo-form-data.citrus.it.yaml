@@ -1,4 +1,4 @@
-name: "TodoListFormData"
+name: "TodoListFormData.yaml"
 author: "Citrus"
 status: "FINAL"
 variables:
@@ -25,7 +25,7 @@ actions:
           type: "x-www-form-urlencoded"
           body:
             data: |
-              <form-data xmlns="http://www.citrusframework.org/schema/http/message"><content-type>application/x-www-form-urlencoded</content-type><action>/api/todo</action><controls><control name="description"><value>${todoDescription}</value></control><control name="title"><value>${todoName}</value></control></controls></form-data>
+              <form-data xmlns="http://www.citrusframework.org/schema/http/message"><content-type>application/x-www-form-urlencoded</content-type><action>/api/todo</action><controls><control name="description"><value>@ignore@</value></control><control name="title"><value>${todoName}</value></control></controls></form-data>
   - http:
       server: "todoListServer"
       sendResponse:

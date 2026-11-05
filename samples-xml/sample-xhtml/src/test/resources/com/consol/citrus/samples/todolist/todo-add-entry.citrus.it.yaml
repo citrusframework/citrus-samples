@@ -1,4 +1,4 @@
-name: TodoAddTodoEntryIT
+name: TodoAddTodoEntryIT.yaml
 author: Christoph Deppisch
 status: FINAL
 variables:

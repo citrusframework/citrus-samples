@@ -1,4 +1,4 @@
-name: IncidentManager_Http_Ok_3_IT
+name: IncidentManager_Http_Ok_3_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Marshal-based flow ported to inline XML with NETWORK component and no field force.

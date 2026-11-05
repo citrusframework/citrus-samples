@@ -1,4 +1,4 @@
-name: "TodoListIT.testDeploymentState"
+name: "TodoListIT.testDeploymentState.yaml"
 author: "Christoph Deppisch"
 status: "FINAL"
 description: "TodoListIT.testDeploymentState port (pods phase check via verify-pod; services get-assertion has no YAML DSL verb)"

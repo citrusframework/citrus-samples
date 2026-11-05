@@ -1,4 +1,4 @@
-name: TodoListIT.testJsonValidationWithFileResource
+name: TodoListIT.testJsonValidationWithFileResource.yaml
 author: Christoph Deppisch
 status: FINAL
 description: TodoListIT.testJsonValidationWithFileResource port

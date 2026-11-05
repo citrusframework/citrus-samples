@@ -1,4 +1,4 @@
-name: "TodoJsonFileResourceIT"
+name: "TodoJsonFileResourceIT.yaml"
 author: "Citrus"
 status: "FINAL"
 variables:
@@ -15,6 +15,7 @@ actions:
         POST:
           path: "/api/todolist"
           contentType: "application/json"
+          type: "JSON"
           body:
             resource:
               file: "classpath:templates/todo.json"

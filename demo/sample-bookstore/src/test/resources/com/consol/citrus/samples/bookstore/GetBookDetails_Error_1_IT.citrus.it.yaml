@@ -1,4 +1,4 @@
-name: GetBookDetails_Error_1_IT
+name: GetBookDetails_Error_1_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Request details for non-existent book expecting SOAP fault.

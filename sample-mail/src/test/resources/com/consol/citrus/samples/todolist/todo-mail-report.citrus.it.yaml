@@ -1,4 +1,4 @@
-name: TodoMailReport
+name: TodoMailReport.yaml
 author: Citrus
 status: FINAL
 description: Send todo entry then receive mail report
@@ -26,6 +26,7 @@ actions:
         POST:
           path: /api/todolist
           contentType: application/json
+          type: "JSON"
           body:
             data: |
               { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}"}

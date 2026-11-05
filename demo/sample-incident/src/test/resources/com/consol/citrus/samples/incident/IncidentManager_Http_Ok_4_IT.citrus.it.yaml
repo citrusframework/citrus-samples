@@ -1,4 +1,4 @@
-name: IncidentManager_Http_Ok_4_IT
+name: IncidentManager_Http_Ok_4_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Resource-based flow using template files from test resources.
