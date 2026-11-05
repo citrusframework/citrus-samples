@@ -1,4 +1,4 @@
-name: TodoXpathValidationIT
+name: TodoXpathValidationIT.yaml
 author: Christoph Deppisch
 status: FINAL
 variables:

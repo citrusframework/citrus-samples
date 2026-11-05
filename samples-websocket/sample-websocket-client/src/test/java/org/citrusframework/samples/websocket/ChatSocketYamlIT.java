@@ -4,7 +4,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.citrusframework.annotations.CitrusConfiguration;
 import org.citrusframework.annotations.CitrusTestSource;
 import org.citrusframework.api.common.TestLoader;
-import org.citrusframework.junit.jupiter.CitrusSupport;
+import org.citrusframework.quarkus.CitrusSupport;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest

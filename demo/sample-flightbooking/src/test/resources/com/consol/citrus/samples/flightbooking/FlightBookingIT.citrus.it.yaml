@@ -1,4 +1,4 @@
-name: FlightBookingIT
+name: FlightBookingIT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Flight booking orchestration across travel agency, royal airline and smart airline endpoints.

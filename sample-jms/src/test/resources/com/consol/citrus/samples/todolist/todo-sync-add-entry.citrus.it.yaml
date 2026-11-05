@@ -1,9 +1,9 @@
-name: TodoListIT.testSyncAddTodoEntry
+name: TodoListIT.testSyncAddTodoEntry.yaml
 author: Christoph Deppisch
 status: FINAL
 variables:
   - name: todoName
-    value: citrus:concat('todo_', citrus:randomNumber(4)
+    value: citrus:concat('todo_', citrus:randomNumber(4))
   - name: todoDescription
     value: "Description: ${todoName}"
 actions:

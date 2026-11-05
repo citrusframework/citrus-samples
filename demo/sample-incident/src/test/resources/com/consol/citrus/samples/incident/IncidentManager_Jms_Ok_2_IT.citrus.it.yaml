@@ -1,4 +1,4 @@
-name: IncidentManager_Jms_Ok_2_IT
+name: IncidentManager_Jms_Ok_2_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Marshal-based JMS flow ported to inline XML with NETWORK component and no field force.

@@ -1,4 +1,4 @@
-name: "ChatBroadcastMessages"
+name: "ChatBroadcastMessages.yaml"
 author: "Citrus"
 status: "FINAL"
 description: "Broadcast chat messages via websocket"

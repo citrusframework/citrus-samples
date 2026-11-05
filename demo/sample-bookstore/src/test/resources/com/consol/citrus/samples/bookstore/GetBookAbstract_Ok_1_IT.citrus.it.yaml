@@ -1,4 +1,4 @@
-name: GetBookAbstract_Ok_1_IT
+name: GetBookAbstract_Ok_1_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Add book then request book abstract returned as SOAP attachment.

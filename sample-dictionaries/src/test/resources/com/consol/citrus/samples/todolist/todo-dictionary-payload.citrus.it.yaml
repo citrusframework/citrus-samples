@@ -1,4 +1,4 @@
-name: TodoListIT.testJsonPayloadValidation
+name: TodoListIT.testJsonPayloadValidation.yaml
 author: Christoph Deppisch
 status: FINAL
 description: TodoListIT.testJsonPayloadValidation port

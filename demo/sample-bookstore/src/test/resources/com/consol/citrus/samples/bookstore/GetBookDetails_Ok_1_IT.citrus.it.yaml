@@ -1,4 +1,4 @@
-name: GetBookDetails_Ok_1_IT
+name: GetBookDetails_Ok_1_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Add book then request book details.

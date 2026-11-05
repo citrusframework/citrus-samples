@@ -5,7 +5,7 @@ import org.citrusframework.api.common.TestLoader;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.testng.annotations.Test;
 
-@Test(invocationCount = 40, threadPoolSize = 4)
+@Test
 public class TodoListLoadTestYamlIT extends TestNGCitrusSpringSupport {
 
     @Test

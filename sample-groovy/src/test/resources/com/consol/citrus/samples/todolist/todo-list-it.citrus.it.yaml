@@ -1,4 +1,4 @@
-name: "TodoListIT.todo-list-it"
+name: "TodoListIT.todo-list-it.yaml"
 author: "Christoph Deppisch"
 status: "FINAL"
 description: "todo-list-it.groovy port"
@@ -16,6 +16,7 @@ actions:
         POST:
           path: "/api/todolist"
           contentType: "application/json"
+          type: "JSON"
           body:
             data: |
               {

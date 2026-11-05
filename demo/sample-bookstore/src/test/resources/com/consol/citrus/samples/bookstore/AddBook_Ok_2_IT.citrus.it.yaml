@@ -1,4 +1,4 @@
-name: AddBook_Ok_2_IT
+name: AddBook_Ok_2_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Add book using inline XML payload instead of JAXB marshalling with custom validation processor.
@@ -13,9 +13,6 @@ actions:
           soapAction: addBook
           body:
             data: '<bkr:AddBookRequestMessage xmlns:bkr="http://www.consol.com/schemas/bookstore"><bkr:book><bkr:title>Maven: The Definitive Guide</bkr:title><bkr:author>Mike Loukides, Sonatype</bkr:author><bkr:isbn>${isbn}</bkr:isbn><bkr:year>2008</bkr:year></bkr:book></bkr:AddBookRequestMessage>'
-          headers:
-            - name: citrus_soap_action
-              value: addBook
   - soap:
       client: bookStoreClient
       receiveResponse:

@@ -1,4 +1,4 @@
-name: TodoListIT.testAddTodoEntryBinary
+name: TodoListIT.testAddTodoEntryBinary.yaml
 author: Christoph Deppisch
 status: FINAL
 description: TodoListIT.testAddTodoEntryBinary port
