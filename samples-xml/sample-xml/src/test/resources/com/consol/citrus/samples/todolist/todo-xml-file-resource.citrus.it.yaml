@@ -1,4 +1,4 @@
-name: TodoXmlValidationWithFileResourceIT
+name: TodoXmlValidationWithFileResourceIT.yaml
 author: Christoph Deppisch
 status: FINAL
 variables:

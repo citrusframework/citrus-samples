@@ -1,4 +1,4 @@
-name: "TodoBehaviorJsonPathIT"
+name: "TodoBehaviorJsonPathIT.yaml"
 author: "Christoph Deppisch"
 status: "FINAL"
 variables:
@@ -15,6 +15,7 @@ actions:
         POST:
           path: "/api/todolist"
           contentType: "application/json"
+          type: "JSON"
           body:
             data: |
               { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": false}

@@ -1,4 +1,4 @@
-name: GreetingChannel_IT
+name: GreetingChannel_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: "Send asynchronous greeting request via Spring Integration channel: Citrus -> GreetingService"

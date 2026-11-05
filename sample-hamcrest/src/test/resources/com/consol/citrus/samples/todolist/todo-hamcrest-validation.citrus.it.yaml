@@ -1,4 +1,4 @@
-name: "TodoListIT.testHamcrestValidation"
+name: "TodoListIT.testHamcrestValidation.yaml"
 author: "Christoph Deppisch"
 status: "FINAL"
 description: "TodoListIT.testHamcrestValidation port - Hamcrest matchers replaced by plain validation"
@@ -16,6 +16,7 @@ actions:
         POST:
           path: "/api/todolist"
           contentType: "application/json"
+          type: "JSON"
           body:
             data: |
               { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": false}

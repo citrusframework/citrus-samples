@@ -1,4 +1,4 @@
-name: NewsFeed_DataProvider_Ok_IT
+name: NewsFeed_DataProvider_Ok_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Port of NewsFeedParameterIT data-driven test with fixed message (declarative tests do not support TestNG data providers)

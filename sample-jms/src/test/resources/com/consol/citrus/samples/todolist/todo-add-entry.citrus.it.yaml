@@ -1,4 +1,4 @@
-name: TodoListIT.testAddTodoEntry
+name: TodoListIT.testAddTodoEntry.yaml
 author: Christoph Deppisch
 status: FINAL
 variables:

@@ -1,4 +1,4 @@
-name: TodoObjectMarshallingIT
+name: TodoObjectMarshallingIT.yaml
 author: Christoph Deppisch
 status: FINAL
 variables:

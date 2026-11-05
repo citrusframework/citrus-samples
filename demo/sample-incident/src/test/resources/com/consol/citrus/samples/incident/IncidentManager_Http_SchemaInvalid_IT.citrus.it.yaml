@@ -1,4 +1,4 @@
-name: IncidentManager_Http_SchemaInvalid_IT
+name: IncidentManager_Http_SchemaInvalid_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Invalid OpenIncident request triggers SOAP fault with unmarshalling error.

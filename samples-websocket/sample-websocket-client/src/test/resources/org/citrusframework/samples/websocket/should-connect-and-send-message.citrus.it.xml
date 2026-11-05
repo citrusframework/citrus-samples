@@ -1,4 +1,4 @@
-<test name="ChatSendMessage" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
+<test name="ChatSendMessage.xml" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
   <description>Connect and send chat message via websocket</description>
   <actions>
     <send endpoint="chatClient">

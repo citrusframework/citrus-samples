@@ -1,4 +1,4 @@
-name: TodoXmlDomTreeValidationIT
+name: TodoXmlDomTreeValidationIT.yaml
 author: Christoph Deppisch
 status: FINAL
 variables:

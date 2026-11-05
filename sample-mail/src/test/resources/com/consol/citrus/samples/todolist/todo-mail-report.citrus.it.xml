@@ -1,4 +1,4 @@
-<test name="TodoMailReport" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase https://citrusframework.org/schema/xml/citrus-testcase.xsd">
+<test name="TodoMailReport.xml" author="Citrus" status="FINAL" xmlns="http://citrusframework.org/schema/xml/testcase" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://citrusframework.org/schema/xml/testcase http://citrusframework.org/schema/xml/testcase/citrus-testcase.xsd">
   <description>Send todo entry then receive mail report</description>
   <variables>
     <variable name="todoId" value="citrus:randomUUID()"/>
@@ -18,7 +18,7 @@
     </http>
     <http client="todoClient">
       <send-request>
-        <POST path="/api/todolist" content-type="application/json">
+        <POST path="/api/todolist" content-type="application/json" type="JSON">
           <body>
             <data><![CDATA[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}"}]]></data>
           </body>

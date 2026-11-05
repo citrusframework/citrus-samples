@@ -1,4 +1,4 @@
-name: IncidentManager_Http_Ok_2_IT
+name: IncidentManager_Http_Ok_2_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Calls IncidentManager via Http SOAP including field force interaction with FIXED outcome.

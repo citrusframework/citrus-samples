@@ -1,4 +1,4 @@
-name: TodoListIT.testAddTodoEntryBinaryBase64
+name: TodoListIT.testAddTodoEntryBinaryBase64.yaml
 author: Christoph Deppisch
 status: FINAL
 description: TodoListIT.testAddTodoEntryBinaryBase64 port

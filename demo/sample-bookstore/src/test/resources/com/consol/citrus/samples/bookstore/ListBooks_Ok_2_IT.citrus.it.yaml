@@ -1,4 +1,4 @@
-name: ListBooks_Ok_2_IT
+name: ListBooks_Ok_2_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Add random book then validate presence via Groovy script.

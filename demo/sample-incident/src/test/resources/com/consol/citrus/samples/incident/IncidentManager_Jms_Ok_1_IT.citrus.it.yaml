@@ -1,4 +1,4 @@
-name: IncidentManager_Jms_Ok_1_IT
+name: IncidentManager_Jms_Ok_1_IT.yaml
 author: Christoph Deppisch
 status: FINAL
 description: Calls IncidentManager application via JMS message transport using SOAP request message.

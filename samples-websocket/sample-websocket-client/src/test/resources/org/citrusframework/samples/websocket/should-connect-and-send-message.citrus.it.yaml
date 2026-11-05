@@ -1,4 +1,4 @@
-name: "ChatSendMessage"
+name: "ChatSendMessage.yaml"
 author: "Citrus"
 status: "FINAL"
 description: "Connect and send chat message via websocket"
