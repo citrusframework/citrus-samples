@@ -5,7 +5,6 @@ import org.citrusframework.api.common.TestLoader;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.testng.annotations.Test;
 
-@Test
 public class TodoListLoadTestYamlIT extends TestNGCitrusSpringSupport {
 
     @Test
