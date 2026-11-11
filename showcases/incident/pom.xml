@@ -536,7 +536,7 @@
                 <configuration>
                   <stopPort>${server.stop.port}</stopPort>
                   <stopKey>stopMe</stopKey>
-                  <stopWait>10</stopWait>
+                  <stopWait>60</stopWait>
                 </configuration>
               </execution>
             </executions>
