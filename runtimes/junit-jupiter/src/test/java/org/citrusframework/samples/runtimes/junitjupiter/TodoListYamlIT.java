@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.runtimes.junitjupiter;
 
 import org.citrusframework.annotations.CitrusTestSource;
 import org.citrusframework.api.common.TestLoader;
@@ -12,12 +12,12 @@ import org.springframework.test.context.ContextConfiguration;
 public class TodoListYamlIT {
 
     @Test
-    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:com/consol/citrus/samples/todolist/todo-get.citrus.it.yaml" })
+    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:org/citrusframework/samples/runtimes/junitjupiter/todo-get.citrus.it.yaml" })
     void testGet() {
     }
 
     @Test
-    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:com/consol/citrus/samples/todolist/todo-post.citrus.it.yaml" })
+    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:org/citrusframework/samples/runtimes/junitjupiter/todo-post.citrus.it.yaml" })
     void testPost() {
     }
 }

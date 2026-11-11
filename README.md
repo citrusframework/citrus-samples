@@ -59,11 +59,11 @@ system under test. Please find following list of samples and their primary objec
 | [sample-sftp](samples-ftp/sample-sftp)                                        |                   Shows SFTP client and server interaction in Citrus                   |
 | [sample-scp](samples-ftp/sample-scp)                                          |                   Shows SCP client and server interaction in Citrus                    |
 | Samples TestNG                                                                |                                      Description                                       |
-| [sample-testng](samples-testng/sample-testng)                                 |                             Shows TestNG framework support                             |
-| [sample-dataprovider](samples-testng/sample-dataprovider)                     |                       Shows TestNG data provider usage in Citrus                       |
+| [sample-testng](runtimes/testng)                                 |                             Shows TestNG framework support                             |
+| [sample-dataprovider](runtimes/testng-dataprovider)                     |                       Shows TestNG data provider usage in Citrus                       |
 | Samples JUnit                                                                 |                                      Description                                       |
-| [sample-junit](samples-junit/sample-junit)                                    |                             Shows JUnit4 framework support                             |
-| [sample-junit5](samples-junit/sample-junit5)                                  |                             Shows JUnit5 framework support                             |
+| [sample-junit](runtimes/junit4)                                    |                             Shows JUnit4 framework support                             |
+| [sample-junit5](runtimes/junit-jupiter)                                  |                             Shows JUnit5 framework support                             |
 | Samples Http                                                                  |                                      Description                                       |
 | [sample-swagger](samples-http/sample-swagger)                                 |                       Auto generate tests from Swagger Open API                        |
 | [sample-http](samples-http/sample-http)                                       |                         Shows Http REST API calls as a client                          |
@@ -86,13 +86,8 @@ system under test. Please find following list of samples and their primary objec
 | [sample-soap-ssl](samples-soap/sample-soap-ssl)                               |          Shows how to configure SOAP web service with SSL secure connectivity          |
 | [sample-soap-static-response](samples-soap/sample-soap-static-response)       |   Shows how to setup a static response generating SOAP web service server component    |
 | Samples Cucumber BDD                                                          |                                      Description                                       |
-| [sample-cucumber](samples-cucumber/sample-cucumber)                           |                          Shows BDD integration with Cucumber                           |
-| [sample-cucumber-spring](samples-cucumber/sample-cucumber-spring)             |          Shows BDD integration with Cucumber using Spring Framework injection          |
-| [sample-cucumber-spring2](samples-cucumber/sample-cucumber-spring2)           |              Shows BDD integration with Cucumber Spring Framework support              |
-| Samples - Remote                                                              |                                      Description                                       |
-| [sample-test-jar](samples-remote/sample-test-jar)                             |              Creates an executable test JAR to run all integration tests               |
-| [sample-test-war](samples-remote/sample-test-war)                             | Creates a deployable test WAR to run all integration tests as part of a web deployment |
-
+| [sample-cucumber](runtimes/cucumber)                           |                          Shows BDD integration with Cucumber                           |
+| [sample-cucumber-spring](runtimes/cucumber-spring)             |          Shows BDD integration with Cucumber using Spring Framework injection          |
 Following sample projects cover message transports and technologies. Each of these samples provides a separate system under test application
 that demonstrates the messaging aspect.
 

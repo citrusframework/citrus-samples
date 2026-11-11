@@ -107,13 +107,11 @@ jobs:
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-reporting
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-rmi
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-selenium
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-cucumber
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f runtimes
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-db
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-ftp
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-http
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-json
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-junit
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-soap
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-testng
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-websocket
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-xml

@@ -16,17 +16,15 @@
     <module>demo</module>
     <module>apps</module>
     <module>core</module>
+    <module>runtimes</module>
     <module>sample-camel-context</module>
     <module>sample-docker</module>
     <module>sample-kubernetes</module>
-    <module>samples-cucumber</module>
     <module>sample-groovy</module>
     <module>sample-mail</module>
     <module>sample-selenium</module>
     <module>sample-playwright</module>
     <module>samples-ftp</module>
-    <module>samples-testng</module>
-    <module>samples-junit</module>
     <module>samples-http</module>
     <module>sample-rmi</module>
     <module>samples-xml</module>

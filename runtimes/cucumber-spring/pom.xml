@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-cucumber-spring</artifactId>
+  <artifactId>citrus-sample-runtimes-cucumber-spring</artifactId>
   <name>Citrus Samples:: Cucumber BDD Spring</name>
   <version>4.0.0</version>
 
@@ -17,6 +17,7 @@
     <commons.logging.version>1.4.0</commons.logging.version>
     <cucumber.version>8.0.4</cucumber.version>
     <citrus.version>5.1.0</citrus.version>
+    <maven.deploy.skip>true</maven.deploy.skip>
     <maven.failsafe.plugin.version>3.5.6</maven.failsafe.plugin.version>
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
     <system.under.test.mode>embedded</system.under.test.mode>
@@ -49,7 +50,7 @@
           <failIfNoTests>false</failIfNoTests>
           <workingDirectory>${project.build.directory}</workingDirectory>
         </configuration>
-        <dependencies>
+          <dependencies>
           <dependency>
             <groupId>org.apache.maven.surefire</groupId>
             <artifactId>surefire-junit47</artifactId>
@@ -97,6 +98,18 @@
       </plugin>
     </plugins>
   </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.citrusframework</groupId>
+        <artifactId>citrus-bom</artifactId>
+        <version>${citrus.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>

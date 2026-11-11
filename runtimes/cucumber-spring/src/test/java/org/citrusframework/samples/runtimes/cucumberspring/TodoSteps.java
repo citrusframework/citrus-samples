@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package todo;
+package org.citrusframework.samples.runtimes.cucumberspring;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package todo;
+package org.citrusframework.samples.runtimes.cucumber;
 
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.http.client.HttpClientBuilder;

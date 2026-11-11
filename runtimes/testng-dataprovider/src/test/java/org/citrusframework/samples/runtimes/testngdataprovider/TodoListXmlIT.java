@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.runtimes.testngdataprovider;
 
 import org.citrusframework.annotations.CitrusTestSource;
 import org.citrusframework.api.common.TestLoader;
@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 public class TodoListXmlIT extends TestNGCitrusSpringSupport {
 
     @Test
-    @CitrusTestSource(type = TestLoader.XML, sources = { "classpath:com/consol/citrus/samples/todolist/todo-provider.citrus.it.xml" })
+    @CitrusTestSource(type = TestLoader.XML, sources = { "classpath:org/citrusframework/samples/runtimes/testngdataprovider/todo-provider.citrus.it.xml" })
     public void testProvider() {
     }
 }

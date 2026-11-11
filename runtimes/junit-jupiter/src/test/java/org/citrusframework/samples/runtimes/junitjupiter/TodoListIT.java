@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.runtimes.junitjupiter;
 
 import org.citrusframework.TestActionRunner;
 import org.citrusframework.TestCaseRunner;

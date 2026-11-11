@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package todo;
+package org.citrusframework.samples.runtimes.cucumberspring;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
