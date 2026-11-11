@@ -44,70 +44,91 @@ on:
       - 'NOTICE'
 
 jobs:
+  catalog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Check sample metadata and generated catalog
+        run: python3 scripts/generate_sample_catalog.py --check
+
   gradle-sample:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
+      - name: Check sample metadata and generated catalog
+        run: python3 scripts/generate_sample_catalog.py --check
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Build and test Gradle sample
-        run: gradle test
+        run: gradle clean build
         working-directory: build-tools/gradle
 
-  build:
+  samples:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        group:
+          - apps
+          - getting-started
+          - core
+          - runtimes
+          - endpoints
+          - connectors
+          - validation
+          - showcases
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Check sample metadata and generated catalog
+        run: python3 scripts/generate_sample_catalog.py --check
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
-      - name: Checkout code
-        uses: actions/checkout@v5
       - name: Cache Maven packages
         uses: actions/cache@v5
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build Todo App
-        run: |
-          ./mvnw --no-transfer-progress -pl :citrus-sample-todo install
-      - name: Run Showcases
-        run: |
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/quarkus
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/bakery
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/bookstore
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/flight-booking
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/greeting
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/incident
-      - name: Run Samples
-        run: |
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-annotation-config
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-behaviors
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-endpoints-camel
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-data-dictionaries
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-dynamic-endpoints
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl getting-started
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-java-config
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-endpoints-jms
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-endpoints-kafka
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-endpoints-mail
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-message-store
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-reporting
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-endpoints-rmi
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f runtimes
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f connectors
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/ftp
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/http
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/ws
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/websocket
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f validation
+      - name: Verify ${{ matrix.group }} samples
+        run: ./mvnw --no-transfer-progress verify -pl ${{ matrix.group }} -amd -Dsystem.under.test.mode=embedded
+
+  integration:
+    runs-on: ubuntu-latest
+    needs:
+      - catalog
+      - gradle-sample
+      - samples
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Check sample metadata and generated catalog
+        run: python3 scripts/generate_sample_catalog.py --check
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Cache Maven packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Verify complete default reactor
+        run: ./mvnw --no-transfer-progress clean verify -Dsystem.under.test.mode=embedded
