@@ -34,14 +34,14 @@ system under test. Please find following list of samples and their primary objec
 | [sample-message-store](core/message-store)                                  |                       Shows how to access internal message store                       |
 | [sample-binary](sample-binary)                                                |                    Shows binary message content handling in Citrus                     |
 | [sample-hamcrest](sample-hamcrest)                                            |              Shows Hamcrest matcher support in validation and conditions               |
-| [sample-mail](sample-mail)                                                    |                         Shows mail server activities in Citrus                         |
+| [sample-mail](endpoints/mail)                                                    |                         Shows mail server activities in Citrus                         |
 | [sample-selenium](sample-selenium)                                            |                      Perform UI testing with Selenium and Citrus                       |
 | [sample-playwright](sample-playwright)                                          |                     Perform UI testing with Playwright and Citrus |
 | [sample-dynamic-endpoints](core/dynamic-endpoints)                          |                         Shows dynamic endpoint component usage                         |
-| [sample-jms](sample-jms)                                                      |                          Shows JMS message broker integration                          |
-| [sample-kafka](sample-kafka)                                                  |                                Shows Kafka integration                                 |
-| [sample-rmi](sample-rmi)                                                      |                Shows how to use RMI with Citrus as a client and server                 |
-| [sample-camel-context](sample-camel-context)                                  |                     Interact with Apache Camel context and routes                      |
+| [sample-jms](endpoints/jms)                                                      |                          Shows JMS message broker integration                          |
+| [sample-kafka](endpoints/kafka)                                                  |                                Shows Kafka integration                                 |
+| [sample-rmi](endpoints/rmi)                                                      |                Shows how to use RMI with Citrus as a client and server                 |
+| [sample-camel-context](endpoints/camel)                                  |                     Interact with Apache Camel context and routes                      |
 | Samples DB                                                                    |                                      Description                                       |
 | [sample-jdbc](samples-db/sample-jdbc)                                         |                          Simulates database server with JDBC                           |
 | [sample-jdbc-callable-statements](samples-db/sample-jdbc-callable-statements) |           Simulates database server communication using callable statements            |
@@ -55,9 +55,9 @@ system under test. Please find following list of samples and their primary objec
 | [sample-oxm](samples-xml/sample-oxm)                                          |        Shows XML object marshalling feature when sending and receiving messages        |
 | [sample-xhtml](samples-xml/sample-xhtml)                                      |                             Shows XHTML validation feature                             |
 | Samples FTP/SFTP                                                              |                                      Description                                       |
-| [sample-ftp](samples-ftp/sample-ftp)                                          |                   Shows FTP client and server interaction in Citrus                    |
-| [sample-sftp](samples-ftp/sample-sftp)                                        |                   Shows SFTP client and server interaction in Citrus                   |
-| [sample-scp](samples-ftp/sample-scp)                                          |                   Shows SCP client and server interaction in Citrus                    |
+| [sample-ftp](endpoints/ftp/ftp)                                          |                   Shows FTP client and server interaction in Citrus                    |
+| [sample-sftp](endpoints/ftp/sftp)                                        |                   Shows SFTP client and server interaction in Citrus                   |
+| [sample-scp](endpoints/ftp/scp)                                          |                   Shows SCP client and server interaction in Citrus                    |
 | Samples TestNG                                                                |                                      Description                                       |
 | [sample-testng](runtimes/testng)                                 |                             Shows TestNG framework support                             |
 | [sample-dataprovider](runtimes/testng-dataprovider)                     |                       Shows TestNG data provider usage in Citrus                       |
@@ -74,8 +74,8 @@ system under test. Please find following list of samples and their primary objec
 | [sample-http-basic-auth](endpoints/http/basic-auth)                 |         Shows how to use basic authentication on client and server components          |
 | [sample-https](endpoints/http/https)                                     |                Shows how to use SSL connectivity as a client and server                |
 | Samples Websockets                                                            |                                      Description                                       |
-| [sample-websocket-client](samples-websocket/sample-websocket-client)          |            Shows how to connect to a Websocket as a client during the test             |
-| [sample-websocket-server](samples-websocket/sample-websocket-server)          |          Shows how to provide a Websocket as a server for clients to connect           |
+| [sample-websocket-client](endpoints/websocket/client)          |            Shows how to connect to a Websocket as a client during the test             |
+| [sample-websocket-server](endpoints/websocket/server)          |          Shows how to provide a Websocket as a server for clients to connect           |
 | Samples SOAP                                                                  |                                      Description                                       |
 | [sample-wsdl](endpoints/ws/wsdl)                                       |                             Auto generate tests from WSDL                              |
 | [sample-soap](endpoints/ws/basic)                                       |                          Shows basic SOAP web service support                          |

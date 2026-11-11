@@ -1,4 +1,4 @@
-package org.citrusframework.samples.websocket;
+package org.citrusframework.samples.endpoints.websocket.server;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.citrusframework.annotations.CitrusConfiguration;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 class ChatSocketYamlIT {
 
     @Test
-    @CitrusTestSource(type = TestLoader.YAML, sources = {"classpath:org/citrusframework/samples/websocket/should-broadcast-messages.citrus.it.yaml"})
+    @CitrusTestSource(type = TestLoader.YAML, sources = {"classpath:org/citrusframework/samples/endpoints/websocket/server/should-broadcast-messages.citrus.it.yaml"})
     void shouldBroadcastMessages() {
     }
 }

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-jms</artifactId>
+  <artifactId>citrus-sample-endpoints-jms</artifactId>
   <name>Citrus Samples:: JMS</name>
   <version>4.0.0</version>
 
@@ -20,6 +20,7 @@
     <maven.failsafe.plugin.version>3.5.6</maven.failsafe.plugin.version>
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
     <system.under.test.mode>embedded</system.under.test.mode>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <build>
@@ -102,6 +103,18 @@
       </plugin>
     </plugins>
   </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.citrusframework</groupId>
+        <artifactId>citrus-bom</artifactId>
+        <version>${citrus.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>

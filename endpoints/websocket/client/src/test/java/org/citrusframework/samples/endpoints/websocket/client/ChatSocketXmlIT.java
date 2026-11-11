@@ -1,4 +1,4 @@
-package org.citrusframework.samples.websocket;
+package org.citrusframework.samples.endpoints.websocket.client;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.citrusframework.annotations.CitrusConfiguration;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 class ChatSocketXmlIT {
 
     @Test
-    @CitrusTestSource(type = TestLoader.XML, sources = {"classpath:org/citrusframework/samples/websocket/should-connect-and-send-message.citrus.it.xml"})
+    @CitrusTestSource(type = TestLoader.XML, sources = {"classpath:org/citrusframework/samples/endpoints/websocket/client/should-connect-and-send-message.citrus.it.xml"})
     void shouldConnectAndSendMessage() {
     }
 }

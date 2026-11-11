@@ -17,7 +17,7 @@
  *  limitations under the License.
  */
 
-package org.citrusframework.samples.websocket;
+package org.citrusframework.samples.endpoints.websocket.server;
 
 import java.util.Collections;
 

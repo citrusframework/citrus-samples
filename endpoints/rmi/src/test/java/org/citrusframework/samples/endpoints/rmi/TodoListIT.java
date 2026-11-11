@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.endpoints.rmi;
 
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.rmi.client.RmiClient;
 import org.citrusframework.rmi.message.RmiMessage;
 import org.citrusframework.rmi.server.RmiServer;
-import com.consol.citrus.samples.todolist.remote.TodoListService;
+import org.citrusframework.samples.endpoints.rmi.remote.TodoListService;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;

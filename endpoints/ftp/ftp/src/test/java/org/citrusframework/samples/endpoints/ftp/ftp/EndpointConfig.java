@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.endpoints.ftp.ftp;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

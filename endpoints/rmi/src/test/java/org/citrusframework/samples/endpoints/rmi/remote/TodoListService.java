@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.remote;
+package org.citrusframework.samples.endpoints.rmi.remote;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

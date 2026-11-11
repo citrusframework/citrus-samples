@@ -18,23 +18,16 @@
     <module>core</module>
     <module>runtimes</module>
     <module>endpoints</module>
-    <module>sample-camel-context</module>
     <module>sample-docker</module>
     <module>sample-kubernetes</module>
     <module>sample-groovy</module>
-    <module>sample-mail</module>
     <module>sample-selenium</module>
     <module>sample-playwright</module>
-    <module>samples-ftp</module>
     <module>samples-http</module>
-    <module>sample-rmi</module>
     <module>samples-xml</module>
     <module>samples-json</module>
     <module>sample-hamcrest</module>
-    <module>sample-jms</module>
-    <module>sample-kafka</module>
     <module>sample-binary</module>
     <module>samples-db</module>
-    <module>samples-websocket</module>
   </modules>
 </project>

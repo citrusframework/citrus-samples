@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.endpoints.ftp.scp;
 
 import java.io.IOException;
 import java.nio.file.Paths;

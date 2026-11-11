@@ -6,7 +6,7 @@ This sample demonstrates the usage of mail server activities in Citrus tests. Yo
 Objectives
 ---------
 
-The [todo-list](../apps/todo-app/README.md) sample application sends out mail reports to users on demand.
+The [todo-list](../../apps/todo-app/README.md) sample application sends out mail reports to users on demand.
 Citrus is able to trigger the report via Http REST API. In this sample we send out some Http REST calls and
 wait for the incoming mail in a single test.
 
@@ -74,7 +74,7 @@ some other code and message in order to simulate mail server problems.
 Run
 ---------
 
-**NOTE:** This test depends on the [todo-app](../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+**NOTE:** This test depends on the [todo-app](../../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
 
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
@@ -92,7 +92,7 @@ System under test
 ---------
 
 The sample uses a small todo list application as system under test. The application is a web application
-that you can deploy on any web container. You can find the todo-list sources [here](../apps/todo-app). Up to now we have started an
+that you can deploy on any web container. You can find the todo-list sources [here](../../apps/todo-app). Up to now we have started an
 embedded Jetty web container with automatic deployments during the Maven build lifecycle. This approach is fantastic 
 when running automated tests in a continuous build.
   

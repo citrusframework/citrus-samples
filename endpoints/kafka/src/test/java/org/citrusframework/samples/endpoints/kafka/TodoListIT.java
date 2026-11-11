@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.endpoints.kafka;
 
 import java.time.Duration;
 import java.util.Arrays;

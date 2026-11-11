@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.endpoints.ftp.sftp;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;

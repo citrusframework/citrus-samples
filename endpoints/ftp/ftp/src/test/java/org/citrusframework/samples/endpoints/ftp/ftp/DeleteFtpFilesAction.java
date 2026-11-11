@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.endpoints.ftp.ftp;
 
 import org.citrusframework.actions.AbstractTestAction;
 import org.citrusframework.context.TestContext;

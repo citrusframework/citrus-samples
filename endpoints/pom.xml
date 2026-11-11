@@ -16,5 +16,12 @@
   <modules>
     <module>http</module>
     <module>ws</module>
+    <module>jms</module>
+    <module>kafka</module>
+    <module>mail</module>
+    <module>rmi</module>
+    <module>camel</module>
+    <module>ftp</module>
+    <module>websocket</module>
   </modules>
 </project>

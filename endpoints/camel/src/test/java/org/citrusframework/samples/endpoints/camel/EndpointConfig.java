@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus;
+package org.citrusframework.samples.endpoints.camel;
 
 import java.util.Collections;
 

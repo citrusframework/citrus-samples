@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-websocket-server</artifactId>
+  <artifactId>citrus-sample-endpoints-websocket-server</artifactId>
   <name>Citrus Samples:: Websocket Server</name>
   <version>4.0.0</version>
 
@@ -35,6 +35,7 @@
 
     <quarkus.platform.version>3.40.1</quarkus.platform.version>
     <citrus.version>5.1.0</citrus.version>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <dependencyManagement>
