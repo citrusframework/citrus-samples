@@ -172,3 +172,27 @@ To omit an unwanted non-Java variant, delete its `.citrus.xml`, `.citrus.yaml`, 
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://citrusframework.org/reference/html#validation-xhtml
+
+## Sample contract
+
+- **Purpose:** Learn a minimal todo-list integration test in Java, XML, YAML, and Groovy.
+- **Modules:** `citrus-core`.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java, XML, YAML, GROOVY.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f getting-started/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+./mvnw -f apps/todo-app/pom.xml install -DskipTests
+cp -R getting-started /tmp/citrus-getting-started
+cd /tmp/citrus-getting-started
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

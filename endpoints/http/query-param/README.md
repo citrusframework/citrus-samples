@@ -117,3 +117,26 @@ Besides the Java integration tests this sample ships declarative ports: `todo-qu
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://citrusframework.org/reference/html#http
+
+## Sample contract
+
+- **Purpose:** Send and validate HTTP query parameters.
+- **Modules:** `citrus-http`.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java, XML, YAML.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f endpoints/http/query-param/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+cp -R endpoints/http/query-param /tmp/citrus-endpoints-http-query-param
+cd /tmp/citrus-endpoints-http-query-param
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

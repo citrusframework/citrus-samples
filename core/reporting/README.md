@@ -98,3 +98,26 @@ Besides the Java integration tests this sample ships declarative ports: `simple-
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://citrusframework.org/reference/html#reporting-and-test-results
+
+## Sample contract
+
+- **Purpose:** Add custom Citrus test reporting.
+- **Modules:** `citrus-core`.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java, XML, YAML.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f core/reporting/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+cp -R core/reporting /tmp/citrus-core-reporting
+cd /tmp/citrus-core-reporting
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

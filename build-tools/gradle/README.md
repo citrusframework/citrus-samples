@@ -113,3 +113,26 @@ Besides the Java integration tests this sample ships declarative ports: `messagi
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
+
+## Sample contract
+
+- **Purpose:** Run equivalent Citrus scenarios with a standalone Gradle build.
+- **Modules:** `gradle`.
+- **Runtime:** TestNG through Gradle (`gradle`).
+- **DSLs:** Java, XML, YAML.
+- **Prerequisites:** JDK 21+ and an installed Gradle command are required; Maven is not used.
+- **Citrus version:** 5.1.0, declared in `gradle.properties`.
+
+Run from the repository root:
+
+```shell
+cd build-tools/gradle && gradle clean build
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+cp -R build-tools/gradle /tmp/citrus-build-tools-gradle
+cd /tmp/citrus-build-tools-gradle
+gradle clean build
+```

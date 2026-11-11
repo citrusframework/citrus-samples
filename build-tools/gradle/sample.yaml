@@ -1,0 +1,4 @@
+module: gradle
+runtime: gradle
+level: intermediate
+dsl: [java, xml, yaml]

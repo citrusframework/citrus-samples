@@ -1,0 +1,4 @@
+module: citrus-docker
+runtime: testng
+level: advanced
+dsl: [java]

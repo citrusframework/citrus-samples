@@ -1,0 +1,4 @@
+module: showcase-greeting
+runtime: testng
+level: showcase
+dsl: [java, xml, yaml]

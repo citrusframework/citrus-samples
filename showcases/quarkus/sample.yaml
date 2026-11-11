@@ -1,0 +1,4 @@
+module: showcase-quarkus
+runtime: quarkus
+level: showcase
+dsl: [java]

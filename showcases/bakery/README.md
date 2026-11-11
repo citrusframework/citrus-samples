@@ -70,3 +70,26 @@ a complete [reference manual][3].
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
+
+## Sample contract
+
+- **Purpose:** Test a multi-module bakery system across HTTP, JMS, and mail flows.
+- **Modules:** `showcase-bakery`; complete `web`, `worker`, `report`, and `integration` modules.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f showcases/bakery/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+cp -R showcases/bakery /tmp/citrus-showcases-bakery
+cd /tmp/citrus-showcases-bakery
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

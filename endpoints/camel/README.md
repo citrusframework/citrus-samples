@@ -134,3 +134,26 @@ The data-provider test is ported as a single fixed-message case.
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://citrusframework.org/reference/html#camel
+
+## Sample contract
+
+- **Purpose:** Interact with Apache Camel routes and contexts.
+- **Modules:** `citrus-camel`.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java, XML, YAML.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f endpoints/camel/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+cp -R endpoints/camel /tmp/citrus-endpoints-camel
+cd /tmp/citrus-endpoints-camel
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

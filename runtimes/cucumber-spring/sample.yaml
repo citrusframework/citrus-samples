@@ -1,0 +1,4 @@
+module: citrus-core
+runtime: cucumber
+level: intermediate
+dsl: [java]

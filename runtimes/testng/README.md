@@ -181,3 +181,27 @@ executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all v
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://citrusframework.org/reference/html#run-with-testng
+
+## Sample contract
+
+- **Purpose:** Run Citrus tests with TestNG.
+- **Modules:** `citrus-core`.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java, XML, YAML.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f runtimes/testng/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+./mvnw -f apps/todo-app/pom.xml install -DskipTests
+cp -R runtimes/testng /tmp/citrus-runtimes-testng
+cd /tmp/citrus-runtimes-testng
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

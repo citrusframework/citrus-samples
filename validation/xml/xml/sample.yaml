@@ -1,0 +1,4 @@
+module: citrus-validation-xml
+runtime: testng
+level: intermediate
+dsl: [java, xml, yaml]

@@ -1,0 +1,4 @@
+module: citrus-ws
+runtime: testng
+level: intermediate
+dsl: [java, xml, yaml, groovy]

@@ -1,0 +1,4 @@
+module: citrus-playwright
+runtime: testng
+level: advanced
+dsl: [java, xml, yaml]

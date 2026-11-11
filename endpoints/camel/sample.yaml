@@ -1,0 +1,4 @@
+module: citrus-camel
+runtime: testng
+level: intermediate
+dsl: [java, xml, yaml]

@@ -1,0 +1,4 @@
+module: citrus-openapi
+runtime: testng
+level: intermediate
+dsl: [java]

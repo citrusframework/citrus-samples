@@ -161,3 +161,27 @@ JAXB marshalling is replaced by literal XML bodies in the ports.
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://citrusframework.org/reference/html#validation-callback
+
+## Sample contract
+
+- **Purpose:** Marshal and unmarshal XML messages with object mapping.
+- **Modules:** `citrus-validation-xml`.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java, XML, YAML.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f validation/xml/oxm/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+./mvnw -f apps/todo-app/pom.xml install -DskipTests
+cp -R validation/xml/oxm /tmp/citrus-validation-xml-oxm
+cd /tmp/citrus-validation-xml-oxm
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

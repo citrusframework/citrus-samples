@@ -216,3 +216,26 @@ a complete [reference manual][3].
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://citrusframework.org/reference/html#ftp
+
+## Sample contract
+
+- **Purpose:** Exchange files through SFTP clients and servers.
+- **Modules:** `citrus-ftp`.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f endpoints/ftp/sftp/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+cp -R endpoints/ftp/sftp /tmp/citrus-endpoints-ftp-sftp
+cd /tmp/citrus-endpoints-ftp-sftp
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

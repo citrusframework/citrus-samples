@@ -173,3 +173,27 @@ a complete [reference manual][3].
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://citrusframework.org/reference/html#cucumber
+
+## Sample contract
+
+- **Purpose:** Express Citrus integration tests as Cucumber scenarios.
+- **Modules:** `citrus-core`.
+- **Runtime:** Cucumber (`cucumber`).
+- **DSLs:** Java.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f runtimes/cucumber/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+./mvnw -f apps/todo-app/pom.xml install -DskipTests
+cp -R runtimes/cucumber /tmp/citrus-runtimes-cucumber
+cd /tmp/citrus-runtimes-cucumber
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

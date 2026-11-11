@@ -1,0 +1,4 @@
+module: showcase-bakery
+runtime: testng
+level: showcase
+dsl: [java]

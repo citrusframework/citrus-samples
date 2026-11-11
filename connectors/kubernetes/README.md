@@ -342,3 +342,26 @@ executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all v
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://citrusframework.org/reference/html#kubernetes
+
+## Sample contract
+
+- **Purpose:** Manage and verify Kubernetes resources in Citrus tests.
+- **Modules:** `citrus-kubernetes`.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java, XML, YAML.
+- **Prerequisites:** Access to a configured Kubernetes cluster is required. JDK 21+ and Maven 3.9+ for a copied Maven sample.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f connectors/kubernetes/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+
+```shell
+cp -R connectors/kubernetes /tmp/citrus-connectors-kubernetes
+cd /tmp/citrus-connectors-kubernetes
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

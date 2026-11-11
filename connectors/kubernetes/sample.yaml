@@ -1,0 +1,4 @@
+module: citrus-kubernetes
+runtime: testng
+level: advanced
+dsl: [java, xml, yaml]
