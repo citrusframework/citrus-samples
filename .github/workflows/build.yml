@@ -95,7 +95,10 @@ jobs:
       - name: Verify ${{ matrix.group }} samples
         run: ./mvnw --no-transfer-progress -f ${{ matrix.group }}/pom.xml verify -Dsystem.under.test.mode=embedded
 
+  # Full root-reactor gate. Skipped on pull requests: the root POM aggregates exactly
+  # the groups in the `samples` matrix, so a PR would verify every module twice.
   integration:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     needs:
       - gradle-sample
