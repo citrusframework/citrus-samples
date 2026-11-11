@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>citrus-sample-bakery</artifactId>
+    <artifactId>citrus-sample-showcases-bakery</artifactId>
     <groupId>org.citrusframework.samples</groupId>
     <version>4.0.0</version>
     <relativePath>../pom.xml</relativePath>
@@ -117,7 +117,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>com.consol.citrus.samples.bakery.WorkerApp</mainClass>
+              <mainClass>org.citrusframework.samples.showcases.bakery.WorkerApp</mainClass>
             </manifest>
           </archive>
         </configuration>

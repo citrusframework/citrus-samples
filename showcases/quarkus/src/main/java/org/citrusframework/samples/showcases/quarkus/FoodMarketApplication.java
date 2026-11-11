@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import io.quarkus.runtime.StartupEvent;
 import jakarta.inject.Inject;
-import org.apache.camel.demo.model.Product;
+import org.citrusframework.samples.showcases.quarkus.model.Product;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;

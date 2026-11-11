@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bookstore.exceptions;
+package org.citrusframework.samples.showcases.bookstore.exceptions;
 
-import com.consol.citrus.samples.bookstore.model.AddBookRequestMessage;
+import org.citrusframework.samples.showcases.bookstore.model.AddBookRequestMessage;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandlingException;
 

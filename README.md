@@ -93,12 +93,12 @@ that demonstrates the messaging aspect.
 
 | Demo Projects                                     | Kafka | JMS | Http | SOAP | Channel | Camel | SQL | SYNC | ASYNC |
 |---------------------------------------------------|:-----:|:---:|:----:|:----:|:-------:|:-----:|:---:|:----:|:-----:|
-| [sample-quarkus](demo/sample-quarkus)             |   X   |     |  X   |      |         |       |  X  |  X   |   X   |
-| [sample-bakery](demo/sample-bakery)               |       |  X  |  X   |      |         |       |     |  X   |   X   |
-| [sample-flightbooking](demo/sample-flightbooking) |       |  X  |  X   |      |         |       |  X  |      |   X   |
-| [sample-greeting](demo/sample-greeting)           |       |  X  |      |      |    X    |       |     |  X   |   X   |
-| [sample-bookstore](demo/sample-bookstore)         |       |  X  |      |  X   |         |       |     |  X   |       |
-| [sample-incident](demo/sample-incident)           |       |  X  |  X   |  X   |         |       |     |  X   |   X   |
+| [sample-quarkus](showcases/quarkus)             |   X   |     |  X   |      |         |       |  X  |  X   |   X   |
+| [sample-bakery](showcases/bakery)               |       |  X  |  X   |      |         |       |     |  X   |   X   |
+| [sample-flightbooking](showcases/flight-booking) |       |  X  |  X   |      |         |       |  X  |      |   X   |
+| [sample-greeting](showcases/greeting)           |       |  X  |      |      |    X    |       |     |  X   |   X   |
+| [sample-bookstore](showcases/bookstore)         |       |  X  |      |  X   |         |       |     |  X   |       |
+| [sample-incident](showcases/incident)           |       |  X  |  X   |  X   |         |       |     |  X   |   X   |
 
 Pick your sample application for try out and got to the respective folder.
 

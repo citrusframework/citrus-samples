@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking;
+package org.citrusframework.samples.showcases.flightbooking;
 
-import com.consol.citrus.samples.flightbooking.model.FlightBookingConfirmationMessage;
+import org.citrusframework.samples.showcases.flightbooking.model.FlightBookingConfirmationMessage;
 
 /**
  * @author Christoph Deppisch

@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import javax.sql.DataSource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import org.apache.camel.demo.behavior.VerifyBookingStatus;
-import org.apache.camel.demo.model.Booking;
-import org.apache.camel.demo.model.Product;
-import org.apache.camel.demo.model.Supply;
+import org.citrusframework.samples.showcases.quarkus.behavior.VerifyBookingStatus;
+import org.citrusframework.samples.showcases.quarkus.model.Booking;
+import org.citrusframework.samples.showcases.quarkus.model.Product;
+import org.citrusframework.samples.showcases.quarkus.model.Supply;
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;

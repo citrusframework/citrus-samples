@@ -53,12 +53,12 @@
     </constructor-arg>
   </bean>
 
-  <oxm:jaxb2-marshaller id="bookingMarshaller" context-path="com.consol.citrus.samples.flightbooking.model"/>
+  <oxm:jaxb2-marshaller id="bookingMarshaller" context-path="org.citrusframework.samples.showcases.flightbooking.model"/>
 
   <int:channel id="bookings"/>
   <int:splitter input-channel="bookings" ref="bookingSplitter" output-channel="flights"/>
 
-  <bean id="bookingSplitter" class="com.consol.citrus.samples.flightbooking.BookingSplitter">
+  <bean id="bookingSplitter" class="org.citrusframework.samples.showcases.flightbooking.BookingSplitter">
     <property name="customerDao" ref="customerDao"/>
     <property name="flightDao" ref="flightDao"/>
   </bean>
@@ -66,7 +66,7 @@
   <int:channel id="flights"/>
   <int:router input-channel="flights" ref="flightRouter"/>
 
-  <bean id="flightRouter" class="com.consol.citrus.samples.flightbooking.FlightRouter">
+  <bean id="flightRouter" class="org.citrusframework.samples.showcases.flightbooking.FlightRouter">
     <property name="airlineMappings">
       <map>
         <entry key="RoyalAirline" value-ref="royalAirlineFlights"/>
@@ -93,7 +93,7 @@
                          reply-channel="confirmedFlightsXML"
                          header-mapper="httpHeaderMapper"/>
 
-  <bean id="httpHeaderMapper" class="com.consol.citrus.samples.flightbooking.header.HttpHeaderMapper">
+  <bean id="httpHeaderMapper" class="org.citrusframework.samples.showcases.flightbooking.header.HttpHeaderMapper">
     <property name="inboundHeaderNames" value ="X-*, HTTP_RESPONSE_HEADERS"/>
     <property name="outboundHeaderNames" value="sequenceNumber, sequenceSize, bookingCorrelationId, HTTP_REQUEST_HEADERS"/>
     <property name="userDefinedHeaderPrefix" value=""/>
@@ -132,8 +132,8 @@
                   send-partial-result-on-expiry="false"/>
 
   <bean id="simpleMessageStore" class="org.springframework.integration.store.SimpleMessageStore"/>
-  <bean id="flightAggregator" class="com.consol.citrus.samples.flightbooking.FlightAggregator"/>
-  <bean id="flightCorrelationStrategy" class="com.consol.citrus.samples.flightbooking.FlightCorrelationStrategy"/>
+  <bean id="flightAggregator" class="org.citrusframework.samples.showcases.flightbooking.FlightAggregator"/>
+  <bean id="flightCorrelationStrategy" class="org.citrusframework.samples.showcases.flightbooking.FlightCorrelationStrategy"/>
 
   <int:channel id="bookingResultsXML">
     <int:interceptors>
@@ -154,9 +154,9 @@
 
   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
-  <bean id="customerDao" class="com.consol.citrus.samples.flightbooking.persistence.impl.CustomerDaoImpl"/>
+  <bean id="customerDao" class="org.citrusframework.samples.showcases.flightbooking.persistence.impl.CustomerDaoImpl"/>
 
-  <bean id="flightDao" class="com.consol.citrus.samples.flightbooking.persistence.impl.FlightDaoImpl"/>
+  <bean id="flightDao" class="org.citrusframework.samples.showcases.flightbooking.persistence.impl.FlightDaoImpl"/>
 
   <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <property name="persistenceUnitName" value="flightbooking" />

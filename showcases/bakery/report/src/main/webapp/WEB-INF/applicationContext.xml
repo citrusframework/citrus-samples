@@ -9,10 +9,10 @@
     <property-placeholder xmlns="http://www.springframework.org/schema/context"
                           location="classpath:application.properties"/>
 
-    <component-scan xmlns="http://www.springframework.org/schema/context" base-package="com.consol.citrus.samples.bakery.routes"/>
+    <component-scan xmlns="http://www.springframework.org/schema/context" base-package="org.citrusframework.samples.showcases.bakery.routes"/>
 
-    <bean id="mailService" class="com.consol.citrus.samples.bakery.service.MailService"/>
-    <bean id="reportService" class="com.consol.citrus.samples.bakery.service.ReportService"/>
+    <bean id="mailService" class="org.citrusframework.samples.showcases.bakery.service.MailService"/>
+    <bean id="reportService" class="org.citrusframework.samples.showcases.bakery.service.ReportService"/>
 
     <!-- Camel context -->
     <camelContext id="bakery-report" xmlns="http://camel.apache.org/schema/spring">

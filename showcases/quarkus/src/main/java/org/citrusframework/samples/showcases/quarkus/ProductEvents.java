@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.smallrye.common.annotation.Blocking;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.apache.camel.demo.model.Product;
+import org.citrusframework.samples.showcases.quarkus.model.Product;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.jboss.logging.Logger;
 

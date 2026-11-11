@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bookstore;
+package org.citrusframework.samples.showcases.bookstore;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.consol.citrus.samples.bookstore.exceptions.DuplicateIsbnException;
-import com.consol.citrus.samples.bookstore.exceptions.UnknownBookException;
-import com.consol.citrus.samples.bookstore.model.AddBookRequestMessage;
-import com.consol.citrus.samples.bookstore.model.AddBookResponseMessage;
-import com.consol.citrus.samples.bookstore.model.Book;
-import com.consol.citrus.samples.bookstore.model.GetBookAbstractRequestMessage;
-import com.consol.citrus.samples.bookstore.model.GetBookAbstractResponseMessage;
-import com.consol.citrus.samples.bookstore.model.GetBookDetailsRequestMessage;
-import com.consol.citrus.samples.bookstore.model.GetBookDetailsResponseMessage;
-import com.consol.citrus.samples.bookstore.model.ListBooksResponseMessage;
+import org.citrusframework.samples.showcases.bookstore.exceptions.DuplicateIsbnException;
+import org.citrusframework.samples.showcases.bookstore.exceptions.UnknownBookException;
+import org.citrusframework.samples.showcases.bookstore.model.AddBookRequestMessage;
+import org.citrusframework.samples.showcases.bookstore.model.AddBookResponseMessage;
+import org.citrusframework.samples.showcases.bookstore.model.Book;
+import org.citrusframework.samples.showcases.bookstore.model.GetBookAbstractRequestMessage;
+import org.citrusframework.samples.showcases.bookstore.model.GetBookAbstractResponseMessage;
+import org.citrusframework.samples.showcases.bookstore.model.GetBookDetailsRequestMessage;
+import org.citrusframework.samples.showcases.bookstore.model.GetBookDetailsResponseMessage;
+import org.citrusframework.samples.showcases.bookstore.model.ListBooksResponseMessage;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 

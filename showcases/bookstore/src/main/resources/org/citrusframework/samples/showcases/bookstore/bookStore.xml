@@ -42,7 +42,7 @@
       <list>
         <bean id="loggingInterceptor" class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
         <bean id="soapAttachmentEndpointInterceptor"
-              class="com.consol.citrus.samples.bookstore.endpoint.interceptor.BookAbstractAttachmentEndpointInterceptor">
+              class="org.citrusframework.samples.showcases.bookstore.endpoint.interceptor.BookAbstractAttachmentEndpointInterceptor">
           <property name="bookAbstractInboundGateway" ref="bookAbstractInboundGateway"/>
         </bean>
       </list>
@@ -53,9 +53,9 @@
         p:defaultFault="{http://www.consol.com/citrus/samples/errorcodes}CITRUS:1000">
     <property name="exceptionMappings">
       <value>
-        com.consol.citrus.samples.bookstore.exceptions.XmlSchemaValidationException={http://www.consol.com/citrus/samples/errorcodes}CITRUS:999,Client sent invalid request!
-        com.consol.citrus.samples.bookstore.exceptions.DuplicateIsbnException={http://www.consol.com/citrus/samples/errorcodes}CITRUS:1001
-        com.consol.citrus.samples.bookstore.exceptions.UnknownBookException={http://www.consol.com/citrus/samples/errorcodes}CITRUS:1002
+        org.citrusframework.samples.showcases.bookstore.exceptions.XmlSchemaValidationException={http://www.consol.com/citrus/samples/errorcodes}CITRUS:999,Client sent invalid request!
+        org.citrusframework.samples.showcases.bookstore.exceptions.DuplicateIsbnException={http://www.consol.com/citrus/samples/errorcodes}CITRUS:1001
+        org.citrusframework.samples.showcases.bookstore.exceptions.UnknownBookException={http://www.consol.com/citrus/samples/errorcodes}CITRUS:1002
       </value>
     </property>
   </bean>
@@ -71,8 +71,8 @@
   <int:channel id="inboundXmlChannel">
     <int:interceptors>
       <int:wire-tap channel="logger"/>
-      <bean class="com.consol.citrus.samples.bookstore.validation.XmlSchemaValidatingChannelInterceptor">
-        <constructor-arg value="classpath:com/consol/citrus/samples/bookstore/schema/BookStoreSchema.xsd" />
+      <bean class="org.citrusframework.samples.showcases.bookstore.validation.XmlSchemaValidatingChannelInterceptor">
+        <constructor-arg value="classpath:org/citrusframework/samples/showcases/bookstore/schema/BookStoreSchema.xsd" />
       </bean>
     </int:interceptors>
   </int:channel>
@@ -92,10 +92,10 @@
   <int:channel id="outboundChannel"/>
 
   <int:payload-type-router input-channel="inboundChannel" resolution-required="true">
-    <int:mapping type="com.consol.citrus.samples.bookstore.model.AddBookRequestMessage" channel="addChannel" />
-    <int:mapping type="com.consol.citrus.samples.bookstore.model.GetBookDetailsRequestMessage" channel="detailChannel" />
-    <int:mapping type="com.consol.citrus.samples.bookstore.model.ListBooksRequestMessage" channel="listChannel"/>
-    <int:mapping type="com.consol.citrus.samples.bookstore.model.GetBookAbstractRequestMessage" channel="abstractChannel" />
+    <int:mapping type="org.citrusframework.samples.showcases.bookstore.model.AddBookRequestMessage" channel="addChannel" />
+    <int:mapping type="org.citrusframework.samples.showcases.bookstore.model.GetBookDetailsRequestMessage" channel="detailChannel" />
+    <int:mapping type="org.citrusframework.samples.showcases.bookstore.model.ListBooksRequestMessage" channel="listChannel"/>
+    <int:mapping type="org.citrusframework.samples.showcases.bookstore.model.GetBookAbstractRequestMessage" channel="abstractChannel" />
   </int:payload-type-router>
 
   <int:service-activator ref="bookStore" method="addBook" input-channel="addChannel" output-channel="outboundChannel"/>
@@ -103,10 +103,10 @@
   <int:service-activator ref="bookStore" method="listBooks" input-channel="listChannel" output-channel="outboundChannel"/>
   <int:service-activator ref="bookStore" method="getBookAbstract" input-channel="abstractChannel" output-channel="outboundChannel"/>
 
-  <bean id="bookStore" class="com.consol.citrus.samples.bookstore.BookStore"/>
+  <bean id="bookStore" class="org.citrusframework.samples.showcases.bookstore.BookStore"/>
 
   <!-- XML marshalling/unmarshalling -->
-  <oxm:jaxb2-marshaller id="marshaller" context-path="com.consol.citrus.samples.bookstore.model"/>
+  <oxm:jaxb2-marshaller id="marshaller" context-path="org.citrusframework.samples.showcases.bookstore.model"/>
 
   <bean id="resultTransformer" class="org.springframework.integration.xml.transformer.ResultToStringTransformer"/>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.incident.exception;
+package org.citrusframework.samples.showcases.incident.exception;
 
 /**
  * @author Christoph Deppisch

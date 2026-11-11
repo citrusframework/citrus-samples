@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.greeting;
+package org.citrusframework.samples.showcases.greeting;
 
-import com.consol.citrus.samples.greeting.model.GreetingRequestMessage;
-import com.consol.citrus.samples.greeting.model.GreetingResponseMessage;
+import org.citrusframework.samples.showcases.greeting.model.GreetingRequestMessage;
+import org.citrusframework.samples.showcases.greeting.model.GreetingResponseMessage;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bookstore.validation;
+package org.citrusframework.samples.showcases.bookstore.validation;
 
 import java.io.IOException;
 import javax.xml.XMLConstants;
 
-import com.consol.citrus.samples.bookstore.exceptions.XmlSchemaValidationException;
+import org.citrusframework.samples.showcases.bookstore.exceptions.XmlSchemaValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;

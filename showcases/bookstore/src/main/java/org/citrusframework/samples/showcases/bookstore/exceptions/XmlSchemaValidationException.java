@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bookstore.exceptions;
+package org.citrusframework.samples.showcases.bookstore.exceptions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

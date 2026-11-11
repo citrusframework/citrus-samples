@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking.persistence.impl;
+package org.citrusframework.samples.showcases.flightbooking.persistence.impl;
 
 import java.util.List;
 
-import com.consol.citrus.samples.flightbooking.entity.CustomerEntity;
-import com.consol.citrus.samples.flightbooking.entity.converter.CustomerConverter;
-import com.consol.citrus.samples.flightbooking.model.Customer;
-import com.consol.citrus.samples.flightbooking.persistence.CustomerDao;
+import org.citrusframework.samples.showcases.flightbooking.entity.CustomerEntity;
+import org.citrusframework.samples.showcases.flightbooking.entity.converter.CustomerConverter;
+import org.citrusframework.samples.showcases.flightbooking.model.Customer;
+import org.citrusframework.samples.showcases.flightbooking.persistence.CustomerDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import java.util.Optional;
 
@@ -25,9 +25,9 @@ import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.smallrye.reactive.messaging.annotations.Merge;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.apache.camel.demo.model.Booking;
-import org.apache.camel.demo.model.Product;
-import org.apache.camel.demo.model.Supply;
+import org.citrusframework.samples.showcases.quarkus.model.Booking;
+import org.citrusframework.samples.showcases.quarkus.model.Product;
+import org.citrusframework.samples.showcases.quarkus.model.Supply;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.jboss.logging.Logger;

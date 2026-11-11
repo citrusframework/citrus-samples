@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking.entity.converter;
+package org.citrusframework.samples.showcases.flightbooking.entity.converter;
 
 import java.text.ParseException;
 
-import com.consol.citrus.samples.flightbooking.entity.CustomerEntity;
-import com.consol.citrus.samples.flightbooking.model.Customer;
+import org.citrusframework.samples.showcases.flightbooking.entity.CustomerEntity;
+import org.citrusframework.samples.showcases.flightbooking.model.Customer;
 
 /**
  * Converter takes care on model to entity conversion and vice versa.

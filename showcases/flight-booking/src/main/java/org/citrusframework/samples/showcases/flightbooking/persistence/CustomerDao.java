@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking.persistence;
+package org.citrusframework.samples.showcases.flightbooking.persistence;
 
 import java.util.List;
 
-import com.consol.citrus.samples.flightbooking.model.Customer;
+import org.citrusframework.samples.showcases.flightbooking.model.Customer;
 
 /**
  * @author Christoph Deppisch

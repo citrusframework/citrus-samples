@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bakery.routes;
+package org.citrusframework.samples.showcases.bakery.routes;
 
 import org.apache.camel.*;
 import org.apache.camel.builder.RouteBuilder;

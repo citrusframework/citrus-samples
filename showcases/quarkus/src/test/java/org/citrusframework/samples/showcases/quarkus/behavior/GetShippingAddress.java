@@ -1,7 +1,7 @@
-package org.apache.camel.demo.behavior;
+package org.citrusframework.samples.showcases.quarkus.behavior;
 
-import org.apache.camel.demo.TestHelper;
-import org.apache.camel.demo.model.ShippingAddress;
+import org.citrusframework.samples.showcases.quarkus.TestHelper;
+import org.citrusframework.samples.showcases.quarkus.model.ShippingAddress;
 import org.citrusframework.TestActionRunner;
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestBehavior;

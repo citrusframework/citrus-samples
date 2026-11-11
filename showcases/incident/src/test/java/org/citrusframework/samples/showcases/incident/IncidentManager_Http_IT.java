@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.incident;
+package org.citrusframework.samples.showcases.incident;
 
 import java.util.Calendar;
 import java.util.Collections;

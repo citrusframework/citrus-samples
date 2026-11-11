@@ -1,9 +1,9 @@
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.apache.camel.demo.model.Booking;
-import org.apache.camel.demo.model.ShippingAddress;
+import org.citrusframework.samples.showcases.quarkus.model.Booking;
+import org.citrusframework.samples.showcases.quarkus.model.ShippingAddress;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @Singleton

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking.entity.converter;
+package org.citrusframework.samples.showcases.flightbooking.entity.converter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import com.consol.citrus.samples.flightbooking.entity.FlightEntity;
-import com.consol.citrus.samples.flightbooking.model.Flight;
+import org.citrusframework.samples.showcases.flightbooking.entity.FlightEntity;
+import org.citrusframework.samples.showcases.flightbooking.model.Flight;
 import org.springframework.util.StringUtils;
 
 /**

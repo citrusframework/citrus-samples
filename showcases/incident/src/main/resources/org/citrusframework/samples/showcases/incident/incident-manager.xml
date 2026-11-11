@@ -15,7 +15,7 @@
     </bean>
 
     <!-- Http inbound endpoint for incoming incident requests -->
-    <jaxws:endpoint id="httpIncidentEndpoint" implementor="com.consol.citrus.samples.incident.service.IncidentManagerService"
+    <jaxws:endpoint id="httpIncidentEndpoint" implementor="org.citrusframework.samples.showcases.incident.service.IncidentManagerService"
                     address="/IncidentManager/v1">
       <jaxws:properties>
         <entry key="schema-validation-enabled" value="true"/>
@@ -29,7 +29,7 @@
     </jaxws:endpoint>
 
     <!-- JMS inbound endpoint for incoming incident requests -->
-    <jaxws:endpoint id="jmsIncidentEndpoint" implementor="com.consol.citrus.samples.incident.service.IncidentManagerService"
+    <jaxws:endpoint id="jmsIncidentEndpoint" implementor="org.citrusframework.samples.showcases.incident.service.IncidentManagerService"
             address="jms://">
       <jaxws:properties>
         <entry key="schema-validation-enabled" value="true"/>
@@ -54,7 +54,7 @@
     </jaxws:endpoint>
 
     <!-- Network Http client service -->
-    <bean class="com.consol.citrus.samples.incident.service.NetworkServiceImpl">
+    <bean class="org.citrusframework.samples.showcases.incident.service.NetworkServiceImpl">
       <property name="serviceUri" value="http://#{systemEnvironment['NETWORK_SERVER_PORT_18002_TCP_ADDR']?:'localhost'}:18002/network/NetworkService/v1/"/>
       <property name="restTemplate">
         <bean class="org.springframework.web.client.RestTemplate">
@@ -71,10 +71,10 @@
     </bean>
 
     <!-- FieldForce management -->
-    <bean id="fieldForceService" class="com.consol.citrus.samples.incident.service.FieldForceServiceImpl"/>
+    <bean id="fieldForceService" class="org.citrusframework.samples.showcases.incident.service.FieldForceServiceImpl"/>
 
     <!-- Jms client sending field force messages to destination -->
-    <bean id="fieldForceClient" class="com.consol.citrus.samples.incident.service.FieldForceJmsClient">
+    <bean id="fieldForceClient" class="org.citrusframework.samples.showcases.incident.service.FieldForceJmsClient">
       <constructor-arg>
         <bean class="org.springframework.jms.core.JmsTemplate">
           <constructor-arg ref="activemqConnectionFactory"/>
@@ -84,7 +84,7 @@
     </bean>
 
     <!-- Message Driven POJO for incoming notification messages -->
-    <bean id="fieldForceNotificationConsumer" class="com.consol.citrus.samples.incident.service.FieldForceJmsConsumer" />
+    <bean id="fieldForceNotificationConsumer" class="org.citrusframework.samples.showcases.incident.service.FieldForceJmsConsumer" />
 
     <!-- JMS message listener container -->
     <bean id="fieldForceNotificationListener" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
@@ -94,7 +94,7 @@
     </bean>
 
     <!-- Sms gateway service -->
-    <bean id="smsService" class="com.consol.citrus.samples.incident.service.SmsServiceImpl"/>
+    <bean id="smsService" class="org.citrusframework.samples.showcases.incident.service.SmsServiceImpl"/>
 
     <jaxws:client xmlns:sms="http://www.citrusframework.org/schema/samples/SmsGateway/v1"
                   id="smsGatewayClient"

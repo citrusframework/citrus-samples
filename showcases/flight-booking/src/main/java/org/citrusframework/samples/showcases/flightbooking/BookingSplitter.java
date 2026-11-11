@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking;
+package org.citrusframework.samples.showcases.flightbooking;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.consol.citrus.samples.flightbooking.model.Flight;
-import com.consol.citrus.samples.flightbooking.model.FlightBookingRequestMessage;
-import com.consol.citrus.samples.flightbooking.model.TravelBookingRequestMessage;
-import com.consol.citrus.samples.flightbooking.persistence.CustomerDao;
-import com.consol.citrus.samples.flightbooking.persistence.FlightDao;
+import org.citrusframework.samples.showcases.flightbooking.model.Flight;
+import org.citrusframework.samples.showcases.flightbooking.model.FlightBookingRequestMessage;
+import org.citrusframework.samples.showcases.flightbooking.model.TravelBookingRequestMessage;
+import org.citrusframework.samples.showcases.flightbooking.persistence.CustomerDao;
+import org.citrusframework.samples.showcases.flightbooking.persistence.FlightDao;
 import org.springframework.integration.annotation.Splitter;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;

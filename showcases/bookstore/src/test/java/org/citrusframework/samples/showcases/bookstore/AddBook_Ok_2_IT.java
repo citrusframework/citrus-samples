@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bookstore;
+package org.citrusframework.samples.showcases.bookstore;
 
 import java.util.Calendar;
 import java.util.Map;
 
-import com.consol.citrus.samples.bookstore.model.AddBookRequestMessage;
-import com.consol.citrus.samples.bookstore.model.AddBookResponseMessage;
-import com.consol.citrus.samples.bookstore.model.Book;
+import org.citrusframework.samples.showcases.bookstore.model.AddBookRequestMessage;
+import org.citrusframework.samples.showcases.bookstore.model.AddBookResponseMessage;
+import org.citrusframework.samples.showcases.bookstore.model.Book;
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;

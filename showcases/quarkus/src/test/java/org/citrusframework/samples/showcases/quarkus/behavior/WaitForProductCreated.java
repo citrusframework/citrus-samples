@@ -1,9 +1,9 @@
-package org.apache.camel.demo.behavior;
+package org.citrusframework.samples.showcases.quarkus.behavior;
 
 import java.time.Duration;
 import javax.sql.DataSource;
 
-import org.apache.camel.demo.model.Product;
+import org.citrusframework.samples.showcases.quarkus.model.Product;
 import org.citrusframework.TestActionRunner;
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestBehavior;

@@ -35,7 +35,7 @@ actions:
           attachments:
             - contentId: book-abstract
               contentType: text/plain
-              resource: "classpath:com/consol/citrus/samples/bookstore/book-abstract.txt"
+              resource: "classpath:org/citrusframework/samples/showcases/bookstore/book-abstract.txt"
         extract:
           body:
             - path: /bkr:GetBookAbstractResponseMessage/bkr:book/bkr:id

@@ -1,4 +1,4 @@
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import java.util.Collections;
 

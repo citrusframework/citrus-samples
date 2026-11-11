@@ -3,12 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-bookstore</artifactId>
+  <artifactId>citrus-sample-showcases-bookstore</artifactId>
   <name>Citrus Samples:: Bookstore</name>
   <version>4.0.0</version>
   <packaging>war</packaging>
 
   <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <spring.version>7.0.9</spring.version>
@@ -205,16 +206,28 @@
           <extension>true</extension>
           <sourceType>xmlschema</sourceType>
           <sources>
-            <source>src/main/resources/com/consol/citrus/samples/bookstore/schema/BookStoreSchema.xsd</source>
+            <source>src/main/resources/org/citrusframework/samples/showcases/bookstore/schema/BookStoreSchema.xsd</source>
           </sources>
           <xjbSources>
-            <xjbSource>src/main/resources/com/consol/citrus/samples/bookstore/schema/binding.xjb</xjbSource>
+            <xjbSource>src/main/resources/org/citrusframework/samples/showcases/bookstore/schema/binding.xjb</xjbSource>
           </xjbSources>
           <clearOutputDir>true</clearOutputDir>
         </configuration>
       </plugin>
     </plugins>
   </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.citrusframework</groupId>
+        <artifactId>citrus-bom</artifactId>
+        <version>${citrus.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <!-- Spring framework -->

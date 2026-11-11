@@ -81,14 +81,14 @@ jobs:
       - name: Build Todo App
         run: |
           ./mvnw --no-transfer-progress -pl :citrus-sample-todo install
-      - name: Run Demos
+      - name: Run Showcases
         run: |
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-quarkus
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-bakery
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-bookstore
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-flightbooking
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-greeting
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-incident
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/quarkus
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/bakery
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/bookstore
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/flight-booking
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/greeting
+          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f showcases/incident
       - name: Run Samples
         run: |
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-annotation-config

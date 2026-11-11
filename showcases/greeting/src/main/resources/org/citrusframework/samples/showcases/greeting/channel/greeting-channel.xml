@@ -24,7 +24,7 @@
     <int-xml:xslt-transformer input-channel="greetings"
                               output-channel="greetingsTransformed"
                               result-transformer="resultTransformer"
-                              xsl-resource="classpath:com/consol/citrus/samples/greeting/channel/transform-greetings.xsl"/>
+                              xsl-resource="classpath:org/citrusframework/samples/showcases/greeting/channel/transform-greetings.xsl"/>
 
     <bean id="resultTransformer" class="org.springframework.integration.xml.transformer.ResultToStringTransformer"/>
 

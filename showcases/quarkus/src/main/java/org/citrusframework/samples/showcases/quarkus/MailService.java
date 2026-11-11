@@ -1,10 +1,10 @@
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.reactive.ReactiveMailer;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.apache.camel.demo.model.Booking;
+import org.citrusframework.samples.showcases.quarkus.model.Booking;
 import org.jboss.logging.Logger;
 
 @Singleton

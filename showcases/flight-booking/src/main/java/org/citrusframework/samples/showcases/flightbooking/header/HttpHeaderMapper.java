@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking.header;
+package org.citrusframework.samples.showcases.flightbooking.header;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.integration.IntegrationMessageHeaderAccessor;

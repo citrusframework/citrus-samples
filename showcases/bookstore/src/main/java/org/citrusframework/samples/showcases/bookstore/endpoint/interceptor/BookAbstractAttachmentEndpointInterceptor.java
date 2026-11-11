@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bookstore.endpoint.interceptor;
+package org.citrusframework.samples.showcases.bookstore.endpoint.interceptor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +36,7 @@ public class BookAbstractAttachmentEndpointInterceptor extends EndpointIntercept
     private Object bookAbstractInboundGateway;
 
     private final Resource bookAbstractResource =
-        new ClassPathResource("com/consol/citrus/samples/bookstore/book-abstract.txt");
+        new ClassPathResource("org/citrusframework/samples/showcases/bookstore/book-abstract.txt");
 
     @Override
     public boolean handleResponse(MessageContext messageContext, Object endpoint) throws Exception {

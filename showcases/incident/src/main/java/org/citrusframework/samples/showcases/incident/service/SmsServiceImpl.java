@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.incident.service;
+package org.citrusframework.samples.showcases.incident.service;
 
 import org.citrusframework.schema.samples.smsgateway.v1.*;
 import org.slf4j.Logger;

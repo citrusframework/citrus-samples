@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking;
+package org.citrusframework.samples.showcases.flightbooking;
 
 import java.util.Collections;
 
@@ -81,7 +81,7 @@ public class CitrusEndpointConfig {
     @Bean
     public XsdSchemaRepository schemaRepository() {
         XsdSchemaRepository schemaRepository = new XsdSchemaRepository();
-        schemaRepository.getLocations().add("classpath:com/consol/citrus/samples/flightbooking/schema/FlightBookingSchema.xsd");
+        schemaRepository.getLocations().add("classpath:org/citrusframework/samples/showcases/flightbooking/schema/FlightBookingSchema.xsd");
         return schemaRepository;
     }
 

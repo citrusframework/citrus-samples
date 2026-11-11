@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking.entity;
+package org.citrusframework.samples.showcases.flightbooking.entity;
 
 import java.io.Serializable;
 

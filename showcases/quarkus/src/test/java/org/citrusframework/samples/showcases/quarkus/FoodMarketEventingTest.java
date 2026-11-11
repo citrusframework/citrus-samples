@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import javax.sql.DataSource;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import org.apache.camel.demo.behavior.GetShippingAddress;
-import org.apache.camel.demo.behavior.VerifyBookingCompletedMail;
-import org.apache.camel.demo.behavior.WaitForEntityPersisted;
-import org.apache.camel.demo.behavior.WaitForProductCreated;
-import org.apache.camel.demo.model.Booking;
-import org.apache.camel.demo.model.Product;
-import org.apache.camel.demo.model.ShippingAddress;
-import org.apache.camel.demo.model.Supply;
-import org.apache.camel.demo.model.event.BookingCompletedEvent;
-import org.apache.camel.demo.model.event.ShippingEvent;
+import org.citrusframework.samples.showcases.quarkus.behavior.GetShippingAddress;
+import org.citrusframework.samples.showcases.quarkus.behavior.VerifyBookingCompletedMail;
+import org.citrusframework.samples.showcases.quarkus.behavior.WaitForEntityPersisted;
+import org.citrusframework.samples.showcases.quarkus.behavior.WaitForProductCreated;
+import org.citrusframework.samples.showcases.quarkus.model.Booking;
+import org.citrusframework.samples.showcases.quarkus.model.Product;
+import org.citrusframework.samples.showcases.quarkus.model.ShippingAddress;
+import org.citrusframework.samples.showcases.quarkus.model.Supply;
+import org.citrusframework.samples.showcases.quarkus.model.event.BookingCompletedEvent;
+import org.citrusframework.samples.showcases.quarkus.model.event.ShippingEvent;
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestCaseRunner;
 import org.citrusframework.annotations.CitrusConfiguration;

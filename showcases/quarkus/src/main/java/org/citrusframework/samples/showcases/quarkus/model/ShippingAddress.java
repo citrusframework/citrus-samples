@@ -1,4 +1,4 @@
-package org.apache.camel.demo.model;
+package org.citrusframework.samples.showcases.quarkus.model;
 
 public class ShippingAddress {
 

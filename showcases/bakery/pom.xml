@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-bakery</artifactId>
+  <artifactId>citrus-sample-showcases-bakery</artifactId>
   <name>Citrus Samples:: Bakery</name>
   <version>4.0.0</version>
   <packaging>pom</packaging>
@@ -16,6 +16,7 @@
   </modules>
 
   <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <spring.version>7.0.9</spring.version>
@@ -193,6 +194,13 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.citrusframework</groupId>
+        <artifactId>citrus-bom</artifactId>
+        <version>${citrus.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <!-- Camel Dependencies -->
       <dependency>
         <groupId>org.apache.camel</groupId>

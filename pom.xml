@@ -13,7 +13,7 @@
   </properties>
 
   <modules>
-    <module>demo</module>
+    <module>showcases</module>
     <module>apps</module>
     <module>core</module>
     <module>runtimes</module>

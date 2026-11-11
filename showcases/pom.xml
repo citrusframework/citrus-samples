@@ -3,17 +3,21 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-demo</artifactId>
+  <artifactId>citrus-sample-showcases</artifactId>
   <version>4.0.0</version>
-  <name>Citrus Samples:: Demos</name>
+  <name>Citrus Samples:: Showcases</name>
   <packaging>pom</packaging>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <modules>
-    <module>sample-quarkus</module>
-    <module>sample-bakery</module>
-    <module>sample-flightbooking</module>
-    <module>sample-greeting</module>
-    <module>sample-bookstore</module>
-    <module>sample-incident</module>
+    <module>bakery</module>
+    <module>bookstore</module>
+    <module>flight-booking</module>
+    <module>greeting</module>
+    <module>incident</module>
+    <module>quarkus</module>
   </modules>
 </project>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.incident.service;
+package org.citrusframework.samples.showcases.incident.service;
 
 import org.citrusframework.schema.samples.fieldforceservice.v1.OrderNotification;
 import org.citrusframework.schema.samples.fieldforceservice.v1.OrderRequest;

@@ -1,7 +1,7 @@
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import com.github.javafaker.Faker;
-import org.apache.camel.demo.model.ShippingAddress;
+import org.citrusframework.samples.showcases.quarkus.model.ShippingAddress;
 
 public final class TestHelper {
 

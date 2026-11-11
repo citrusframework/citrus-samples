@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.flightbooking;
+package org.citrusframework.samples.showcases.flightbooking;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.consol.citrus.samples.flightbooking.model.FlightBookingRequestMessage;
+import org.citrusframework.samples.showcases.flightbooking.model.FlightBookingRequestMessage;
 import org.springframework.integration.annotation.Router;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;

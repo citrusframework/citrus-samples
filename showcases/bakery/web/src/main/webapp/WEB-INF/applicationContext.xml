@@ -9,7 +9,7 @@
     <property-placeholder xmlns="http://www.springframework.org/schema/context"
                           location="classpath:application.properties"/>
 
-    <component-scan xmlns="http://www.springframework.org/schema/context" base-package="com.consol.citrus.samples.bakery.routes"/>
+    <component-scan xmlns="http://www.springframework.org/schema/context" base-package="org.citrusframework.samples.showcases.bakery.routes"/>
 
     <bean id="jmsConnectionFactory" class="org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory">
         <constructor-arg value="${jms.broker.url}" />

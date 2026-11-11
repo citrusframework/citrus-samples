@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.flightbooking;
+package org.citrusframework.samples.showcases.flightbooking;
 
 import org.citrusframework.annotations.CitrusTestSource;
 import org.citrusframework.api.common.TestLoader;
@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 public class FlightBookingXmlIT extends TestNGCitrusSpringSupport {
 
     @Test
-    @CitrusTestSource(type = TestLoader.XML, sources = "classpath:com/consol/citrus/samples/flightbooking/FlightBookingIT.citrus.it.xml")
+    @CitrusTestSource(type = TestLoader.XML, sources = "classpath:org/citrusframework/samples/showcases/flightbooking/FlightBookingIT.citrus.it.xml")
     public void testFlightBooking() {
     }
 }

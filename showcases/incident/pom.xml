@@ -3,12 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-incident</artifactId>
+  <artifactId>citrus-sample-showcases-incident</artifactId>
   <name>Citrus Samples:: Incident</name>
   <version>4.0.0</version>
   <packaging>war</packaging>
 
   <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <spring.version>7.0.9</spring.version>
@@ -206,11 +207,11 @@
           <extension>true</extension>
           <sourceType>xmlschema</sourceType>
           <sources>
-            <source>src/main/resources/com/consol/citrus/samples/incident/schema/FieldForceService.xsd</source>
-            <source>src/main/resources/com/consol/citrus/samples/incident/schema/NetworkService.xsd</source>
+            <source>src/main/resources/org/citrusframework/samples/showcases/incident/schema/FieldForceService.xsd</source>
+            <source>src/main/resources/org/citrusframework/samples/showcases/incident/schema/NetworkService.xsd</source>
           </sources>
           <xjbSources>
-            <xjbSource>src/main/resources/com/consol/citrus/samples/incident/schema/binding-jaxb.xjb</xjbSource>
+            <xjbSource>src/main/resources/org/citrusframework/samples/showcases/incident/schema/binding-jaxb.xjb</xjbSource>
           </xjbSources>
         </configuration>
         <dependencies>
@@ -249,9 +250,9 @@
               <sourceRoot>${project.build.directory}/generated-sources/jaxb</sourceRoot>
               <wsdlOptions>
                 <wsdlOption>
-                  <wsdl>${basedir}/src/main/resources/com/consol/citrus/samples/incident/schema/IncidentManager.wsdl</wsdl>
+                  <wsdl>${basedir}/src/main/resources/org/citrusframework/samples/showcases/incident/schema/IncidentManager.wsdl</wsdl>
                   <bindingFiles>
-                    <bindingFile>${basedir}/src/main/resources/com/consol/citrus/samples/incident/schema/binding-jaxws.xjb</bindingFile>
+                    <bindingFile>${basedir}/src/main/resources/org/citrusframework/samples/showcases/incident/schema/binding-jaxws.xjb</bindingFile>
                   </bindingFiles>
                   <extraargs>
                     <extraarg>-impl</extraarg>
@@ -259,7 +260,7 @@
                   </extraargs>
                 </wsdlOption>
                 <wsdlOption>
-                  <wsdl>${basedir}/src/main/resources/com/consol/citrus/samples/incident/schema/SmsGateway.wsdl</wsdl>
+                  <wsdl>${basedir}/src/main/resources/org/citrusframework/samples/showcases/incident/schema/SmsGateway.wsdl</wsdl>
                 </wsdlOption>
               </wsdlOptions>
             </configuration>
@@ -268,6 +269,18 @@
       </plugin>
     </plugins>
   </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.citrusframework</groupId>
+        <artifactId>citrus-bom</artifactId>
+        <version>${citrus.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <!-- Spring framework -->

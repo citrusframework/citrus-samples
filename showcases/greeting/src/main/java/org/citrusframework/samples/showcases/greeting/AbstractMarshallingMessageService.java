@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.greeting;
+package org.citrusframework.samples.showcases.greeting;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;

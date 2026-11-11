@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,10 +28,10 @@ import jakarta.inject.Singleton;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
-import org.apache.camel.demo.model.Booking;
-import org.apache.camel.demo.model.ShippingAddress;
-import org.apache.camel.demo.model.Supply;
-import org.apache.camel.demo.model.event.ShippingEvent;
+import org.citrusframework.samples.showcases.quarkus.model.Booking;
+import org.citrusframework.samples.showcases.quarkus.model.ShippingAddress;
+import org.citrusframework.samples.showcases.quarkus.model.Supply;
+import org.citrusframework.samples.showcases.quarkus.model.event.ShippingEvent;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.jboss.logging.Logger;
 

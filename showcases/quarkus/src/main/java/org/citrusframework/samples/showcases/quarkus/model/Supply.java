@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo.model;
+package org.citrusframework.samples.showcases.quarkus.model;
 
 import java.math.BigDecimal;
 

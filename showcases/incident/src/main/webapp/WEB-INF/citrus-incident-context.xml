@@ -7,5 +7,5 @@
 
   <context:annotation-config/>
 
-  <import resource="classpath:com/consol/citrus/samples/incident/incident-manager.xml"/>
+  <import resource="classpath:org/citrusframework/samples/showcases/incident/incident-manager.xml"/>
 </beans>

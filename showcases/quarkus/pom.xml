@@ -4,11 +4,12 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-quarkus</artifactId>
+  <artifactId>citrus-sample-showcases-quarkus</artifactId>
   <name>Citrus Samples:: Quarkus</name>
   <version>4.0.0</version>
 
   <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 

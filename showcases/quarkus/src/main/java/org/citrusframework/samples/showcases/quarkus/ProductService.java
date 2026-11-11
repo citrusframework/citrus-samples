@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
-import org.apache.camel.demo.model.Product;
+import org.citrusframework.samples.showcases.quarkus.model.Product;
 
 @Singleton
 public class ProductService {

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,8 +35,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.apache.camel.demo.model.Product;
-import org.apache.camel.demo.model.Supply;
+import org.citrusframework.samples.showcases.quarkus.model.Product;
+import org.citrusframework.samples.showcases.quarkus.model.Supply;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.jboss.logging.Logger;

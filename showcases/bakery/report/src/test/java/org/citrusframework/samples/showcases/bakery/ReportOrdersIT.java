@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bakery;
+package org.citrusframework.samples.showcases.bakery;
 
 import java.util.Map;
 

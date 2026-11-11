@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bakery.service;
+package org.citrusframework.samples.showcases.bakery.service;
 
 import java.util.Date;
 import java.util.Properties;

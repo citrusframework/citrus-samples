@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.incident.service;
+package org.citrusframework.samples.showcases.incident.service;
 
 import java.io.IOException;
 
-import com.consol.citrus.samples.incident.exception.ServiceException;
+import org.citrusframework.samples.showcases.incident.exception.ServiceException;
 import jakarta.jms.JMSException;
 import jakarta.jms.Message;
 import jakarta.jms.MessageListener;

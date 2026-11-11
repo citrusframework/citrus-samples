@@ -1,6 +1,6 @@
-package org.apache.camel.demo.behavior;
+package org.citrusframework.samples.showcases.quarkus.behavior;
 
-import org.apache.camel.demo.model.Booking;
+import org.citrusframework.samples.showcases.quarkus.model.Booking;
 import org.citrusframework.TestActionRunner;
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.TestBehavior;

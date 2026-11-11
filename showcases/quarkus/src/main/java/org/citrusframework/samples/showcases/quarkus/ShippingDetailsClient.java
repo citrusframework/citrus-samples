@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo;
+package org.citrusframework.samples.showcases.quarkus;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import org.apache.camel.demo.model.ShippingAddress;
+import org.citrusframework.samples.showcases.quarkus.model.ShippingAddress;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @Path("/shipping")

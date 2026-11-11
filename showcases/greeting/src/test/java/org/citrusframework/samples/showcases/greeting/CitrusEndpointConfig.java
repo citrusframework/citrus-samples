@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.greeting;
+package org.citrusframework.samples.showcases.greeting;
 
 import java.util.Collections;
 
@@ -49,7 +49,7 @@ import org.springframework.xml.xsd.SimpleXsdSchema;
  */
 @Configuration
 @PropertySource("citrus.properties")
-@ImportResource("classpath:com/consol/citrus/samples/greeting/channel/greeting-channel.xml")
+@ImportResource("classpath:org/citrusframework/samples/showcases/greeting/channel/greeting-channel.xml")
 public class CitrusEndpointConfig {
 
     private final TestActions actions = new DefaultTestActions();

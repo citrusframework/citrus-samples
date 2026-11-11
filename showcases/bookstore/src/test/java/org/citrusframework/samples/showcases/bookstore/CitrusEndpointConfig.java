@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bookstore;
+package org.citrusframework.samples.showcases.bookstore;
 
 import java.util.Collections;
 import java.util.List;
@@ -110,6 +110,6 @@ public class CitrusEndpointConfig {
 
     @Bean
     public Marshaller jax2bMarshaller() {
-        return new Jaxb2Marshaller("com.consol.citrus.samples.bookstore.model");
+        return new Jaxb2Marshaller("org.citrusframework.samples.showcases.bookstore.model");
     }
 }

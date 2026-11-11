@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.bakery;
+package org.citrusframework.samples.showcases.bakery;
 
 import org.apache.hc.core5.http.ContentType;
 import org.citrusframework.dsl.TestActionSupport;

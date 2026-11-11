@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package org.apache.camel.demo.model.event;
+package org.citrusframework.samples.showcases.quarkus.model.event;
 
-import org.apache.camel.demo.model.Booking;
+import org.citrusframework.samples.showcases.quarkus.model.Booking;
 
 public class BookingCompletedEvent {
 
