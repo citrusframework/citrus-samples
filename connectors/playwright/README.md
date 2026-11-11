@@ -10,10 +10,10 @@ creating a new entry via UI interaction in a browser. Read about this feature in
 Objectives
 ---------
 
-The [todo-list](../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
+The [todo-list](../../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
 We open the browser and perform some user interaction with the todo app user interface. Besides that we call the Http REST API in order to clean up
 all todo entries up front. The Playwright integration is also used to validate HTML elements and page objects in our test cases.
-This sample mirrors [sample-selenium](../sample-selenium/README.md) — same journeys, same page objects — so you can compare both browser integrations side by side.
+This sample mirrors [connectors/selenium](../selenium/README.md) — same journeys, same page objects — so you can compare both browser integrations side by side.
 
 First of all we add a Playwright browser component as Spring bean.
 
@@ -243,7 +243,7 @@ public void testAddEntry() {
 Run
 ---------
 
-**NOTE:** This test depends on the [todo-app](../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+**NOTE:** This test depends on the [todo-app](../../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
 You also need **Citrus 5.1.0+** (see the note at the top of this file). Until 5.1.0 is released you can verify the sample against a
 local framework snapshot build with `mvn verify -Dcitrus.version=5.1.0-SNAPSHOT` — this additionally requires a locally installed
 `citrus-endpoint-catalog:5.1.0-SNAPSHOT`, otherwise pin that single dependency to `5.0.0` for the local run.
@@ -268,7 +268,7 @@ System under test
 ---------
 
 The sample uses a small todo list application as system under test. The application is a web application
-that you can deploy on any web container. You can find the todo-list sources [here](../apps/todo-app). Up to now we have started an
+that you can deploy on any web container. You can find the todo-list sources [here](../../apps/todo-app). Up to now we have started an
 embedded Jetty web container with automatic deployments during the Maven build lifecycle. This approach is fantastic
 when running automated tests in a continuous build.
 

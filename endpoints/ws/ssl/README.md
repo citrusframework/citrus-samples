@@ -171,7 +171,7 @@ Run from the repository root:
 ./mvnw -f endpoints/ws/ssl/pom.xml clean verify -Dsystem.under.test.mode=embedded
 ```
 
-Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+Copy this complete sample root outside the repository. No aggregator parent installation is required:
 
 ```shell
 cp -R endpoints/ws/ssl /tmp/citrus-endpoints-ws-ssl

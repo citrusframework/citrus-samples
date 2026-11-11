@@ -18,7 +18,7 @@ The bakery sample application uses several services that are exchanging data ove
 to one of the worker instances. After the worker has processed the order it will add an entry to the central reporting server. The reporting collects
 all events and gives a total order processing overview to clients.
 
-![Architecture](../images/architecture.png)
+![Architecture](images/architecture.png)
 
 Using embedded Jetty
 ---------
@@ -86,7 +86,7 @@ Run from the repository root:
 ./mvnw -f showcases/bakery/pom.xml clean verify -Dsystem.under.test.mode=embedded
 ```
 
-Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+Copy this complete sample root outside the repository. No aggregator parent installation is required:
 
 ```shell
 cp -R showcases/bakery /tmp/citrus-showcases-bakery

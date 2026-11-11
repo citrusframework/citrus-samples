@@ -9,7 +9,7 @@ creating a new entry via UI interaction in a browser. Read about this feature in
 Objectives
 ---------
 
-The [todo-list](../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
+The [todo-list](../../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
 We open the browser and perform some user interaction with the todo app user interface. Besides that we call the Http REST API in order to clean up
 all todo entries up front. The Selenium integration is also used to validate HTML elements and page objects in our test cases. 
 
@@ -206,7 +206,7 @@ public void testAddEntry() {
 Run
 ---------
 
-**NOTE:** This test depends on the [todo-app](../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+**NOTE:** This test depends on the [todo-app](../../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
 
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
@@ -224,7 +224,7 @@ System under test
 ---------
 
 The sample uses a small todo list application as system under test. The application is a web application
-that you can deploy on any web container. You can find the todo-list sources [here](../apps/todo-app). Up to now we have started an
+that you can deploy on any web container. You can find the todo-list sources [here](../../apps/todo-app). Up to now we have started an
 embedded Jetty web container with automatic deployments during the Maven build lifecycle. This approach is fantastic 
 when running automated tests in a continuous build.
   

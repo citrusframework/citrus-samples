@@ -129,7 +129,7 @@ Run from the repository root:
 cd build-tools/gradle && gradle clean build
 ```
 
-Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+Copy this complete sample root outside the repository. No aggregator parent installation is required:
 
 ```shell
 cp -R build-tools/gradle /tmp/citrus-build-tools-gradle

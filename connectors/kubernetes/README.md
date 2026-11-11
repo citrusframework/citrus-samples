@@ -9,7 +9,7 @@ Read about the Citrus Kubernetes integration in the [reference guide][4]
 Objectives
 ---------
 
-The [todo-list](../apps/todo-app/README.md) sample application provides a REST API for managing todo entries. We want to deploy the
+The [todo-list](../../apps/todo-app/README.md) sample application provides a REST API for managing todo entries. We want to deploy the
 whole application in Kubernetes in order to expose the REST API to other pods running on the Kubernetes platform. The Citrus tests
 will also get deployed to Kubernetes in order to access the exposed service API via Kubernetes service discovery. In addition to that we access the Kubernetes
 REST services within the Citrus tests in order to verify deployment states.
@@ -42,7 +42,7 @@ This sample uses the [Fabric8 Maven plugins](https://maven.fabric8.io/) for gene
 First of all we build and deploy the todo-list application as pod in Kubernetes. We are going to build a Docker image the runs the todo-list application as web 
 application in Tomcat 8. In addition to that we define a service resource in Kubernetes that exposes the todo-list REST API to other pods. 
 
-The complete configuration is placed in the todo-list project Maven POM ([pom.xml](../apps/todo-app/pom.xml)) as plugin configuration. The Fabric8 Maven plugin configuration looks like follows.
+The complete configuration is placed in the todo-list project Maven POM ([pom.xml](../../apps/todo-app/pom.xml)) as plugin configuration. The Fabric8 Maven plugin configuration looks like follows.
   
 ```xml
 <plugin>
@@ -349,7 +349,7 @@ executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all v
 - **Modules:** `citrus-kubernetes`.
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java, XML, YAML.
-- **Prerequisites:** Access to a configured Kubernetes cluster is required. JDK 21+ and Maven 3.9+ for a copied Maven sample.
+- **Prerequisites:** Access to a configured Kubernetes cluster is required. JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy.
 - **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
@@ -361,6 +361,7 @@ Run from the repository root:
 Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
 
 ```shell
+./mvnw -f apps/todo-app/pom.xml install -DskipTests
 cp -R connectors/kubernetes /tmp/citrus-connectors-kubernetes
 cd /tmp/citrus-connectors-kubernetes
 mvn clean verify -Dsystem.under.test.mode=embedded

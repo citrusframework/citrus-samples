@@ -23,7 +23,6 @@ on:
       - main
       - 3.x
       - 3.x-vintage
-      - feature/127-restructure-sample-catalog
     paths-ignore:
       - '**.adoc'
       - '**.md'
@@ -35,7 +34,6 @@ on:
       - main
       - 3.x
       - 3.x-vintage
-      - feature/127-restructure-sample-catalog
     paths-ignore:
       - '**.adoc'
       - '**.md'
@@ -104,8 +102,11 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+      - name: Install shared todo-app SUT
+        if: matrix.group != 'apps'
+        run: ./mvnw --no-transfer-progress -f apps/todo-app/pom.xml install -DskipTests
       - name: Verify ${{ matrix.group }} samples
-        run: ./mvnw --no-transfer-progress verify -pl ${{ matrix.group }} -amd -Dsystem.under.test.mode=embedded
+        run: ./mvnw --no-transfer-progress -f ${{ matrix.group }}/pom.xml verify -Dsystem.under.test.mode=embedded
 
   integration:
     runs-on: ubuntu-latest

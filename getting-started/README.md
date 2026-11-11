@@ -1,29 +1,42 @@
-Groovy test sample ![Logo][1]
+Getting started sample ![Logo][1]
 ==============
 
-This sample uses Groovy to write Citrus test cases.
+This sample introduces Citrus integration testing across Java, XML, YAML, and Groovy DSLs.
 
 Objectives
 ---------
 
-Citrus supports multiple languages to write test cases (e.g. XML, Java, Groovy).
+Citrus supports multiple languages to write test cases (Java, XML, YAML, and Groovy).
 
-This sample uses Groovy code to write a Citrus test case that is run via TestNG.
+`TodoListIT` runs the same todo-list integration scenario in all four DSLs via TestNG: a Java `@CitrusTest` method plus `@CitrusTestSource` runner methods for XML, YAML, and Groovy.
 
 ```java
 @Test
-@CitrusGroovyTest(packageScan = "org.citrusframework.samples.todolist")
-public void loadGroovyTests() {
+@CitrusTest
+public void testTodoList() {
+    // Java DSL actions...
+}
+
+@Test
+@CitrusTestSource(type = TestLoader.XML,
+        sources = "classpath:org/citrusframework/samples/gettingstarted/todo-list.citrus.xml")
+public void testTodoListXml() {
+}
+
+@Test
+@CitrusTestSource(type = TestLoader.YAML,
+        sources = "classpath:org/citrusframework/samples/gettingstarted/todo-list.citrus.yaml")
+public void testTodoListYaml() {
+}
+
+@Test
+@CitrusTestSource(type = TestLoader.GROOVY,
+        sources = "classpath:org/citrusframework/samples/gettingstarted/todo-list.citrus.groovy")
+public void testTodoListGroovy() {
 }
 ```
-    
-This test method is annotated with `@CitrusGroovyTest` annotation and scans a given package for `.groovy` files. 
-This tells Citrus to load the Groovy script files in that directory as test cases. Each Groovy file will be run as 
-a separate test. This approach is similar to that being used by Cucumber BDD where a single test loads feature files
-as tests.
 
-As usually you can use the Spring framework to glue things together with dependency injection. 
-The EndpointConfiguration defines a Http client endpoint component that will be used to connect with the todo app system under test.
+`EndpointConfig` defines the Spring HTTP client endpoint bean used across all four DSL variants to connect to the todo application system under test:
 
 ```java
 @Bean
@@ -84,17 +97,20 @@ As usually the test executed will be reported in the Citrus test results.
 | 
 | CITRUS TEST RESULTS
 | 
-|  todo-list ................................................... SUCCESS
+|  TodoListIT.testTodoList ..................................... SUCCESS
+|  todo-list.citrus ............................................ SUCCESS
+|  TodoListIT.todo-list.xml .................................... SUCCESS
+|  TodoListIT.todo-list.yaml ................................... SUCCESS
 | 
-| TOTAL:	1
+| TOTAL:	4
 | SKIPPED:	0 (0.0%)
 | FAILED:	0 (0.0%)
-| SUCCESS:	1 (100.0%)
+| SUCCESS:	4 (100.0%)
 | 
 | ------------------------------------------------------------------------
 ```
 
-This is how you can write Groovy scripts to define Citrus test cases.           
+Each variant executes against the same embedded todo-list server instance.
 
 Run
 ---------
