@@ -15,5 +15,6 @@
 
   <modules>
     <module>http</module>
+    <module>ws</module>
   </modules>
 </project>

@@ -113,6 +113,6 @@ jobs:
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/http
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-http
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-json
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-soap
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/ws
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-websocket
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-xml

@@ -77,14 +77,14 @@ system under test. Please find following list of samples and their primary objec
 | [sample-websocket-client](samples-websocket/sample-websocket-client)          |            Shows how to connect to a Websocket as a client during the test             |
 | [sample-websocket-server](samples-websocket/sample-websocket-server)          |          Shows how to provide a Websocket as a server for clients to connect           |
 | Samples SOAP                                                                  |                                      Description                                       |
-| [sample-wsdl](samples-soap/sample-wsdl)                                       |                             Auto generate tests from WSDL                              |
-| [sample-soap](samples-soap/sample-soap)                                       |                          Shows basic SOAP web service support                          |
-| [sample-soap-mtom](samples-soap/sample-soap-mtom)                             |              Shows how to send and receive MTOM enabled SOAP attachments               |
-| [sample-soap-attachment](samples-soap/sample-soap-attachment)                 |                      Shows how to send SOAP attachments to server                      |
-| [sample-soap-wssecurity](samples-soap/sample-soap-wssecurity)                 |   Shows how to configure SOAP web service client and server with WSSecurity enabled    |
-| [sample-soap-wsaddressing](samples-soap/sample-soap-wsaddressing)             |  Shows how to configure SOAP web service client and server with WSAddressing enabled   |
-| [sample-soap-ssl](samples-soap/sample-soap-ssl)                               |          Shows how to configure SOAP web service with SSL secure connectivity          |
-| [sample-soap-static-response](samples-soap/sample-soap-static-response)       |   Shows how to setup a static response generating SOAP web service server component    |
+| [sample-wsdl](endpoints/ws/wsdl)                                       |                             Auto generate tests from WSDL                              |
+| [sample-soap](endpoints/ws/basic)                                       |                          Shows basic SOAP web service support                          |
+| [sample-soap-mtom](endpoints/ws/mtom)                             |              Shows how to send and receive MTOM enabled SOAP attachments               |
+| [sample-soap-attachment](endpoints/ws/attachment)                 |                      Shows how to send SOAP attachments to server                      |
+| [sample-soap-wssecurity](endpoints/ws/ws-security)                 |   Shows how to configure SOAP web service client and server with WSSecurity enabled    |
+| [sample-soap-wsaddressing](endpoints/ws/ws-addressing)             |  Shows how to configure SOAP web service client and server with WSAddressing enabled   |
+| [sample-soap-ssl](endpoints/ws/ssl)                               |          Shows how to configure SOAP web service with SSL secure connectivity          |
+| [sample-soap-static-response](endpoints/ws/static-response)       |   Shows how to setup a static response generating SOAP web service server component    |
 | Samples Cucumber BDD                                                          |                                      Description                                       |
 | [sample-cucumber](runtimes/cucumber)                           |                          Shows BDD integration with Cucumber                           |
 | [sample-cucumber-spring](runtimes/cucumber-spring)             |          Shows BDD integration with Cucumber using Spring Framework injection          |

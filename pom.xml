@@ -34,7 +34,6 @@
     <module>sample-jms</module>
     <module>sample-kafka</module>
     <module>sample-binary</module>
-    <module>samples-soap</module>
     <module>samples-db</module>
     <module>samples-websocket</module>
   </modules>
