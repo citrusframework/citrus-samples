@@ -11,7 +11,7 @@
     <send endpoint="jms:queue:jms.todo.inbound?connectionFactory=activeMqConnectionFactory">
       <message>
         <headers>
-          <header name="_type" value="com.consol.citrus.samples.todolist.model.TodoEntry"/>
+          <header name="_type" value="org.citrusframework.samples.apps.todoapp.model.TodoEntry"/>
         </headers>
         <body>
           <data><![CDATA[{ "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": ${done}}]]></data>

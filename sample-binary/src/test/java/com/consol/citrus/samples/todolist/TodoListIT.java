@@ -44,7 +44,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         $(send()
             .endpoint(todoJmsEndpoint)
             .message()
-            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry")
             .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")
             .process(processor().toBinary().encoding(StandardCharsets.UTF_8)));
 
@@ -52,7 +52,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
             .endpoint(todoJmsEndpoint)
             .message()
             .type(MessageType.BINARY_BASE64)
-            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry")
             .body("citrus:encodeBase64('{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}')"));
     }
 
@@ -66,14 +66,14 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         $(send()
             .endpoint(todoJmsEndpoint)
             .message()
-            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry")
             .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}")
             .process(processor().toBinary().encoding(StandardCharsets.UTF_8)));
 
         $(receive()
             .endpoint(todoJmsEndpoint)
             .message()
-            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry")
             .type(MessageType.BINARY)
             .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
     }

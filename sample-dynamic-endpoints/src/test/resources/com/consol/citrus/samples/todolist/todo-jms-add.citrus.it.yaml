@@ -16,7 +16,7 @@ actions:
       message:
         headers:
           - name: "_type"
-            value: "com.consol.citrus.samples.todolist.model.TodoEntry"
+            value: "org.citrusframework.samples.apps.todoapp.model.TodoEntry"
         body:
           data: |
             { "id": "${todoId}", "title": "${todoName}", "description": "${todoDescription}", "done": ${done}}

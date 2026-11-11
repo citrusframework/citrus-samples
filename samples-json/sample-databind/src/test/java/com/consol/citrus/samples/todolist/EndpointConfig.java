@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
+import org.citrusframework.samples.apps.todoapp.TodoAppAutoConfiguration;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;
 import org.citrusframework.http.client.HttpClient;

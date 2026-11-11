@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.dao;
+package org.citrusframework.samples.apps.todoapp.dao;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.UUID;
 import javax.sql.DataSource;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 

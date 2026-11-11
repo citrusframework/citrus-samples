@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.dao;
+package org.citrusframework.samples.apps.todoapp.dao;
 
 /**
  * @author Christoph Deppisch

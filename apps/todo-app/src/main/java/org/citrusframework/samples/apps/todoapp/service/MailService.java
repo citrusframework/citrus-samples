@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.service;
+package org.citrusframework.samples.apps.todoapp.service;
 
 import java.util.Date;
 import java.util.Properties;

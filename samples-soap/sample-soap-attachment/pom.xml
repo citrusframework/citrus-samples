@@ -90,7 +90,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring.boot.version}</version>
         <configuration>
-          <mainClass>com.consol.citrus.samples.todolist.TodoApplication</mainClass>
+          <mainClass>org.citrusframework.samples.apps.todoapp.TodoApplication</mainClass>
           <useTestClasspath>false</useTestClasspath>
         </configuration>
       </plugin>

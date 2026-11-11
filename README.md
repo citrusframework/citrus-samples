@@ -127,7 +127,7 @@ You can run all the samples locally on your machine. We are using the Maven buil
 
 All samples use some project as a system under test. 
 These sample application has to be started before executing any Citrus tests.
-Many samples reuse the [todo-list](todo-app) application which is a simple web application that provides a basic REST API. 
+Many samples reuse the [todo-list](apps/todo-app) application which is a simple web application that provides a basic REST API.
 
 You can auto start and deploy the todo-list application within the Maven build by using the following command:
 

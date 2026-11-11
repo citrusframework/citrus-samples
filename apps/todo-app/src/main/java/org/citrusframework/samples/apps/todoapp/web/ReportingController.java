@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.web;
+package org.citrusframework.samples.apps.todoapp.web;
 
-import com.consol.citrus.samples.todolist.service.ReportingService;
+import org.citrusframework.samples.apps.todoapp.service.ReportingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

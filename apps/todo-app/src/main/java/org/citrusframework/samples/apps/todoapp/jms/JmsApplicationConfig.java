@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.jms;
+package org.citrusframework.samples.apps.todoapp.jms;
 
 import java.util.Collections;
 

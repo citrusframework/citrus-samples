@@ -16,6 +16,7 @@
 
 package com.consol.citrus.samples.todolist;
 
+import org.citrusframework.samples.apps.todoapp.TodoAppAutoConfiguration;
 import org.citrusframework.api.container.AfterSuite;
 import org.citrusframework.container.SequenceAfterSuite;
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;

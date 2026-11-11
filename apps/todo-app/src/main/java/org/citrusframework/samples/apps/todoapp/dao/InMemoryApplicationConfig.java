@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist.dao;
+package org.citrusframework.samples.apps.todoapp.dao;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

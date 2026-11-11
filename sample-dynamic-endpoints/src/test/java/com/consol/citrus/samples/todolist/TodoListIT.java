@@ -84,7 +84,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         $(send()
             .endpoint("jms:queue:jms.todo.inbound?connectionFactory=activeMqConnectionFactory")
             .message()
-            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry")
             .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));
 
         $(http()

@@ -6,7 +6,7 @@ This sample shows how to use dynamic endpoints in Citrus. Read about this featur
 Objectives
 ---------
 
-The [todo-list](../todo-app/README.md) sample application provides a REST API for managing todo entries.
+The [todo-list](../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
 Usually we would define Http client endpoint components in Citrus configuration in order to connect to the REST API
 server endpoint.
 
@@ -42,7 +42,7 @@ JMS dynamic endpoint.
 ```java
 send(httpActionBuilder -> httpActionBuilder
     .endpoint("jms:queue:jms.todo.inbound?connectionFactory=activeMqConnectionFactory")
-    .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+    .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry")
     .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}"));    
 ```
         
@@ -61,7 +61,7 @@ This is how to use dynamic endpoint components in Citrus.
 Run
 ---------
 
-**NOTE:** This test depends on the [todo-app](../todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+**NOTE:** This test depends on the [todo-app](../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
 
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
@@ -79,7 +79,7 @@ System under test
 ---------
 
 The sample uses a small todo list application as system under test. The application is a web application
-that you can deploy on any web container. You can find the todo-list sources [here](../todo-app). Up to now we have started an 
+that you can deploy on any web container. You can find the todo-list sources [here](../apps/todo-app). Up to now we have started an
 embedded Jetty web container with automatic deployments during the Maven build lifecycle. This approach is fantastic 
 when running automated tests in a continuous build.
   

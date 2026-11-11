@@ -9,7 +9,7 @@ Read about the Citrus Kubernetes integration in the [reference guide][4]
 Objectives
 ---------
 
-The [todo-list](../todo-app/README.md) sample application provides a REST API for managing todo entries. We want to deploy the
+The [todo-list](../apps/todo-app/README.md) sample application provides a REST API for managing todo entries. We want to deploy the
 whole application in Kubernetes in order to expose the REST API to other pods running on the Kubernetes platform. The Citrus tests
 will also get deployed to Kubernetes in order to access the exposed service API via Kubernetes service discovery. In addition to that we access the Kubernetes
 REST services within the Citrus tests in order to verify deployment states.
@@ -42,7 +42,7 @@ This sample uses the [Fabric8 Maven plugins](https://maven.fabric8.io/) for gene
 First of all we build and deploy the todo-list application as pod in Kubernetes. We are going to build a Docker image the runs the todo-list application as web 
 application in Tomcat 8. In addition to that we define a service resource in Kubernetes that exposes the todo-list REST API to other pods. 
 
-The complete configuration is placed in the todo-list project Maven POM ([pom.xml](../todo-app/pom.xml)) as plugin configuration. The Fabric8 Maven plugin configuration looks like follows.
+The complete configuration is placed in the todo-list project Maven POM ([pom.xml](../apps/todo-app/pom.xml)) as plugin configuration. The Fabric8 Maven plugin configuration looks like follows.
   
 ```xml
 <plugin>

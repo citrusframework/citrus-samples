@@ -1,7 +1,7 @@
-package com.consol.citrus.samples.todolist.kafka;
+package org.citrusframework.samples.apps.todoapp.kafka;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
-import com.consol.citrus.samples.todolist.service.TodoListService;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.service.TodoListService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;

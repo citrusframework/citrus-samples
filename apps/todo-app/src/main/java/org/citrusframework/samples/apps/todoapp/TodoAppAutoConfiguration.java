@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.apps.todoapp;
 
 import org.citrusframework.api.container.BeforeSuite;
 import org.citrusframework.container.SequenceBeforeSuite;

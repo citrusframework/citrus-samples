@@ -1,8 +1,8 @@
-package com.consol.citrus.samples.todolist.kafka;
+package org.citrusframework.samples.apps.todoapp.kafka;
 
 import java.util.List;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

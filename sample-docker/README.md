@@ -1,7 +1,7 @@
 Docker sample ![Logo][1]
 ==============
 
-This sample uses [Docker](https://www.docker.com/) for containerized application infrastructure. Both the [todo-list](../todo-app/README.md) system under test and 
+This sample uses [Docker](https://www.docker.com/) for containerized application infrastructure. Both the [todo-list](../apps/todo-app/README.md) system under test and
 the Citrus integration tests are built and run as Docker container. The Citrus tests are then able to use Docker networking and DNS features 
 in order to access the exposed services on the todo-list container. This way Citrus is able to participate on the Docker infrastructure for in-container testing.
 
@@ -12,9 +12,9 @@ Read about the Citrus Docker integration in the [reference guide][4]
 Objectives
 ---------
 
-**NOTE:** This test depends on the [todo-app](../todo-app/README.md) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+**NOTE:** This test depends on the [todo-app](../apps/todo-app/README.md) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
 
-The [todo-list](../todo-app/README.md) sample application provides a REST API for managing todo entries. We want to access this REST API in a integration test scenario while the application is
+The [todo-list](../apps/todo-app/README.md) sample application provides a REST API for managing todo entries. We want to access this REST API in a integration test scenario while the application is
 run as Docker container. This means we need to build the todo-app as Docker image, run that image on Docker and start the integration tests. The Citrus tests
 are built and run as container, too. The Citrus test container is then able to connect with the todo-list REST API via Docker networking between containers. Also
 with Citrus Docker client integration we can check and manipulate the todo-app Docker container at test runtime.

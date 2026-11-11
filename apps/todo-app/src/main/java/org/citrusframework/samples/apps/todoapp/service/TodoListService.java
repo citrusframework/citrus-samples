@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.service;
+package org.citrusframework.samples.apps.todoapp.service;
 
 import java.util.Set;
 import java.util.UUID;
 
-import com.consol.citrus.samples.todolist.dao.TodoListDao;
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.dao.TodoListDao;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

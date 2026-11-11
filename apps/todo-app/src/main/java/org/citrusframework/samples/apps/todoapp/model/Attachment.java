@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.model;
+package org.citrusframework.samples.apps.todoapp.model;
 
 import jakarta.xml.bind.annotation.*;
 

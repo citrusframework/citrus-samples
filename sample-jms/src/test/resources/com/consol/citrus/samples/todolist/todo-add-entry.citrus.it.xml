@@ -10,7 +10,7 @@
     <send endpoint="todoJmsEndpoint">
       <message>
         <headers>
-          <header name="_type" value="com.consol.citrus.samples.todolist.model.TodoEntry"/>
+          <header name="_type" value="org.citrusframework.samples.apps.todoapp.model.TodoEntry"/>
         </headers>
         <body>
           <data>{ "title": "${todoName}", "description": "${todoDescription}" }</data>

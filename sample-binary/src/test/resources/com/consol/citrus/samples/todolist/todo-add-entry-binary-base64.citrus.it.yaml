@@ -16,7 +16,7 @@ actions:
         type: BINARY
         headers:
           - name: _type
-            value: com.consol.citrus.samples.todolist.model.TodoEntry
+            value: org.citrusframework.samples.apps.todoapp.model.TodoEntry
         body:
           data: '{ "title": "${todoName}", "description": "${todoDescription}", "done": ${done}}'
   - receive:
@@ -25,7 +25,7 @@ actions:
         type: BINARY_BASE64
         headers:
           - name: _type
-            value: com.consol.citrus.samples.todolist.model.TodoEntry
+            value: org.citrusframework.samples.apps.todoapp.model.TodoEntry
         body:
           data: |
             citrus:encodeBase64('{ "title": "${todoName}", "description": "${todoDescription}", "done": ${done}}')

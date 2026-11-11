@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.jms;
+package org.citrusframework.samples.apps.todoapp.jms;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
-import com.consol.citrus.samples.todolist.service.TodoListService;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jms.annotation.JmsListener;

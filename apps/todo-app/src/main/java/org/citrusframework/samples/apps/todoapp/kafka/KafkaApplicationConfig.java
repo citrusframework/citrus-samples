@@ -17,7 +17,7 @@
  *  limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.kafka;
+package org.citrusframework.samples.apps.todoapp.kafka;
 
 import java.util.HashMap;
 import java.util.Map;

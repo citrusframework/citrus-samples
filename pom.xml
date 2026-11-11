@@ -14,7 +14,7 @@
 
   <modules>
     <module>demo</module>
-    <module>todo-app</module>
+    <module>apps</module>
     <module>sample-camel-context</module>
     <module>sample-behaviors</module>
     <module>sample-dictionaries</module>

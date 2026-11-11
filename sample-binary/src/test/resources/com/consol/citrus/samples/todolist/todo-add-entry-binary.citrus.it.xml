@@ -11,7 +11,7 @@
     <send endpoint="todoEndpoint">
       <message type="BINARY">
         <headers>
-          <header name="_type" value="com.consol.citrus.samples.todolist.model.TodoEntry"/>
+          <header name="_type" value="org.citrusframework.samples.apps.todoapp.model.TodoEntry"/>
         </headers>
         <body>
           <data><![CDATA[{ "title": "${todoName}", "description": "${todoDescription}", "done": ${done}}]]></data>
@@ -21,7 +21,7 @@
     <receive endpoint="todoEndpoint">
       <message type="BINARY">
         <headers>
-          <header name="_type" value="com.consol.citrus.samples.todolist.model.TodoEntry"/>
+          <header name="_type" value="org.citrusframework.samples.apps.todoapp.model.TodoEntry"/>
         </headers>
         <body>
           <data><![CDATA[{ "title": "${todoName}", "description": "${todoDescription}", "done": ${done}}]]></data>

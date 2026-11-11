@@ -6,7 +6,7 @@
 //
 
 
-package com.consol.citrus.samples.todolist.soap.model;
+package org.citrusframework.samples.apps.todoapp.soap.model;
 
 import java.util.ArrayList;
 import jakarta.xml.bind.annotation.XmlAccessType;

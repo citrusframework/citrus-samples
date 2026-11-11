@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.web;
+package org.citrusframework.samples.apps.todoapp.web;
 
 import java.util.Set;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
-import com.consol.citrus.samples.todolist.service.TodoListService;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.service.TodoListService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

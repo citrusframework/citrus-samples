@@ -6,4 +6,4 @@
 //
 
 @jakarta.xml.bind.annotation.XmlSchema(namespace = "http://citrusframework.org/samples/todolist", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package com.consol.citrus.samples.todolist.soap.model;
+package org.citrusframework.samples.apps.todoapp.soap.model;

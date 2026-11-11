@@ -7,7 +7,7 @@ Citrus SOAP features in [reference guide][4]
 Objectives
 ---------
 
-The [todo-list](../todo-app/README.md) sample application manages todo entries. The application provides a SOAP web service
+The [todo-list](../../apps/todo-app/README.md) sample application manages todo entries. The application provides a SOAP web service
 endpoint for adding new entries and listing all entries.
 
 The sample tests show how to use this SOAP endpoint as a client. First we define the schema and a global namespace for the SOAP
@@ -110,7 +110,7 @@ And in the expected message payload we validate the attachment data returned by 
 Run
 ---------
 
-**NOTE:** This test depends on the [todo-app](../todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+**NOTE:** This test depends on the [todo-app](../../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
 
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
@@ -128,7 +128,7 @@ System under test
 ---------
 
 The sample uses a small todo list application as system under test. The application is a web application
-that you can deploy on any web container. You can find the todo-list sources [here](../todo-app). Up to now we have started an 
+that you can deploy on any web container. You can find the todo-list sources [here](../../apps/todo-app). Up to now we have started an
 embedded Jetty web container with automatic deployments during the Maven build lifecycle. This approach is fantastic 
 when running automated tests in a continuous build.
   

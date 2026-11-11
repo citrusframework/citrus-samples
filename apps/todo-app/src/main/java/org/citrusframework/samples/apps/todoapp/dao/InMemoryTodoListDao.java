@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.dao;
+package org.citrusframework.samples.apps.todoapp.dao;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -23,7 +23,7 @@ import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
 
 /**
  * @author Christoph Deppisch

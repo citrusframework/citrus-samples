@@ -20,7 +20,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.citrusframework.TestActionBuilder;
 import org.citrusframework.dsl.TestActionSupport;

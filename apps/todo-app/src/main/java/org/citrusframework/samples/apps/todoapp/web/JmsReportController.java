@@ -1,10 +1,10 @@
-package com.consol.citrus.samples.todolist.web;
+package org.citrusframework.samples.apps.todoapp.web;
 
 import java.util.stream.Collectors;
 
-import com.consol.citrus.samples.todolist.jms.TodoJmsReportProducer;
-import com.consol.citrus.samples.todolist.model.TodoEntry;
-import com.consol.citrus.samples.todolist.service.TodoListService;
+import org.citrusframework.samples.apps.todoapp.jms.TodoJmsReportProducer;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.service.TodoListService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

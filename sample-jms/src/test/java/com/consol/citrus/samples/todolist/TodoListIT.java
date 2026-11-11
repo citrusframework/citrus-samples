@@ -57,7 +57,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         $(send()
             .endpoint(todoJmsEndpoint)
             .message()
-            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry")
             .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
         $(http()
@@ -87,7 +87,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         $(send()
             .endpoint(todoJmsEndpoint)
             .message()
-            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry")
             .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
         $(echo("Set todo entry status to done"));
@@ -124,7 +124,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
             .message()
             .type(MessageType.JSON)
             .body("[{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\":true}]")
-            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry"));
+            .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry"));
     }
 
     @Test
@@ -136,7 +136,7 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         $(send()
             .endpoint(todoJmsSyncEndpoint)
             .message()
-            .header("_type", "com.consol.citrus.samples.todolist.model.TodoEntry")
+            .header("_type", "org.citrusframework.samples.apps.todoapp.model.TodoEntry")
             .body("{ \"title\": \"${todoName}\", \"description\": \"${todoDescription}\" }"));
 
         $(receive()

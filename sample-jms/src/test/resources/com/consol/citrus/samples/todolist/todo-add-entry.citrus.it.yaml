@@ -12,7 +12,7 @@ actions:
       message:
         headers:
           - name: _type
-            value: com.consol.citrus.samples.todolist.model.TodoEntry
+            value: org.citrusframework.samples.apps.todoapp.model.TodoEntry
         body:
           data: '{ "title": "${todoName}", "description": "${todoDescription}" }'
   - http:

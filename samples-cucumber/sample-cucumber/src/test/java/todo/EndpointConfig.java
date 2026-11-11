@@ -18,7 +18,7 @@ package todo;
 
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.http.client.HttpClientBuilder;
-import com.consol.citrus.samples.todolist.TodoAppAutoConfiguration;
+import org.citrusframework.samples.apps.todoapp.TodoAppAutoConfiguration;
 import org.citrusframework.variable.GlobalVariables;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

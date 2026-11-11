@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.soap;
+package org.citrusframework.samples.apps.todoapp.soap;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -22,13 +22,13 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.consol.citrus.samples.todolist.model.Attachment;
-import com.consol.citrus.samples.todolist.model.TodoEntry;
-import com.consol.citrus.samples.todolist.service.TodoListService;
-import com.consol.citrus.samples.todolist.soap.model.AddTodoEntryRequest;
-import com.consol.citrus.samples.todolist.soap.model.AddTodoEntryResponse;
-import com.consol.citrus.samples.todolist.soap.model.GetTodoListRequest;
-import com.consol.citrus.samples.todolist.soap.model.GetTodoListResponse;
+import org.citrusframework.samples.apps.todoapp.model.Attachment;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.service.TodoListService;
+import org.citrusframework.samples.apps.todoapp.soap.model.AddTodoEntryRequest;
+import org.citrusframework.samples.apps.todoapp.soap.model.AddTodoEntryResponse;
+import org.citrusframework.samples.apps.todoapp.soap.model.GetTodoListRequest;
+import org.citrusframework.samples.apps.todoapp.soap.model.GetTodoListResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;

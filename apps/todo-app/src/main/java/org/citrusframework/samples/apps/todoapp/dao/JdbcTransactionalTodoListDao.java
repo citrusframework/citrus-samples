@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.dao;
+package org.citrusframework.samples.apps.todoapp.dao;
 
 import java.util.Set;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.citrusframework.samples.apps.todoapp.model.TodoEntry;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

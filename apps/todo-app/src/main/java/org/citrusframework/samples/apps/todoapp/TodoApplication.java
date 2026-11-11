@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.apps.todoapp;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -27,12 +27,12 @@ import org.springframework.context.annotation.Bean;
  * @author Christoph Deppisch
  */
 @SpringBootApplication(scanBasePackages = {
-        "com.consol.citrus.samples.todolist.dao",
-        "com.consol.citrus.samples.todolist.jms",
-        "com.consol.citrus.samples.todolist.kafka",
-        "com.consol.citrus.samples.todolist.service",
-        "com.consol.citrus.samples.todolist.soap",
-        "com.consol.citrus.samples.todolist.web"
+        "org.citrusframework.samples.apps.todoapp.dao",
+        "org.citrusframework.samples.apps.todoapp.jms",
+        "org.citrusframework.samples.apps.todoapp.kafka",
+        "org.citrusframework.samples.apps.todoapp.service",
+        "org.citrusframework.samples.apps.todoapp.soap",
+        "org.citrusframework.samples.apps.todoapp.web"
 })
 public class TodoApplication {
 
