@@ -31,9 +31,8 @@ Learning path
 DSL coverage matrix
 -------------------
 
-The matrix is generated from each sample's restricted `sample.yaml`. Update it with `python3 scripts/generate_sample_catalog.py`; CI checks it with `--check`.
+The matrix is maintained by hand. Update it when you add, move, or remove a sample, or change its DSL coverage.
 
-<!-- SAMPLE-CATALOG:START -->
 | Sample | Module | Runtime | Level | Java | XML | YAML | Groovy |
 |---|---|---|---|:---:|:---:|:---:|:---:|
 | [core/annotation-config](core/annotation-config/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
@@ -95,7 +94,6 @@ The matrix is generated from each sample's restricted `sample.yaml`. Update it w
 | [showcases/quarkus](showcases/quarkus/) | `showcase-quarkus` | quarkus | showcase | Yes | — | — | — |
 | [build-tools/gradle](build-tools/gradle/) | `gradle` | gradle | intermediate | Yes | Yes | Yes | — |
 | [getting-started](getting-started/) | `citrus-core` | testng | getting-started | Yes | Yes | Yes | Yes |
-<!-- SAMPLE-CATALOG:END -->
 
 Prerequisites
 -------------

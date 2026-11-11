@@ -1,4 +1,0 @@
-module: citrus-core
-runtime: testng
-level: getting-started
-dsl: [java, xml, yaml, groovy]

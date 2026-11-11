@@ -1,4 +1,0 @@
-module: showcase-bookstore
-runtime: testng
-level: showcase
-dsl: [java, xml, yaml]

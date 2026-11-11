@@ -1,4 +1,0 @@
-module: citrus-kafka
-runtime: testng
-level: intermediate
-dsl: [java, xml, yaml]

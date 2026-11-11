@@ -1,4 +1,0 @@
-module: citrus-ftp
-runtime: testng
-level: intermediate
-dsl: [java]

@@ -1,4 +1,0 @@
-module: citrus-websocket
-runtime: quarkus
-level: intermediate
-dsl: [java, xml, yaml]

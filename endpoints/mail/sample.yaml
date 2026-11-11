@@ -1,4 +1,0 @@
-module: citrus-mail
-runtime: testng
-level: intermediate
-dsl: [java, xml, yaml]

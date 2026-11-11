@@ -1,4 +1,0 @@
-module: citrus-core
-runtime: junit4
-level: intermediate
-dsl: [java, xml, yaml]

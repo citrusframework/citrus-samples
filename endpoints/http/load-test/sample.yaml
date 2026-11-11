@@ -1,4 +1,0 @@
-module: citrus-http
-runtime: testng
-level: advanced
-dsl: [java, xml, yaml]

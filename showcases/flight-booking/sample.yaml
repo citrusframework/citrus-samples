@@ -1,4 +1,0 @@
-module: showcase-flight-booking
-runtime: testng
-level: showcase
-dsl: [java, xml, yaml]

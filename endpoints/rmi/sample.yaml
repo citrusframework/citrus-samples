@@ -1,4 +1,0 @@
-module: citrus-rmi
-runtime: testng
-level: intermediate
-dsl: [java]

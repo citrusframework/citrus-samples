@@ -46,10 +46,6 @@ settings.local.json
 .gradle
 build
 
-# Python
-__pycache__/
-*.py[cod]
-
 sun-jaxb.episode
 
 _output
