@@ -40,6 +40,7 @@ PARENT_RE = re.compile(r"<parent>.*?</parent>", re.DOTALL)
 ARTIFACT_RE = re.compile(r"<artifactId>\s*([^<\s]+)\s*</artifactId>")
 
 TODO_TARGET = "apps/todo-app"
+MULTI_DSL_LEAVES = ("getting-started", "endpoints/http/basic", "endpoints/ws/basic")
 
 
 @dataclass(frozen=True)
@@ -290,6 +291,43 @@ def identity_errors(root: Path, e: Entry) -> List[str]:
     return errors
 
 
+def multi_dsl_errors(root: Path, leaves: Iterable[str] = MULTI_DSL_LEAVES) -> List[str]:
+    """Check equivalent XML/YAML/Groovy scenarios and their single Java runner."""
+    errors: List[str] = []
+    for name in leaves:
+        leaf = root / name
+        runners = list(leaf.glob("src/test/java/**/TodoListIT.java"))
+        runner_text = runners[0].read_text(errors="replace") if len(runners) == 1 else ""
+        if len(runners) != 1:
+            errors.append(f"{name}: expected one TodoListIT.java runner, found {len(runners)}")
+        else:
+            if "@CitrusTest" not in runner_text:
+                errors.append(f"{name}: TodoListIT.java has no Java @CitrusTest scenario")
+            for loader in ("XML", "YAML", "GROOVY"):
+                if f"TestLoader.{loader}" not in runner_text:
+                    errors.append(f"{name}: TodoListIT.java missing TestLoader.{loader} runner")
+        for split in ("TodoListXmlIT.java", "TodoListYamlIT.java", "TodoListGroovyIT.java"):
+            if list(leaf.glob(f"src/test/java/**/{split}")):
+                errors.append(f"{name}: split runner {split} must merge into TodoListIT.java")
+
+        scenarios = {}
+        for dsl, source in (("xml", "resources"), ("yaml", "resources"), ("groovy", "groovy")):
+            files = list(leaf.glob(f"src/test/{source}/**/*.citrus.{dsl}"))
+            scenarios[dsl] = {p.name[: -len(f".citrus.{dsl}")] for p in files}
+            if not files:
+                errors.append(f"{name}: missing {dsl} scenarios")
+            for path in files:
+                if path.name not in runner_text:
+                    errors.append(f"{name}: TodoListIT.java does not execute {path.name}")
+        baseline = scenarios["xml"]
+        for dsl in ("yaml", "groovy"):
+            if scenarios[dsl] != baseline:
+                errors.append(
+                    f"{name}: scenario mismatch xml={sorted(baseline)} "
+                    f"{dsl}={sorted(scenarios[dsl])}")
+    return errors
+
+
 def legacy_root_errors(root: Path) -> List[str]:
     legacy = sorted({f.split("/", 1)[0] for f in list_files(root)})
     return [f"legacy root remains: {name}" for name in legacy if LEGACY_ROOT.match(name)]
@@ -359,6 +397,10 @@ def run(root: Path, entries: Sequence[Entry], mode: str,
         if leftovers:
             _warn(leftovers)
             return EXIT_INVALID
+        dsl_errors = multi_dsl_errors(root)
+        if dsl_errors:
+            _warn(f"incomplete: {err}" for err in dsl_errors)
+            return EXIT_INCOMPLETE
     return 0
 
 

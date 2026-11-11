@@ -314,6 +314,45 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(0, code)
 
 
+class MultiDslContractTest(unittest.TestCase):
+    def setUp(self):
+        self.repo = TempRepo()
+        self.addCleanup(self.repo.cleanup)
+        self.leaf = "getting-started"
+        self.runner = (
+            "import org.citrusframework.annotations.CitrusTest;\n"
+            "import org.citrusframework.api.common.TestLoader;\n"
+            "@CitrusTest TestLoader.XML TestLoader.YAML TestLoader.GROOVY\n"
+            "todo-list.citrus.xml todo-list.citrus.yaml todo-list.citrus.groovy\n"
+        )
+
+    def write_complete_leaf(self):
+        self.repo.write(f"{self.leaf}/src/test/java/x/TodoListIT.java", self.runner)
+        self.repo.write(f"{self.leaf}/src/test/resources/x/todo-list.citrus.xml")
+        self.repo.write(f"{self.leaf}/src/test/resources/x/todo-list.citrus.yaml")
+        self.repo.write(f"{self.leaf}/src/test/groovy/x/todo-list.citrus.groovy")
+
+    def test_requires_all_variants_and_single_runner(self):
+        self.repo.write(f"{self.leaf}/src/test/java/x/TodoListIT.java", "@CitrusTest\n")
+        errors = m.multi_dsl_errors(self.repo.root, [self.leaf])
+        self.assertTrue(any("TestLoader.XML" in error for error in errors), errors)
+        self.assertTrue(any("missing xml scenarios" in error for error in errors), errors)
+        self.assertTrue(any("missing yaml scenarios" in error for error in errors), errors)
+        self.assertTrue(any("missing groovy scenarios" in error for error in errors), errors)
+
+    def test_accepts_equivalent_variants_in_one_runner(self):
+        self.write_complete_leaf()
+        self.assertEqual([], m.multi_dsl_errors(self.repo.root, [self.leaf]))
+
+    def test_rejects_mismatched_scenarios_and_split_runners(self):
+        self.write_complete_leaf()
+        self.repo.write(f"{self.leaf}/src/test/resources/x/other.citrus.xml")
+        self.repo.write(f"{self.leaf}/src/test/java/x/TodoListXmlIT.java")
+        errors = m.multi_dsl_errors(self.repo.root, [self.leaf])
+        self.assertTrue(any("scenario mismatch" in error for error in errors), errors)
+        self.assertTrue(any("split runner" in error for error in errors), errors)
+
+
 class RealRepositoryTest(unittest.TestCase):
     def test_mapping_accounts_for_every_live_leaf(self):
         self.assertEqual([], m.validate_mapping(m.MAPPING))
