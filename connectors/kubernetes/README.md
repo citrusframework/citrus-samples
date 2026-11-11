@@ -349,7 +349,7 @@ executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all v
 - **Modules:** `citrus-kubernetes`.
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java, XML, YAML.
-- **Prerequisites:** Access to a configured Kubernetes cluster is required. JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy.
+- **Prerequisites:** Access to a configured Kubernetes cluster is required. JDK 21+ and Maven 3.9+ for a copied Maven sample. The tests call the todo application through the cluster service `citrus-sample-todo-service:8080`; build the `citrusframework/todo-app:${project.version}` image and deploy it behind that service before running a copy. Installing the todo application alone does not deploy it.
 - **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
@@ -358,10 +358,10 @@ Run from the repository root:
 ./mvnw -f connectors/kubernetes/pom.xml clean verify -Dsystem.under.test.mode=embedded
 ```
 
-Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+Copy this complete sample root outside the repository. No aggregator parent installation is required. Build the todo-app Docker image from the repository root, deploy it to the cluster as `citrus-sample-todo-service`, then run the copy:
 
 ```shell
-./mvnw -f apps/todo-app/pom.xml install -DskipTests
+./mvnw -f apps/todo-app/pom.xml install docker:build -DskipTests
 cp -R connectors/kubernetes /tmp/citrus-connectors-kubernetes
 cd /tmp/citrus-connectors-kubernetes
 mvn clean verify -Dsystem.under.test.mode=embedded

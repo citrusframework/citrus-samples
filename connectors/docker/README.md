@@ -12,7 +12,7 @@ Read about the Citrus Docker integration in the [reference guide][4]
 Objectives
 ---------
 
-**NOTE:** This test depends on the [todo-app](../../apps/todo-app/README.md) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+**NOTE:** This test depends on the `citrusframework/todo-app:${project.version}` Docker image. Build it from the repository root with `./mvnw -f apps/todo-app/pom.xml install docker:build -DskipTests` beforehand.
 
 The [todo-list](../../apps/todo-app/README.md) sample application provides a REST API for managing todo entries. We want to access this REST API in a integration test scenario while the application is
 run as Docker container. This means we need to build the todo-app as Docker image, run that image on Docker and start the integration tests. The Citrus tests
@@ -389,7 +389,7 @@ a complete [reference manual][3].
 - **Modules:** `citrus-docker`.
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java.
-- **Prerequisites:** A running Docker daemon is required. JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy.
+- **Prerequisites:** A running Docker daemon is required. JDK 21+ and Maven 3.9+ for a copied Maven sample. The `citrusframework/todo-app:${project.version}` Docker image must exist locally; installing the todo application alone does not build it.
 - **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
@@ -398,10 +398,10 @@ Run from the repository root:
 ./mvnw -f connectors/docker/pom.xml clean verify -Dsystem.under.test.mode=embedded
 ```
 
-Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
+Copy this complete sample root outside the repository. No aggregator parent installation is required. Build the todo-app Docker image from the repository root before running the copy:
 
 ```shell
-./mvnw -f apps/todo-app/pom.xml install -DskipTests
+./mvnw -f apps/todo-app/pom.xml install docker:build -DskipTests
 cp -R connectors/docker /tmp/citrus-connectors-docker
 cd /tmp/citrus-connectors-docker
 mvn clean verify -Dsystem.under.test.mode=embedded
