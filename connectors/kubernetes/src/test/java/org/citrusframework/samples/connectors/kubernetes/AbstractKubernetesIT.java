@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.kubernetes;
+package org.citrusframework.samples.connectors.kubernetes;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;

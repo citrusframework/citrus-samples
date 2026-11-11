@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.docker;
+package org.citrusframework.samples.connectors.docker;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import org.apache.hc.core5.http.ContentType;

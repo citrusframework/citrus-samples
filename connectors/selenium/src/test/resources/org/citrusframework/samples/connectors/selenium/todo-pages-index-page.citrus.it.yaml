@@ -21,13 +21,13 @@ actions:
           status: "200"
   - selenium:
       page:
-        type: "com.consol.citrus.samples.todolist.page.WelcomePage"
+        type: "org.citrusframework.samples.connectors.selenium.page.WelcomePage"
         action: "validate"
   - selenium:
       page:
-        type: "com.consol.citrus.samples.todolist.page.WelcomePage"
+        type: "org.citrusframework.samples.connectors.selenium.page.WelcomePage"
         action: "startApp"
   - selenium:
       page:
-        type: "com.consol.citrus.samples.todolist.page.TodoPage"
+        type: "org.citrusframework.samples.connectors.selenium.page.TodoPage"
         action: "validate"

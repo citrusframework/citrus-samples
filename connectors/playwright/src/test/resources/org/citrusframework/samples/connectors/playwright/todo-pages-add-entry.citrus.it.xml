@@ -24,10 +24,10 @@
       <open url="http://localhost:8080/todolist"/>
     </playwright>
     <playwright browser="browser">
-      <page-object type="com.consol.citrus.samples.todolist.page.TodoPage" validator="com.consol.citrus.samples.todolist.page.TodoPage$Validator"/>
+      <page-object type="org.citrusframework.samples.connectors.playwright.page.TodoPage" validator="org.citrusframework.samples.connectors.playwright.page.TodoPage$Validator"/>
     </playwright>
     <playwright browser="browser">
-      <page-object type="com.consol.citrus.samples.todolist.page.TodoPage" method="submit" arguments="${todoName}, ${todoDescription}"/>
+      <page-object type="org.citrusframework.samples.connectors.playwright.page.TodoPage" method="submit" arguments="${todoName}, ${todoDescription}"/>
     </playwright>
     <playwright browser="browser">
       <wait condition="visible">

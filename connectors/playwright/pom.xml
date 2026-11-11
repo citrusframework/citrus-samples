@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-playwright</artifactId>
+  <artifactId>citrus-sample-connectors-playwright</artifactId>
   <name>Citrus Samples:: Playwright</name>
   <version>4.0.0</version>
 
@@ -21,6 +21,7 @@
     <exec.maven.plugin.version>3.6.3</exec.maven.plugin.version>
     <playwright.browser>chromium</playwright.browser>
     <system.under.test.mode>embedded</system.under.test.mode>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <build>
@@ -129,6 +130,18 @@
       </plugin>
     </plugins>
   </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.citrusframework</groupId>
+        <artifactId>citrus-bom</artifactId>
+        <version>${citrus.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>

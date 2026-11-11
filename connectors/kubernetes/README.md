@@ -65,7 +65,7 @@ The complete configuration is placed in the todo-list project Maven POM ([pom.xm
               <inline>
                 <files>
                   <file>
-                    <source>${settings.localRepository}/com/consol/citrus/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</source>
+                    <source>${settings.localRepository}/org/citrusframework/samples/citrus-sample-todo/${project.version}/citrus-sample-todo-${project.version}.war</source>
                     <destName>ROOT.war</destName>
                     <outputDirectory>.</outputDirectory>
                   </file>

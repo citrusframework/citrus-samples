@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.kubernetes;
+package org.citrusframework.samples.connectors.kubernetes;
 
 import org.citrusframework.annotations.CitrusTestSource;
 import org.citrusframework.api.common.TestLoader;
@@ -9,12 +9,12 @@ import org.testng.annotations.Test;
 public class TodoListXmlIT extends AbstractKubernetesIT {
 
     @Test
-    @CitrusTestSource(type = TestLoader.XML, sources = { "classpath:com/consol/citrus/samples/kubernetes/deployment-state.citrus.it.xml" })
+    @CitrusTestSource(type = TestLoader.XML, sources = { "classpath:org/citrusframework/samples/connectors/kubernetes/deployment-state.citrus.it.xml" })
     public void testDeploymentState() {
     }
 
     @Test
-    @CitrusTestSource(type = TestLoader.XML, sources = { "classpath:com/consol/citrus/samples/kubernetes/todo-service.citrus.it.xml" })
+    @CitrusTestSource(type = TestLoader.XML, sources = { "classpath:org/citrusframework/samples/connectors/kubernetes/todo-service.citrus.it.xml" })
     public void testTodoService() {
     }
 

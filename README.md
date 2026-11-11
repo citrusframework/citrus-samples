@@ -23,8 +23,8 @@ system under test. Please find following list of samples and their primary objec
 | Samples                                                                       |                                      Description                                       |
 |-------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------:|
 | [sample-reporting](core/reporting)                                          |                           Shows how to add a custom reporter                           |
-| [sample-docker](sample-docker)                                                |                  Shows how to use Citrus within Docker infrastructure                  |
-| [sample-kubernetes](sample-kubernetes)                                        |                Shows how to use Citrus within Kubernetes infrastructure                |
+| [sample-docker](connectors/docker)                                                |                  Shows how to use Citrus within Docker infrastructure                  |
+| [sample-kubernetes](connectors/kubernetes)                                        |                Shows how to use Citrus within Kubernetes infrastructure                |
 | [sample-gradle](sample-gradle)                                                |                           Uses Gradle build to execute tests                           |
 | [sample-annotation-config](core/annotation-config)                          |                      Uses annotation based endpoint configuration                      |
 | [sample-javaconfig](core/java-config)                                        |                         Uses pure Java POJOs for configuration                         |
@@ -35,8 +35,8 @@ system under test. Please find following list of samples and their primary objec
 | [sample-binary](sample-binary)                                                |                    Shows binary message content handling in Citrus                     |
 | [sample-hamcrest](sample-hamcrest)                                            |              Shows Hamcrest matcher support in validation and conditions               |
 | [sample-mail](endpoints/mail)                                                    |                         Shows mail server activities in Citrus                         |
-| [sample-selenium](sample-selenium)                                            |                      Perform UI testing with Selenium and Citrus                       |
-| [sample-playwright](sample-playwright)                                          |                     Perform UI testing with Playwright and Citrus |
+| [sample-selenium](connectors/selenium)                                            |                      Perform UI testing with Selenium and Citrus                       |
+| [sample-playwright](connectors/playwright)                                          |                     Perform UI testing with Playwright and Citrus |
 | [sample-dynamic-endpoints](core/dynamic-endpoints)                          |                         Shows dynamic endpoint component usage                         |
 | [sample-jms](endpoints/jms)                                                      |                          Shows JMS message broker integration                          |
 | [sample-kafka](endpoints/kafka)                                                  |                                Shows Kafka integration                                 |
@@ -46,7 +46,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-jdbc](samples-db/sample-jdbc)                                         |                          Simulates database server with JDBC                           |
 | [sample-jdbc-callable-statements](samples-db/sample-jdbc-callable-statements) |           Simulates database server communication using callable statements            |
 | [sample-jdbc-transactions](samples-db/sample-jdbc-transactions)               |                   Simulates database server with transactional JDBC                    |
-| [sample-sql](samples-db/sample-sql)                                           |                      Validates stored data in relational database                      |
+| [sample-sql](connectors/sql)                                           |                      Validates stored data in relational database                      |
 | Samples JSON                                                                  |                                      Description                                       |
 | [sample-json](samples-json/sample-json)                                       |             Shows Json payload validation feature with JsonPath validation             |
 | [sample-databind](samples-json/sample-databind)                               |         Shows JSON object mapping feature when sending and receiving messages          |
@@ -65,7 +65,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-junit](runtimes/junit4)                                    |                             Shows JUnit4 framework support                             |
 | [sample-junit5](runtimes/junit-jupiter)                                  |                             Shows JUnit5 framework support                             |
 | Samples Http                                                                  |                                      Description                                       |
-| [sample-swagger](samples-http/sample-swagger)                                 |                       Auto generate tests from Swagger Open API                        |
+| [sample-swagger](connectors/openapi)                                 |                       Auto generate tests from Swagger Open API                        |
 | [sample-http](endpoints/http/basic)                                       |                         Shows Http REST API calls as a client                          |
 | [sample-http-loadtest](endpoints/http/load-test)                     |          Calls REST API on Http server with multiple threads for load testing          |
 | [sample-http-static-response](endpoints/http/static-response)       |         Shows how to setup a static response generating Http server component          |

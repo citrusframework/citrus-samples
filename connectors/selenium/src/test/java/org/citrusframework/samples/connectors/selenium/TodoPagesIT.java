@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.connectors.selenium;
 
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.http.client.HttpClient;
-import com.consol.citrus.samples.todolist.page.TodoPage;
-import com.consol.citrus.samples.todolist.page.WelcomePage;
+import org.citrusframework.samples.connectors.selenium.page.TodoPage;
+import org.citrusframework.samples.connectors.selenium.page.WelcomePage;
 import org.citrusframework.selenium.endpoint.SeleniumBrowser;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.openqa.selenium.By;

@@ -24,10 +24,10 @@
       <navigate page="http://localhost:8080/todolist"/>
     </selenium>
     <selenium>
-      <page type="com.consol.citrus.samples.todolist.page.TodoPage" action="validate"/>
+      <page type="org.citrusframework.samples.connectors.selenium.page.TodoPage" action="validate"/>
     </selenium>
     <selenium>
-      <page type="com.consol.citrus.samples.todolist.page.TodoPage" action="submit">
+      <page type="org.citrusframework.samples.connectors.selenium.page.TodoPage" action="submit">
         <arguments>
           <argument>${todoName}</argument>
           <argument>${todoDescription}</argument>

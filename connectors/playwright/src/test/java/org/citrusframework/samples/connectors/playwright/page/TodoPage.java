@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist.page;
+package org.citrusframework.samples.connectors.playwright.page;
 
 import com.microsoft.playwright.Page;
 import org.citrusframework.context.TestContext;

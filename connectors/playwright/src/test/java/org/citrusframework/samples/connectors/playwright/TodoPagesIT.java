@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.connectors.playwright;
 
-import com.consol.citrus.samples.todolist.page.TodoPage;
-import com.consol.citrus.samples.todolist.page.WelcomePage;
+import org.citrusframework.samples.connectors.playwright.page.TodoPage;
+import org.citrusframework.samples.connectors.playwright.page.WelcomePage;
 import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.http.client.HttpClient;

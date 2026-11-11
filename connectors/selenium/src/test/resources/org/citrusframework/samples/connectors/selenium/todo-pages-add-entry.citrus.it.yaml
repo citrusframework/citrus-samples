@@ -26,11 +26,11 @@ actions:
         page: "http://localhost:8080/todolist"
   - selenium:
       page:
-        type: "com.consol.citrus.samples.todolist.page.TodoPage"
+        type: "org.citrusframework.samples.connectors.selenium.page.TodoPage"
         action: "validate"
   - selenium:
       page:
-        type: "com.consol.citrus.samples.todolist.page.TodoPage"
+        type: "org.citrusframework.samples.connectors.selenium.page.TodoPage"
         action: "submit"
         arguments:
           - "${todoName}"

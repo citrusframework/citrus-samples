@@ -23,15 +23,15 @@ actions:
   - playwright:
       browser: "browser"
       page-object:
-        type: "com.consol.citrus.samples.todolist.page.WelcomePage"
-        validator: "com.consol.citrus.samples.todolist.page.WelcomePage$Validator"
+        type: "org.citrusframework.samples.connectors.playwright.page.WelcomePage"
+        validator: "org.citrusframework.samples.connectors.playwright.page.WelcomePage$Validator"
   - playwright:
       browser: "browser"
       page-object:
-        type: "com.consol.citrus.samples.todolist.page.WelcomePage"
+        type: "org.citrusframework.samples.connectors.playwright.page.WelcomePage"
         method: "startApp"
   - playwright:
       browser: "browser"
       page-object:
-        type: "com.consol.citrus.samples.todolist.page.TodoPage"
-        validator: "com.consol.citrus.samples.todolist.page.TodoPage$Validator"
+        type: "org.citrusframework.samples.connectors.playwright.page.TodoPage"
+        validator: "org.citrusframework.samples.connectors.playwright.page.TodoPage$Validator"

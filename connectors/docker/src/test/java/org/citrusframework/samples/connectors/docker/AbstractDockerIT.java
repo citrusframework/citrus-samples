@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.docker;
+package org.citrusframework.samples.connectors.docker;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;

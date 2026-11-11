@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.connectors.selenium;
 
 import org.citrusframework.samples.apps.todoapp.TodoAppAutoConfiguration;
 import org.citrusframework.dsl.DefaultTestActions;

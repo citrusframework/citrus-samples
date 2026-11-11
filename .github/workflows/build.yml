@@ -106,12 +106,10 @@ jobs:
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-message-store
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-reporting
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-endpoints-rmi
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-selenium
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f runtimes
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-db
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f connectors
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/ftp
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/http
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-http
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-json
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/ws
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f endpoints/websocket

@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist.page;
+package org.citrusframework.samples.connectors.selenium.page;
 
 import org.citrusframework.api.actions.selenium.PageValidator;
 import org.citrusframework.api.actions.selenium.WebPage;

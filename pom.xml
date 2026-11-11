@@ -18,16 +18,11 @@
     <module>core</module>
     <module>runtimes</module>
     <module>endpoints</module>
-    <module>sample-docker</module>
-    <module>sample-kubernetes</module>
+    <module>connectors</module>
     <module>sample-groovy</module>
-    <module>sample-selenium</module>
-    <module>sample-playwright</module>
-    <module>samples-http</module>
     <module>samples-xml</module>
     <module>samples-json</module>
     <module>sample-hamcrest</module>
     <module>sample-binary</module>
-    <module>samples-db</module>
   </modules>
 </project>

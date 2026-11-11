@@ -20,13 +20,13 @@
       </receive-response>
     </http>
     <selenium>
-      <page type="com.consol.citrus.samples.todolist.page.WelcomePage" action="validate"/>
+      <page type="org.citrusframework.samples.connectors.selenium.page.WelcomePage" action="validate"/>
     </selenium>
     <selenium>
-      <page type="com.consol.citrus.samples.todolist.page.WelcomePage" action="startApp"/>
+      <page type="org.citrusframework.samples.connectors.selenium.page.WelcomePage" action="startApp"/>
     </selenium>
     <selenium>
-      <page type="com.consol.citrus.samples.todolist.page.TodoPage" action="validate"/>
+      <page type="org.citrusframework.samples.connectors.selenium.page.TodoPage" action="validate"/>
     </selenium>
   </actions>
 </test>

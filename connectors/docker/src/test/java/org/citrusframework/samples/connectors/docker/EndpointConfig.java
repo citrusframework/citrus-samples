@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.docker;
+package org.citrusframework.samples.connectors.docker;
 
 import org.citrusframework.docker.client.DockerClient;
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;
