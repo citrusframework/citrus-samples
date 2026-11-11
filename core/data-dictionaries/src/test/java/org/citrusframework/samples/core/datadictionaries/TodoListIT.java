@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.core.datadictionaries;
 
 import org.apache.hc.core5.http.ContentType;
 import org.citrusframework.dsl.TestActionSupport;

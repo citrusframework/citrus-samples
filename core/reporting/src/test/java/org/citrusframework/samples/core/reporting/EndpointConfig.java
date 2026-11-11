@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.core.reporting;
 
-import com.consol.citrus.samples.todolist.reporting.ExtentReporter;
+import org.citrusframework.samples.core.reporting.reporting.ExtentReporter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

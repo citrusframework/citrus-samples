@@ -40,19 +40,19 @@ public class ExtentReporter extends AbstractTestListener implements TestReporter
     }
 }
 ```
-        
-You can review the complete custom reporter on this sample's [github repository](src/test/java/com/consol/citrus/samples/todolist/reporting/ExtentReporter.java).       
+
+You can review the complete custom reporter on this sample's [github repository](src/test/java/org/citrusframework/samples/core/reporting/reporting/ExtentReporter.java).
 
 We add the new reporter implementation as Spring bean to the application context.
-    
+
 ```java
 @Bean
 public ExtentReporter extentReporter() {
     return new ExtentReporter();
-}    
+}
 ```
-        
-That completes the reporting extension. Citrus will automatically see the new bean and add it to the list of reporters. The reporter is called when tests pass and fail. 
+
+That completes the reporting extension. Citrus will automatically see the new bean and add it to the list of reporters. The reporter is called when tests pass and fail.
 As a result the reporter writes Extent styled Html reports to the folder `target/citrus-reports/extent-reports.html` when Citrus tests are executed.
 
 In addition to that Citrus provides some default Html reporting that is also customizable. We can use application properties to customize the report. Lets add a new application
@@ -65,9 +65,9 @@ citrus.html.report.directory=target/citrus-reports
 citrus.html.report.file=citrus-reports.html
 citrus.html.report.logo:classpath:logo/reporting-logo.png
 ```
-    
-The tests now write default Html reports to the file `target/citrus-reports/citrus-reports.html`. Also we use a custom reporting logo that is automatically added to the reporting page header. 
-You can now execute the tests in this sample and review the reports.    
+
+The tests now write default Html reports to the file `target/citrus-reports/citrus-reports.html`. Also we use a custom reporting logo that is automatically added to the reporting page header.
+You can now execute the tests in this sample and review the reports.
 
 Running the Citrus tests
 ---------

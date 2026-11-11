@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.core.dynamicendpoints;
 
 import org.citrusframework.samples.apps.todoapp.TodoAppAutoConfiguration;
 import jakarta.jms.ConnectionFactory;

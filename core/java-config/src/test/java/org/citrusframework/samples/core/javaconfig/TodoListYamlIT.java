@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.core.javaconfig;
 
 import java.util.Collections;
 
@@ -26,7 +26,7 @@ public class TodoListYamlIT extends TestNGCitrusSpringSupport {
     }
 
     @Test
-    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:com/consol/citrus/samples/todolist/todo-get.citrus.it.yaml" })
+    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:org/citrusframework/samples/core/javaconfig/todo-get.citrus.it.yaml" })
     public void testGet() {
     }
 }

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-dynamic-endpoints</artifactId>
+  <artifactId>citrus-sample-core-dynamic-endpoints</artifactId>
   <name>Citrus Samples:: Dynamic Endpoints</name>
   <version>4.0.0</version>
 
@@ -16,11 +16,25 @@
     <log4j2.version>2.25.5</log4j2.version>
     <commons.logging.version>1.4.0</commons.logging.version>
     <citrus.version>5.1.0</citrus.version>
+    <maven.deploy.skip>true</maven.deploy.skip>
     <activemq.artemis.version>2.57.0</activemq.artemis.version>
     <maven.failsafe.plugin.version>3.5.6</maven.failsafe.plugin.version>
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
     <system.under.test.mode>embedded</system.under.test.mode>
   </properties>
+
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.citrusframework</groupId>
+        <artifactId>citrus-bom</artifactId>
+        <version>${citrus.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>

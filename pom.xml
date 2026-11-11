@@ -15,15 +15,11 @@
   <modules>
     <module>demo</module>
     <module>apps</module>
+    <module>core</module>
     <module>sample-camel-context</module>
-    <module>sample-behaviors</module>
-    <module>sample-dictionaries</module>
-    <module>sample-message-store</module>
     <module>sample-docker</module>
     <module>sample-kubernetes</module>
     <module>samples-cucumber</module>
-    <module>sample-annotation-config</module>
-    <module>sample-javaconfig</module>
     <module>sample-groovy</module>
     <module>sample-mail</module>
     <module>sample-selenium</module>
@@ -33,13 +29,11 @@
     <module>samples-junit</module>
     <module>samples-http</module>
     <module>sample-rmi</module>
-    <module>sample-reporting</module>
     <module>samples-xml</module>
     <module>samples-json</module>
     <module>sample-hamcrest</module>
     <module>sample-jms</module>
     <module>sample-kafka</module>
-    <module>sample-dynamic-endpoints</module>
     <module>sample-binary</module>
     <module>samples-soap</module>
     <module>samples-db</module>

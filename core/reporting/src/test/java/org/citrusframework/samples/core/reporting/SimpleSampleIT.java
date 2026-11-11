@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.core.reporting;
 
 import org.citrusframework.TestCaseMetaInfo;
 import org.citrusframework.dsl.TestActionSupport;

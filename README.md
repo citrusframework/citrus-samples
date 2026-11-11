@@ -22,22 +22,22 @@ system under test. Please find following list of samples and their primary objec
 
 | Samples                                                                       |                                      Description                                       |
 |-------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------:|
-| [sample-reporting](sample-reporting)                                          |                           Shows how to add a custom reporter                           |
+| [sample-reporting](core/reporting)                                          |                           Shows how to add a custom reporter                           |
 | [sample-docker](sample-docker)                                                |                  Shows how to use Citrus within Docker infrastructure                  |
 | [sample-kubernetes](sample-kubernetes)                                        |                Shows how to use Citrus within Kubernetes infrastructure                |
 | [sample-gradle](sample-gradle)                                                |                           Uses Gradle build to execute tests                           |
-| [sample-annotation-config](sample-annotation-config)                          |                      Uses annotation based endpoint configuration                      |
-| [sample-javaconfig](sample-javaconfig)                                        |                         Uses pure Java POJOs for configuration                         |
+| [sample-annotation-config](core/annotation-config)                          |                      Uses annotation based endpoint configuration                      |
+| [sample-javaconfig](core/java-config)                                        |                         Uses pure Java POJOs for configuration                         |
 | [sample-groovy](sample-groovy)                                                |                    Uses Groovy scripts to define Citrus test cases                     |
-| [sample-behaviors](sample-behaviors)                                          |                   Shows how to reuse test actions in test behaviors                    |
-| [sample-dictionaries](sample-dictionaries)                                    |         Shows how to incorporate message manipulation using data dictionaries          |
-| [sample-message-store](sample-message-store)                                  |                       Shows how to access internal message store                       |
+| [sample-behaviors](core/behaviors)                                          |                   Shows how to reuse test actions in test behaviors                    |
+| [sample-dictionaries](core/data-dictionaries)                                    |         Shows how to incorporate message manipulation using data dictionaries          |
+| [sample-message-store](core/message-store)                                  |                       Shows how to access internal message store                       |
 | [sample-binary](sample-binary)                                                |                    Shows binary message content handling in Citrus                     |
 | [sample-hamcrest](sample-hamcrest)                                            |              Shows Hamcrest matcher support in validation and conditions               |
 | [sample-mail](sample-mail)                                                    |                         Shows mail server activities in Citrus                         |
 | [sample-selenium](sample-selenium)                                            |                      Perform UI testing with Selenium and Citrus                       |
 | [sample-playwright](sample-playwright)                                          |                     Perform UI testing with Playwright and Citrus |
-| [sample-dynamic-endpoints](sample-dynamic-endpoints)                          |                         Shows dynamic endpoint component usage                         |
+| [sample-dynamic-endpoints](core/dynamic-endpoints)                          |                         Shows dynamic endpoint component usage                         |
 | [sample-jms](sample-jms)                                                      |                          Shows JMS message broker integration                          |
 | [sample-kafka](sample-kafka)                                                  |                                Shows Kafka integration                                 |
 | [sample-rmi](sample-rmi)                                                      |                Shows how to use RMI with Citrus as a client and server                 |

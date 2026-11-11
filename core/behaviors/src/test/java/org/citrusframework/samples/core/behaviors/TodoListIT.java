@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.core.behaviors;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

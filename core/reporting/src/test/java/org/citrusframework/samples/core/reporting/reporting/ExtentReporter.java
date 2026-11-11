@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.reporting;
+package org.citrusframework.samples.core.reporting.reporting;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;

@@ -91,20 +91,20 @@ jobs:
           ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-incident
       - name: Run Samples
         run: |
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-annotation-config
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-behaviors
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-annotation-config
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-behaviors
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-binary
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-camel-context
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dictionaries
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dynamic-endpoints
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-data-dictionaries
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-dynamic-endpoints
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-groovy
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-hamcrest
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-javaconfig
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-java-config
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-jms
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-kafka
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-mail
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-message-store
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-reporting
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-message-store
+          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-core-reporting
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-rmi
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-selenium
           ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-cucumber

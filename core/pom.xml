@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.citrusframework.samples</groupId>
+  <artifactId>citrus-sample-core</artifactId>
+  <name>Citrus Samples:: Core</name>
+  <version>4.0.0</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
+  <modules>
+    <module>annotation-config</module>
+    <module>java-config</module>
+    <module>behaviors</module>
+    <module>data-dictionaries</module>
+    <module>message-store</module>
+    <module>dynamic-endpoints</module>
+    <module>reporting</module>
+  </modules>
+</project>

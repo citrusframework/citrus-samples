@@ -7,7 +7,7 @@ application. Read about the Citrus data dictionary feature in [reference guide][
 Objectives
 ---------
 
-The [todo-list](../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
+The [todo-list](../../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
 We call this API and receive Json message structures for validation in our test cases. The Json message content is manipulated before
 exchanging with the system under test via data dictionaries. The dictionary is added as component to the Spring bean application context.
 
@@ -74,7 +74,7 @@ configuration.
 Run
 ---------
 
-**NOTE:** This test depends on the [todo-app](../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
+**NOTE:** This test depends on the [todo-app](../../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
 
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
@@ -92,7 +92,7 @@ System under test
 ---------
 
 The sample uses a small todo list application as system under test. The application is a web application
-that you can deploy on any web container. You can find the todo-list sources [here](../apps/todo-app). Up to now we have started an
+that you can deploy on any web container. You can find the todo-list sources [here](../../apps/todo-app). Up to now we have started an
 embedded Jetty web container with automatic deployments during the Maven build lifecycle. This approach is fantastic 
 when running automated tests in a continuous build.
   
