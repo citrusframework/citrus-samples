@@ -31,75 +31,90 @@ Learning path
 DSL coverage matrix
 -------------------
 
-The matrix is maintained by hand. Update it when you add, move, or remove a sample, or change its DSL coverage.
+The matrix is maintained by hand. Update it when you add, move, or remove a sample, or change its purpose, main module, runtime, or DSL coverage.
 
-| Sample | Module | Runtime | Level | Java | XML | YAML | Groovy |
+| Sample | Description | Main module | Runtime | Java | XML | YAML | Groovy |
 |---|---|---|---|:---:|:---:|:---:|:---:|
-| [core/annotation-config](core/annotation-config/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
-| [core/java-config](core/java-config/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
-| [core/behaviors](core/behaviors/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
-| [core/data-dictionaries](core/data-dictionaries/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
-| [core/message-store](core/message-store/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
-| [core/dynamic-endpoints](core/dynamic-endpoints/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
-| [core/reporting](core/reporting/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
-| [runtimes/testng](runtimes/testng/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
-| [runtimes/testng-dataprovider](runtimes/testng-dataprovider/) | `citrus-core` | testng | intermediate | Yes | Yes | Yes | — |
-| [runtimes/junit4](runtimes/junit4/) | `citrus-core` | junit4 | intermediate | Yes | Yes | Yes | — |
-| [runtimes/junit-jupiter](runtimes/junit-jupiter/) | `citrus-core` | junit-jupiter | intermediate | Yes | Yes | Yes | — |
-| [runtimes/cucumber](runtimes/cucumber/) | `citrus-core` | cucumber | intermediate | Yes | — | — | — |
-| [runtimes/cucumber-spring](runtimes/cucumber-spring/) | `citrus-core` | cucumber | intermediate | Yes | — | — | — |
-| [endpoints/http/basic](endpoints/http/basic/) | `citrus-http` | testng | intermediate | Yes | Yes | Yes | Yes |
-| [endpoints/http/basic-auth](endpoints/http/basic-auth/) | `citrus-http` | testng | intermediate | Yes | Yes | Yes | — |
-| [endpoints/http/form-data](endpoints/http/form-data/) | `citrus-http` | testng | intermediate | Yes | Yes | Yes | — |
-| [endpoints/http/query-param](endpoints/http/query-param/) | `citrus-http` | testng | intermediate | Yes | Yes | Yes | — |
-| [endpoints/http/static-response](endpoints/http/static-response/) | `citrus-http` | testng | intermediate | Yes | Yes | Yes | — |
-| [endpoints/http/https](endpoints/http/https/) | `citrus-http` | testng | advanced | Yes | Yes | Yes | — |
-| [endpoints/http/load-test](endpoints/http/load-test/) | `citrus-http` | testng | advanced | Yes | Yes | Yes | — |
-| [endpoints/ws/basic](endpoints/ws/basic/) | `citrus-ws` | testng | intermediate | Yes | Yes | Yes | Yes |
-| [endpoints/ws/attachment](endpoints/ws/attachment/) | `citrus-ws` | testng | intermediate | Yes | — | — | — |
-| [endpoints/ws/mtom](endpoints/ws/mtom/) | `citrus-ws` | testng | advanced | Yes | — | — | — |
-| [endpoints/ws/ssl](endpoints/ws/ssl/) | `citrus-ws` | testng | advanced | Yes | — | — | — |
-| [endpoints/ws/static-response](endpoints/ws/static-response/) | `citrus-ws` | testng | intermediate | Yes | — | — | — |
-| [endpoints/ws/ws-addressing](endpoints/ws/ws-addressing/) | `citrus-ws` | testng | advanced | Yes | — | — | — |
-| [endpoints/ws/ws-security](endpoints/ws/ws-security/) | `citrus-ws` | testng | advanced | Yes | — | — | — |
-| [endpoints/ws/wsdl](endpoints/ws/wsdl/) | `citrus-ws` | testng | intermediate | Yes | — | — | — |
-| [endpoints/jms](endpoints/jms/) | `citrus-jms` | testng | intermediate | Yes | Yes | Yes | — |
-| [endpoints/kafka](endpoints/kafka/) | `citrus-kafka` | testng | intermediate | Yes | Yes | Yes | — |
-| [endpoints/mail](endpoints/mail/) | `citrus-mail` | testng | intermediate | Yes | Yes | Yes | — |
-| [endpoints/rmi](endpoints/rmi/) | `citrus-rmi` | testng | intermediate | Yes | — | — | — |
-| [endpoints/camel](endpoints/camel/) | `citrus-camel` | testng | intermediate | Yes | Yes | Yes | — |
-| [endpoints/ftp/ftp](endpoints/ftp/ftp/) | `citrus-ftp` | testng | intermediate | Yes | — | — | — |
-| [endpoints/ftp/scp](endpoints/ftp/scp/) | `citrus-ftp` | testng | intermediate | Yes | — | — | — |
-| [endpoints/ftp/sftp](endpoints/ftp/sftp/) | `citrus-ftp` | testng | intermediate | Yes | — | — | — |
-| [endpoints/websocket/client](endpoints/websocket/client/) | `citrus-websocket` | quarkus | intermediate | Yes | Yes | Yes | — |
-| [endpoints/websocket/server](endpoints/websocket/server/) | `citrus-websocket` | quarkus | intermediate | Yes | Yes | Yes | — |
-| [connectors/docker](connectors/docker/) | `citrus-docker` | testng | advanced | Yes | — | — | — |
-| [connectors/kubernetes](connectors/kubernetes/) | `citrus-kubernetes` | testng | advanced | Yes | Yes | Yes | — |
-| [connectors/selenium](connectors/selenium/) | `citrus-selenium` | testng | intermediate | Yes | Yes | Yes | — |
-| [connectors/playwright](connectors/playwright/) | `citrus-playwright` | testng | advanced | Yes | Yes | Yes | — |
-| [connectors/openapi](connectors/openapi/) | `citrus-openapi` | testng | intermediate | Yes | — | — | — |
-| [connectors/sql](connectors/sql/) | `citrus-sql` | testng | intermediate | Yes | Yes | Yes | — |
-| [validation/xml/xml](validation/xml/xml/) | `citrus-validation-xml` | testng | intermediate | Yes | Yes | Yes | — |
-| [validation/xml/xhtml](validation/xml/xhtml/) | `citrus-validation-xml` | testng | intermediate | Yes | Yes | Yes | — |
-| [validation/xml/oxm](validation/xml/oxm/) | `citrus-validation-xml` | testng | intermediate | Yes | Yes | Yes | — |
-| [validation/json/json](validation/json/json/) | `citrus-validation-json` | testng | intermediate | Yes | Yes | Yes | — |
-| [validation/json/databind](validation/json/databind/) | `citrus-validation-json` | testng | intermediate | Yes | — | — | — |
-| [validation/hamcrest](validation/hamcrest/) | `citrus-validation-hamcrest` | testng | intermediate | Yes | Yes | Yes | — |
-| [validation/binary](validation/binary/) | `citrus-validation-binary` | testng | intermediate | Yes | Yes | Yes | — |
-| [showcases/bakery](showcases/bakery/) | `showcase-bakery` | testng | showcase | Yes | — | — | — |
-| [showcases/bookstore](showcases/bookstore/) | `showcase-bookstore` | testng | showcase | Yes | Yes | Yes | — |
-| [showcases/flight-booking](showcases/flight-booking/) | `showcase-flight-booking` | testng | showcase | Yes | Yes | Yes | — |
-| [showcases/greeting](showcases/greeting/) | `showcase-greeting` | testng | showcase | Yes | Yes | Yes | — |
-| [showcases/incident](showcases/incident/) | `showcase-incident` | testng | showcase | Yes | Yes | Yes | — |
-| [showcases/quarkus](showcases/quarkus/) | `showcase-quarkus` | quarkus | showcase | Yes | — | — | — |
-| [build-tools/gradle](build-tools/gradle/) | `gradle` | gradle | intermediate | Yes | Yes | Yes | — |
-| [getting-started](getting-started/) | `citrus-core` | testng | getting-started | Yes | Yes | Yes | Yes |
+| [getting-started](getting-started/) | Runs one scenario in Java, XML, YAML, and Groovy | `citrus-base` | testng | Yes | Yes | Yes | Yes |
+| [core/annotation-config](core/annotation-config/) | Configures endpoints with annotations | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/java-config](core/java-config/) | Configures endpoints with plain Java and Spring configuration classes | `citrus-spring` | testng | Yes | Yes | Yes | — |
+| [core/behaviors](core/behaviors/) | Reuses test actions through test behaviors | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/data-dictionaries](core/data-dictionaries/) | Manipulates messages with data dictionaries | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/message-store](core/message-store/) | Reads exchanged messages from the internal message store | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/dynamic-endpoints](core/dynamic-endpoints/) | Creates endpoints dynamically from endpoint URIs | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/reporting](core/reporting/) | Adds a custom test reporter | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [runtimes/testng](runtimes/testng/) | Runs Citrus tests with TestNG | `citrus-testng` | testng | Yes | Yes | Yes | — |
+| [runtimes/testng-dataprovider](runtimes/testng-dataprovider/) | Parameterizes tests with TestNG data providers | `citrus-testng` | testng | Yes | Yes | Yes | — |
+| [runtimes/junit4](runtimes/junit4/) | Runs Citrus tests with JUnit 4 | `citrus-junit` | junit4 | Yes | Yes | Yes | — |
+| [runtimes/junit-jupiter](runtimes/junit-jupiter/) | Runs Citrus tests with JUnit Jupiter | `citrus-junit-jupiter` | junit-jupiter | Yes | Yes | Yes | — |
+| [runtimes/cucumber](runtimes/cucumber/) | Writes BDD scenarios with Cucumber | `citrus-cucumber` | cucumber | Yes | — | — | — |
+| [runtimes/cucumber-spring](runtimes/cucumber-spring/) | Writes BDD scenarios with Cucumber and Spring injection | `citrus-cucumber` | cucumber | Yes | — | — | — |
+| [endpoints/http/basic](endpoints/http/basic/) | Calls a REST API as an HTTP client | `citrus-http` | testng | Yes | Yes | Yes | Yes |
+| [endpoints/http/basic-auth](endpoints/http/basic-auth/) | Uses basic authentication on HTTP client and server | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/form-data](endpoints/http/form-data/) | Sends and validates `x-www-form-urlencoded` form data | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/query-param](endpoints/http/query-param/) | Sends and validates HTTP query parameters | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/static-response](endpoints/http/static-response/) | Serves static responses from an HTTP server | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/https](endpoints/http/https/) | Uses SSL on HTTP client and server | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/load-test](endpoints/http/load-test/) | Calls a REST API from multiple threads for load testing | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/ws/basic](endpoints/ws/basic/) | Calls a SOAP web service as a client | `citrus-ws` | testng | Yes | Yes | Yes | Yes |
+| [endpoints/ws/attachment](endpoints/ws/attachment/) | Sends SOAP attachments to a server | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/mtom](endpoints/ws/mtom/) | Sends and receives MTOM-enabled SOAP attachments | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/ssl](endpoints/ws/ssl/) | Uses SSL on a SOAP web service | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/static-response](endpoints/ws/static-response/) | Serves static responses from a SOAP server | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/ws-addressing](endpoints/ws/ws-addressing/) | Uses WS-Addressing on SOAP client and server | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/ws-security](endpoints/ws/ws-security/) | Uses WS-Security on SOAP client and server | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/wsdl](endpoints/ws/wsdl/) | Generates tests from a WSDL | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/jms](endpoints/jms/) | Integrates with a JMS message broker | `citrus-jms` | testng | Yes | Yes | Yes | — |
+| [endpoints/kafka](endpoints/kafka/) | Integrates with Kafka | `citrus-kafka` | testng | Yes | Yes | Yes | — |
+| [endpoints/mail](endpoints/mail/) | Simulates a mail server | `citrus-mail` | testng | Yes | Yes | Yes | — |
+| [endpoints/rmi](endpoints/rmi/) | Uses RMI as client and server | `citrus-rmi` | testng | Yes | — | — | — |
+| [endpoints/camel](endpoints/camel/) | Interacts with an Apache Camel context and routes | `citrus-camel` | testng | Yes | Yes | Yes | — |
+| [endpoints/ftp/ftp](endpoints/ftp/ftp/) | Uses FTP as client and server | `citrus-ftp` | testng | Yes | — | — | — |
+| [endpoints/ftp/scp](endpoints/ftp/scp/) | Uses SCP as client and server | `citrus-ftp` | testng | Yes | — | — | — |
+| [endpoints/ftp/sftp](endpoints/ftp/sftp/) | Uses SFTP as client and server | `citrus-ftp` | testng | Yes | — | — | — |
+| [endpoints/websocket/client](endpoints/websocket/client/) | Connects to a WebSocket as a client | `citrus-websocket` | quarkus | Yes | Yes | Yes | — |
+| [endpoints/websocket/server](endpoints/websocket/server/) | Provides a WebSocket server for clients | `citrus-websocket` | quarkus | Yes | Yes | Yes | — |
+| [connectors/docker](connectors/docker/) | Runs tests inside Docker infrastructure | `citrus-docker` | testng | Yes | — | — | — |
+| [connectors/kubernetes](connectors/kubernetes/) | Runs tests inside Kubernetes infrastructure | `citrus-kubernetes` | testng | Yes | Yes | Yes | — |
+| [connectors/selenium](connectors/selenium/) | Tests a web UI with Selenium | `citrus-selenium` | testng | Yes | Yes | Yes | — |
+| [connectors/playwright](connectors/playwright/) | Tests a web UI with Playwright | `citrus-playwright` | testng | Yes | Yes | Yes | — |
+| [connectors/openapi](connectors/openapi/) | Generates tests from an OpenAPI (Swagger) specification | `citrus-http` | testng | Yes | — | — | — |
+| [connectors/sql](connectors/sql/) | Validates data stored in a relational database | `citrus-sql` | testng | Yes | Yes | Yes | — |
+| [validation/xml/xml](validation/xml/xml/) | Validates XML with schemas and XPath | `citrus-validation-xml` | testng | Yes | Yes | Yes | — |
+| [validation/xml/xhtml](validation/xml/xhtml/) | Validates XHTML content | `citrus-validation-xml` | testng | Yes | Yes | Yes | — |
+| [validation/xml/oxm](validation/xml/oxm/) | Marshals XML messages to and from objects | `citrus-validation-xml` | testng | Yes | Yes | Yes | — |
+| [validation/json/json](validation/json/json/) | Validates JSON payloads with JsonPath | `citrus-validation-json` | testng | Yes | Yes | Yes | — |
+| [validation/json/databind](validation/json/databind/) | Maps JSON messages to and from objects | `citrus-validation-json` | testng | Yes | — | — | — |
+| [validation/hamcrest](validation/hamcrest/) | Uses Hamcrest matchers in validation and conditions | `citrus-validation-hamcrest` | testng | Yes | Yes | Yes | — |
+| [validation/binary](validation/binary/) | Handles binary message content | `citrus-validation-binary` | testng | Yes | Yes | Yes | — |
+| [showcases/bakery](showcases/bakery/) | Bakery order workflow across web, worker, and report services | `citrus-jms`, `citrus-http` | testng | Yes | — | — | — |
+| [showcases/bookstore](showcases/bookstore/) | Bookstore SOAP service with JMS backend | `citrus-ws`, `citrus-jms` | testng | Yes | Yes | Yes | — |
+| [showcases/flight-booking](showcases/flight-booking/) | Flight booking with JMS, HTTP, and a database | `citrus-jms`, `citrus-http` | testng | Yes | Yes | Yes | — |
+| [showcases/greeting](showcases/greeting/) | Greeting service over JMS and message channels | `citrus-jms`, `citrus-spring-integration` | testng | Yes | Yes | Yes | — |
+| [showcases/incident](showcases/incident/) | Incident management across SOAP, JMS, and HTTP | `citrus-ws`, `citrus-jms`, `citrus-http` | testng | Yes | Yes | Yes | — |
+| [showcases/quarkus](showcases/quarkus/) | Quarkus application with Kafka, HTTP, SQL, and a web UI | `citrus-quarkus` | quarkus | Yes | — | — | — |
+| [build-tools/gradle](build-tools/gradle/) | Runs Citrus tests with a Gradle build | `citrus-base` | gradle | Yes | Yes | Yes | — |
+
+Showcase transports
+-------------------
+
+Each showcase ships its own system under test and combines several transports:
+
+| Showcase | Kafka | JMS | HTTP | SOAP | Channel | SQL | Mail | Sync | Async |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [showcases/bakery](showcases/bakery/) | | X | X | | | | X | X | X |
+| [showcases/bookstore](showcases/bookstore/) | | X | | X | | | | X | |
+| [showcases/flight-booking](showcases/flight-booking/) | | X | X | | | X | | | X |
+| [showcases/greeting](showcases/greeting/) | | X | | | X | | | X | X |
+| [showcases/incident](showcases/incident/) | | X | X | X | | | | X | X |
+| [showcases/quarkus](showcases/quarkus/) | X | | X | | | X | X | X | X |
 
 Prerequisites
 -------------
 
 - JDK 21 or newer, with `JAVA_HOME` pointing to the JDK.
 - The repository Maven wrapper for in-repository builds, or Maven 3.9+ for copied samples.
+- A local Gradle installation for [build-tools/gradle](build-tools/gradle/), which has no Gradle wrapper.
 - Additional infrastructure only where a leaf README requires it. Docker, Kubernetes, and Playwright samples are not in the default Maven reactor.
 
 Run samples
