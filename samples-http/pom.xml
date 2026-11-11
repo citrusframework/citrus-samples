@@ -8,14 +8,11 @@
   <name>Citrus Samples:: Http Samples</name>
   <packaging>pom</packaging>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <modules>
     <module>sample-swagger</module>
-    <module>sample-http</module>
-    <module>sample-http-loadtest</module>
-    <module>sample-http-static-response</module>
-    <module>sample-http-query-param</module>
-    <module>sample-http-form-data</module>
-    <module>sample-http-basic-auth</module>
-    <module>sample-https</module>
   </modules>
 </project>

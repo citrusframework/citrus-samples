@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.endpoints.http.staticresponse;
 
 import org.citrusframework.annotations.CitrusTestSource;
 import org.citrusframework.api.common.TestLoader;
@@ -8,12 +8,12 @@ import org.testng.annotations.Test;
 public class TodoListYamlIT extends TestNGCitrusSpringSupport {
 
     @Test
-    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:com/consol/citrus/samples/todolist/todo-static-todo.citrus.it.yaml" })
+    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:org/citrusframework/samples/endpoints/http/staticresponse/todo-static-todo.citrus.it.yaml" })
     public void testTodo() {
     }
 
     @Test
-    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:com/consol/citrus/samples/todolist/todo-static-todolist.citrus.it.yaml" })
+    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:org/citrusframework/samples/endpoints/http/staticresponse/todo-static-todolist.citrus.it.yaml" })
     public void testTodoList() {
     }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.endpoints.http.staticresponse;
 
 import java.util.HashMap;
 import java.util.Map;

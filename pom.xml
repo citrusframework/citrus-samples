@@ -17,6 +17,7 @@
     <module>apps</module>
     <module>core</module>
     <module>runtimes</module>
+    <module>endpoints</module>
     <module>sample-camel-context</module>
     <module>sample-docker</module>
     <module>sample-kubernetes</module>

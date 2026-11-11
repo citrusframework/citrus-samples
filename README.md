@@ -66,13 +66,13 @@ system under test. Please find following list of samples and their primary objec
 | [sample-junit5](runtimes/junit-jupiter)                                  |                             Shows JUnit5 framework support                             |
 | Samples Http                                                                  |                                      Description                                       |
 | [sample-swagger](samples-http/sample-swagger)                                 |                       Auto generate tests from Swagger Open API                        |
-| [sample-http](samples-http/sample-http)                                       |                         Shows Http REST API calls as a client                          |
-| [sample-http-loadtest](samples-http/sample-http-loadtest)                     |          Calls REST API on Http server with multiple threads for load testing          |
-| [sample-http-static-response](samples-http/sample-http-static-response)       |         Shows how to setup a static response generating Http server component          |
-| [sample-http-query-param](samples-http/sample-http-form-data)                 |            How to use Http form data with `x-www-form-urlencoded` Http POST            |
-| [sample-http-form-data](samples-http/sample-http-query-param)                 |                          Exchange form data via Http GET/POST                          |
-| [sample-http-basic-auth](samples-http/sample-http-basic-auth)                 |         Shows how to use basic authentication on client and server components          |
-| [sample-https](samples-http/sample-https)                                     |                Shows how to use SSL connectivity as a client and server                |
+| [sample-http](endpoints/http/basic)                                       |                         Shows Http REST API calls as a client                          |
+| [sample-http-loadtest](endpoints/http/load-test)                     |          Calls REST API on Http server with multiple threads for load testing          |
+| [sample-http-static-response](endpoints/http/static-response)       |         Shows how to setup a static response generating Http server component          |
+| [sample-http-query-param](endpoints/http/query-param)                 |            How to use Http form data with `x-www-form-urlencoded` Http POST            |
+| [sample-http-form-data](endpoints/http/form-data)                 |                          Exchange form data via Http GET/POST                          |
+| [sample-http-basic-auth](endpoints/http/basic-auth)                 |         Shows how to use basic authentication on client and server components          |
+| [sample-https](endpoints/http/https)                                     |                Shows how to use SSL connectivity as a client and server                |
 | Samples Websockets                                                            |                                      Description                                       |
 | [sample-websocket-client](samples-websocket/sample-websocket-client)          |            Shows how to connect to a Websocket as a client during the test             |
 | [sample-websocket-server](samples-websocket/sample-websocket-server)          |          Shows how to provide a Websocket as a server for clients to connect           |
