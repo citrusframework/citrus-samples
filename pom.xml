@@ -8,6 +8,10 @@
   <name>Citrus Samples:: Parent</name>
   <packaging>pom</packaging>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <modules>
     <module>demo</module>
     <module>todo-app</module>

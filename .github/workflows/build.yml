@@ -23,6 +23,7 @@ on:
       - main
       - 3.x
       - 3.x-vintage
+      - feature/127-restructure-sample-catalog
     paths-ignore:
       - '**.adoc'
       - '**.md'
@@ -34,6 +35,7 @@ on:
       - main
       - 3.x
       - 3.x-vintage
+      - feature/127-restructure-sample-catalog
     paths-ignore:
       - '**.adoc'
       - '**.md'
