@@ -1,4 +1,4 @@
-group 'org.citrusframework.samples.java'
+group 'org.citrusframework.samples'
 version '4.0.0'
 
 apply plugin: 'java'
@@ -15,12 +15,12 @@ repositories {
 }
 
 dependencies {
-    testImplementation group: 'org.citrusframework', name: 'citrus-base', version: '5.1.0'
-    testImplementation group: 'org.citrusframework', name: 'citrus-spring', version: '5.1.0'
-    testImplementation group: 'org.citrusframework', name: 'citrus-endpoint-catalog', version: '5.1.0'
-    testImplementation group: 'org.citrusframework', name: 'citrus-testng', version: '5.1.0'
-    testImplementation group: 'org.citrusframework', name: 'citrus-yaml', version: '5.1.0'
-    testImplementation group: 'org.citrusframework', name: 'citrus-xml', version: '5.1.0'
+    testImplementation group: 'org.citrusframework', name: 'citrus-base', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-spring', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-endpoint-catalog', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-testng', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-yaml', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-xml', version: citrusVersion
     testImplementation group: 'org.springframework', name: 'spring-test', version: '7.0.8'
     testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.18'
     testImplementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: '2.0.18'

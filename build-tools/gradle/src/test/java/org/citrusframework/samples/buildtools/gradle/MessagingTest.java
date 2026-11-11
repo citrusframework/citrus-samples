@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.gradle;
+package org.citrusframework.samples.buildtools.gradle;
 
 import org.citrusframework.TestActionRunner;
 import org.citrusframework.annotations.CitrusResource;

@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.gradle;
+package org.citrusframework.samples.buildtools.gradle;
 
 import org.citrusframework.annotations.CitrusTestSource;
 import org.citrusframework.api.common.TestLoader;
@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 public class MessagingYamlIT extends TestNGCitrusSpringSupport {
 
     @Test
-    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:com/consol/citrus/samples/gradle/messaging.citrus.it.yaml" })
+    @CitrusTestSource(type = TestLoader.YAML, sources = { "classpath:org/citrusframework/samples/buildtools/gradle/messaging.citrus.it.yaml" })
     public void testMessaging() {
     }
 }

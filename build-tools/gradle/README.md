@@ -13,9 +13,9 @@ The Gradle build configuration is done in the **build.gradle** and **settings.gr
 and the project version.
 
 ```groovy
-rootProject.name = 'citrus-sample-gradle'
+rootProject.name = 'citrus-sample-build-tools-gradle'
 group 'org.citrusframework.samples'
-version '2.7.1'
+version '4.0.0'
 ```
     
 Now as Citrus libraries are available on Maven central repository we add these repositories so Gradle knows how to download the required
@@ -32,9 +32,9 @@ to add the ConSol Labs snapshot repository which is optional. Now lets move on w
     
 ```groovy
 dependencies {
- testCompile group: 'org.citrusframework', name: 'citrus-base', version: '3.1.0'
- testCompile group: 'org.citrusframework', name: 'citrus-spring', version: '3.1.0'
- testCompile group: 'org.citrusframework', name: 'citrus-testng', version: '3.1.0'
+ testImplementation group: 'org.citrusframework', name: 'citrus-base', version: citrusVersion
+ testImplementation group: 'org.citrusframework', name: 'citrus-spring', version: citrusVersion
+ testImplementation group: 'org.citrusframework', name: 'citrus-testng', version: citrusVersion
     [...]
 }
 ```
@@ -86,17 +86,16 @@ private ChannelEndpoint testChannelEndpoint;
 Run
 ---------
 
-The sample application uses Gradle as build tool. So you can use the Gradle wrapper for compile, package and test the
-sample with Gradle build.
- 
-     gradlew clean build
+The sample application uses Gradle as build tool. Use an installed Gradle 9.x command to compile, package, and test the sample; this project does not include a Gradle wrapper.
+
+     gradle clean build
     
 This executes all Citrus test cases during the build and you will see Citrus performing some integration test logging output.
 After the tests are finished build is successful and you are ready to go for writing some tests on your own.
 
 If you just want to execute all tests you can call
 
-    gradlew clean check
+    gradle clean check
 
 Of course you can also start the Citrus tests from your favorite IDE.
 Just start the Citrus test using the Gradle integration in IntelliJ, Eclipse or Netbeans.

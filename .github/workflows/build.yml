@@ -59,7 +59,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
       - name: Build and test Gradle sample
         run: gradle test
-        working-directory: sample-gradle
+        working-directory: build-tools/gradle
 
   build:
     runs-on: ubuntu-latest

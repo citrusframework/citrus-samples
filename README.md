@@ -25,7 +25,7 @@ system under test. Please find following list of samples and their primary objec
 | [sample-reporting](core/reporting)                                          |                           Shows how to add a custom reporter                           |
 | [sample-docker](connectors/docker)                                                |                  Shows how to use Citrus within Docker infrastructure                  |
 | [sample-kubernetes](connectors/kubernetes)                                        |                Shows how to use Citrus within Kubernetes infrastructure                |
-| [sample-gradle](sample-gradle)                                                |                           Uses Gradle build to execute tests                           |
+| [build-tools/gradle](build-tools/gradle)                                                |                           Uses Gradle build to execute tests                           |
 | [sample-annotation-config](core/annotation-config)                          |                      Uses annotation based endpoint configuration                      |
 | [sample-javaconfig](core/java-config)                                        |                         Uses pure Java POJOs for configuration                         |
 | [sample-groovy](sample-groovy)                                                |                    Uses Groovy scripts to define Citrus test cases                     |
@@ -43,9 +43,6 @@ system under test. Please find following list of samples and their primary objec
 | [sample-rmi](endpoints/rmi)                                                      |                Shows how to use RMI with Citrus as a client and server                 |
 | [sample-camel-context](endpoints/camel)                                  |                     Interact with Apache Camel context and routes                      |
 | Samples DB                                                                    |                                      Description                                       |
-| [sample-jdbc](samples-db/sample-jdbc)                                         |                          Simulates database server with JDBC                           |
-| [sample-jdbc-callable-statements](samples-db/sample-jdbc-callable-statements) |           Simulates database server communication using callable statements            |
-| [sample-jdbc-transactions](samples-db/sample-jdbc-transactions)               |                   Simulates database server with transactional JDBC                    |
 | [sample-sql](connectors/sql)                                           |                      Validates stored data in relational database                      |
 | Samples JSON                                                                  |                                      Description                                       |
 | [sample-json](validation/json/json)                                       |             Shows Json payload validation feature with JsonPath validation             |
