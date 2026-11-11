@@ -14,7 +14,7 @@ Sample index
 - [Core](core/) — endpoint configuration, behaviors, dictionaries, message store, dynamic endpoints, and reporting.
 - [Runtimes](runtimes/) — TestNG, JUnit 4, JUnit Jupiter, and Cucumber.
 - [Endpoints](endpoints/) — [HTTP](endpoints/http/), [SOAP web services](endpoints/ws/), [JMS](endpoints/jms/), [Kafka](endpoints/kafka/), [mail](endpoints/mail/), [RMI](endpoints/rmi/), [Camel](endpoints/camel/), [FTP/SCP/SFTP](endpoints/ftp/), and [WebSocket](endpoints/websocket/).
-- [Connectors](connectors/) — Selenium, OpenAPI, and SQL by default; Docker, Kubernetes, and Playwright through the `environment-samples` profile.
+- [Connectors](connectors/) — Selenium, Playwright, OpenAPI, and SQL by default; Docker and Kubernetes through the `environment-samples` profile.
 - [Validation](validation/) — [XML](validation/xml/), [JSON](validation/json/), [Hamcrest](validation/hamcrest/), and [binary messages](validation/binary/).
 - [Showcases](showcases/) — bakery, bookstore, flight booking, greeting, incident management, and Quarkus applications.
 - [Build tools](build-tools/gradle/) — standalone Gradle build outside the Maven reactor.
@@ -115,7 +115,7 @@ Prerequisites
 - JDK 21 or newer, with `JAVA_HOME` pointing to the JDK.
 - The repository Maven wrapper for in-repository builds, or Maven 3.9+ for copied samples.
 - A local Gradle installation for [build-tools/gradle](build-tools/gradle/), which has no Gradle wrapper.
-- Additional infrastructure only where a leaf README requires it. Docker, Kubernetes, and Playwright samples are not in the default Maven reactor.
+- Additional infrastructure only where a leaf README requires it. Docker and Kubernetes samples are not in the default Maven reactor.
 
 Run samples
 -----------

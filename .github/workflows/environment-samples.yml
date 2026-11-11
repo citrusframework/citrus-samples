@@ -27,7 +27,6 @@ on:
         options:
           - docker
           - kubernetes
-          - playwright
 
 jobs:
   docker:
@@ -69,22 +68,3 @@ jobs:
         run: ./mvnw --no-transfer-progress -f apps/todo-app/pom.xml install -DskipTests
       - name: Verify Kubernetes sample
         run: ./mvnw --no-transfer-progress verify -pl connectors/kubernetes -amd -Penvironment-samples -Dsystem.under.test.mode=embedded
-
-  playwright:
-    if: ${{ inputs.sample == 'playwright' }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-      - name: Set up JDK
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-      - name: Install shared application
-        run: ./mvnw --no-transfer-progress -f apps/todo-app/pom.xml install -DskipTests
-      - name: Install Playwright Chromium browser
-        run: ./mvnw --no-transfer-progress generate-test-resources -pl connectors/playwright -amd -Penvironment-samples -DskipTests
-      - name: Verify Playwright sample
-        run: ./mvnw --no-transfer-progress verify -pl connectors/playwright -amd -Penvironment-samples -Dsystem.under.test.mode=embedded

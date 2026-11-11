@@ -16,11 +16,11 @@
 # ---------------------------------------------------------------------------
 
 # On-demand full verification: the complete default Maven reactor from the
-# repository root (all groups, including `showcases`) plus the standalone
-# Gradle sample. The PR/push `build` workflow verifies every default group
-# except `showcases`, which runs only here. Run it manually
-# (Actions > integration > Run workflow). Docker, Kubernetes and Playwright
-# samples stay in the separate `environment-samples` workflow.
+# repository root plus the standalone Gradle sample, in a single build. The
+# PR/push `build` workflow already verifies every default group in its parallel
+# `samples` matrix; run this one manually (Actions > integration > Run workflow)
+# when a single root-reactor build is wanted. Docker and Kubernetes samples stay
+# in the separate `environment-samples` workflow.
 
 name: integration
 

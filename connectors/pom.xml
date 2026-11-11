@@ -14,6 +14,7 @@
 
   <modules>
     <module>selenium</module>
+    <module>playwright</module>
     <module>openapi</module>
     <module>sql</module>
   </modules>
@@ -24,7 +25,6 @@
       <modules>
         <module>docker</module>
         <module>kubernetes</module>
-        <module>playwright</module>
       </modules>
     </profile>
   </profiles>

@@ -73,7 +73,7 @@ jobs:
           - endpoints
           - connectors
           - validation
-          # `showcases` is verified only by the on-demand `integration` workflow.
+          - showcases
 
     steps:
       - name: Checkout code
