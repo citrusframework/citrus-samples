@@ -15,11 +15,11 @@
   <modules>
     <module>showcases</module>
     <module>apps</module>
+    <module>getting-started</module>
     <module>core</module>
     <module>runtimes</module>
     <module>endpoints</module>
     <module>connectors</module>
     <module>validation</module>
-    <module>sample-groovy</module>
   </modules>
 </project>

@@ -1,7 +1,7 @@
-name: "TodoListIT.todo-list-it.yaml"
+name: "TodoListIT.todo-list.yaml"
 author: "Christoph Deppisch"
 status: "FINAL"
-description: "todo-list-it.groovy port"
+description: "todo-list.groovy port"
 variables:
   - name: "todoId"
     value: "citrus:randomUUID()"

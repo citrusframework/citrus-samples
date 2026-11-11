@@ -18,6 +18,8 @@ package org.citrusframework.samples.endpoints.http.basic;
 
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.annotations.CitrusTestSource;
+import org.citrusframework.api.common.TestLoader;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
@@ -131,6 +133,60 @@ public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionS
         $(http().client(todoClient)
                 .receive()
                 .response(HttpStatus.OK));
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.XML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-get.citrus.xml" })
+    public void testGetXml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.XML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-post.citrus.xml" })
+    public void testPostXml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.XML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-lifecycle.citrus.xml" })
+    public void testTodoLifecycleXml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.YAML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-get.citrus.yaml" })
+    public void testGetYaml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.YAML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-post.citrus.yaml" })
+    public void testPostYaml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.YAML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-lifecycle.citrus.yaml" })
+    public void testTodoLifecycleYaml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.GROOVY, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-get.citrus.groovy" })
+    public void testGetGroovy() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.GROOVY, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-post.citrus.groovy" })
+    public void testPostGroovy() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.GROOVY, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-lifecycle.citrus.groovy" })
+    public void testTodoLifecycleGroovy() {
     }
 
 }

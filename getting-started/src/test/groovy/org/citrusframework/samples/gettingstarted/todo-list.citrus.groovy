@@ -1,4 +1,4 @@
-package com.consol.citrus.samples.todolist
+package org.citrusframework.samples.gettingstarted
 
 import org.citrusframework.message.MessageType
 import org.springframework.http.HttpStatus

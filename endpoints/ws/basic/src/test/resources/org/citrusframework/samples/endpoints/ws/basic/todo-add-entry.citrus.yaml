@@ -37,3 +37,7 @@ actions:
           body:
             resource:
               file: "classpath:templates/getTodoListResponse.xml"
+        validate:
+          - xpath:
+              - expression: "//todo:todoEntry[todo:title='${todoName}']/todo:description"
+                value: "${todoDescription}"

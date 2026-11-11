@@ -40,6 +40,9 @@
             <resource file="classpath:templates/getTodoListResponse.xml"/>
           </body>
         </message>
+        <validate>
+          <xpath expression="//todo:todoEntry[todo:title='${todoName}']/todo:description" value="${todoDescription}"/>
+        </validate>
       </receive-response>
     </soap>
   </actions>

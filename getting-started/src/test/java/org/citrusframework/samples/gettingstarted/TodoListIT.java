@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.gettingstarted;
 
-import org.citrusframework.dsl.TestActionSupport;
+import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.annotations.CitrusTestSource;
 import org.citrusframework.api.common.TestLoader;
+import org.citrusframework.dsl.TestActionSupport;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.message.MessageType;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.testng.annotations.Test;
 
@@ -29,9 +34,67 @@ import org.testng.annotations.Test;
 @ContextConfiguration(classes = { EndpointConfig.class })
 public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
+    @Autowired
+    private HttpClient todoClient;
+
     @Test
-    @CitrusTestSource(type = TestLoader.GROOVY, packageScan = "org.citrusframework.samples.todolist")
-    public void loadGroovyTests() {
+    @CitrusTest
+    public void testTodoList() {
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Code some Citrus tests!");
+
+        $(http().client(todoClient)
+                .send()
+                .post("/api/todolist")
+                .message()
+                .type(MessageType.JSON)
+                .contentType("application/json")
+                .body("{ \"id\": \"${todoId}\", " +
+                        "\"title\": \"${todoName}\", " +
+                        "\"description\": \"${todoDescription}\", " +
+                        "\"done\": false}"));
+
+        $(http().client(todoClient)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .type(MessageType.PLAINTEXT)
+                .body("${todoId}"));
+
+        $(http().client(todoClient)
+                .send()
+                .get("/api/todo/${todoId}")
+                .message()
+                .accept("application/json"));
+
+        $(http().client(todoClient)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .type(MessageType.JSON)
+                .validate(validation().jsonPath()
+                        .expression("$.id", "${todoId}")
+                        .expression("$.title", "${todoName}")
+                        .expression("$.description", "${todoDescription}")
+                        .expression("$.done", false)));
     }
 
+    @Test
+    @CitrusTestSource(type = TestLoader.XML,
+            sources = "classpath:org/citrusframework/samples/gettingstarted/todo-list.citrus.xml")
+    public void testTodoListXml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.YAML,
+            sources = "classpath:org/citrusframework/samples/gettingstarted/todo-list.citrus.yaml")
+    public void testTodoListYaml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.GROOVY,
+            sources = "classpath:org/citrusframework/samples/gettingstarted/todo-list.citrus.groovy")
+    public void testTodoListGroovy() {
+    }
 }

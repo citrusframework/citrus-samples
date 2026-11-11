@@ -23,6 +23,15 @@
   </properties>
 
   <build>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+      <testResource>
+        <directory>src/test/groovy</directory>
+      </testResource>
+    </testResources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -162,6 +171,12 @@
     <dependency>
       <groupId>org.citrusframework</groupId>
       <artifactId>citrus-base</artifactId>
+      <version>${citrus.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.citrusframework</groupId>
+      <artifactId>citrus-groovy</artifactId>
       <version>${citrus.version}</version>
       <scope>test</scope>
     </dependency>

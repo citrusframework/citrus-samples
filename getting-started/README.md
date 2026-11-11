@@ -84,7 +84,7 @@ As usually the test executed will be reported in the Citrus test results.
 | 
 | CITRUS TEST RESULTS
 | 
-|  todo-list-it ................................................... SUCCESS
+|  todo-list ................................................... SUCCESS
 | 
 | TOTAL:	1
 | SKIPPED:	0 (0.0%)
@@ -162,9 +162,11 @@ Further information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
-## YAML and XML test variants
+## Java, XML, YAML and Groovy test variants
 
-Besides the Java integration tests this sample ships declarative ports: `todo-list-it.citrus.it.yaml` + `todo-list-it.citrus.it.xml` (same scenario), executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=TodoListYamlIT,TodoListXmlIT`.
+`TodoListIT` executes the same todo-list scenario in all four DSLs during one Failsafe invocation and one system-under-test lifecycle. XML and YAML sources are in `src/test/resources`; the Groovy source is in `src/test/groovy`. Run all variants with `mvn verify -Dsystem.under.test.mode=embedded`, or select methods with `-Dit.test=TodoListIT#testTodoListXml+testTodoListYaml+testTodoListGroovy`.
+
+To omit an unwanted non-Java variant, delete its `.citrus.xml`, `.citrus.yaml`, or `.citrus.groovy` source and remove the corresponding `@CitrusTestSource` method from `TodoListIT`. Keep the Java `@CitrusTest` method and the other runner methods unchanged.
 
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org

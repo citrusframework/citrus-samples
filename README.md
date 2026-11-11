@@ -28,7 +28,7 @@ system under test. Please find following list of samples and their primary objec
 | [build-tools/gradle](build-tools/gradle)                                                |                           Uses Gradle build to execute tests                           |
 | [sample-annotation-config](core/annotation-config)                          |                      Uses annotation based endpoint configuration                      |
 | [sample-javaconfig](core/java-config)                                        |                         Uses pure Java POJOs for configuration                         |
-| [sample-groovy](sample-groovy)                                                |                    Uses Groovy scripts to define Citrus test cases                     |
+| [getting-started](getting-started)                                                |                    Uses Java, XML, YAML, and Groovy to define Citrus test cases                     |
 | [sample-behaviors](core/behaviors)                                          |                   Shows how to reuse test actions in test behaviors                    |
 | [sample-dictionaries](core/data-dictionaries)                                    |         Shows how to incorporate message manipulation using data dictionaries          |
 | [sample-message-store](core/message-store)                                  |                       Shows how to access internal message store                       |

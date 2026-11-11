@@ -109,9 +109,11 @@ Further information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
-## YAML and XML test variants
+## Java, XML, YAML and Groovy test variants
 
-Besides the Java integration tests this sample ships declarative ports: `todo-get.citrus.it.yaml`, `todo-lifecycle.citrus.it.yaml`, `todo-post.citrus.it.yaml` + `todo-get.citrus.it.xml`, `todo-lifecycle.citrus.it.xml`, `todo-post.citrus.it.xml` (same scenarios), executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=TodoListYamlIT,TodoListXmlIT`.
+`TodoListIT` executes the get, post, and lifecycle scenarios in all four DSLs during one Failsafe invocation and one system-under-test lifecycle. XML and YAML sources are in `src/test/resources`; Groovy sources are in `src/test/groovy`. Run all variants with `mvn verify -Dsystem.under.test.mode=embedded`.
+
+To omit an unwanted non-Java variant, delete its `.citrus.xml`, `.citrus.yaml`, or `.citrus.groovy` sources and remove the corresponding `@CitrusTestSource` methods from `TodoListIT`. Keep the Java `@CitrusTest` methods and the other runner methods unchanged.
 
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
