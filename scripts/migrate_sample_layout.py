@@ -6,7 +6,7 @@ Modes (exactly one required):
   --dry-run   print the ordered `git mv` operations without changing anything
   --apply     perform the validated `git mv` operations (never edits or commits)
 
-The mapping is normative and mirrors docs/specs/restructure-sample-catalog/sdd/02-architecture.md.
+The mapping is normative for the sample catalog layout (see issue #127).
 Python 3 standard library only.
 """
 from __future__ import annotations
