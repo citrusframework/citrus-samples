@@ -3,14 +3,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-samples-xml</artifactId>
+  <artifactId>citrus-sample-validation-json</artifactId>
   <version>4.0.0</version>
-  <name>Citrus Samples:: XML Samples</name>
+  <name>Citrus Samples:: Validation:: JSON</name>
   <packaging>pom</packaging>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <modules>
-    <module>sample-xhtml</module>
-    <module>sample-xml</module>
-    <module>sample-oxm</module>
+    <module>json</module>
+    <module>databind</module>
   </modules>
 </project>

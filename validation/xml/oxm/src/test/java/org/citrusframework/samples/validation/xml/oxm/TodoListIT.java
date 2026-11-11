@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.validation.xml.oxm;
 
 import java.util.Map;
 import java.util.UUID;
@@ -24,7 +24,7 @@ import org.citrusframework.annotations.CitrusTest;
 import org.citrusframework.context.TestContext;
 import org.citrusframework.http.client.HttpClient;
 import org.citrusframework.message.MessageType;
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.citrusframework.samples.validation.xml.oxm.model.TodoEntry;
 import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
 import org.citrusframework.validation.xml.XmlMarshallingValidationProcessor;
 import org.citrusframework.base.xml.Jaxb2Marshaller;

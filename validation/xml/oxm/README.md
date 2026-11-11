@@ -16,12 +16,12 @@ First we need to provide a marshaller component in our Spring configuration:
 ```java
 @Bean
 public Marshaller marshaller() {
-    return new Jaxb2Marshaller("com.consol.citrus.samples.todolist.model");
+    return new Jaxb2Marshaller("org.citrusframework.samples.validation.xml.oxm.model");
 }
 ```
     
 Citrus provides the Jaxb2 marshaller out-of-the-box. You can just use this in your tests to deal with XML payloads.
-Please note that the marshaller supports model object classes in package **com.consol.citrus.samples.todolist.model**.
+Please note that the marshaller supports model object classes in package **org.citrusframework.samples.validation.xml.oxm.model**.
 
 That is all for configuration, now we can use model objects as message payload in the test cases.
     

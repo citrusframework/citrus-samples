@@ -19,10 +19,7 @@
     <module>runtimes</module>
     <module>endpoints</module>
     <module>connectors</module>
+    <module>validation</module>
     <module>sample-groovy</module>
-    <module>samples-xml</module>
-    <module>samples-json</module>
-    <module>sample-hamcrest</module>
-    <module>sample-binary</module>
   </modules>
 </project>

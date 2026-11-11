@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 @jakarta.xml.bind.annotation.XmlSchema(namespace = "http://citrusframework.org/samples/todolist", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
-package com.consol.citrus.samples.todolist.model;
+package org.citrusframework.samples.validation.xml.oxm.model;

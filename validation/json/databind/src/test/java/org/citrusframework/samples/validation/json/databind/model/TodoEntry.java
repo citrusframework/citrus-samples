@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist.model;
+package org.citrusframework.samples.validation.json.databind.model;
 
 import java.util.UUID;
 

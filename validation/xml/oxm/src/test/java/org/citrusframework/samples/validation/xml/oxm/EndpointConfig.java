@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.validation.xml.oxm;
 
 import org.citrusframework.samples.apps.todoapp.TodoAppAutoConfiguration;
 import org.citrusframework.dsl.endpoint.CitrusEndpoints;
@@ -43,6 +43,6 @@ public class EndpointConfig {
 
     @Bean
     public Marshaller marshaller() {
-        return new Jaxb2Marshaller("com.consol.citrus.samples.todolist.model");
+        return new Jaxb2Marshaller("org.citrusframework.samples.validation.xml.oxm.model");
     }
 }

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.consol.citrus.samples.todolist;
+package org.citrusframework.samples.validation.json.databind;
 
 import java.util.Map;
 import java.util.UUID;
 
-import com.consol.citrus.samples.todolist.model.TodoEntry;
+import org.citrusframework.samples.validation.json.databind.model.TodoEntry;
 import org.apache.hc.core5.http.ContentType;
 import org.citrusframework.dsl.TestActionSupport;
 import org.citrusframework.annotations.CitrusTest;

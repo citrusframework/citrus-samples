@@ -9,7 +9,7 @@ different integration test scenarios. The projects are executable with Maven
 and should give you a detailed picture how Citrus testing works.
 
 This repository uses the Java DSL and configuration in Citrus. In case you are not a Java developer you can also use the plain
-XML DSL and configuration notation. The samples using XML can be found in [samples-xml][5].
+XML DSL and configuration notation. The samples using XML can be found in [validation/xml](validation/xml).
 
 Overview
 ---------
@@ -32,8 +32,8 @@ system under test. Please find following list of samples and their primary objec
 | [sample-behaviors](core/behaviors)                                          |                   Shows how to reuse test actions in test behaviors                    |
 | [sample-dictionaries](core/data-dictionaries)                                    |         Shows how to incorporate message manipulation using data dictionaries          |
 | [sample-message-store](core/message-store)                                  |                       Shows how to access internal message store                       |
-| [sample-binary](sample-binary)                                                |                    Shows binary message content handling in Citrus                     |
-| [sample-hamcrest](sample-hamcrest)                                            |              Shows Hamcrest matcher support in validation and conditions               |
+| [sample-binary](validation/binary)                                                |                    Shows binary message content handling in Citrus                     |
+| [sample-hamcrest](validation/hamcrest)                                            |              Shows Hamcrest matcher support in validation and conditions               |
 | [sample-mail](endpoints/mail)                                                    |                         Shows mail server activities in Citrus                         |
 | [sample-selenium](connectors/selenium)                                            |                      Perform UI testing with Selenium and Citrus                       |
 | [sample-playwright](connectors/playwright)                                          |                     Perform UI testing with Playwright and Citrus |
@@ -48,12 +48,12 @@ system under test. Please find following list of samples and their primary objec
 | [sample-jdbc-transactions](samples-db/sample-jdbc-transactions)               |                   Simulates database server with transactional JDBC                    |
 | [sample-sql](connectors/sql)                                           |                      Validates stored data in relational database                      |
 | Samples JSON                                                                  |                                      Description                                       |
-| [sample-json](samples-json/sample-json)                                       |             Shows Json payload validation feature with JsonPath validation             |
-| [sample-databind](samples-json/sample-databind)                               |         Shows JSON object mapping feature when sending and receiving messages          |
+| [sample-json](validation/json/json)                                       |             Shows Json payload validation feature with JsonPath validation             |
+| [sample-databind](validation/json/databind)                               |         Shows JSON object mapping feature when sending and receiving messages          |
 | Samples XML                                                                   |                                      Description                                       |
-| [sample-xml](samples-xml/sample-xml)                                          |             Shows XML validation feature with schema and Xpath validation              |
-| [sample-oxm](samples-xml/sample-oxm)                                          |        Shows XML object marshalling feature when sending and receiving messages        |
-| [sample-xhtml](samples-xml/sample-xhtml)                                      |                             Shows XHTML validation feature                             |
+| [sample-xml](validation/xml/xml)                                          |             Shows XML validation feature with schema and Xpath validation              |
+| [sample-oxm](validation/xml/oxm)                                          |        Shows XML object marshalling feature when sending and receiving messages        |
+| [sample-xhtml](validation/xml/xhtml)                                      |                             Shows XHTML validation feature                             |
 | Samples FTP/SFTP                                                              |                                      Description                                       |
 | [sample-ftp](endpoints/ftp/ftp)                                          |                   Shows FTP client and server interaction in Citrus                    |
 | [sample-sftp](endpoints/ftp/sftp)                                        |                   Shows SFTP client and server interaction in Citrus                   |
@@ -162,4 +162,3 @@ a complete [reference manual][3].
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
  [4]: https://github.com/citrusframework/citrus
- [5]: https://github.com/christophd/citrus-samples-xml
