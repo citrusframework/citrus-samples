@@ -13,7 +13,6 @@
   </properties>
 
   <modules>
-    <module>showcases</module>
     <module>apps</module>
     <module>getting-started</module>
     <module>core</module>
@@ -21,5 +20,6 @@
     <module>endpoints</module>
     <module>connectors</module>
     <module>validation</module>
+    <module>showcases</module>
   </modules>
 </project>
