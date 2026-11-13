@@ -21,7 +21,7 @@
 
   <profiles>
     <profile>
-      <id>environment-samples</id>
+      <id>infrastructure-samples</id>
       <modules>
         <module>docker</module>
         <module>kubernetes</module>

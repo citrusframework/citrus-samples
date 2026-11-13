@@ -15,13 +15,13 @@
 # limitations under the License.
 # ---------------------------------------------------------------------------
 
-name: environment-samples
+name: infrastructure-samples
 
 on:
   workflow_dispatch:
     inputs:
       sample:
-        description: Environment-specific sample to verify
+        description: Infrastructure-dependent sample to verify
         required: true
         type: choice
         options:
@@ -46,7 +46,7 @@ jobs:
       - name: Install shared application
         run: ./mvnw --no-transfer-progress -f apps/todo-app/pom.xml install -DskipTests
       - name: Verify Docker sample
-        run: ./mvnw --no-transfer-progress verify -pl connectors/docker -amd -Penvironment-samples -Dsystem.under.test.mode=embedded
+        run: ./mvnw --no-transfer-progress verify -pl connectors/docker -amd -Pinfrastructure-samples -Dsystem.under.test.mode=embedded
 
   kubernetes:
     if: ${{ inputs.sample == 'kubernetes' }}
@@ -67,4 +67,4 @@ jobs:
       - name: Install shared application
         run: ./mvnw --no-transfer-progress -f apps/todo-app/pom.xml install -DskipTests
       - name: Verify Kubernetes sample
-        run: ./mvnw --no-transfer-progress verify -pl connectors/kubernetes -amd -Penvironment-samples -Dsystem.under.test.mode=embedded
+        run: ./mvnw --no-transfer-progress verify -pl connectors/kubernetes -amd -Pinfrastructure-samples -Dsystem.under.test.mode=embedded

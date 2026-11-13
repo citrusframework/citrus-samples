@@ -14,7 +14,7 @@ Sample index
 - [Core](core/) — endpoint configuration, behaviors, dictionaries, message store, dynamic endpoints, and reporting.
 - [Runtimes](runtimes/) — TestNG, JUnit 4, JUnit Jupiter, and Cucumber.
 - [Endpoints](endpoints/) — [HTTP](endpoints/http/), [SOAP web services](endpoints/ws/), [JMS](endpoints/jms/), [Kafka](endpoints/kafka/), [mail](endpoints/mail/), [RMI](endpoints/rmi/), [Camel](endpoints/camel/), [FTP/SCP/SFTP](endpoints/ftp/), and [WebSocket](endpoints/websocket/).
-- [Connectors](connectors/) — Selenium, Playwright, OpenAPI, and SQL by default; Docker and Kubernetes through the `environment-samples` profile.
+- [Connectors](connectors/) — Selenium, Playwright, OpenAPI, and SQL by default; Docker and Kubernetes through the `infrastructure-samples` profile (they need a Docker daemon or Kubernetes cluster).
 - [Validation](validation/) — [XML](validation/xml/), [JSON](validation/json/), [Hamcrest](validation/hamcrest/), and [binary messages](validation/binary/).
 - [Showcases](showcases/) — bakery, bookstore, flight booking, greeting, incident management, and Quarkus applications.
 - [Build tools](build-tools/gradle/) — standalone Gradle build outside the Maven reactor.

@@ -15,17 +15,31 @@
 # limitations under the License.
 # ---------------------------------------------------------------------------
 
-# On-demand full verification: the complete default Maven reactor from the
-# repository root plus the standalone Gradle sample, in a single build. The
-# PR/push `build` workflow already verifies every default group in its parallel
-# `samples` matrix; run this one manually (Actions > integration > Run workflow)
-# when a single root-reactor build is wanted. Docker and Kubernetes samples stay
-# in the separate `environment-samples` workflow.
+# Full verification: the complete default Maven reactor from the repository
+# root plus the standalone Gradle sample, in a single build. The PR/push `build`
+# workflow verifies every default group in its parallel `samples` matrix, which
+# cannot see root-POM problems, duplicate artifactIds or cross-group build-order
+# issues. This runs weekly (Monday 06:00 UTC) so those surface within a week, and
+# can be started by hand (Actions > integration > Run workflow) for ad-hoc runs.
+# Docker and Kubernetes samples stay in the separate `infrastructure-samples`
+# workflow.
 
 name: integration
 
 on:
+  schedule:
+    - cron: '0 6 * * 1'
   workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/integration.yml
+
+concurrency:
+  group: integration-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
   gradle-sample:
@@ -64,3 +78,88 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Verify complete default reactor
         run: ./mvnw --no-transfer-progress clean verify -Dsystem.under.test.mode=embedded
+
+  # A red scheduled run nobody sees is no safety net. A scheduled failure opens
+  # one tracking issue (later failures comment on it instead of opening more),
+  # assigned to the repository variable INTEGRATION_OWNER when it is set, and
+  # the next green scheduled run closes it. On a PR that changes this file it
+  # runs as a dry run: it reads the open issues and logs what it would do, but
+  # writes nothing. Manual dispatches are left out: whoever started one is
+  # already watching it.
+  report:
+    name: Report integration result
+    needs: [gradle-sample, default-reactor]
+    if: ${{ always() && (github.event_name == 'schedule' || github.event_name == 'pull_request') }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Open, update or close the tracking issue
+        uses: actions/github-script@v8
+        env:
+          GRADLE_RESULT: ${{ needs.gradle-sample.result }}
+          REACTOR_RESULT: ${{ needs.default-reactor.result }}
+          DRY_RUN: ${{ github.event_name != 'schedule' }}
+          OWNER: ${{ vars.INTEGRATION_OWNER }}
+        with:
+          script: |
+            const title = 'Weekly integration build is failing';
+            const { GRADLE_RESULT: gradle, REACTOR_RESULT: reactor, OWNER: owner } = process.env;
+            const dryRun = process.env.DRY_RUN === 'true';
+            const failed = [gradle, reactor].some(r => r !== 'success');
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const sha = context.sha.slice(0, 8);
+            const act = async (what, call) => {
+              if (dryRun) { core.notice(`[dry run] would ${what}`); return null; }
+              const result = await call();
+              core.notice(what);
+              return result;
+            };
+
+            const open = await github.paginate(github.rest.issues.listForRepo, {
+              ...context.repo, state: 'open', creator: 'github-actions[bot]', per_page: 100,
+            });
+            const existing = open.find(i => i.title === title && !i.pull_request);
+
+            if (failed) {
+              const body = [
+                `The weekly integration build failed on \`${context.ref.replace('refs/heads/', '')}\` at ${sha}: [run](${runUrl}).`,
+                '',
+                `- Gradle sample: **${gradle}**`,
+                `- Complete default reactor: **${reactor}**`,
+                '',
+                'PR builds verify each sample group on its own, so this may be a root POM problem, ' +
+                'a duplicate artifactId or a cross-group build-order issue that no PR build could see. ' +
+                'Fix it, then close this issue. The next green scheduled run closes it automatically.',
+              ].join('\n');
+              if (existing) {
+                await act(`comment on #${existing.number}`, () =>
+                  github.rest.issues.createComment({ ...context.repo, issue_number: existing.number, body }));
+              } else {
+                // An owner who cannot be assigned (typo, no repo access) makes GitHub
+                // reject the whole create, so retry unassigned rather than file nothing.
+                await act(`open "${title}"${owner ? ` assigned to ${owner}` : ''}`, async () => {
+                  try {
+                    return await github.rest.issues.create({ ...context.repo, title, body, assignees: owner ? [owner] : [] });
+                  } catch (e) {
+                    if (!owner) throw e;
+                    core.warning(`Could not assign INTEGRATION_OWNER '${owner}' (${e.status}): ${e.message}. Opening unassigned.`);
+                    return github.rest.issues.create({
+                      ...context.repo, title,
+                      body: `${body}\n\n_INTEGRATION_OWNER \`${owner}\` could not be assigned; check the repository variable._`,
+                    });
+                  }
+                });
+              }
+              if (!dryRun) core.setFailed(`Integration build failed (gradle=${gradle}, reactor=${reactor})`);
+            } else if (existing) {
+              await act(`close #${existing.number}`, async () => {
+                await github.rest.issues.createComment({
+                  ...context.repo, issue_number: existing.number,
+                  body: `The weekly integration build passed at ${sha}: [run](${runUrl}). Closing.`,
+                });
+                return github.rest.issues.update({ ...context.repo, issue_number: existing.number, state: 'closed' });
+              });
+            } else {
+              core.notice(`${dryRun ? '[dry run] ' : ''}green and no open tracking issue: nothing to do`);
+            }
