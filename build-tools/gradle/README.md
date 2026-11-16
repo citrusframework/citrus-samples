@@ -121,7 +121,6 @@ Besides the Java integration tests this sample ships declarative ports: `messagi
 - **Runtime:** TestNG through Gradle (`gradle`).
 - **DSLs:** Java, XML, YAML.
 - **Prerequisites:** JDK 21+ and an installed Gradle command are required; Maven is not used.
-- **Citrus version:** 5.1.0, declared in `gradle.properties`.
 
 Run from the repository root:
 

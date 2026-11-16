@@ -18,7 +18,7 @@
     <slf4j.version>2.0.20</slf4j.version>
     <log4j2.version>2.25.5</log4j2.version>
     <commons.logging.version>1.4.0</commons.logging.version>
-    <citrus.version>5.1.0</citrus.version>
+    <citrus.version>5.2.0</citrus.version>
     <xbean.spring.version>5.0.0</xbean.spring.version>
     <maven.failsafe.plugin.version>3.5.6</maven.failsafe.plugin.version>
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>

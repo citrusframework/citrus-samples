@@ -219,7 +219,7 @@ Test behaviors
 ---------
 
 Tests can also be composed from reusable test behaviors (`TodoBehaviorsIT`). A behavior groups actions behind a name,
-Citrus 5.1.0 reports them nested under that name (derived from the class, e.g. `ClearTodoListBehavior` becomes
+Citrus 5.2.0 reports them nested under that name (derived from the class, e.g. `ClearTodoListBehavior` becomes
 `clear todo list`), composes them with `andThen`, guards them with `requires`, and can run them `isolated()` with
 `publish` to hand variables back to the calling test:
 
@@ -244,9 +244,6 @@ Run
 ---------
 
 **NOTE:** This test depends on the [todo-app](../../apps/todo-app/) WAR which must have been installed into your local maven repository using `mvn clean install` beforehand.
-You also need **Citrus 5.1.0+** (see the note at the top of this file). Until 5.1.0 is released you can verify the sample against a
-local framework snapshot build with `mvn verify -Dcitrus.version=5.1.0-SNAPSHOT` — this additionally requires a locally installed
-`citrus-endpoint-catalog:5.1.0-SNAPSHOT`, otherwise pin that single dependency to `5.0.0` for the local run.
 
 The sample application uses Maven as build tool. So you can compile, package and test the
 sample with Maven.
@@ -329,7 +326,6 @@ Besides the Java integration tests this sample ships declarative ports: `todo-li
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java, XML, YAML.
 - **Prerequisites:** None for the browser: the build downloads the Playwright Chromium binaries itself. JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 
