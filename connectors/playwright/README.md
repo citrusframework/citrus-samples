@@ -219,7 +219,7 @@ Test behaviors
 ---------
 
 Tests can also be composed from reusable test behaviors (`TodoBehaviorsIT`). A behavior groups actions behind a name,
-Citrus 5.2.0 reports them nested under that name (derived from the class, e.g. `ClearTodoListBehavior` becomes
+reported nested under that name (derived from the class, e.g. `ClearTodoListBehavior` becomes
 `clear todo list`), composes them with `andThen`, guards them with `requires`, and can run them `isolated()` with
 `publish` to hand variables back to the calling test:
 
