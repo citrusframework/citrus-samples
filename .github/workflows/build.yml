@@ -47,71 +47,50 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Build and test Gradle sample
-        run: gradle test
-        working-directory: sample-gradle
+        run: gradle clean build
+        working-directory: build-tools/gradle
 
-  build:
+  samples:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        group:
+          - apps
+          - getting-started
+          - core
+          - runtimes
+          - endpoints
+          - connectors
+          - validation
+          - showcases
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
-      - name: Checkout code
-        uses: actions/checkout@v5
       - name: Cache Maven packages
         uses: actions/cache@v5
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build Todo App
-        run: |
-          ./mvnw --no-transfer-progress -pl :citrus-sample-todo install
-      - name: Run Demos
-        run: |
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-quarkus
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-bakery
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-bookstore
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-flightbooking
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-greeting
-          ./mvnw --no-transfer-progress install -Dsystem.under.test.mode=embedded -f demo/sample-incident
-      - name: Run Samples
-        run: |
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-annotation-config
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-behaviors
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-binary
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-camel-context
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dictionaries
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-dynamic-endpoints
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-groovy
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-hamcrest
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-javaconfig
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-jms
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-kafka
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-mail
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-message-store
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-reporting
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-rmi
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -pl :citrus-sample-selenium
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-cucumber
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-db
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-ftp
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-http
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-json
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-junit
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-soap
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-testng
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-websocket
-          ./mvnw --no-transfer-progress verify -Dsystem.under.test.mode=embedded -f samples-xml
+      - name: Install shared todo-app SUT
+        if: matrix.group != 'apps'
+        run: ./mvnw --no-transfer-progress -f apps/todo-app/pom.xml install -DskipTests
+      - name: Verify ${{ matrix.group }} samples
+        run: ./mvnw --no-transfer-progress -f ${{ matrix.group }}/pom.xml verify -Dsystem.under.test.mode=embedded

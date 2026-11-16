@@ -1,0 +1,57 @@
+name: "TodoListIT.todo-list.yaml"
+author: "Christoph Deppisch"
+status: "FINAL"
+description: "todo-list.groovy port"
+variables:
+  - name: "todoId"
+    value: "citrus:randomUUID()"
+  - name: "todoName"
+    value: "citrus:concat('todo_', citrus:randomNumber(4))"
+  - name: "todoDescription"
+    value: "Code some Citrus tests!"
+actions:
+  - http:
+      client: "todoClient"
+      sendRequest:
+        POST:
+          path: "/api/todolist"
+          contentType: "application/json"
+          type: "JSON"
+          body:
+            data: |
+              {
+                "id": "${todoId}",
+                "title": "${todoName}",
+                "description": "${todoDescription}",
+                "done": false
+              }
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"
+          type: "PLAINTEXT"
+          body:
+            data: "${todoId}"
+  - http:
+      client: "todoClient"
+      sendRequest:
+        GET:
+          path: "/api/todo/${todoId}"
+          accept: "application/json"
+  - http:
+      client: "todoClient"
+      receiveResponse:
+        response:
+          status: "200"
+          type: "JSON"
+        validate:
+          - jsonPath:
+              - expression: "$.id"
+                value: "${todoId}"
+              - expression: "$.title"
+                value: "${todoName}"
+              - expression: "$.description"
+                value: "${todoDescription}"
+              - expression: "$.done"
+                value: "false"

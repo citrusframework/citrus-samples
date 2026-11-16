@@ -1,170 +1,165 @@
 Citrus samples ![Logo][1]
 ==============
 
-Sample applications
----------
+Executable examples for Citrus integration testing
+--------------------------------------------------
 
-The Citrus samples applications try to demonstrate how Citrus works in
-different integration test scenarios. The projects are executable with Maven
-and should give you a detailed picture how Citrus testing works.
+This repository contains small, independent Citrus 5.1.0 projects. Each sample focuses on one testing capability, runtime, endpoint, connector, validation technology, or complete showcase. Most samples test the shared [todo application](apps/todo-app/); larger showcases keep their own system under test.
 
-This repository uses the Java DSL and configuration in Citrus. In case you are not a Java developer you can also use the plain
-XML DSL and configuration notation. The samples using XML can be found in [samples-xml][5].
+Sample index
+------------
 
-Overview
----------
+- [Getting started](getting-started/) — the smallest Java, XML, YAML, and Groovy example.
+- [Application](apps/todo-app/) — the shared todo-list system under test, not a test sample.
+- [Core](core/) — endpoint configuration, behaviors, dictionaries, message store, dynamic endpoints, and reporting.
+- [Runtimes](runtimes/) — TestNG, JUnit 4, JUnit Jupiter, and Cucumber.
+- [Endpoints](endpoints/) — [HTTP](endpoints/http/), [SOAP web services](endpoints/ws/), [JMS](endpoints/jms/), [Kafka](endpoints/kafka/), [mail](endpoints/mail/), [RMI](endpoints/rmi/), [Camel](endpoints/camel/), [FTP/SCP/SFTP](endpoints/ftp/), and [WebSocket](endpoints/websocket/).
+- [Connectors](connectors/) — Selenium, Playwright, OpenAPI, and SQL by default; Docker and Kubernetes through the `infrastructure-samples` profile (they need a Docker daemon or Kubernetes cluster).
+- [Validation](validation/) — [XML](validation/xml/), [JSON](validation/json/), [Hamcrest](validation/hamcrest/), and [binary messages](validation/binary/).
+- [Showcases](showcases/) — bakery, bookstore, flight booking, greeting, incident management, and Quarkus applications.
+- [Build tools](build-tools/gradle/) — standalone Gradle build outside the Maven reactor.
 
-The Citrus samples section contains many small projects that each represents a separate system under test and
-some Citrus test cases.
+Learning path
+-------------
 
-Each sample folder demonstrates a special aspect of how to use Citrus. Most of the samples use a simple todo-list application as
-system under test. Please find following list of samples and their primary objective:
+1. Run [getting-started](getting-started/) and compare its four equivalent DSL scenarios.
+2. Compare [annotation configuration](core/annotation-config/) with [Java configuration](core/java-config/).
+3. Choose a test runtime in [runtimes](runtimes/), then explore [HTTP basic](endpoints/http/basic/) or [SOAP basic](endpoints/ws/basic/).
+4. Add payload checks with the [XML](validation/xml/) and [JSON](validation/json/) validation samples.
+5. Explore transport and browser connectors, then run a complete [showcase](showcases/).
 
-| Samples                                                                       |                                      Description                                       |
-|-------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------:|
-| [sample-reporting](sample-reporting)                                          |                           Shows how to add a custom reporter                           |
-| [sample-docker](sample-docker)                                                |                  Shows how to use Citrus within Docker infrastructure                  |
-| [sample-kubernetes](sample-kubernetes)                                        |                Shows how to use Citrus within Kubernetes infrastructure                |
-| [sample-gradle](sample-gradle)                                                |                           Uses Gradle build to execute tests                           |
-| [sample-annotation-config](sample-annotation-config)                          |                      Uses annotation based endpoint configuration                      |
-| [sample-javaconfig](sample-javaconfig)                                        |                         Uses pure Java POJOs for configuration                         |
-| [sample-groovy](sample-groovy)                                                |                    Uses Groovy scripts to define Citrus test cases                     |
-| [sample-behaviors](sample-behaviors)                                          |                   Shows how to reuse test actions in test behaviors                    |
-| [sample-dictionaries](sample-dictionaries)                                    |         Shows how to incorporate message manipulation using data dictionaries          |
-| [sample-message-store](sample-message-store)                                  |                       Shows how to access internal message store                       |
-| [sample-binary](sample-binary)                                                |                    Shows binary message content handling in Citrus                     |
-| [sample-hamcrest](sample-hamcrest)                                            |              Shows Hamcrest matcher support in validation and conditions               |
-| [sample-mail](sample-mail)                                                    |                         Shows mail server activities in Citrus                         |
-| [sample-selenium](sample-selenium)                                            |                      Perform UI testing with Selenium and Citrus                       |
-| [sample-playwright](sample-playwright)                                          |                     Perform UI testing with Playwright and Citrus |
-| [sample-dynamic-endpoints](sample-dynamic-endpoints)                          |                         Shows dynamic endpoint component usage                         |
-| [sample-jms](sample-jms)                                                      |                          Shows JMS message broker integration                          |
-| [sample-kafka](sample-kafka)                                                  |                                Shows Kafka integration                                 |
-| [sample-rmi](sample-rmi)                                                      |                Shows how to use RMI with Citrus as a client and server                 |
-| [sample-camel-context](sample-camel-context)                                  |                     Interact with Apache Camel context and routes                      |
-| Samples DB                                                                    |                                      Description                                       |
-| [sample-jdbc](samples-db/sample-jdbc)                                         |                          Simulates database server with JDBC                           |
-| [sample-jdbc-callable-statements](samples-db/sample-jdbc-callable-statements) |           Simulates database server communication using callable statements            |
-| [sample-jdbc-transactions](samples-db/sample-jdbc-transactions)               |                   Simulates database server with transactional JDBC                    |
-| [sample-sql](samples-db/sample-sql)                                           |                      Validates stored data in relational database                      |
-| Samples JSON                                                                  |                                      Description                                       |
-| [sample-json](samples-json/sample-json)                                       |             Shows Json payload validation feature with JsonPath validation             |
-| [sample-databind](samples-json/sample-databind)                               |         Shows JSON object mapping feature when sending and receiving messages          |
-| Samples XML                                                                   |                                      Description                                       |
-| [sample-xml](samples-xml/sample-xml)                                          |             Shows XML validation feature with schema and Xpath validation              |
-| [sample-oxm](samples-xml/sample-oxm)                                          |        Shows XML object marshalling feature when sending and receiving messages        |
-| [sample-xhtml](samples-xml/sample-xhtml)                                      |                             Shows XHTML validation feature                             |
-| Samples FTP/SFTP                                                              |                                      Description                                       |
-| [sample-ftp](samples-ftp/sample-ftp)                                          |                   Shows FTP client and server interaction in Citrus                    |
-| [sample-sftp](samples-ftp/sample-sftp)                                        |                   Shows SFTP client and server interaction in Citrus                   |
-| [sample-scp](samples-ftp/sample-scp)                                          |                   Shows SCP client and server interaction in Citrus                    |
-| Samples TestNG                                                                |                                      Description                                       |
-| [sample-testng](samples-testng/sample-testng)                                 |                             Shows TestNG framework support                             |
-| [sample-dataprovider](samples-testng/sample-dataprovider)                     |                       Shows TestNG data provider usage in Citrus                       |
-| Samples JUnit                                                                 |                                      Description                                       |
-| [sample-junit](samples-junit/sample-junit)                                    |                             Shows JUnit4 framework support                             |
-| [sample-junit5](samples-junit/sample-junit5)                                  |                             Shows JUnit5 framework support                             |
-| Samples Http                                                                  |                                      Description                                       |
-| [sample-swagger](samples-http/sample-swagger)                                 |                       Auto generate tests from Swagger Open API                        |
-| [sample-http](samples-http/sample-http)                                       |                         Shows Http REST API calls as a client                          |
-| [sample-http-loadtest](samples-http/sample-http-loadtest)                     |          Calls REST API on Http server with multiple threads for load testing          |
-| [sample-http-static-response](samples-http/sample-http-static-response)       |         Shows how to setup a static response generating Http server component          |
-| [sample-http-query-param](samples-http/sample-http-form-data)                 |            How to use Http form data with `x-www-form-urlencoded` Http POST            |
-| [sample-http-form-data](samples-http/sample-http-query-param)                 |                          Exchange form data via Http GET/POST                          |
-| [sample-http-basic-auth](samples-http/sample-http-basic-auth)                 |         Shows how to use basic authentication on client and server components          |
-| [sample-https](samples-http/sample-https)                                     |                Shows how to use SSL connectivity as a client and server                |
-| Samples Websockets                                                            |                                      Description                                       |
-| [sample-websocket-client](samples-websocket/sample-websocket-client)          |            Shows how to connect to a Websocket as a client during the test             |
-| [sample-websocket-server](samples-websocket/sample-websocket-server)          |          Shows how to provide a Websocket as a server for clients to connect           |
-| Samples SOAP                                                                  |                                      Description                                       |
-| [sample-wsdl](samples-soap/sample-wsdl)                                       |                             Auto generate tests from WSDL                              |
-| [sample-soap](samples-soap/sample-soap)                                       |                          Shows basic SOAP web service support                          |
-| [sample-soap-mtom](samples-soap/sample-soap-mtom)                             |              Shows how to send and receive MTOM enabled SOAP attachments               |
-| [sample-soap-attachment](samples-soap/sample-soap-attachment)                 |                      Shows how to send SOAP attachments to server                      |
-| [sample-soap-wssecurity](samples-soap/sample-soap-wssecurity)                 |   Shows how to configure SOAP web service client and server with WSSecurity enabled    |
-| [sample-soap-wsaddressing](samples-soap/sample-soap-wsaddressing)             |  Shows how to configure SOAP web service client and server with WSAddressing enabled   |
-| [sample-soap-ssl](samples-soap/sample-soap-ssl)                               |          Shows how to configure SOAP web service with SSL secure connectivity          |
-| [sample-soap-static-response](samples-soap/sample-soap-static-response)       |   Shows how to setup a static response generating SOAP web service server component    |
-| Samples Cucumber BDD                                                          |                                      Description                                       |
-| [sample-cucumber](samples-cucumber/sample-cucumber)                           |                          Shows BDD integration with Cucumber                           |
-| [sample-cucumber-spring](samples-cucumber/sample-cucumber-spring)             |          Shows BDD integration with Cucumber using Spring Framework injection          |
-| [sample-cucumber-spring2](samples-cucumber/sample-cucumber-spring2)           |              Shows BDD integration with Cucumber Spring Framework support              |
-| Samples - Remote                                                              |                                      Description                                       |
-| [sample-test-jar](samples-remote/sample-test-jar)                             |              Creates an executable test JAR to run all integration tests               |
-| [sample-test-war](samples-remote/sample-test-war)                             | Creates a deployable test WAR to run all integration tests as part of a web deployment |
+DSL coverage matrix
+-------------------
 
-Following sample projects cover message transports and technologies. Each of these samples provides a separate system under test application
-that demonstrates the messaging aspect.
+The matrix is maintained by hand. Update it when you add, move, or remove a sample, or change its purpose, main module, runtime, or DSL coverage.
 
-| Demo Projects                                     | Kafka | JMS | Http | SOAP | Channel | Camel | SQL | SYNC | ASYNC |
-|---------------------------------------------------|:-----:|:---:|:----:|:----:|:-------:|:-----:|:---:|:----:|:-----:|
-| [sample-quarkus](demo/sample-quarkus)             |   X   |     |  X   |      |         |       |  X  |  X   |   X   |
-| [sample-bakery](demo/sample-bakery)               |       |  X  |  X   |      |         |       |     |  X   |   X   |
-| [sample-flightbooking](demo/sample-flightbooking) |       |  X  |  X   |      |         |       |  X  |      |   X   |
-| [sample-greeting](demo/sample-greeting)           |       |  X  |      |      |    X    |       |     |  X   |   X   |
-| [sample-bookstore](demo/sample-bookstore)         |       |  X  |      |  X   |         |       |     |  X   |       |
-| [sample-incident](demo/sample-incident)           |       |  X  |  X   |  X   |         |       |     |  X   |   X   |
+| Sample | Description | Main module | Runtime | Java | XML | YAML | Groovy |
+|---|---|---|---|:---:|:---:|:---:|:---:|
+| [getting-started](getting-started/) | Runs one scenario in Java, XML, YAML, and Groovy | `citrus-base` | testng | Yes | Yes | Yes | Yes |
+| [core/annotation-config](core/annotation-config/) | Configures endpoints with annotations | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/java-config](core/java-config/) | Configures endpoints with plain Java and Spring configuration classes | `citrus-spring` | testng | Yes | Yes | Yes | — |
+| [core/behaviors](core/behaviors/) | Reuses test actions through test behaviors | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/data-dictionaries](core/data-dictionaries/) | Manipulates messages with data dictionaries | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/message-store](core/message-store/) | Reads exchanged messages from the internal message store | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/dynamic-endpoints](core/dynamic-endpoints/) | Creates endpoints dynamically from endpoint URIs | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [core/reporting](core/reporting/) | Adds a custom test reporter | `citrus-base` | testng | Yes | Yes | Yes | — |
+| [runtimes/testng](runtimes/testng/) | Runs Citrus tests with TestNG | `citrus-testng` | testng | Yes | Yes | Yes | — |
+| [runtimes/testng-dataprovider](runtimes/testng-dataprovider/) | Parameterizes tests with TestNG data providers | `citrus-testng` | testng | Yes | Yes | Yes | — |
+| [runtimes/junit4](runtimes/junit4/) | Runs Citrus tests with JUnit 4 | `citrus-junit` | junit4 | Yes | Yes | Yes | — |
+| [runtimes/junit-jupiter](runtimes/junit-jupiter/) | Runs Citrus tests with JUnit Jupiter | `citrus-junit-jupiter` | junit-jupiter | Yes | Yes | Yes | — |
+| [runtimes/cucumber](runtimes/cucumber/) | Writes BDD scenarios with Cucumber | `citrus-cucumber` | cucumber | Yes | — | — | — |
+| [runtimes/cucumber-spring](runtimes/cucumber-spring/) | Writes BDD scenarios with Cucumber and Spring injection | `citrus-cucumber` | cucumber | Yes | — | — | — |
+| [endpoints/http/basic](endpoints/http/basic/) | Calls a REST API as an HTTP client | `citrus-http` | testng | Yes | Yes | Yes | Yes |
+| [endpoints/http/basic-auth](endpoints/http/basic-auth/) | Uses basic authentication on HTTP client and server | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/form-data](endpoints/http/form-data/) | Sends and validates `x-www-form-urlencoded` form data | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/query-param](endpoints/http/query-param/) | Sends and validates HTTP query parameters | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/static-response](endpoints/http/static-response/) | Serves static responses from an HTTP server | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/https](endpoints/http/https/) | Uses SSL on HTTP client and server | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/http/load-test](endpoints/http/load-test/) | Calls a REST API from multiple threads for load testing | `citrus-http` | testng | Yes | Yes | Yes | — |
+| [endpoints/ws/basic](endpoints/ws/basic/) | Calls a SOAP web service as a client | `citrus-ws` | testng | Yes | Yes | Yes | Yes |
+| [endpoints/ws/attachment](endpoints/ws/attachment/) | Sends SOAP attachments to a server | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/mtom](endpoints/ws/mtom/) | Sends and receives MTOM-enabled SOAP attachments | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/ssl](endpoints/ws/ssl/) | Uses SSL on a SOAP web service | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/static-response](endpoints/ws/static-response/) | Serves static responses from a SOAP server | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/ws-addressing](endpoints/ws/ws-addressing/) | Uses WS-Addressing on SOAP client and server | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/ws-security](endpoints/ws/ws-security/) | Uses WS-Security on SOAP client and server | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/ws/wsdl](endpoints/ws/wsdl/) | Generates tests from a WSDL | `citrus-ws` | testng | Yes | — | — | — |
+| [endpoints/jms](endpoints/jms/) | Integrates with a JMS message broker | `citrus-jms` | testng | Yes | Yes | Yes | — |
+| [endpoints/kafka](endpoints/kafka/) | Integrates with Kafka | `citrus-kafka` | testng | Yes | Yes | Yes | — |
+| [endpoints/mail](endpoints/mail/) | Simulates a mail server | `citrus-mail` | testng | Yes | Yes | Yes | — |
+| [endpoints/rmi](endpoints/rmi/) | Uses RMI as client and server | `citrus-rmi` | testng | Yes | — | — | — |
+| [endpoints/camel](endpoints/camel/) | Interacts with an Apache Camel context and routes | `citrus-camel` | testng | Yes | Yes | Yes | — |
+| [endpoints/ftp/ftp](endpoints/ftp/ftp/) | Uses FTP as client and server | `citrus-ftp` | testng | Yes | — | — | — |
+| [endpoints/ftp/scp](endpoints/ftp/scp/) | Uses SCP as client and server | `citrus-ftp` | testng | Yes | — | — | — |
+| [endpoints/ftp/sftp](endpoints/ftp/sftp/) | Uses SFTP as client and server | `citrus-ftp` | testng | Yes | — | — | — |
+| [endpoints/websocket/client](endpoints/websocket/client/) | Connects to a WebSocket as a client | `citrus-websocket` | quarkus | Yes | Yes | Yes | — |
+| [endpoints/websocket/server](endpoints/websocket/server/) | Provides a WebSocket server for clients | `citrus-websocket` | quarkus | Yes | Yes | Yes | — |
+| [connectors/docker](connectors/docker/) | Runs tests inside Docker infrastructure | `citrus-docker` | testng | Yes | — | — | — |
+| [connectors/kubernetes](connectors/kubernetes/) | Runs tests inside Kubernetes infrastructure | `citrus-kubernetes` | testng | Yes | Yes | Yes | — |
+| [connectors/selenium](connectors/selenium/) | Tests a web UI with Selenium | `citrus-selenium` | testng | Yes | Yes | Yes | — |
+| [connectors/playwright](connectors/playwright/) | Tests a web UI with Playwright | `citrus-playwright` | testng | Yes | Yes | Yes | — |
+| [connectors/openapi](connectors/openapi/) | Generates tests from an OpenAPI (Swagger) specification | `citrus-http` | testng | Yes | — | — | — |
+| [connectors/sql](connectors/sql/) | Validates data stored in a relational database | `citrus-sql` | testng | Yes | Yes | Yes | — |
+| [validation/xml/xml](validation/xml/xml/) | Validates XML with schemas and XPath | `citrus-validation-xml` | testng | Yes | Yes | Yes | — |
+| [validation/xml/xhtml](validation/xml/xhtml/) | Validates XHTML content | `citrus-validation-xml` | testng | Yes | Yes | Yes | — |
+| [validation/xml/oxm](validation/xml/oxm/) | Marshals XML messages to and from objects | `citrus-validation-xml` | testng | Yes | Yes | Yes | — |
+| [validation/json/json](validation/json/json/) | Validates JSON payloads with JsonPath | `citrus-validation-json` | testng | Yes | Yes | Yes | — |
+| [validation/json/databind](validation/json/databind/) | Maps JSON messages to and from objects | `citrus-validation-json` | testng | Yes | — | — | — |
+| [validation/hamcrest](validation/hamcrest/) | Uses Hamcrest matchers in validation and conditions | `citrus-validation-hamcrest` | testng | Yes | Yes | Yes | — |
+| [validation/binary](validation/binary/) | Handles binary message content | `citrus-validation-binary` | testng | Yes | Yes | Yes | — |
+| [showcases/bakery](showcases/bakery/) | Bakery order workflow across web, worker, and report services | `citrus-jms`, `citrus-http` | testng | Yes | — | — | — |
+| [showcases/bookstore](showcases/bookstore/) | Bookstore SOAP service with JMS backend | `citrus-ws`, `citrus-jms` | testng | Yes | Yes | Yes | — |
+| [showcases/flight-booking](showcases/flight-booking/) | Flight booking with JMS, HTTP, and a database | `citrus-jms`, `citrus-http` | testng | Yes | Yes | Yes | — |
+| [showcases/greeting](showcases/greeting/) | Greeting service over JMS and message channels | `citrus-jms`, `citrus-spring-integration` | testng | Yes | Yes | Yes | — |
+| [showcases/incident](showcases/incident/) | Incident management across SOAP, JMS, and HTTP | `citrus-ws`, `citrus-jms`, `citrus-http` | testng | Yes | Yes | Yes | — |
+| [showcases/quarkus](showcases/quarkus/) | Quarkus application with Kafka, HTTP, SQL, and a web UI | `citrus-quarkus` | quarkus | Yes | — | — | — |
+| [build-tools/gradle](build-tools/gradle/) | Runs Citrus tests with a Gradle build | `citrus-base` | gradle | Yes | Yes | Yes | — |
 
-Pick your sample application for try out and got to the respective folder.
+Showcase transports
+-------------------
 
-Preconditions
----------
+Each showcase ships its own system under test and combines several transports:
 
-See the preconditions for using the Citrus sample applications:
+| Showcase | Kafka | JMS | HTTP | SOAP | Channel | SQL | Mail | Sync | Async |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [showcases/bakery](showcases/bakery/) | | X | X | | | | X | X | X |
+| [showcases/bookstore](showcases/bookstore/) | | X | | X | | | | X | |
+| [showcases/flight-booking](showcases/flight-booking/) | | X | X | | | X | | | X |
+| [showcases/greeting](showcases/greeting/) | | X | | | X | | | X | X |
+| [showcases/incident](showcases/incident/) | | X | X | X | | | | X | X |
+| [showcases/quarkus](showcases/quarkus/) | X | | X | | | X | X | X | X |
 
-* Installed JDK 21 or higher plus `JAVA_HOME` environment variable set
-up and pointing to your Java installation directory
+Prerequisites
+-------------
 
-* Apache Maven 3.9.x or higher
-The sample projects are executable via Apache Maven (http://maven.apache.org/).
+- JDK 21 or newer, with `JAVA_HOME` pointing to the JDK.
+- The repository Maven wrapper for in-repository builds, or Maven 3.9+ for copied samples.
+- A local Gradle installation for [build-tools/gradle](build-tools/gradle/), which has no Gradle wrapper.
+- Additional infrastructure only where a leaf README requires it. Docker and Kubernetes samples are not in the default Maven reactor.
 
-In each of the samples folders you will find the Maven (POM) pom.xml that defines all dependencies and build plugins.
+Run samples
+-----------
 
-Run
----------
+Run every default Maven sample from the repository root:
 
-You can run all the samples locally on your machine. We are using the Maven build tool for this.
+```shell
+./mvnw clean verify -Dsystem.under.test.mode=embedded
+```
 
-All samples use some project as a system under test. 
-These sample application has to be started before executing any Citrus tests.
-Many samples reuse the [todo-list](todo-app) application which is a simple web application that provides a basic REST API. 
+Run one sample without an aggregator parent:
 
-You can auto start and deploy the todo-list application within the Maven build by using the following command:
+```shell
+./mvnw -f endpoints/http/basic/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
 
-     mvn clean install -Dsystem.under.test.mode=embedded
+Embedded mode starts and stops the sample's system under test with the Maven lifecycle. The standalone Gradle sample uses its own build:
 
-The embedded option automatically starts an embedded Jetty Web Server Container before the integration test phase in Maven. After that
-the Citrus tests will be able to perform its actions in integration-test phase in Maven. After the tests are finished the embedded Jetty 
-container is automatically stopped.
+```shell
+cd build-tools/gradle
+gradle clean build
+```
 
-You can also start the Jetty container manually by calling:
+Copy a sample out of the repository
+-----------------------------------
 
-     mvn jetty:run-war
+Every sample root is self-contained. Aggregator POMs are not parents, so they do not need to be installed. Multi-module showcases must be copied as complete roots.
 
-Execute this command in the respective sample folders and you will get a running Jetty Web Server Container with the system under test deployed.
+For samples that use the shared todo application, install that SUT once from the repository before running the copied project:
 
-Once the sample application is deployed and running you can execute the Citrus test cases in that sample folder.
-Open a separate command line terminal in that folder and execute the following command.
+```shell
+./mvnw -f apps/todo-app/pom.xml install -DskipTests
+cp -R getting-started /tmp/citrus-getting-started
+cd /tmp/citrus-getting-started
+mvn clean verify -Dsystem.under.test.mode=embedded
+```
 
-     mvn verify
-
-This executes all Citrus tests in that sample. You can also pick a single test by calling 
-
-     mvn verify -Dit.test=<testname>
-    
-You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
-and Citrus test client). And of course green tests at the very end of the build.
-
-Please read the instructions in each sample folder for different setup options and execution commands.
+Read the leaf README for its exact purpose, runtime, DSLs, prerequisites, and run command. Multi-DSL basic samples also explain how to remove an unwanted non-Java variant and its runner reference.
 
 Information
----------
+-----------
 
-For more information on Citrus see [www.citrusframework.org][2], including
-a complete [reference manual][3].
+For more information see [citrusframework.org][2] and the [Citrus reference manual][3].
 
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
- [4]: https://github.com/citrusframework/citrus
- [5]: https://github.com/christophd/citrus-samples-xml

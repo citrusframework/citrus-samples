@@ -1,0 +1,70 @@
+# ---------------------------------------------------------------------------
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ---------------------------------------------------------------------------
+
+name: infrastructure-samples
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: Infrastructure-dependent sample to verify
+        required: true
+        type: choice
+        options:
+          - docker
+          - kubernetes
+
+jobs:
+  docker:
+    if: ${{ inputs.sample == 'docker' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Check Docker prerequisite
+        run: docker info
+      - name: Install shared application
+        run: ./mvnw --no-transfer-progress -f apps/todo-app/pom.xml install -DskipTests
+      - name: Verify Docker sample
+        run: ./mvnw --no-transfer-progress verify -pl connectors/docker -amd -Pinfrastructure-samples -Dsystem.under.test.mode=embedded
+
+  kubernetes:
+    if: ${{ inputs.sample == 'kubernetes' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Check Kubernetes prerequisites
+        run: |
+          docker info
+          kubectl cluster-info
+      - name: Install shared application
+        run: ./mvnw --no-transfer-progress -f apps/todo-app/pom.xml install -DskipTests
+      - name: Verify Kubernetes sample
+        run: ./mvnw --no-transfer-progress verify -pl connectors/kubernetes -amd -Pinfrastructure-samples -Dsystem.under.test.mode=embedded

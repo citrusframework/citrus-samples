@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.citrusframework.samples</groupId>
+  <artifactId>citrus-sample-validation-json</artifactId>
+  <version>4.0.0</version>
+  <name>Citrus Samples:: Validation:: JSON</name>
+  <packaging>pom</packaging>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
+  <modules>
+    <module>json</module>
+    <module>databind</module>
+  </modules>
+</project>

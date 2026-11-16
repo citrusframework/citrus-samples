@@ -1,0 +1,40 @@
+group 'org.citrusframework.samples'
+version '4.0.0'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation group: 'org.citrusframework', name: 'citrus-base', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-spring', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-endpoint-catalog', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-testng', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-yaml', version: citrusVersion
+    testImplementation group: 'org.citrusframework', name: 'citrus-xml', version: citrusVersion
+    testImplementation group: 'org.springframework', name: 'spring-test', version: '7.0.8'
+    testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.18'
+    testImplementation group: 'org.slf4j', name: 'jcl-over-slf4j', version: '2.0.18'
+    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl', version: '2.25.4'
+}
+
+tasks.withType (JavaCompile) {
+    options.encoding = propertySourceFileEncoding
+}
+
+tasks.withType (Test) {
+    systemProperty 'file.encoding', propertySourceFileEncoding
+}
+
+test {
+    useTestNG()
+}

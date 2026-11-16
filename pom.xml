@@ -8,37 +8,18 @@
   <name>Citrus Samples:: Parent</name>
   <packaging>pom</packaging>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <modules>
-    <module>demo</module>
-    <module>todo-app</module>
-    <module>sample-camel-context</module>
-    <module>sample-behaviors</module>
-    <module>sample-dictionaries</module>
-    <module>sample-message-store</module>
-    <module>sample-docker</module>
-    <module>sample-kubernetes</module>
-    <module>samples-cucumber</module>
-    <module>sample-annotation-config</module>
-    <module>sample-javaconfig</module>
-    <module>sample-groovy</module>
-    <module>sample-mail</module>
-    <module>sample-selenium</module>
-    <module>sample-playwright</module>
-    <module>samples-ftp</module>
-    <module>samples-testng</module>
-    <module>samples-junit</module>
-    <module>samples-http</module>
-    <module>sample-rmi</module>
-    <module>sample-reporting</module>
-    <module>samples-xml</module>
-    <module>samples-json</module>
-    <module>sample-hamcrest</module>
-    <module>sample-jms</module>
-    <module>sample-kafka</module>
-    <module>sample-dynamic-endpoints</module>
-    <module>sample-binary</module>
-    <module>samples-soap</module>
-    <module>samples-db</module>
-    <module>samples-websocket</module>
+    <module>apps</module>
+    <module>getting-started</module>
+    <module>core</module>
+    <module>runtimes</module>
+    <module>endpoints</module>
+    <module>connectors</module>
+    <module>validation</module>
+    <module>showcases</module>
   </modules>
 </project>

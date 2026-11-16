@@ -1,0 +1,192 @@
+/*
+ * Copyright 2006-2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.citrusframework.samples.endpoints.http.basic;
+
+import org.citrusframework.dsl.TestActionSupport;
+import org.citrusframework.annotations.CitrusTest;
+import org.citrusframework.annotations.CitrusTestSource;
+import org.citrusframework.api.common.TestLoader;
+import org.citrusframework.http.client.HttpClient;
+import org.citrusframework.message.MessageType;
+import org.citrusframework.testng.spring.TestNGCitrusSpringSupport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.testng.annotations.Test;
+
+public class TodoListIT extends TestNGCitrusSpringSupport implements TestActionSupport {
+
+    @Autowired
+    private HttpClient todoClient;
+
+    @Test
+    @CitrusTest
+    public void testGet() {
+        $(http()
+            .client(todoClient)
+            .send()
+            .get("/todolist")
+            .message()
+            .accept(MediaType.TEXT_HTML_VALUE));
+
+        $(http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK)
+            .message()
+            .type(MessageType.XHTML)
+            .validate(validation().xpath()
+                        .expression("//xh:h1", "TODO list"))
+            .body("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
+                    "\"org/w3/xhtml/xhtml1-transitional.dtd\">" +
+                    "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
+                        "<head>@ignore@</head>" +
+                        "<body>@ignore@</body>" +
+                    "</html>"));
+    }
+
+    @Test
+    @CitrusTest
+    public void testPost() {
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        $(http()
+            .client(todoClient)
+            .send()
+            .post("/todolist")
+            .message()
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+            .body("title=${todoName}&description=${todoDescription}"));
+
+        $(http()
+            .client(todoClient)
+            .receive()
+            .response(HttpStatus.OK));
+    }
+
+    @Test
+    @CitrusTest
+    public void testTodoLifecycle() {
+        variable("todoId", "citrus:randomUUID()");
+        variable("todoName", "citrus:concat('todo_', citrus:randomNumber(4))");
+        variable("todoDescription", "Description: ${todoName}");
+
+        //Create
+        $(http().client(todoClient)
+                .send()
+                .post("/api/todolist")
+                .message()
+                .type(MessageType.JSON)
+                .contentType("application/json")
+                .body("{ \"id\": \"${todoId}\", " +
+                        "\"title\": \"${todoName}\", " +
+                        "\"description\": \"${todoDescription}\", " +
+                        "\"done\": false}"));
+
+        $(http().client(todoClient)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .type(MessageType.PLAINTEXT)
+                .body("${todoId}"));
+
+        //Verify existence
+        $(http().client(todoClient)
+                .send()
+                .get("/api/todo/${todoId}")
+                .message()
+                .accept("application/json"));
+
+        $(http().client(todoClient)
+                .receive()
+                .response(HttpStatus.OK)
+                .message()
+                .type(MessageType.JSON)
+                .validate(validation().jsonPath()
+                        .expression("$.id", "${todoId}")
+                        .expression("$.title", "${todoName}")
+                        .expression("$.description", "${todoDescription}")
+                        .expression("$.done", false)));
+
+        //Delete
+        $(http().client(todoClient)
+                .send()
+                .delete("/api/todo/${todoId}")
+                .message()
+                .accept("application/json"));
+
+        $(http().client(todoClient)
+                .receive()
+                .response(HttpStatus.OK));
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.XML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-get.citrus.xml" })
+    public void testGetXml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.XML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-post.citrus.xml" })
+    public void testPostXml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.XML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-lifecycle.citrus.xml" })
+    public void testTodoLifecycleXml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.YAML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-get.citrus.yaml" })
+    public void testGetYaml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.YAML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-post.citrus.yaml" })
+    public void testPostYaml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.YAML, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-lifecycle.citrus.yaml" })
+    public void testTodoLifecycleYaml() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.GROOVY, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-get.citrus.groovy" })
+    public void testGetGroovy() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.GROOVY, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-post.citrus.groovy" })
+    public void testPostGroovy() {
+    }
+
+    @Test
+    @CitrusTestSource(type = TestLoader.GROOVY, sources = {
+            "classpath:org/citrusframework/samples/endpoints/http/basic/todo-lifecycle.citrus.groovy" })
+    public void testTodoLifecycleGroovy() {
+    }
+
+}

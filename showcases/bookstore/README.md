@@ -1,0 +1,84 @@
+Citrus samples ![Logo][1]
+==============
+
+Bookstore sample
+---------
+
+The BookStore sample application offers a SOAP WebService with following supported
+operations:
+
+* addBook
+* getBookDetails
+* listBooks
+
+Each operation will result in a synchronous SOAP response to the calling client. Duplicate
+books (isbn) or unknown books will generate SOAP Faults in the response. The different sample
+test cases will call the WebService as client and test the complete functionality for the
+available operations.
+
+Server
+---------
+
+Got to the war folder and start the BookStore WebService application in a Web Container. Easiest
+way for you to do this is to execute
+
+     mvn jetty:run
+
+here!
+
+An embedded Jetty Web Server Container is started with the BookStore application deployed. You can
+alsp call "mvn package" and deploy the resulting war archive to a separate Web container of your choice.
+  
+Citrus test
+---------
+
+Once the sample application is deployed and running you can execute the Citrus test cases in citrus-test folder.
+Open a separate command line terminal and navigate to the citrus-test folder.
+
+Execute all Citrus tests by calling
+
+     mvn verify
+
+You can also pick a single test by calling
+
+     mvn verify -Dit.test=<testname>
+
+You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
+and Citrus test client). And of course green tests at the very end of the build.
+  
+Information
+---------
+
+For more information on Citrus see [www.citrusframework.org][2], including
+a complete [reference manual][3].
+
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `AddBook_Ok_1_IT`, `AddBook_Ok_2_IT`, `GetBookAbstract_Ok_1_IT`, `GetBookDetails_Ok_1_IT`, `GetBookDetails_Error_1_IT`, `ListBooks_Ok_1_IT`, `ListBooks_Ok_2_IT`, `SchemaValidation_Error_1_IT` (`*.citrus.it.yaml` + `*.citrus.it.xml`, same scenarios), executed via `BookstoreYamlIT` / `BookstoreXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=BookstoreYamlIT,BookstoreXmlIT`. JAXB/custom validators replaced by inline XML, `citrus_soap_action` header for fault cases.
+
+ [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
+ [2]: https://citrusframework.org
+ [3]: https://citrusframework.org/reference/html/
+
+## Sample contract
+
+- **Purpose:** Test SOAP bookstore operations and schema validation.
+- **Modules:** `showcase-bookstore`; copy the complete showcase root.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java, XML, YAML.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f showcases/bookstore/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required:
+
+```shell
+cp -R showcases/bookstore /tmp/citrus-showcases-bookstore
+cd /tmp/citrus-showcases-bookstore
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

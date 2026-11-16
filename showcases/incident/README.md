@@ -1,0 +1,86 @@
+Citrus samples ![Logo][1]
+==============
+
+Incident Manager sample
+---------
+
+The IncidentManager sample application handles incoming incidents via SOAP WebService interface. The Incident Manager application offers both JMS and Http message transport
+binding for opening incident orders:
+
+* SOAP Http endpoint binding (http://localhost:18001/incident/IncidentManager/v1)
+** SOAP action: /IncidentManager/openIncident
+* SOAP Jms endpoint binding ()
+** SOAP action: /IncidentManager/openIncident
+
+Once the incident is opened a network service backend is consulted with analyse request. The backend service uses a Http/XML interface. The network Http server is simulated with Citrus.
+According to the analyse outcome the field force service team receives a order request to get on site problem analysis. The field force service is also simulated by Citrus and is an asynchronous JMS/XML service.
+Last not least the Incident Manager application sends SMS messages via a SmsGateway application to the customer. The SMS gateway application is a SOAP/Http interface which is also simulated with Citrus.
+
+Server
+---------
+
+Got to the war folder and start the IncidentManager WebService application in a Web Container. Easiest
+way for you to do this is to execute
+
+     mvn jetty:run
+
+here!
+
+An embedded Jetty Web Server Container is started with the IncidentManager application deployed. You can
+alsp call "mvn package" and deploy the resulting war archive to a separate Web container of your choice.
+
+Citrus test
+---------
+
+Once the sample application is deployed and running you can execute the Citrus test cases in citrus-test folder.
+Open a separate command line terminal and navigate to the citrus-test folder.
+
+Execute all Citrus tests by calling
+
+     mvn verify
+
+You can also pick a single test by calling
+
+     mvn verify -Dit.test=TestName
+
+You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
+and Citrus test client). And of course green tests at the very end of the build.
+
+Information
+---------
+
+For more information on Citrus see [www.citrusframework.org][2], including
+a complete [reference manual][3].
+
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `IncidentManager_*_IT.citrus.it.yaml` (10 files, e.g. `IncidentManager_Http_Ok_1_IT`, `IncidentManager_Jms_Ok_1_IT`) + `IncidentManager_*_IT.citrus.it.xml` (10 files, same scenarios), executed via `IncidentYamlIT` / `IncidentXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=IncidentYamlIT,IncidentXmlIT`.
+
+Ports run with `-Dsystem.under.test.mode=embedded`; JAXB payloads replaced by inline XML; SOAP-over-JMS via generic send/receive + `citrus_soap_action` header.
+
+ [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
+ [2]: https://citrusframework.org
+ [3]: https://citrusframework.org/reference/html/
+
+## Sample contract
+
+- **Purpose:** Test incident-management flows across HTTP, SOAP, and JMS.
+- **Modules:** `showcase-incident`; copy the complete showcase root.
+- **Runtime:** TestNG (`testng`).
+- **DSLs:** Java, XML, YAML.
+- **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample.
+- **Citrus version:** 5.1.0, declared in `pom.xml`.
+
+Run from the repository root:
+
+```shell
+./mvnw -f showcases/incident/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+Copy this complete sample root outside the repository. No aggregator parent installation is required:
+
+```shell
+cp -R showcases/incident /tmp/citrus-showcases-incident
+cd /tmp/citrus-showcases-incident
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

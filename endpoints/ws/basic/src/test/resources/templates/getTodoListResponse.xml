@@ -1,0 +1,3 @@
+<todo:getTodoListResponse xmlns:todo="http://citrusframework.org/samples/todolist">
+  <todo:list>@ignore@</todo:list>
+</todo:getTodoListResponse>
