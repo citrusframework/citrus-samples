@@ -10,17 +10,17 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>7.0.9</spring.version>
-    <spring.boot.version>4.1.1</spring.boot.version>
+    <spring.version>7.0.10</spring.version>
+    <spring.boot.version>4.1.2</spring.boot.version>
     <spring.kafka.version>4.1.2</spring.kafka.version>
     <springdoc.openapi.version>3.2.0</springdoc.openapi.version>
     <activemq.artemis.version>2.57.0</activemq.artemis.version>
     <angus-activation.version>2.0.3</angus-activation.version>
     <angus-mail.version>2.0.5</angus-mail.version>
-    <citrus.version>5.1.0</citrus.version>
+    <citrus.version>5.2.0</citrus.version>
     <maven.deploy.skip>true</maven.deploy.skip>
     <slf4j.version>2.0.20</slf4j.version>
-    <log4j2.version>2.25.5</log4j2.version>
+    <log4j2.version>2.26.1</log4j2.version>
     <commons.logging.version>1.4.0</commons.logging.version>
     <commons.dbcp2.version>2.14.0</commons.dbcp2.version>
     <hsqldb.version>2.7.4</hsqldb.version>
