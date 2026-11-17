@@ -593,7 +593,6 @@ You can run your application in dev mode that enables live coding/testing using:
 - **Runtime:** Quarkus with JUnit Jupiter (`quarkus`).
 - **DSLs:** Java.
 - **Prerequisites:** A running Docker daemon is required for Testcontainers-based infrastructure. JDK 21+ and Maven 3.9+ for a copied Maven sample.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 
