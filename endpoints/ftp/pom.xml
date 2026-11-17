@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-ftp</artifactId>
+  <artifactId>citrus-samples-ftp</artifactId>
   <name>Citrus Samples:: Endpoints:: FTP</name>
   <version>4.0.0</version>
   <packaging>pom</packaging>

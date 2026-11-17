@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-connectors-sql</artifactId>
+  <artifactId>citrus-sample-sql</artifactId>
   <name>Citrus Samples:: SQL</name>
   <version>4.0.0</version>
 

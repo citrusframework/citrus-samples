@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-ws-wsdl</artifactId>
+  <artifactId>citrus-sample-wsdl</artifactId>
   <name>Citrus Samples:: WSDL</name>
   <version>4.0.0</version>
 

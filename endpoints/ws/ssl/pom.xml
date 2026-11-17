@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-ws-ssl</artifactId>
+  <artifactId>citrus-sample-ws-ssl</artifactId>
   <name>Citrus Samples:: SOAP SSL</name>
   <version>4.0.0</version>
 

@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-validation-xml-oxm</artifactId>
-  <name>Citrus Samples:: OXM</name>
+  <artifactId>citrus-sample-validation-xhtml</artifactId>
+  <name>Citrus Samples:: XHTML</name>
   <version>4.0.0</version>
 
   <properties>

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-connectors-kubernetes</artifactId>
+  <artifactId>citrus-sample-kubernetes</artifactId>
   <name>Citrus Samples:: Kubernetes</name>
   <version>4.0.0</version>
 

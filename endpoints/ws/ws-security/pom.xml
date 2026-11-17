@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-ws-ws-security</artifactId>
+  <artifactId>citrus-sample-ws-security</artifactId>
   <name>Citrus Samples:: SOAP WsSecurity</name>
   <version>4.0.0</version>
 

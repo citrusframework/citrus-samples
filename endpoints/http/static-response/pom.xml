@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-http-static-response</artifactId>
+  <artifactId>citrus-sample-http-static-response</artifactId>
   <name>Citrus Samples:: Http Static Response</name>
   <version>4.0.0</version>
 

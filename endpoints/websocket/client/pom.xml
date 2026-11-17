@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-websocket-client</artifactId>
+  <artifactId>citrus-sample-websocket-client</artifactId>
   <name>Citrus Samples:: Websocket Client</name>
   <version>4.0.0</version>
 

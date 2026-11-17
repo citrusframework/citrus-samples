@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-runtimes-testng</artifactId>
+  <artifactId>citrus-sample-testng</artifactId>
   <name>Citrus Samples:: TestNG</name>
   <version>4.0.0</version>
 

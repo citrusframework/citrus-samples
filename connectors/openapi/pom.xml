@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-connectors-openapi</artifactId>
+  <artifactId>citrus-sample-openapi</artifactId>
   <name>Citrus Samples:: Http :: Swagger API</name>
   <version>4.0.0</version>
 

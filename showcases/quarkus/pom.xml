@@ -4,7 +4,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-showcases-quarkus</artifactId>
+  <artifactId>citrus-sample-quarkus</artifactId>
   <name>Citrus Samples:: Quarkus</name>
   <version>4.0.0</version>
 

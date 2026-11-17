@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-runtimes-junit-jupiter</artifactId>
+  <artifactId>citrus-sample-junit-jupiter</artifactId>
   <name>Citrus Samples:: JUnit5</name>
   <version>4.0.0</version>
 

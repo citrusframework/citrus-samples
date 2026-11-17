@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-http-form-data</artifactId>
+  <artifactId>citrus-sample-form-data</artifactId>
   <name>Citrus Samples:: Http Form Data</name>
   <version>4.0.0</version>
 

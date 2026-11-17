@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-core-message-store</artifactId>
+  <artifactId>citrus-sample-message-store</artifactId>
   <name>Citrus Samples:: Message Store</name>
   <version>4.0.0</version>
 

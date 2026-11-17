@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-kafka</artifactId>
+  <artifactId>citrus-sample-kafka</artifactId>
   <name>Citrus Samples:: Kafka</name>
   <version>4.0.0</version>
 

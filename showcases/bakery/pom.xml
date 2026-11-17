@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-showcases-bakery</artifactId>
+  <artifactId>citrus-samples-bakery</artifactId>
   <name>Citrus Samples:: Bakery</name>
   <version>4.0.0</version>
   <packaging>pom</packaging>
