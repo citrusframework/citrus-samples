@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-core-dynamic-endpoints</artifactId>
+  <artifactId>citrus-sample-dynamic-endpoints</artifactId>
   <name>Citrus Samples:: Dynamic Endpoints</name>
   <version>4.0.0</version>
 

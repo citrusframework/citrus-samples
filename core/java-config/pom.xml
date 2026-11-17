@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-core-java-config</artifactId>
+  <artifactId>citrus-sample-java-config</artifactId>
   <name>Citrus Samples:: Java Config</name>
   <version>4.0.0</version>
 

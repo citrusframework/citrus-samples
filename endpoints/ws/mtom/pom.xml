@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-ws-mtom</artifactId>
+  <artifactId>citrus-sample-ws-mtom</artifactId>
   <name>Citrus Samples:: SOAP MTOM</name>
   <version>4.0.0</version>
 

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-core-reporting</artifactId>
+  <artifactId>citrus-sample-reporting</artifactId>
   <name>Citrus Samples:: Reporting</name>
   <version>4.0.0</version>
 

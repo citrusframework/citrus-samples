@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-websocket</artifactId>
+  <artifactId>citrus-samples-websocket</artifactId>
   <name>Citrus Samples:: Endpoints:: WebSocket</name>
   <version>4.0.0</version>
   <packaging>pom</packaging>

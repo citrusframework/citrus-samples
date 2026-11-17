@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-connectors-docker</artifactId>
+  <artifactId>citrus-sample-docker</artifactId>
   <name>Citrus Samples:: Docker</name>
   <version>4.0.0</version>
 

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-core-behaviors</artifactId>
+  <artifactId>citrus-sample-behaviors</artifactId>
   <name>Citrus Samples:: Behaviors</name>
   <version>4.0.0</version>
 

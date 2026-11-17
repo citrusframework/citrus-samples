@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-validation-json</artifactId>
+  <artifactId>citrus-samples-validation-json</artifactId>
   <version>4.0.0</version>
   <name>Citrus Samples:: Validation:: JSON</name>
   <packaging>pom</packaging>
@@ -13,7 +13,7 @@
   </properties>
 
   <modules>
-    <module>json</module>
-    <module>databind</module>
+    <module>validation-json</module>
+    <module>validation-databind</module>
   </modules>
 </project>

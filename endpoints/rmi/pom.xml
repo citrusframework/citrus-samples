@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-rmi</artifactId>
+  <artifactId>citrus-sample-rmi</artifactId>
   <name>Citrus Samples:: RMI</name>
   <version>4.0.0</version>
 

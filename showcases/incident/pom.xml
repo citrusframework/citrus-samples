@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-showcases-incident</artifactId>
+  <artifactId>citrus-sample-incident</artifactId>
   <name>Citrus Samples:: Incident</name>
   <version>4.0.0</version>
   <packaging>war</packaging>

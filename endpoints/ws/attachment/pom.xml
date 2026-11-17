@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-ws-attachment</artifactId>
+  <artifactId>citrus-sample-ws-attachment</artifactId>
   <name>Citrus Samples:: SOAP Attachments</name>
   <version>4.0.0</version>
 

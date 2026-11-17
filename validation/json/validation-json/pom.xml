@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-validation-json-json</artifactId>
+  <artifactId>citrus-sample-validation-json</artifactId>
   <name>Citrus Samples:: JSON</name>
   <version>4.0.0</version>
 

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints</artifactId>
+  <artifactId>citrus-samples-endpoints</artifactId>
   <name>Citrus Samples:: Endpoints</name>
   <version>4.0.0</version>
   <packaging>pom</packaging>
