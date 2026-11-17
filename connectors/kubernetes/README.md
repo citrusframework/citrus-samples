@@ -350,7 +350,6 @@ executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all v
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java, XML, YAML.
 - **Prerequisites:** Access to a configured Kubernetes cluster is required. JDK 21+ and Maven 3.9+ for a copied Maven sample. The tests call the todo application through the cluster service `citrus-sample-todo-service:8080`; build the `citrusframework/todo-app:${project.version}` image and deploy it behind that service before running a copy. Installing the todo application alone does not deploy it.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 

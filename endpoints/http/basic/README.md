@@ -127,7 +127,6 @@ To omit an unwanted non-Java variant, delete its `.citrus.xml`, `.citrus.yaml`, 
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java, XML, YAML, GROOVY.
 - **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 

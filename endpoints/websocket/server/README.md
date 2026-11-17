@@ -181,7 +181,6 @@ Wrappers are JUnit5 `@QuarkusTest` (not TestNG).
 - **Runtime:** Quarkus with JUnit Jupiter (`quarkus`).
 - **DSLs:** Java, XML, YAML.
 - **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 
