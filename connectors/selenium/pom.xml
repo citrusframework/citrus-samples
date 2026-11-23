@@ -22,7 +22,6 @@
     <maven.deploy.skip>true</maven.deploy.skip>
     <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
-
   </properties>
 
   <build>

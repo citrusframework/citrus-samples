@@ -38,7 +38,8 @@
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
     <skipJaxb>true</skipJaxb>
     <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
-
+    <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+    <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
   </properties>
 
   <build>
@@ -113,12 +114,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>${maven.source.plugin.version}</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.4</version>
+        <version>${maven.javadoc.plugin.version}</version>
       </plugin>
 
       <plugin>

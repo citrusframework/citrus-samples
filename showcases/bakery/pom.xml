@@ -46,7 +46,12 @@
     <system.under.test.mode>embedded</system.under.test.mode>
     <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
-
+    <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+    <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
+    <maven.war.plugin.version>3.1.0</maven.war.plugin.version>
+    <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
+    <maven.dependency.plugin.version>2.10</maven.dependency.plugin.version>
+    <maven.shade.plugin.version>2.4.3</maven.shade.plugin.version>
   </properties>
 
   <build>
@@ -66,12 +71,12 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.0.1</version>
+          <version>${maven.source.plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.10.4</version>
+          <version>${maven.javadoc.plugin.version}</version>
         </plugin>
 
         <plugin>
@@ -82,19 +87,19 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>${maven.war.plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.2.0</version>
+          <version>${maven.resources.plugin.version}</version>
         </plugin>
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>2.10</version>
+          <version>${maven.dependency.plugin.version}</version>
         </plugin>
 
         <plugin>
@@ -189,7 +194,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
-          <version>2.4.3</version>
+          <version>${maven.shade.plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
