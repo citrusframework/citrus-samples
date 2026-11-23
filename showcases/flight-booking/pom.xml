@@ -40,6 +40,8 @@
     <system.under.test.mode>embedded</system.under.test.mode>
 
     <jaxb.maven.plugin.version>4.2.0</jaxb.maven.plugin.version>
+    <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+
   </properties>
 
   <build>
@@ -87,7 +89,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version>
+        <version>${maven.compiler.plugin.version}</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
           <source>21</source>

@@ -37,6 +37,8 @@
     <jaxb.maven.plugin.version>4.2.0</jaxb.maven.plugin.version>
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
     <skipJaxb>true</skipJaxb>
+    <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+
   </properties>
 
   <build>
@@ -100,7 +102,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version>
+        <version>${maven.compiler.plugin.version}</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
           <source>21</source>
