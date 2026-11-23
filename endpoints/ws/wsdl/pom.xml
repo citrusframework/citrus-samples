@@ -22,6 +22,7 @@
     <maven.deploy.skip>true</maven.deploy.skip>
     <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+    <buildhelper.maven.plugin.version>3.0.0</buildhelper.maven.plugin.version>
   </properties>
 
   <build>
@@ -119,7 +120,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${buildhelper.maven.plugin.version}</version>
         <executions>
           <execution>
             <id>add-test-sources</id>

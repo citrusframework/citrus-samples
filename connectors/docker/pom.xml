@@ -21,6 +21,7 @@
     <maven.deploy.skip>true</maven.deploy.skip>
     <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+    <docker.maven.plugin.version>0.46.0</docker.maven.plugin.version>
   </properties>
 
   <build>
@@ -90,7 +91,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>0.46.0</version>
+        <version>${docker.maven.plugin.version}</version>
         <configuration>
           <logDate>default</logDate>
           <verbose>true</verbose>

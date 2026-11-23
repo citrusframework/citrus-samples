@@ -40,6 +40,7 @@
     <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
     <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
+    <docker.maven.plugin.version>0.46.0</docker.maven.plugin.version>
   </properties>
 
   <build>
@@ -168,7 +169,7 @@
       <plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>0.46.0</version>
+        <version>${docker.maven.plugin.version}</version>
         <configuration>
           <logDate>default</logDate>
           <verbose>true</verbose>
