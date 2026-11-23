@@ -390,7 +390,6 @@ a complete [reference manual][3].
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java.
 - **Prerequisites:** A running Docker daemon is required. JDK 21+ and Maven 3.9+ for a copied Maven sample. The `citrusframework/todo-app:${project.version}` Docker image must exist locally; installing the todo application alone does not build it.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 

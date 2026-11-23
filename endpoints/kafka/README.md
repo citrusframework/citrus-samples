@@ -163,7 +163,6 @@ The add-entry YAML/XML readiness check asserts 200 only, the exact per-entry ass
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java, XML, YAML.
 - **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 

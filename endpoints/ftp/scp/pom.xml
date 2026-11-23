@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-ftp-scp</artifactId>
+  <artifactId>citrus-sample-scp</artifactId>
   <name>Citrus Samples:: SCP</name>
   <version>4.0.0</version>
 
@@ -11,9 +11,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <slf4j.version>2.0.20</slf4j.version>
-    <log4j2.version>2.25.5</log4j2.version>
+    <log4j2.version>2.26.1</log4j2.version>
     <commons.logging.version>1.4.0</commons.logging.version>
-    <citrus.version>5.1.0</citrus.version>
+    <citrus.version>5.2.0</citrus.version>
     <maven.failsafe.plugin.version>3.5.6</maven.failsafe.plugin.version>
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
     <system.under.test.mode>embedded</system.under.test.mode>

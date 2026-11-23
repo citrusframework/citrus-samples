@@ -1,67 +1,109 @@
-Json sample ![Logo][1]
+XML sample ![Logo][1]
 ==============
 
-This sample deals with Json message payloads when sending and receiving messages to the todo sample
+This sample deals with XML message payloads when sending and receiving messages to the todo sample
 application. Read about this feature in [reference guide][4]
 
 Objectives
 ---------
 
 The [todo-list](../../../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
-We call this API and receive Json message structures for validation in our test cases.
+We call this API and receive XML message structures for validation in our test cases.
 
-We can use Json as message payloads directly in the test cases.
+As we want to deal with XML data it is a good idea to enable schema validation for incoming messages. Just put your
+known schemas to the schema repository and Citrus will automatically validate incoming messages with the available schema rules.
+
+```java
+@Bean
+public SimpleXsdSchema todoListSchema() {
+    return new SimpleXsdSchema(new ClassPathResource("schema/Todo.xsd"));
+}
+
+@Bean
+public XsdSchemaRepository schemaRepository() {
+    XsdSchemaRepository schemaRepository = new XsdSchemaRepository();
+    schemaRepository.getSchemas().add(todoListSchema());
+    return schemaRepository;
+}
+```
+
+That is all for configuration, now we can use XML as message payload in the test cases.
     
 ```java
-http()
+$(http()
     .client(todoClient)
     .send()
     .post("/api/todolist")
-    .type(MessageType.JSON)
-    .contentType(ContentType.APPLICATION_JSON.getMimeType())
-    .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+    .contentType(ContentType.APPLICATION_XML.getMimeType())
+    .body("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
+                "<id>${todoId}</id>" +
+                "<title>${todoName}</title>" +
+                "<description>${todoDescription}</description>" +
+            "</todo>"));
 ```
         
-As you can see we are able to send the Json data as payload. You can add test variables in message payloads. In a receive 
-action we are able to use an expected Json message payload. Citrus performs a Json object comparison where each element is checked to meet
+As you can see we are able to send the XML data as payload. You can add test variables in message payloads. In a receive 
+action we are able to use an expected XML message payload. Citrus performs a XML tree comparison where each element is checked to meet
 the expected values.
 
 ```java
-http()
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .type(MessageType.JSON)
-    .body("{ \"id\": \"${todoId}\", \"title\": \"${todoName}\", \"description\": \"${todoDescription}\", \"done\": ${done}}");
+    .type(MessageType.PLAINTEXT)
+    .body("${todoId}"));
 ```
 
-The Json message payload can be difficult to read when used as String concatenation. Fortunately we can also use file resources as message
+The XMl message payload can be difficult to read when used as String concatenation. Fortunately we can also use file resources as message
 payloads.
 
 ```java
-http()
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .type(MessageType.JSON)
-    .body(new ClassPathResource("templates/todo.json"));    
+    .body(new ClassPathResource("templates/todo.xml")));    
 ```
         
-An alternative approach would be to use JsonPath expressions when validating incoming Json messages.
+An alternative approach would be to use Xpath expressions when validating incoming XML messages.
 
 ```java
-http()
+$(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .type(MessageType.JSON)
-    .validate("$.id", "${todoId}")
-    .validate("$.title", "${todoName}")
-    .validate("$.description", "${todoDescription}");
+    .validate("/t:todo/t:id", "${todoId}")
+    .validate("/t:todo/t:title", "${todoName}")
+    .validate("/t:todo/t:description", "${todoDescription}")
+    .validate("/t:todo/t:done", "false"));
 ```
         
-Each expression is evaluated and checked for expected values. In case a JsonPath expression can not be evaluated or 
-does not meet the expected value the test ends with failure.
+Each expression is evaluated and checked for expected values. XPath is namespace sensitive. So we need to use the correct namespaces
+in the expressions. Here we have used a namespace prefix ***t:***. This prefix is defined in a central namespace context in the configuration.
+       
+```java
+@Bean
+public NamespaceContextBuilder namespaceContextBuilder() {
+    NamespaceContextBuilder namespaceContextBuilder = new NamespaceContextBuilder();
+    namespaceContextBuilder.setNamespaceMappings(Collections.singletonMap("t", "http://citrusframework.org/samples/todolist"));
+    return namespaceContextBuilder;
+}
+```
+       
+This makes sure that the Xpath expressions are able to find the elements with correct namespaces. Of course you can also specify the 
+namespace context for each receive action individually.       
+        
+```java
+$(http()
+    .client(todoClient)
+    .receive()
+    .response(HttpStatus.OK)
+    .validate("/t:todo/t:id", "${todoId}")
+    .validate("/t:todo/t:title", "${todoName}")
+    .validate("/t:todo/t:description", "${todoDescription}")
+    .validate("/t:todo/t:done", "false"));
+```
                 
 Run
 ---------
@@ -131,33 +173,33 @@ a complete [reference manual][3].
 
 ## YAML and XML test variants
 
-Besides the Java integration tests this sample ships declarative ports: `todo-json-file-resource.citrus.it.yaml`, `todo-json-path.citrus.it.yaml`, `todo-json-payload.citrus.it.yaml` + `todo-json-file-resource.citrus.it.xml`, `todo-json-path.citrus.it.xml`, `todo-json-payload.citrus.it.xml` (same scenarios), executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=TodoListYamlIT,TodoListXmlIT`.
+Besides the Java integration tests this sample ships declarative ports: `todo-xml-dom-tree-validation.citrus.it.yaml`, `todo-xml-file-resource.citrus.it.yaml`, `todo-xpath-validation.citrus.it.yaml` + same names as `*.citrus.it.xml` (same scenarios),
+executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=TodoListYamlIT,TodoListXmlIT`.
 
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
- [4]: https://citrusframework.org/reference/html#validation-json
+ [4]: https://citrusframework.org/reference/html#validation-xml
 
 ## Sample contract
 
-- **Purpose:** Validate JSON payloads with JSONPath and file resources.
-- **Modules:** `citrus-validation-json`.
+- **Purpose:** Validate XML payloads with XPath, schemas, and DOM trees.
+- **Modules:** `citrus-validation-xml`.
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java, XML, YAML.
 - **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 
 ```shell
-./mvnw -f validation/json/json/pom.xml clean verify -Dsystem.under.test.mode=embedded
+./mvnw -f validation/xml/xml/pom.xml clean verify -Dsystem.under.test.mode=embedded
 ```
 
 Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
 
 ```shell
 ./mvnw -f apps/todo-app/pom.xml install -DskipTests
-cp -R validation/json/json /tmp/citrus-validation-json-json
-cd /tmp/citrus-validation-json-json
+cp -R validation/xml/xml /tmp/citrus-validation-xml-xml
+cd /tmp/citrus-validation-xml-xml
 mvn clean verify -Dsystem.under.test.mode=embedded
 ```

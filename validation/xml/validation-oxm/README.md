@@ -1,110 +1,90 @@
-XML sample ![Logo][1]
+Object marshalling sample ![Logo][1]
 ==============
 
-This sample deals with XML message payloads when sending and receiving messages to the todo sample
-application. Read about this feature in [reference guide][4]
+This sample demonstrates the usage of object mapping in Citrus. We are able to handle automatic object mapping
+when sending and receiving message payloads. Read about this feature in [reference guide][4]
 
 Objectives
 ---------
 
 The [todo-list](../../../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
-We call this API and receive XML message structures for validation in our test cases.
+We call this API with object mapping in Citrus so that we do not need to write message payload JSON or XML
+structures but use the model objects directly in our test cases.
 
-As we want to deal with XML data it is a good idea to enable schema validation for incoming messages. Just put your
-known schemas to the schema repository and Citrus will automatically validate incoming messages with the available schema rules.
-
-```java
-@Bean
-public SimpleXsdSchema todoListSchema() {
-    return new SimpleXsdSchema(new ClassPathResource("schema/Todo.xsd"));
-}
-
-@Bean
-public XsdSchemaRepository schemaRepository() {
-    XsdSchemaRepository schemaRepository = new XsdSchemaRepository();
-    schemaRepository.getSchemas().add(todoListSchema());
-    return schemaRepository;
-}
-```
-
-That is all for configuration, now we can use XML as message payload in the test cases.
+First we need to provide a marshaller component in our Spring configuration:
     
 ```java
+@Bean
+public Marshaller marshaller() {
+    return new Jaxb2Marshaller("org.citrusframework.samples.validation.xml.oxm.model");
+}
+```
+    
+Citrus provides the Jaxb2 marshaller out-of-the-box. You can just use this in your tests to deal with XML payloads.
+Please note that the marshaller supports model object classes in package **org.citrusframework.samples.validation.xml.oxm.model**.
+
+That is all for configuration, now we can use model objects as message payload in the test cases.
+    
+```java
+@Autowired
+private Marshaller marshaller;
+    
 $(http()
     .client(todoClient)
     .send()
     .post("/api/todolist")
     .contentType(ContentType.APPLICATION_XML.getMimeType())
-    .body("<todo xmlns=\"http://citrusframework.org/samples/todolist\">" +
-                "<id>${todoId}</id>" +
-                "<title>${todoName}</title>" +
-                "<description>${todoDescription}</description>" +
-            "</todo>"));
+    .body(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), marshaller));
 ```
         
-As you can see we are able to send the XML data as payload. You can add test variables in message payloads. In a receive 
-action we are able to use an expected XML message payload. Citrus performs a XML tree comparison where each element is checked to meet
-the expected values.
+As you can see we are able to send the model object as payload. The test variable support is also given. Citrus will automatically marshall the object to a **application/json** message content 
+as **POST** request. In a receive action we are able to use a mapping validation callback in order to get access to the model objects of an incoming message payload.
 
 ```java
 $(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .type(MessageType.PLAINTEXT)
-    .body("${todoId}"));
-```
-
-The XMl message payload can be difficult to read when used as String concatenation. Fortunately we can also use file resources as message
-payloads.
-
-```java
-$(http()
-    .client(todoClient)
-    .receive()
-    .response(HttpStatus.OK)
-    .body(new ClassPathResource("templates/todo.xml")));    
+    .validationCallback(new XmlMarshallingValidationCallback<TodoEntry>(marshaller) {
+        @Override
+        public void validate(TodoEntry todoEntry, Map<String, Object> headers, TestContext context) {
+            Assert.assertNotNull(todoEntry);
+            Assert.assertEquals(todoEntry.getId(), uuid);
+        }
+    }));
 ```
         
-An alternative approach would be to use Xpath expressions when validating incoming XML messages.
+The validation callback gets the model object as first method parameter. You can now add some validation logic with assertions on the model object.        
 
-```java
-$(http()
-    .client(todoClient)
-    .receive()
-    .response(HttpStatus.OK)
-    .validate("/t:todo/t:id", "${todoId}")
-    .validate("/t:todo/t:title", "${todoName}")
-    .validate("/t:todo/t:description", "${todoDescription}")
-    .validate("/t:todo/t:done", "false"));
+Using Spring Oxm marshallers
+---------
+
+In case you want to use a different marshaller implementation for instance those provided by Spring Oxm module you can do so, too.
+
+We need to include the Spring oxm module in the dependencies:
+
+```xml
+<dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-oxm</artifactId>
+  <version>${spring.version}</version>
+  <scope>test</scope>
+</dependency>
 ```
-        
-Each expression is evaluated and checked for expected values. XPath is namespace sensitive. So we need to use the correct namespaces
-in the expressions. Here we have used a namespace prefix ***t:***. This prefix is defined in a central namespace context in the configuration.
-       
+
+Then you are able to create a bean with the Spring Oxm marshaller.
+
 ```java
 @Bean
-public NamespaceContextBuilder namespaceContextBuilder() {
-    NamespaceContextBuilder namespaceContextBuilder = new NamespaceContextBuilder();
-    namespaceContextBuilder.setNamespaceMappings(Collections.singletonMap("t", "http://citrusframework.org/samples/todolist"));
-    return namespaceContextBuilder;
-}
+public Marshaller marshaller() {
+        Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+        marshaller.setContextPath("org.citrusframework.samples.validation.xml.oxm.model");
+        return new MarshallerAdapter(marshaller);
+        }
 ```
-       
-This makes sure that the Xpath expressions are able to find the elements with correct namespaces. Of course you can also specify the 
-namespace context for each receive action individually.       
-        
-```java
-$(http()
-    .client(todoClient)
-    .receive()
-    .response(HttpStatus.OK)
-    .validate("/t:todo/t:id", "${todoId}")
-    .validate("/t:todo/t:title", "${todoName}")
-    .validate("/t:todo/t:description", "${todoDescription}")
-    .validate("/t:todo/t:done", "false"));
-```
-                
+
+The Citrus Spring module provides a marshaller adapter that you can use to wrap the Spring Oxm marshaller implementation in order to meet the Citrus marshaller type.    
+
 Run
 ---------
 
@@ -173,34 +153,34 @@ a complete [reference manual][3].
 
 ## YAML and XML test variants
 
-Besides the Java integration tests this sample ships declarative ports: `todo-xml-dom-tree-validation.citrus.it.yaml`, `todo-xml-file-resource.citrus.it.yaml`, `todo-xpath-validation.citrus.it.yaml` + same names as `*.citrus.it.xml` (same scenarios),
+Besides the Java integration tests this sample ships declarative ports: `todo-object-marshalling.citrus.it.yaml` + `todo-object-marshalling.citrus.it.xml` (same scenario),
 executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=TodoListYamlIT,TodoListXmlIT`.
+JAXB marshalling is replaced by literal XML bodies in the ports.
 
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
- [4]: https://citrusframework.org/reference/html#validation-xml
+ [4]: https://citrusframework.org/reference/html#validation-callback
 
 ## Sample contract
 
-- **Purpose:** Validate XML payloads with XPath, schemas, and DOM trees.
+- **Purpose:** Marshal and unmarshal XML messages with object mapping.
 - **Modules:** `citrus-validation-xml`.
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java, XML, YAML.
 - **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 
 ```shell
-./mvnw -f validation/xml/xml/pom.xml clean verify -Dsystem.under.test.mode=embedded
+./mvnw -f validation/xml/oxm/pom.xml clean verify -Dsystem.under.test.mode=embedded
 ```
 
 Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
 
 ```shell
 ./mvnw -f apps/todo-app/pom.xml install -DskipTests
-cp -R validation/xml/xml /tmp/citrus-validation-xml-xml
-cd /tmp/citrus-validation-xml-xml
+cp -R validation/xml/oxm /tmp/citrus-validation-xml-oxm
+cd /tmp/citrus-validation-xml-oxm
 mvn clean verify -Dsystem.under.test.mode=embedded
 ```

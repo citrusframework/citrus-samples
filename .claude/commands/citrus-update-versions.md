@@ -33,12 +33,16 @@ The input `$ARGUMENTS` is the Citrus release version (e.g. `4.11.0`). It MUST be
 
 5. **Update outdated versions.** For each outdated property (from both step 3 and step 4), use the Edit tool to update the version value in every local `pom.xml` where the property is defined. Also update the `<citrus.version>` property to `$ARGUMENTS`.
 
-6. **Report results.** Print a summary:
+6. **Update non-Maven version references.** After updating all pom.xml files:
+   - Update `citrusVersion` in `build-tools/gradle/gradle.properties` to `$ARGUMENTS`.
+   - Update the Citrus version reference in the root `README.md` (e.g. "Citrus 5.1.0 projects" → "Citrus $ARGUMENTS projects").
+
+7. **Report results.** Print a summary:
    - A table of all updated versions: property name, old version → new version.
    - A separate section listing any properties where this repository has a NEWER version than the Citrus release POM, showing: property name, local version, Citrus release version.
    - A separate section listing resolved unmatched versions with the compatibility rationale.
 
-7. **Verify with a full Maven build.** Run `mvn verify -Dsystem.under.test.mode=embedded` from the repository root to verify that all version changes are compatible. This uses the embedded Jetty server to auto-start the system under test during the build. If the build fails:
+8. **Verify with a full Maven build.** Run `mvn verify -Dsystem.under.test.mode=embedded` from the repository root to verify that all version changes are compatible. This uses the embedded Jetty server to auto-start the system under test during the build. If the build fails:
    - Analyze the failure output to identify the root cause.
    - Use available tools (e.g. Camel MCP catalog for component/header changes, WebSearch for API migrations) to diagnose breaking changes introduced by the version upgrades.
    - Apply the necessary code fixes (e.g. updated header names, renamed APIs, changed method signatures).

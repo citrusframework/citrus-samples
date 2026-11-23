@@ -4,7 +4,7 @@ Citrus samples ![Logo][1]
 Executable examples for Citrus integration testing
 --------------------------------------------------
 
-This repository contains small, independent Citrus 5.1.0 projects. Each sample focuses on one testing capability, runtime, endpoint, connector, validation technology, or complete showcase. Most samples test the shared [todo application](apps/todo-app/); larger showcases keep their own system under test.
+This repository contains small, independent Citrus 5.2.0 projects. Each sample focuses on one testing capability, runtime, endpoint, connector, validation technology, or complete showcase. Most samples test the shared [todo application](apps/todo-app/); larger showcases keep their own system under test.
 
 Sample index
 ------------

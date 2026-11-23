@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-http</artifactId>
+  <artifactId>citrus-samples-http</artifactId>
   <name>Citrus Samples:: HTTP</name>
   <version>4.0.0</version>
   <packaging>pom</packaging>

@@ -1,45 +1,43 @@
-Json data binding sample ![Logo][1]
+XHTML sample ![Logo][1]
 ==============
 
-This sample demonstrates the usage of object mapping in Citrus. We are able to handle automatic object mapping
-when sending and receiving message payloads. Read about this feature in [reference guide][4]
+This sample uses XHTML validation features to verify HTML response from a web container. This feature is
+also described in detail in [reference guide][4]
 
 Objectives
 ---------
 
-The [todo-list](../../../apps/todo-app/README.md) sample application provides a REST API for managing todo entries.
-We call this API with object mapping in Citrus so that we do not need to write message payload JSON or XML
-structures but use the model objects directly in our test cases.
+The [todo-list](../../../apps/todo-app/README.md) sample application provides an index HTML page that displays all todo entries.
+We can validate the HTML content in Citrus with XPath expressions. Citrus automatically converts the HTML to
+XHTML so XPath expressions can be evaluated accordingly.
 
-In test cases we can use the model objects directly as message payload.
-    
+The sample tests show how to use this feature. First we define a global namespace for XHTML in
+configuration.
+
 ```java
-$(http()
-    .client(todoClient)
-    .send()
-    .post("/api/todolist")
-    .contentType(ContentType.APPLICATION_JSON.getMimeType())
-    .body(new TodoEntry(uuid, "${todoName}", "${todoDescription}"), objectMapper));
+@Bean
+public NamespaceContextBuilder namespaceContextBuilder() {
+    NamespaceContextBuilder namespaceContextBuilder = new NamespaceContextBuilder();
+    namespaceContextBuilder.setNamespaceMappings(Collections.singletonMap("xh", "http://www.w3.org/1999/xhtml"));
+    return namespaceContextBuilder;
+}
 ```
-        
-As you can see we are able to send the model object. Citrus will automatically convert the object to a **application/json** message content 
-as **POST** request. In a receive action we are able to use a mapping validation callback in order to get access to the model objects of an incoming message payload.
-
+    
+Now we can use the XHTML validation feature in the Citrus test.
+    
 ```java
 $(http()
     .client(todoClient)
     .receive()
     .response(HttpStatus.OK)
-    .validationCallback(new JsonMappingValidationCallback<TodoEntry>(TodoEntry.class, objectMapper) {
-        @Override
-        public void validate(TodoEntry todoEntry, Map<String, Object> headers, TestContext context) {
-            Assert.assertNotNull(todoEntry);
-            Assert.assertEquals(todoEntry.getId(), uuid);
-        }
-    }));
+    .type(MessageType.XHTML)
+    .xpath("(//xh:li[@class='list-group-item']/xh:span)[last()]", "${todoName}"));
 ```
         
-The validation callback gets the model object as first method parameter. You can now add some validation logic with assertions on the model.        
+In a Http client response we can set the message type to XHTML. Citrus automatically converts the HTML response to
+XHTML so we can use XPath to validation the HTML content.
+
+The XPath expression makes sure the the last todo entry displayed is the todo item that we have added before in the test.
         
 Run
 ---------
@@ -107,31 +105,35 @@ Further information
 For more information on Citrus see [www.citrusframework.org][2], including
 a complete [reference manual][3].
 
+## YAML and XML test variants
+
+Besides the Java integration tests this sample ships declarative ports: `todo-add-entry.citrus.it.yaml`, `todo-index-page.citrus.it.yaml` + same names as `*.citrus.it.xml` (same scenarios),
+executed via `TodoListYamlIT` / `TodoListXmlIT` (`@CitrusTestSource`). Run all variants: `mvn verify`. Run only ports: `mvn verify -Dit.test=TodoListYamlIT,TodoListXmlIT`.
+
  [1]: https://citrusframework.org/img/brand-logo.png "Citrus"
  [2]: https://citrusframework.org
  [3]: https://citrusframework.org/reference/html/
- [4]: https://citrusframework.org/reference/html#validation-callback
+ [4]: https://citrusframework.org/reference/html#validation-xhtml
 
 ## Sample contract
 
-- **Purpose:** Map JSON messages to and from Java objects.
-- **Modules:** `citrus-validation-json`.
+- **Purpose:** Validate XHTML documents and ignore irrelevant differences.
+- **Modules:** `citrus-validation-xml`.
 - **Runtime:** TestNG (`testng`).
-- **DSLs:** Java.
+- **DSLs:** Java, XML, YAML.
 - **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample. Install the shared todo application before running a copy; embedded mode starts and stops it during the build.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 
 ```shell
-./mvnw -f validation/json/databind/pom.xml clean verify -Dsystem.under.test.mode=embedded
+./mvnw -f validation/xml/xhtml/pom.xml clean verify -Dsystem.under.test.mode=embedded
 ```
 
 Copy this complete sample root outside the repository. No aggregator parent installation is required. For a shared-todo sample, run the first command from the repository root before running the copy:
 
 ```shell
 ./mvnw -f apps/todo-app/pom.xml install -DskipTests
-cp -R validation/json/databind /tmp/citrus-validation-json-databind
-cd /tmp/citrus-validation-json-databind
+cp -R validation/xml/xhtml /tmp/citrus-validation-xml-xhtml
+cd /tmp/citrus-validation-xml-xhtml
 mvn clean verify -Dsystem.under.test.mode=embedded
 ```

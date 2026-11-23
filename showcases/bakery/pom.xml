@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-showcases-bakery</artifactId>
+  <artifactId>citrus-samples-bakery</artifactId>
   <name>Citrus Samples:: Bakery</name>
   <version>4.0.0</version>
   <packaging>pom</packaging>
@@ -19,17 +19,17 @@
     <maven.deploy.skip>true</maven.deploy.skip>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.version>7.0.9</spring.version>
+    <spring.version>7.0.10</spring.version>
     <apache.camel.version>4.23.0</apache.camel.version>
     <activemq.artemis.version>2.57.0</activemq.artemis.version>
     <angus-activation.version>2.0.3</angus-activation.version>
     <angus-mail.version>2.0.5</angus-mail.version>
     <slf4j.version>2.0.20</slf4j.version>
-    <log4j2.version>2.25.5</log4j2.version>
+    <log4j2.version>2.26.1</log4j2.version>
     <commons.logging.version>1.4.0</commons.logging.version>
-    <citrus.version>5.1.0</citrus.version>
+    <citrus.version>5.2.0</citrus.version>
     <jetty.version>11.0.26</jetty.version>
-    <jackson.version>3.2.3</jackson.version>
+    <jackson.version>3.2.4</jackson.version>
     <jackson.annotations.version>2.22</jackson.annotations.version>
     <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
     <jakarta.xml.bind-api.version>4.0.5</jakarta.xml.bind-api.version>

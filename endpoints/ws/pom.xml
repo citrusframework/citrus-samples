@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.citrusframework.samples</groupId>
-  <artifactId>citrus-sample-endpoints-ws</artifactId>
+  <artifactId>citrus-samples-ws</artifactId>
   <name>Citrus Samples:: SOAP</name>
   <version>4.0.0</version>
   <packaging>pom</packaging>

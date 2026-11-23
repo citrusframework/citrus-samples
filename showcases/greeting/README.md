@@ -61,7 +61,6 @@ Besides the Java integration tests this sample ships declarative ports: `Greetin
 - **Runtime:** TestNG (`testng`).
 - **DSLs:** Java, XML, YAML.
 - **Prerequisites:** JDK 21+ and Maven 3.9+ for a copied Maven sample.
-- **Citrus version:** 5.1.0, declared in `pom.xml`.
 
 Run from the repository root:
 

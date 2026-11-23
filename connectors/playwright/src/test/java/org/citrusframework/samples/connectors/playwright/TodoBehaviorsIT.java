@@ -31,9 +31,9 @@ import org.testng.annotations.Test;
 import static org.citrusframework.playwright.actions.PlaywrightActionBuilder.playwright;
 
 /**
- * Composes todo-list UI tests from reusable test behaviors. Shows Citrus 5.1.0
- * behavior features: named reporting, andThen composition, requires guards,
- * and isolated execution with published variables.
+ * Composes todo-list UI tests from reusable test behaviors. Shows behavior
+ * features: named reporting, andThen composition, requires guards, and
+ * isolated execution with published variables.
  */
 public class TodoBehaviorsIT extends TestNGCitrusSpringSupport implements TestActionSupport {
 
