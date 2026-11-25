@@ -20,6 +20,9 @@
     <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
     <system.under.test.mode>embedded</system.under.test.mode>
     <maven.deploy.skip>true</maven.deploy.skip>
+    <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+    <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+    <buildhelper.maven.plugin.version>3.0.0</buildhelper.maven.plugin.version>
   </properties>
 
   <build>
@@ -27,7 +30,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version>
+        <version>${maven.compiler.plugin.version}</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
           <source>21</source>
@@ -38,7 +41,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.2</version>
+        <version>${maven.jar.plugin.version}</version>
       </plugin>
 
       <plugin>
@@ -117,7 +120,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${buildhelper.maven.plugin.version}</version>
         <executions>
           <execution>
             <id>add-test-sources</id>
