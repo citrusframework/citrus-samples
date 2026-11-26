@@ -1,0 +1,13 @@
+{
+  "resources": [
+    {
+      "name": "default",
+      "type": "event",
+      "endpointKind": "sink",
+      "url": "{{k.sink:http://localhost:8080}}",
+      "objectApiVersion": "eventing.knative.dev/v1",
+      "objectKind": "Broker",
+      "objectName": "default"
+    }
+  ]
+}

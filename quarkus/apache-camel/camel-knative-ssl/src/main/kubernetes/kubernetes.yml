@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    eventing.knative.dev/connector: aws-s3-source
+  name: aws-s3-source
+spec:
+  selector:
+    matchLabels:
+      eventing.knative.dev/connector: aws-s3-source
+  template:
+    metadata:
+      labels:
+        eventing.knative.dev/connector: aws-s3-source
+    spec:
+      containers:
+      - name: aws-s3-source
+---
+apiVersion: sources.knative.dev/v1
+kind: SinkBinding
+metadata:
+  annotations:
+    sources.knative.dev/creator: connectors.knative.dev
+  finalizers:
+    - sinkbindings.sources.knative.dev
+  labels:
+    eventing.knative.dev/connector: aws-s3-source
+  name: aws-s3-source
+spec:
+  sink:
+    ref:
+      apiVersion: eventing.knative.dev/v1
+      kind: Broker
+      name: default
+  subject:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: aws-s3-source

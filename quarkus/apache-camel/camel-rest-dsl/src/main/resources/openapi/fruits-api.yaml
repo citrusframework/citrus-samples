@@ -1,0 +1,78 @@
+openapi: 3.0.2
+info:
+    title: New API
+    version: 1.0.0
+    description: A brand new API with no content.  Go nuts!
+paths:
+    /fruits:
+        summary: Path used to manage the list of fruits.
+        description: >-
+            The REST endpoint/path used to list and create zero or more `Fruit` entities.  This path contains
+            a `GET` and `POST` operation to perform the list and create tasks, respectively.
+        get:
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Fruit'
+                            examples:
+                                fruits-list:
+                                    value:
+                                        -
+                                            name: Apple
+                                            description: >-
+                                                An apple is the round, edible fruit of an apple tree (Malus
+                                                spp.).
+                                        -
+                                            name: Mango
+                                            description: >-
+                                                A mango is an edible stone fruit produced by the tropical tree
+                                                Mangifera indica.
+                                        -
+                                            name: Orange
+                                            description: >-
+                                                The orange, also called sweet orange to distinguish it from
+                                                the bitter orange (Citrus x aurantium), is the fruit of a tree
+                                                in the family Rutaceae.
+                    description: Successful response - returns an array of `Fruit` entities.
+            operationId: getfruits
+            summary: List All fruits
+            description: Gets a list of all `Fruit` entities.
+        post:
+            requestBody:
+                description: A new `Fruit` to be created.
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Fruit'
+                required: true
+            responses:
+                '201':
+                    description: Successful response.
+            operationId: createFruit
+            summary: Create a Fruit
+            description: Creates a new instance of a `Fruit`.
+        delete:
+            responses:
+                '204':
+                    description: Successful response - fruit deleted.
+            operationId: deleteFruit
+            summary: Delete a Fruit
+            description: Deletes a `Fruit` instance.
+components:
+    schemas:
+        Fruit:
+            title: Root Type for Fruit
+            description: The fruit definition
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+            example:
+                name: Apple
+                description: 'An apple is the round, edible fruit of an apple tree (Malus spp.).'
