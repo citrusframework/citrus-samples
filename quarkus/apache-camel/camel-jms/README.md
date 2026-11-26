@@ -244,7 +244,7 @@ class QuarkusApplicationTest implements TestActionSupport {
 
     @CitrusResource
     GherkinTestActionRunner runner;
-    
+
     // ... endpoint configurations and tests
 }
 ```

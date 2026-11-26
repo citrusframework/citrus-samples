@@ -44,12 +44,12 @@ public class Routes extends RouteBuilder {
    - No external transport required (JMS, Kafka, HTTP, etc.)
    - Messages are passed directly between Camel routes or from external callers
    - Synchronous: the caller blocks until the route completes
-   
+
 2. **.setBody(...)**: Transformation step that:
    - Retrieves the message body from the exchange
    - Converts it to uppercase
    - Prefixes it with `">> "`
-   
+
 3. **to("mock:words-out")**: Mock endpoint for testing and verification
    - Captures all messages sent to it
    - Allows assertions on message count, content, headers, etc.
@@ -63,7 +63,7 @@ The `direct:` component provides:
 - **Synchronous Invocation**: Caller waits for route completion
 - **Same CamelContext**: Only works within a single CamelContext instance
 - **Thread Model**: Route executes in the caller's thread
-- **Use Cases**: 
+- **Use Cases**:
   - Connecting multiple routes together
   - Breaking complex routes into smaller, testable pieces
   - Testing routes without external systems
@@ -251,7 +251,7 @@ class QuarkusApplicationTest extends CamelQuarkusTestSupport implements TestActi
 
     @CitrusResource
     GherkinTestActionRunner runner;
-    
+
     // ... test methods
 }
 ```

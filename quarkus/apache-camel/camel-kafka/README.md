@@ -99,8 +99,8 @@ The test uses Citrus Testcontainers support to provision a Kafka broker and crea
 
 ```java
 @KafkaContainerSupport(
-    port = 9092, 
-    version = "4.2.0", 
+    port = 9092,
+    version = "4.2.0",
     containerLifecycleListener = QuarkusApplicationTest.KafkaConfigurer.class)
 class QuarkusApplicationTest implements TestActionSupport {
 
@@ -129,7 +129,7 @@ class QuarkusApplicationTest implements TestActionSupport {
 - `KafkaConfigurer`: Creates the required Kafka topics (`words-in` and `words-out`) before tests run
 - The Kafka bootstrap servers are automatically configured and shared between:
   - Quarkus for application configuration
-  - Apache Camel for the `kafka:` component  
+  - Apache Camel for the `kafka:` component
   - Citrus for test endpoints
 - This ensures all three frameworks communicate with the same Kafka broker instance
 
@@ -162,8 +162,8 @@ The test class uses several key annotations:
 @QuarkusTest
 @CitrusSupport
 @KafkaContainerSupport(
-    port = 9092, 
-    version = "4.2.0", 
+    port = 9092,
+    version = "4.2.0",
     containerLifecycleListener = QuarkusApplicationTest.KafkaConfigurer.class)
 class QuarkusApplicationTest implements TestActionSupport {
     // ...
@@ -295,14 +295,14 @@ public static class KafkaConfigurer implements ContainerLifecycleListener<KafkaC
     public Map<String, String> started(KafkaContainer container) {
         try (Admin adminClient = Admin.create(
                 Collections.singletonMap(
-                    AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, 
+                    AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG,
                     container.getBootstrapServers()))) {
-            
+
             CreateTopicsResult result = adminClient.createTopics(Set.of(
                 new NewTopic("words-in", 1, (short) 1),
                 new NewTopic("words-out", 1, (short) 1)
             ));
-            
+
             result.all().get();
         }
         return Collections.emptyMap();

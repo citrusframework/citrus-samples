@@ -136,7 +136,7 @@ public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
 **Strategy logic:**
 
 1. **First message** (`oldExchange == null`): Return as-is (becomes the aggregate)
-2. **Subsequent messages**: 
+2. **Subsequent messages**:
    - Get existing aggregate body
    - Get new message body
    - Concatenate with newline separator
@@ -578,11 +578,11 @@ The same pattern works with any Camel processor:
 // Completion by timeout (1 second)
 .aggregate(constant(true), new MultilineAggregationStrategy())
     .completionTimeout(1000)
-    
+
 // Completion by predicate
 .aggregate(constant(true), new MultilineAggregationStrategy())
     .completionPredicate(simple("${body} contains 'DONE'"))
-    
+
 // Completion by size OR timeout
 .aggregate(constant(true), new MultilineAggregationStrategy())
     .completionSize(10)
