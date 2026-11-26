@@ -21,7 +21,7 @@ The application is a Petstore API **client** built with Apache Camel and Quarkus
 
 ### Architecture
 
-The [`PetstoreClientRoutes`](src/main/java/org/acme/PetstoreClientRoutes.java) class defines the outbound routes:
+The [`PetstoreClientRoutes`](src/main/java/org/citrusframework/samples/quarkus/camel/openapi/client/PetstoreClientRoutes.java) class defines the outbound routes:
 
 ```java
 from("direct:getPetById")
@@ -56,7 +56,7 @@ The `%test.` prefix activates Quarkus's `test` profile, so the Citrus test serve
 
 ## Shared Endpoint Configuration
 
-Both test classes share a single Citrus HTTP server instance, defined in [`CitrusEndpointConfig`](src/test/java/org/acme/CitrusEndpointConfig.java):
+Both test classes share a single Citrus HTTP server instance, defined in [`CitrusEndpointConfig`](src/test/java/org/citrusframework/samples/quarkus/camel/openapi/client/CitrusEndpointConfig.java):
 
 ```java
 @CitrusConfiguration
@@ -112,7 +112,7 @@ The module contains two test classes that demonstrate different Citrus verificat
 
 ### `PetstoreOpenApiClientTest` — Explicit HTTP Validation
 
-[`PetstoreOpenApiClientTest`](src/test/java/org/acme/PetstoreOpenApiClientTest.java) uses plain `http()` server actions to verify exact request paths, methods, bodies, and content types, and provides explicit simulated response bodies.
+[`PetstoreOpenApiClientTest`](src/test/java/org/citrusframework/samples/quarkus/camel/openapi/client/PetstoreOpenApiClientTest.java) uses plain `http()` server actions to verify exact request paths, methods, bodies, and content types, and provides explicit simulated response bodies.
 
 ```java
 // Trigger the Camel route
@@ -164,7 +164,7 @@ A custom `ObjectMapper` is registered via `@BindToRegistry` to control JSON seri
 
 ### `PetstoreOpenApiSpecTest` — OpenAPI Spec-Driven Validation
 
-[`PetstoreOpenApiSpecTest`](src/test/java/org/acme/PetstoreOpenApiSpecTest.java) uses Citrus's `openapi()` server actions, which automatically derive the expected request and a generated response from the OpenAPI specification.
+[`PetstoreOpenApiSpecTest`](src/test/java/org/citrusframework/samples/quarkus/camel/openapi/client/PetstoreOpenApiSpecTest.java) uses Citrus's `openapi()` server actions, which automatically derive the expected request and a generated response from the OpenAPI specification.
 
 ```java
 runner.when(

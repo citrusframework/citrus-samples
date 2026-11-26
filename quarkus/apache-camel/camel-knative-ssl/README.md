@@ -23,7 +23,7 @@ Amazon S3 upload → Camel aws-s3-source Kamelet → CloudEvent transform → HT
 
 ### Apache Camel Route
 
-The route is defined in [`Routes.java`](src/main/java/org/acme/Routes.java):
+The route is defined in [`Routes.java`](src/main/java/org/citrusframework/samples/quarkus/camel/knative/ssl/Routes.java):
 
 ```java
 from("kamelet:aws-s3-source")
@@ -35,7 +35,7 @@ The route itself is unchanged from the plain `camel-knative` example — the SSL
 
 ### SSL Client Bean
 
-[`SourceOptions.java`](src/main/java/org/acme/SourceOptions.java) provides a CDI bean that supplies the SSL-aware HTTP client options to the Knative component:
+[`SourceOptions.java`](src/main/java/org/citrusframework/samples/quarkus/camel/knative/ssl/SourceOptions.java) provides a CDI bean that supplies the SSL-aware HTTP client options to the Knative component:
 
 ```java
 @ApplicationScoped
@@ -83,7 +83,7 @@ The [`knative.json`](src/main/resources/knative.json) file defines the broker si
 
 ## Understanding the Citrus Test
 
-The test class [`QuarkusApplicationTest`](src/test/java/org/acme/QuarkusApplicationTest.java) verifies the end-to-end flow by combining a local HTTPS Knative broker with a LocalStack-backed S3 bucket.
+The test class [`QuarkusApplicationTest`](src/test/java/org/citrusframework/samples/quarkus/camel/knative/ssl/QuarkusApplicationTest.java) verifies the end-to-end flow by combining a local HTTPS Knative broker with a LocalStack-backed S3 bucket.
 
 ### Test Setup
 
@@ -121,7 +121,7 @@ public HttpServer knativeBroker = HttpEndpoints.http()
 
 ### Injecting SSL Properties at Runtime
 
-When the LocalStack container starts, the [`started()`](src/test/java/org/acme/QuarkusApplicationTest.java) callback injects both the S3 connection properties and the SSL client properties into the running Quarkus application:
+When the LocalStack container starts, the [`started()`](src/test/java/org/citrusframework/samples/quarkus/camel/knative/ssl/QuarkusApplicationTest.java) callback injects both the S3 connection properties and the SSL client properties into the running Quarkus application:
 
 ```java
 return Map.ofEntries(

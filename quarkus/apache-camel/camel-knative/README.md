@@ -21,7 +21,7 @@ Amazon S3 upload → Camel aws-s3-source Kamelet → CloudEvent transform → Kn
 
 ### Apache Camel Route
 
-The route is defined in [`Routes.java`](src/main/java/org/acme/Routes.java):
+The route is defined in [`Routes.java`](src/main/java/org/citrusframework/samples/quarkus/camel/knative/Routes.java):
 
 ```java
 from("kamelet:aws-s3-source")
@@ -79,7 +79,7 @@ This mirrors how a real Knative environment would provide the sink URL to the ev
 
 ## Understanding the Citrus Test
 
-The test class [`QuarkusApplicationTest`](src/test/java/org/acme/QuarkusApplicationTest.java) verifies the end-to-end flow by combining a local Knative broker with a LocalStack-backed S3 bucket.
+The test class [`QuarkusApplicationTest`](src/test/java/org/citrusframework/samples/quarkus/camel/knative/QuarkusApplicationTest.java) verifies the end-to-end flow by combining a local Knative broker with a LocalStack-backed S3 bucket.
 
 ### Test Setup
 
@@ -118,9 +118,9 @@ The test uploads a file into LocalStack S3:
 runner.when(this::uploadS3File);
 ```
 
-Inside [`uploadS3File()`](src/test/java/org/acme/QuarkusApplicationTest.java:67), the test performs a multipart upload to the bucket `knative-bucket` with the content `Hello Knative!`. The Camel `aws-s3-source` Kamelet consumes that object and forwards it as a CloudEvent.
+Inside [`uploadS3File()`](src/test/java/org/citrusframework/samples/quarkus/camel/knative/QuarkusApplicationTest.java:67), the test performs a multipart upload to the bucket `knative-bucket` with the content `Hello Knative!`. The Camel `aws-s3-source` Kamelet consumes that object and forwards it as a CloudEvent.
 
-When LocalStack starts, the test also creates the bucket and returns the Camel Kamelet properties needed to connect to the emulated S3 endpoint from [`started()`](src/test/java/org/acme/QuarkusApplicationTest.java:86).
+When LocalStack starts, the test also creates the bucket and returns the Camel Kamelet properties needed to connect to the emulated S3 endpoint from [`started()`](src/test/java/org/citrusframework/samples/quarkus/camel/knative/QuarkusApplicationTest.java:86).
 
 ### Receiving and Verifying CloudEvents
 
