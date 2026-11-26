@@ -651,7 +651,7 @@ static class SumAggregationStrategy implements AggregationStrategy {
 **Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-camel`.
 **Runtime**: `quarkus`.
 **DSL coverage**: Java DSL with Camel test actions.
-**Prerequisites**: JDK 21 or newer.
+**Prerequisites**: JDK 21 or newer and Docker for Kafka Dev Services.
 **Run from repository root**:
 
 ```shell
