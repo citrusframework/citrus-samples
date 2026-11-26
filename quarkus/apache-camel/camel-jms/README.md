@@ -128,7 +128,7 @@ class QuarkusApplicationTest implements TestActionSupport {
 
 **What's happening here:**
 
-- `@WithTestResource(ArtemisTestResource.class)`: Automatically starts an ActiveMQ Artemis container for testing via Testcontainers
+- `@WithTestResource(ArtemisTestResource.class)`: Starts an `EmbeddedActiveMQ` broker for testing using `broker.xml`
 - The test resource configures the connection factory to point to this test broker
 - No manual broker setup required
 - Automatic cleanup after test execution
@@ -186,7 +186,7 @@ The `quarkus-test-artemis` module provides automatic broker provisioning:
 
 This ensures:
 - No manual Artemis broker setup required
-- Tests run against a real JMS broker (via Testcontainers)
+- Tests run against an `EmbeddedActiveMQ` broker
 - Automatic cleanup after test execution
 - Isolation between test runs
 
@@ -198,7 +198,6 @@ The `citrus-jms` Maven dependency is added to the Maven POM:
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-jms</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -253,7 +252,7 @@ class QuarkusApplicationTest implements TestActionSupport {
 
 - `@QuarkusTest`: Starts the Quarkus application (including Camel routes) in test mode
 - `@CitrusSupport`: Enables Citrus framework integration with Quarkus, allowing Citrus endpoints and test runners to work seamlessly
-- `@WithTestResource(ArtemisTestResource.class)`: Provisions an ActiveMQ Artemis broker for testing using Testcontainers
+- `@WithTestResource(ArtemisTestResource.class)`: Starts an `EmbeddedActiveMQ` broker for testing using `broker.xml`
 - `@BindToRegistry`: Registers the injected connection factory in Citrus's context, making it available to all JMS endpoints (and automatically picked up by Camel)
 - `@CitrusResource`: Injects the Citrus test runner (`GherkinTestActionRunner`) for executing test actions with Given-When-Then syntax
 - `TestActionSupport`: Interface that provides convenient static imports for test actions like `send()`, `receive()`, `echo()`, etc.
@@ -307,14 +306,14 @@ Execute the tests using Maven:
 
 1. Quarkus starts the application in test mode
 2. Apache Camel routes are discovered and started
-3. The Artemis test resource starts an ActiveMQ Artemis container via Testcontainers
+3. The Artemis test resource starts `EmbeddedActiveMQ` using `broker.xml`
 4. Quarkus configures the connection factory to connect to the test broker
 5. Camel's JMS component automatically uses this connection factory
 6. Citrus registers the connection factory for use by JMS endpoints
 7. The test sends a message to `words-in` queue
 8. The Camel route consumes, transforms, and produces the message to `words-out` queue
 9. Citrus receives and validates the output message
-10. The test completes, and the Artemis container is stopped
+10. The test completes, and the embedded Artemis broker is stopped
 
 **Expected output:**
 ```

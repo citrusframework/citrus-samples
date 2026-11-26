@@ -161,7 +161,7 @@ Expected output:
 **Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-http`, `citrus-openapi`, `citrus-validation-json`.
 **Runtime**: `quarkus`.
 **DSL coverage**: Java DSL with HTTP and OpenAPI actions.
-**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Prerequisites**: JDK 21 or newer.
 **Run from repository root**:
 
 ```shell

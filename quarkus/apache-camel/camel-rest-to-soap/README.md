@@ -390,7 +390,7 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 **Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-http`, `citrus-ws`, `citrus-validation-json`, `citrus-validation-xml`.
 **Runtime**: `quarkus`.
 **DSL coverage**: Java DSL with HTTP, SOAP, JSON, and XML validation.
-**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Prerequisites**: JDK 21 or newer.
 **Run from repository root**:
 
 ```shell

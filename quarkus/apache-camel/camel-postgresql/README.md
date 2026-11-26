@@ -214,7 +214,6 @@ The `citrus-sql` Maven dependency provides SQL testing capabilities:
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-sql</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -234,7 +233,6 @@ The `citrus-http` dependency provides HTTP client capabilities:
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-http</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 ```

@@ -219,13 +219,11 @@ You can also run the module tests only:
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-http</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-testcontainers</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 ```

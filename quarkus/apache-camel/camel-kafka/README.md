@@ -253,7 +253,6 @@ The `citrus-kafka` Maven dependency is added to the Maven POM:
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-kafka</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -396,7 +395,7 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 - **citrus-kafka**: Adds Kafka endpoint support to Citrus
 - **citrus-junit-jupiter**: JUnit 5 integration for Citrus
 
-Note: The Kafka testcontainer support is provided by Citrus through the `@KafkaContainerSupport` annotation, so no separate testcontainer dependency is required.
+Note: The Kafka testcontainer support is provided by Citrus through the `@KafkaContainerSupport` annotation and the `citrus-testcontainers` dependency.
 
 ## Related Resources
 

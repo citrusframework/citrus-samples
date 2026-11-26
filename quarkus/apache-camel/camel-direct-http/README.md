@@ -317,7 +317,6 @@ The `citrus-http` Maven dependency is added to the Maven POM:
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-http</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 ```

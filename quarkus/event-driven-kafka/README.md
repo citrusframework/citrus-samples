@@ -119,7 +119,6 @@ The `citrus-kafka` Maven dependency is added to the Maven POM:
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-kafka</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 ```

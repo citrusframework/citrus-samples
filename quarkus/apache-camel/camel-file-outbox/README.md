@@ -443,7 +443,6 @@ The `citrus-camel` Maven dependency provides Camel integration:
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-camel</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 ```

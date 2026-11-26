@@ -118,9 +118,9 @@ The test uploads a file into LocalStack S3:
 runner.when(this::uploadS3File);
 ```
 
-Inside [`uploadS3File()`](src/test/java/org/citrusframework/samples/quarkus/camel/knative/QuarkusApplicationTest.java:67), the test performs a multipart upload to the bucket `knative-bucket` with the content `Hello Knative!`. The Camel `aws-s3-source` Kamelet consumes that object and forwards it as a CloudEvent.
+Inside [`uploadS3File()`](src/test/java/org/citrusframework/samples/quarkus/camel/knative/QuarkusApplicationTest.java#L67), the test performs a multipart upload to the bucket `knative-bucket` with the content `Hello Knative!`. The Camel `aws-s3-source` Kamelet consumes that object and forwards it as a CloudEvent.
 
-When LocalStack starts, the test also creates the bucket and returns the Camel Kamelet properties needed to connect to the emulated S3 endpoint from [`started()`](src/test/java/org/citrusframework/samples/quarkus/camel/knative/QuarkusApplicationTest.java:86).
+When LocalStack starts, the test also creates the bucket and returns the Camel Kamelet properties needed to connect to the emulated S3 endpoint from [`started()`](src/test/java/org/citrusframework/samples/quarkus/camel/knative/QuarkusApplicationTest.java#L86).
 
 ### Receiving and Verifying CloudEvents
 
@@ -188,13 +188,11 @@ You can also run the module tests only:
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-knative</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>org.citrusframework</groupId>
     <artifactId>citrus-testcontainers</artifactId>
-    <version>${citrus.version}</version>
     <scope>test</scope>
 </dependency>
 ```
