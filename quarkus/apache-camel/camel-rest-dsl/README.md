@@ -393,3 +393,24 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 - [Apache Camel REST DSL](https://camel.apache.org/manual/rest-dsl.html) - Official Camel REST DSL documentation
 - [Apache Camel Quarkus REST Guide](https://camel.apache.org/camel-quarkus/latest/reference/extensions/rest.html) - Camel REST extension for Quarkus
 - [OpenAPI Specification](https://swagger.io/specification/) - OpenAPI 3.0 specification reference
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test an HTTP REST service implemented via Apache Camel REST DSL using the Citrus framework.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-http`, `citrus-validation-json`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with HTTP and JSON validation.
+**Prerequisites**: JDK 21 or newer.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-rest-dsl/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-rest-dsl /tmp/citrus-camel-rest-dsl
+cd /tmp/citrus-camel-rest-dsl
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

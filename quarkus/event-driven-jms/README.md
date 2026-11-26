@@ -307,3 +307,24 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 ---
 
 **Next Steps**: Try modifying the test to validate JMS message headers, selectors, or different message types (TextMessage, ObjectMessage). Explore the Citrus documentation to learn about advanced features like message validators, test variables, and complex test flows.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test event-driven Quarkus applications using Citrus framework with JMS (ActiveMQ Artemis) integration.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-jms`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with JMS actions.
+**Prerequisites**: JDK 21 or newer.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/event-driven-jms/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/event-driven-jms /tmp/citrus-event-driven-jms
+cd /tmp/citrus-event-driven-jms
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

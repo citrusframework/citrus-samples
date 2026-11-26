@@ -246,3 +246,24 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 - [Apache Camel Splitter EIP](https://camel.apache.org/components/latest/eips/split-eip.html) - Splitter EIP
 - [Apache Camel Kamelets](https://camel.apache.org/camel-kamelets/latest/) - Kamelet catalog
 - [LocalStack](https://localstack.cloud/) - AWS cloud service emulator used in the test
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test Apache Camel routes in Quarkus applications using the Citrus framework with AWS S3 and Kafka integration.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-camel`, `citrus-kafka`, `citrus-testcontainers`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with Camel, Kafka, and Testcontainers support.
+**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-aws-s3-kafka/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-aws-s3-kafka /tmp/citrus-camel-aws-s3-kafka
+cd /tmp/citrus-camel-aws-s3-kafka
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

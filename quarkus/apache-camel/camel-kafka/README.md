@@ -411,3 +411,24 @@ Note: The Kafka testcontainer support is provided by Citrus through the `@KafkaC
 ---
 
 **Next Steps**: Try adding more complex Camel patterns like content-based routing, message filters, or aggregation. Explore combining Camel with other Citrus endpoints (HTTP, file system) to test multi-protocol integration scenarios. Learn about Camel's error handling and retry mechanisms and how to test them with Citrus.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test Apache Camel routes in Quarkus applications using Citrus framework with Kafka integration.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-kafka`, `citrus-testcontainers`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with Kafka and Testcontainers actions.
+**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-kafka/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-kafka /tmp/citrus-camel-kafka
+cd /tmp/citrus-camel-kafka
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

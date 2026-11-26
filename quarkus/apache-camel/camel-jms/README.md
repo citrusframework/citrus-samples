@@ -345,3 +345,24 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 ---
 
 **Next Steps**: Try adding more complex Camel patterns like content-based routing, message filters, or aggregation. Explore combining Camel with other Citrus endpoints (HTTP, file system) to test multi-protocol integration scenarios. Learn about Camel's error handling and retry mechanisms and how to test them with Citrus.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test Apache Camel routes in Quarkus applications using Citrus framework with JMS (ActiveMQ Artemis) integration.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-jms`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with JMS actions.
+**Prerequisites**: JDK 21 or newer.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-jms/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-jms /tmp/citrus-camel-jms
+cd /tmp/citrus-camel-jms
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

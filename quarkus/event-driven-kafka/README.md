@@ -195,3 +195,24 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 ---
 
 **Next Steps**: Try modifying the test to validate different message transformations, error scenarios, or message headers. Explore the Citrus documentation to learn about advanced features like message validators, test variables, and complex test flows.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test event-driven Quarkus applications using Citrus framework with Kafka message broker integration.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-kafka`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with Kafka actions.
+**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/event-driven-kafka/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/event-driven-kafka /tmp/citrus-event-driven-kafka
+cd /tmp/citrus-event-driven-kafka
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

@@ -402,3 +402,24 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 ---
 
 **Next Steps**: Try adding more complex Camel patterns like content-based routing (`choice().when()`), message filtering, splitting/aggregation, or error handling. Explore testing multiple interconnected routes using `direct:` endpoints. Learn about Camel's `adviceWith()` for replacing route endpoints in tests.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test Apache Camel routes using Citrus framework with **shared CamelContext integration**.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-camel`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with Camel test actions.
+**Prerequisites**: JDK 21 or newer.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-direct/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-direct /tmp/citrus-camel-direct
+cd /tmp/citrus-camel-direct
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

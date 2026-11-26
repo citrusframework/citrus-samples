@@ -213,3 +213,24 @@ You can also run the module tests only:
 ---
 
 **Next Steps**: Extend the test to verify multiple CloudEvent types using trigger filters, or add a consumer side to see how Citrus can also simulate a Knative subscriber receiving events from the broker.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test an Apache Camel Knative event source that turns Amazon S3 uploads into CloudEvents and sends them to a Knative broker, running locally with Citrus and LocalStack.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-knative`, `citrus-http`, `citrus-testcontainers`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with Knative, HTTP, and Testcontainers actions.
+**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-knative/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-knative /tmp/citrus-camel-knative
+cd /tmp/citrus-camel-knative
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

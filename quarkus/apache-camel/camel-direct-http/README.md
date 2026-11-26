@@ -550,3 +550,24 @@ send()
 ---
 
 **Next Steps**: Try extending the test to cover error scenarios (HTTP 500, timeouts), test the otherwise branch (no `lang` header), or add more complex transformations. Explore Citrus's JSON and XML validation for testing REST APIs with structured data. Learn about Citrus's data dictionary feature for consistent test data management across multiple tests.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test Apache Camel routes that call external HTTP services using Citrus framework with **simulated HTTP server** and **shared CamelContext integration**.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-camel`, `citrus-http`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with Camel and HTTP actions.
+**Prerequisites**: JDK 21 or newer.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-direct-http/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-direct-http /tmp/citrus-camel-direct-http
+cd /tmp/citrus-camel-direct-http
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

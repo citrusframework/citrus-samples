@@ -154,3 +154,24 @@ Expected output:
 - [Apache Camel REST DSL](https://camel.apache.org/components/latest/others/rest-openapi.html)
 - [Quarkus Camel Extension](https://camel.apache.org/camel-quarkus/latest/)
 - [OpenAPI Specification](https://swagger.io/specification/)
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test an HTTP REST service implemented via Apache Camel OpenAPI integration using the Citrus framework.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-http`, `citrus-openapi`, `citrus-validation-json`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with HTTP and OpenAPI actions.
+**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-openapi-server/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-openapi-server /tmp/citrus-camel-openapi-server
+cd /tmp/citrus-camel-openapi-server
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

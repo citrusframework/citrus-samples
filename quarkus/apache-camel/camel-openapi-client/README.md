@@ -194,7 +194,6 @@ This style is suited for contract-compliance tests: you care that the Camel clie
 ## Running the Tests
 
 ```bash
-cd apache-camel/camel-openapi-client
 ./mvnw -f quarkus/apache-camel/camel-openapi-client/pom.xml clean verify -Dsystem.under.test.mode=embedded
 ```
 
@@ -224,3 +223,24 @@ Expected output:
 - [Quarkus Camel Extension](https://camel.apache.org/camel-quarkus/latest/)
 - [OpenAPI Specification](https://swagger.io/specification/)
 - [camel-openapi-server example](../camel-openapi-server/README.md) — the complementary server-side example
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test a Quarkus application that uses the **Apache Camel OpenAPI REST client** to call an external HTTP service, while **Citrus acts as the simulated HTTP server** using the same OpenAPI specification.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-camel`, `citrus-http`, `citrus-openapi`, `citrus-validation-json`, `citrus-validation-text`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with Camel, HTTP, and OpenAPI actions.
+**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-openapi-client/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-openapi-client /tmp/citrus-camel-openapi-client
+cd /tmp/citrus-camel-openapi-client
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

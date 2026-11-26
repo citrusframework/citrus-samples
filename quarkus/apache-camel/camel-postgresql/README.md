@@ -352,3 +352,24 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 ---
 
 **Next Steps**: Try extending the example with more SQL validation patterns — multiple row inserts, update operations, or combining SQL validation with other Citrus endpoints. Explore using Citrus SQL execute actions for test data setup alongside query validation.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test Apache Camel routes in Quarkus applications using Citrus framework with PostgreSQL database validation.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-http`, `citrus-sql`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with HTTP and SQL actions.
+**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-postgresql/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-postgresql /tmp/citrus-camel-postgresql
+cd /tmp/citrus-camel-postgresql
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

@@ -383,3 +383,24 @@ As the Citrus test class is an arbitrary JUnit Jupiter test you may also run the
 - [Quarkus CXF Extension](https://docs.quarkiverse.io/quarkus-cxf/dev/) - Quarkiverse CXF extension for Quarkus
 - [CXF SOAP Client Example](../camel-cxf-soap-client) - Direct SOAP client example without REST facade
 - [CXF SOAP Server Example](../camel-cxf-soap) - The counterpart where Camel exposes a SOAP server
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test a Camel REST-to-SOAP bridge using the Citrus framework.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-http`, `citrus-ws`, `citrus-validation-json`, `citrus-validation-xml`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with HTTP, SOAP, JSON, and XML validation.
+**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-rest-to-soap/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-rest-to-soap /tmp/citrus-camel-rest-to-soap
+cd /tmp/citrus-camel-rest-to-soap
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

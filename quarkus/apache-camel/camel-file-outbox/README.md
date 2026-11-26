@@ -644,3 +644,24 @@ static class SumAggregationStrategy implements AggregationStrategy {
 ---
 
 **Next Steps**: Try different aggregation strategies (sum, collect to List, choose max/min). Test various completion conditions (timeout, predicate, size). Explore correlation expressions to aggregate messages into separate groups. Experiment with the Splitter EIP (opposite of Aggregator) to break aggregated files back into individual messages.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test Apache Camel routes that aggregate multiple messages into a single file using Citrus framework with **Camel processor integration**.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-camel`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with Camel test actions.
+**Prerequisites**: JDK 21 or newer.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-file-outbox/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-file-outbox /tmp/citrus-camel-file-outbox
+cd /tmp/citrus-camel-file-outbox
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

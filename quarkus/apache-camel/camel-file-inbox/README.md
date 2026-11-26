@@ -614,3 +614,24 @@ runner.when(
 ---
 
 **Next Steps**: Try using other Camel data formats in your tests (JSON, Base64, CSV). Explore more complex file patterns with includes/excludes. Test error handling scenarios with invalid ZIP files. Experiment with the Aggregator EIP (opposite of Splitter) to combine multiple messages into a single file.
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test Apache Camel file-based integration routes using Citrus framework with **Camel data format processors** for complex transformations.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-camel`, `citrus-kafka`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with Camel and Kafka actions.
+**Prerequisites**: JDK 21 or newer.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-file-inbox/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-file-inbox /tmp/citrus-camel-file-inbox
+cd /tmp/citrus-camel-file-inbox
+mvn clean verify -Dsystem.under.test.mode=embedded
+```

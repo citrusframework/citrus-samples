@@ -241,3 +241,24 @@ You can also run the module tests only:
 - [Knative SinkBinding](https://knative.dev/docs/eventing/custom-event-source/sinkbinding/) — How `K_SINK` is injected in real Kubernetes deployments
 - [CloudEvents Specification](https://cloudevents.io/) — CloudEvents standard
 - [LocalStack](https://www.localstack.cloud/)
+
+## Sample contract
+
+**Purpose**: This example demonstrates how to test an Apache Camel Knative event source that turns Amazon S3 uploads into CloudEvents and sends them to a Knative broker **secured with TLS/SSL**, running locally with Citrus and LocalStack.
+**Modules**: `citrus-quarkus`, `citrus-junit-jupiter`, `citrus-http`, `citrus-testcontainers`.
+**Runtime**: `quarkus`.
+**DSL coverage**: Java DSL with HTTP and Testcontainers actions.
+**Prerequisites**: JDK 21 or newer. Docker must be running for Testcontainers or Quarkus Dev Services.
+**Run from repository root**:
+
+```shell
+./mvnw -f quarkus/apache-camel/camel-knative-ssl/pom.xml clean verify -Dsystem.under.test.mode=embedded
+```
+
+**Copy out**: Maven 3.9+ is required for the copied sample.
+
+```shell
+cp -R quarkus/apache-camel/camel-knative-ssl /tmp/citrus-camel-knative-ssl
+cd /tmp/citrus-camel-knative-ssl
+mvn clean verify -Dsystem.under.test.mode=embedded
+```
