@@ -1,0 +1,18 @@
+{
+  "id": 1000,
+  "name": "fluffy",
+  "category": {
+    "id": 1000,
+    "name": "dog"
+  },
+  "photoUrls": [
+    "petstore/v3/photos/1000"
+  ],
+  "tags": [
+    {
+      "id": 1000,
+      "name": "generated"
+    }
+  ],
+  "status": "available"
+}

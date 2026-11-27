@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.citrusframework.samples</groupId>
+  <artifactId>citrus-samples-apache-camel</artifactId>
+  <version>4.0.0</version>
+  <name>Citrus Samples:: Quarkus :: Apache Camel</name>
+  <packaging>pom</packaging>
+
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
+  <modules>
+    <module>camel-aws-s3-kafka</module>
+    <module>camel-cxf-soap</module>
+    <module>camel-cxf-soap-client</module>
+    <module>camel-direct</module>
+    <module>camel-direct-http</module>
+    <module>camel-file-inbox</module>
+    <module>camel-file-outbox</module>
+    <module>camel-jms</module>
+    <module>camel-kafka</module>
+    <module>camel-knative</module>
+    <module>camel-knative-ssl</module>
+    <module>camel-mqtt</module>
+    <module>camel-openapi-client</module>
+    <module>camel-openapi-server</module>
+    <module>camel-postgresql</module>
+    <module>camel-rest-dsl</module>
+    <module>camel-rest-to-soap</module>
+  </modules>
+</project>

@@ -20,6 +20,7 @@
     <module>endpoints</module>
     <module>connectors</module>
     <module>validation</module>
+    <module>quarkus</module>
     <module>showcases</module>
   </modules>
 </project>

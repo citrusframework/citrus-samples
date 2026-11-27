@@ -16,6 +16,7 @@ Sample index
 - [Endpoints](endpoints/) — [HTTP](endpoints/http/), [SOAP web services](endpoints/ws/), [JMS](endpoints/jms/), [Kafka](endpoints/kafka/), [mail](endpoints/mail/), [RMI](endpoints/rmi/), [Camel](endpoints/camel/), [FTP/SCP/SFTP](endpoints/ftp/), and [WebSocket](endpoints/websocket/).
 - [Connectors](connectors/) — Selenium, Playwright, OpenAPI, and SQL by default; Docker and Kubernetes through the `infrastructure-samples` profile (they need a Docker daemon or Kubernetes cluster).
 - [Validation](validation/) — [XML](validation/xml/), [JSON](validation/json/), [Hamcrest](validation/hamcrest/), and [binary messages](validation/binary/).
+- [Quarkus](quarkus/) — Quarkus samples for Apache Camel and event-driven messaging.
 - [Showcases](showcases/) — bakery, bookstore, flight booking, greeting, incident management, and Quarkus applications.
 - [Build tools](build-tools/gradle/) — standalone Gradle build outside the Maven reactor.
 
@@ -87,6 +88,25 @@ The matrix is maintained by hand. Update it when you add, move, or remove a samp
 | [validation/json/databind](validation/json/databind/) | Maps JSON messages to and from objects | `citrus-validation-json` | testng | Yes | — | — | — |
 | [validation/hamcrest](validation/hamcrest/) | Uses Hamcrest matchers in validation and conditions | `citrus-validation-hamcrest` | testng | Yes | Yes | Yes | — |
 | [validation/binary](validation/binary/) | Handles binary message content | `citrus-validation-binary` | testng | Yes | Yes | Yes | — |
+| [quarkus/apache-camel/camel-aws-s3-kafka](quarkus/apache-camel/camel-aws-s3-kafka/) | Tests Apache Camel routes that consume AWS S3 files and publish line-based JSON events to Kafka | `citrus-kafka` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-cxf-soap](quarkus/apache-camel/camel-cxf-soap/) | Tests an Apache Camel CXF SOAP service, including successful operations and SOAP faults | `citrus-ws` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-cxf-soap-client](quarkus/apache-camel/camel-cxf-soap-client/) | Tests an Apache Camel CXF SOAP client against a Citrus-simulated FruitService | `citrus-ws` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-direct](quarkus/apache-camel/camel-direct/) | Tests synchronous Apache Camel direct routes with shared CamelContext and mock endpoints | `citrus-camel` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-direct-http](quarkus/apache-camel/camel-direct-http/) | Tests Apache Camel routes that call a Citrus-simulated HTTP service | `citrus-camel` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-file-inbox](quarkus/apache-camel/camel-file-inbox/) | Tests Apache Camel file processing, ZIP data formats, splitting, and Kafka publication | `citrus-camel` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-file-outbox](quarkus/apache-camel/camel-file-outbox/) | Tests Apache Camel file aggregation and custom processing | `citrus-camel` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-jms](quarkus/apache-camel/camel-jms/) | Tests Apache Camel JMS routes backed by ActiveMQ Artemis | `citrus-jms` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-kafka](quarkus/apache-camel/camel-kafka/) | Tests Apache Camel Kafka routes with a Testcontainers broker | `citrus-kafka` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-knative](quarkus/apache-camel/camel-knative/) | Tests Apache Camel Knative CloudEvents from S3 through LocalStack to a local broker | `citrus-knative` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-knative-ssl](quarkus/apache-camel/camel-knative-ssl/) | Tests TLS-secured Apache Camel Knative CloudEvents from S3 to an HTTPS broker | `citrus-http` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-mqtt](quarkus/apache-camel/camel-mqtt/) | Tests Apache Camel MQTT consumption and content-based routing to Kafka topics | `citrus-kafka` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-openapi-client](quarkus/apache-camel/camel-openapi-client/) | Tests an Apache Camel OpenAPI client against a Citrus OpenAPI HTTP server | `citrus-http` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-openapi-server](quarkus/apache-camel/camel-openapi-server/) | Tests an Apache Camel OpenAPI REST service with Citrus OpenAPI client actions | `citrus-http` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-postgresql](quarkus/apache-camel/camel-postgresql/) | Tests HTTP-to-PostgreSQL Apache Camel routes and validates persisted rows with Citrus SQL | `citrus-sql` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-rest-dsl](quarkus/apache-camel/camel-rest-dsl/) | Tests Apache Camel REST DSL CRUD endpoints and JSON responses | `citrus-http` | quarkus | Yes | — | — | — |
+| [quarkus/apache-camel/camel-rest-to-soap](quarkus/apache-camel/camel-rest-to-soap/) | Tests an Apache Camel REST-to-SOAP bridge with Citrus HTTP and SOAP endpoints | `citrus-http` | quarkus | Yes | — | — | — |
+| [quarkus/event-driven-jms](quarkus/event-driven-jms/) | Tests event-driven Quarkus JMS message transformation with ActiveMQ Artemis | `citrus-jms` | quarkus | Yes | — | — | — |
+| [quarkus/event-driven-kafka](quarkus/event-driven-kafka/) | Tests event-driven Quarkus Kafka message transformation with Quarkus Dev Services | `citrus-kafka` | quarkus | Yes | — | — | — |
 | [showcases/bakery](showcases/bakery/) | Bakery order workflow across web, worker, and report services | `citrus-jms`, `citrus-http` | testng | Yes | — | — | — |
 | [showcases/bookstore](showcases/bookstore/) | Bookstore SOAP service with JMS backend | `citrus-ws`, `citrus-jms` | testng | Yes | Yes | Yes | — |
 | [showcases/flight-booking](showcases/flight-booking/) | Flight booking with JMS, HTTP, and a database | `citrus-jms`, `citrus-http` | testng | Yes | Yes | Yes | — |
@@ -114,8 +134,9 @@ Prerequisites
 
 - JDK 21 or newer, with `JAVA_HOME` pointing to the JDK.
 - The repository Maven wrapper for in-repository builds, or Maven 3.9+ for copied samples.
+- Docker for container-backed Quarkus samples that use Testcontainers or Quarkus Dev Services.
 - A local Gradle installation for [build-tools/gradle](build-tools/gradle/), which has no Gradle wrapper.
-- Additional infrastructure only where a leaf README requires it. Docker and Kubernetes samples are not in the default Maven reactor.
+- Additional infrastructure only where a leaf README requires it. Kubernetes connector samples remain outside the default Maven reactor.
 
 Run samples
 -----------

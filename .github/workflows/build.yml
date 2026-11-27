@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 9
       matrix:
         group:
           - apps
@@ -73,6 +73,7 @@ jobs:
           - endpoints
           - connectors
           - validation
+          - quarkus
           - showcases
 
     steps:
